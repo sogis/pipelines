@@ -1,0 +1,149 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: qwc-service-pipeline
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      env:
+        - name: "QWC2_VERSION"
+          value: "1.5.4"
+          required: true
+        - name: "GIT_VERSION"
+          value: "v1.5.4"
+          required: true
+      jenkinsfile: |-
+        // path of the template to use
+        def buildTemplatePath = 'https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/buildconfig.yaml'
+        // name of the template that will be created
+        def serviceName = 'qwc-service'
+        // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+        // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+        // will not be fully engaged.
+        credentials = [
+            usernamePassword(credentialsId: 'agi-apps-test-github-secret', usernameVariable: 'githubUser', passwordVariable: 'githubPwd')
+        ]
+        pipeline {
+            agent any
+            options {
+                // set a timeout of 5 minutes for this pipeline
+                timeout(time: 5, unit: 'MINUTES')
+            }
+            stages {
+               stage('preamble') {
+                   steps {
+                       script {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   echo "Using project: ${openshift.project()}"
+                               }
+                           }
+                       }
+                   }
+               }
+               stage('Create Image Builder') {
+                   when {
+                       expression {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   return !openshift.selector("bc", "qwc-service").exists();
+                               }
+                           }
+                        }
+                    }
+                    steps {
+                       script {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   // build qwc-service Image from Sourcepole Source Code
+                                   // openshift.newBuild( "https://git.sourcepole.ch/ktso/somap", "--name=qwc-service", "--strategy=docker", "--context-dir=docker/wsgi-service", "--build-arg QWC2_VERSION=${QWC2_VERSION}", "--env GIT_USER=deployso", "--env GIT_PASSWORD=UwM4LdvEUTV7","--source-secret=deployso-at-gitlab-token", "build-secret=deployso-at-gitlab-token")
+                                   withCredentials(credentials) {
+                                       openshift.verbose()
+                                       openshift.newBuild( "https://${githubUser}:${githubPwd}@github.com/pfeimich/qwc-service.git", "--name=qwc-service", "--strategy=docker", "--context-dir=qwc-service", "--build-arg QWC2_VERSION=${QWC2_VERSION}", "--env GIT_USER=deployso", "--env GIT_PASSWORD=UwM4LdvEUTV7")
+                                       openshift.verbose(false)
+                                   }
+                               }
+                           }
+                       } // script
+                   } // steps
+               } // stage
+               //stage('create buildconfig') {
+               //    when {
+               //        expression {
+               //            openshift.withCluster() {
+               //                openshift.withProject('gdi-devel') {
+               //                    return !openshift.selector('bc', 'qwc-service').exists();
+               //                }
+               //            }
+               //         }
+               //    }
+               //    steps {
+               //        script {
+               //            openshift.withCluster() {
+               //                openshift.withProject('gdi-devel') {
+               //                    openshift.newApp(buildTemplatePath) 
+               //                }
+               //            }
+               //         }
+               //     }
+               //}
+               stage('build') {
+                   steps {
+                       script {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   def builds = openshift.selector("bc", serviceName).related('builds')
+                                   timeout(5) { 
+                                       builds.untilEach(1) {
+                                           return (it.object().status.phase == "Complete")
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+               stage('Configure Components') {
+                   steps {
+                       script {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   if (openshift.selector('pvc', 'qwc-assets-claim').exists() != true && openshift.selector('pvc', 'jasper-config-claim').exists() != true && openshift.selector('pvc', 'qgs-resources-claim').exists() != true && openshift.selector('pvc', 'nginx-config-claim').exists() != true && openshift.selector('pvc', 'reports-claim').exists() != true ) {
+                                       def pvc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/pvc_claims.yaml" )
+                                       openshift.create( pvc , "--save-config" )
+                                   }
+                                   else {
+                                       def pvc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/pvc_claims.yaml" )
+                                       openshift.apply( pvc )
+                                   }
+                               }
+                           }
+                       }
+                   } 
+               }                                          
+               stage('deploy') {
+                   when {
+                       expression {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   return !openshift.selector('dc', 'qwc-service').exists();
+                               }
+                           }
+                       }
+                   }
+                   steps {
+                       script {
+                           openshift.withCluster() {
+                               openshift.withProject('gdi-devel') {
+                                   if (openshift.selector('dc', 'qwc-service').exists() != true) {
+                                       def dc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/qwc-service.yaml", "-p", "NAMESPACE=gdi-devel" )
+                                       openshift.create( dc , "--save-config" )
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+            } // stages
+        } // pipeline
+    type: JenkinsPipeline

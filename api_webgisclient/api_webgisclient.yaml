@@ -49,6 +49,7 @@ spec:
 
                            version = userInput?:''
                            echo "${version}"
+                           newImage = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
                         
                            openshift.withCluster() {
                                openshift.withProject('gdi-devel') {
@@ -125,7 +126,14 @@ spec:
                        script {
                            openshift.withCluster() {
                                openshift.withProject('gdi-devel') {
-                                   def builds = openshift.selector( "bc", serviceName).startBuild( "--wait" )
+                                   dc = openshift.selector( "dc/qwc-service" ).object()
+                                   dcImage = dc.spec.template.spec.containers[0].image
+                                   if ( dcImage != newImage ) {
+                                       def builds = openshift.selector( "bc", serviceName).startBuild( "--wait" )
+                                   }
+                                   else {
+                                       println "No build because Image already used"
+                                   }
                                }
                            }
                        }
@@ -136,7 +144,12 @@ spec:
                        script {
                            openshift.withCluster() {
                                openshift.withProject('gdi-devel') {
-                                   openshift.tag( "qwc-service:latest", "qwc-service:${version}")
+                                   if ( dcImage != newImage ) {
+                                       openshift.tag( "qwc-service:latest", "qwc-service:${version}")
+                                   }
+                                   else {
+                                       println "No new tag because tag already exists"
+                                   }
                                }
                            }
                        }
@@ -146,39 +159,41 @@ spec:
                    steps {
                        script {
                            openshift.withProject('gdi-devel') {
-                               def dc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/qwc-service.yaml", "-p", "NAMESPACE=gdi-devel" )
-                               latestDeploy = openshift.apply( dc ).object()
-                               latestDeploy.spec.template.spec.containers[0].image = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
-                               openshift.apply( latestDeploy )
+                               def dc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/qwc-service.yaml", "-p", "NAMESPACE=gdi-devel" ) 
+                               if ( dcImage != newImage ) {
+                                   for ( o in dc ) {
+                                       o.spec.template.spec.containers[0].image = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
+                                   }
+                               }
+                               openshift.apply( dc )
+                               timeout(3) { 
+                                   def latestDeploymentVersion = openshift.selector('dc', 'qwc-service' ).object().status.latestVersion
+                                   def rc = openshift.selector('rc', "qwc-service-${latestDeploymentVersion}")
+                                   println latestDeploymentVersion
+                                   rc.untilEach(1) {
+                                       def rcMap = it.object()
+                                       return (rcMap.status.replicas.equals(rcMap.status.readyReplicas))
+                                   }
+                               }
                            }
                        }
                     }
                }
-               //stage('Change Image Stream') {
-               //    steps {
-               //        script {
-               //            openshift.withProject('gdi-devel') {
-               //                latestDeploy = openshift.selector( 'dc', 'qwc-service').object()
-               //                latestDeploy.spec.template.spec.containers[0].image = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
-               //                openshift.apply( latestDeploy )
-               //            }
-               //        }
-               //    }
-               //}
-               stage('Deploy Image') {
+               stage('Deploy Image on Test') {
                    steps {
                        script {
                            openshift.withCluster() {
                                openshift.withProject('gdi-devel') {
-                                  
-                                   openshift.selector( 'dc', 'qwc-service').rollout().latest()
-                                   timeout(3) { 
-                                       def latestDeploymentVersion = openshift.selector('dc', 'qwc-service' ).object().status.latestVersion
-                                       def rc = openshift.selector('rc', "qwc-service-${latestDeploymentVersion}")
-                                       println latestDeploymentVersion
-                                       rc.untilEach(1) {
-                                           def rcMap = it.object()
-                                           return (rcMap.status.replicas.equals(rcMap.status.readyReplicas))
+                                   if ( dcImage != newImage ) {  
+                                       openshift.selector( 'dc', 'qwc-service').rollout().latest()
+                                       timeout(3) { 
+                                           def latestDeploymentVersion = openshift.selector('dc', 'qwc-service' ).object().status.latestVersion
+                                           def rc = openshift.selector('rc', "qwc-service-${latestDeploymentVersion}")
+                                           println latestDeploymentVersion
+                                           rc.untilEach(1) {
+                                               def rcMap = it.object()
+                                               return (rcMap.status.replicas.equals(rcMap.status.readyReplicas))
+                                           }
                                        }
                                    }
                                }

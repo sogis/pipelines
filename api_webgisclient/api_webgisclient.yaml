@@ -155,7 +155,7 @@ spec:
                        }
                    }
                }
-               stage('Config Changes') {
+               stage('Deployment') {
                    steps {
                        script {
                            openshift.withProject('gdi-devel') {
@@ -179,28 +179,6 @@ spec:
                        }
                     }
                }
-               stage('Deploy Image on Test') {
-                   steps {
-                       script {
-                           openshift.withCluster() {
-                               openshift.withProject('gdi-devel') {
-                                   if ( dcImage != newImage ) {  
-                                       openshift.selector( 'dc', 'qwc-service').rollout().latest()
-                                       timeout(3) { 
-                                           def latestDeploymentVersion = openshift.selector('dc', 'qwc-service' ).object().status.latestVersion
-                                           def rc = openshift.selector('rc', "qwc-service-${latestDeploymentVersion}")
-                                           println latestDeploymentVersion
-                                           rc.untilEach(1) {
-                                               def rcMap = it.object()
-                                               return (rcMap.status.replicas.equals(rcMap.status.readyReplicas))
-                                           }
-                                       }
-                                   }
-                               }
-                           }
-                       }
-                   }
-               }
-            } // stages
+            }
         } // pipeline
     type: JenkinsPipeline

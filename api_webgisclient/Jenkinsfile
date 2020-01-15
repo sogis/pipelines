@@ -1,0 +1,168 @@
+// path of the template to use
+def buildTemplatePath = 'https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/buildconfig.yaml'
+// name of the template that will be created
+def serviceName = 'qwc-service'
+def version
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+credentials = [
+    usernamePassword(credentialsId: 'agi-apps-test-github-secret'          , usernameVariable: 'githubUser'              , passwordVariable: 'githubPwd'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite')
+]
+pipeline {
+    agent any
+    options {
+        // set a timeout of 5 minutes for this pipeline
+        timeout(time: 5, unit: 'MINUTES')
+    }
+    stages {
+       stage('preamble') {
+           steps {
+               script {
+                   def userInput = input(
+                       id: 'userInput', message: 'Enter version number',
+                       parameters: [
+                           string(defaultValue: 'None',
+                                  description: 'Version number',
+                                  name: 'Version')
+                       ])
+
+                   version = userInput?:''
+                   echo "${version}"
+                   newImage = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
+                
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           echo "Using project: ${openshift.project()}"
+                       }
+                   }
+               }
+           }
+       }
+       stage('Configure Components') {
+           steps {
+               script {
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           withCredentials ( credentials ) {
+                               def pvc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/pvc_claims.yaml" ) 
+                               def configMap = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/configMaps.yaml" , "-p", "DB_SERVER=geodb-t.rootso.org", "-p", "PW_OGC_SERVER=${PwdOgcServer}", "-p", "URL=geo-t.so.ch", "-p", "WMTS_URL=geo-wmts-t.so.ch", "-p", "IDP_URL=geo-t.so.ch", "-p", "GEO_DB_SERVER=geodb-t.verw.rootso.org", "-p", "PW_REPORT_SERVER=${PwdReportServer}", "-p", "PW_SOGIS_SERVICE=${PwdSogisService}", "-p", "PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite}", "-p", "PW_MSWRITE=${PwdMswrite}", "-p", "JASPER_DATASOURCE_1=geodb-t.verw.rootso.org", "-p", "NAMESPACE=gdi-devel", "-p", "ENVIRONMENT=test" )
+                               openshift.apply( pvc )
+                               openshift.apply( configMap )
+                           }
+                       }
+                   }
+               }
+           } 
+       }                                          
+       stage('Create Image Builder') {
+           when {
+               expression {
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           return !openshift.selector( "bc" , "qwc-service").exists();
+                       }
+                   }
+                }
+            }
+            steps {
+               script {
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           // build qwc-service Image from Sourcepole Source Code
+                           // openshift.newBuild( "https://git.sourcepole.ch/ktso/somap", "--name=qwc-service", "--strategy=docker", "--context-dir=docker/wsgi-service", "--build-arg QWC2_VERSION=${QWC2_VERSION}", "--env GIT_USER=deployso", "--env GIT_PASSWORD=UwM4LdvEUTV7","--source-secret=deployso-at-gitlab-token", "build-secret=deployso-at-gitlab-token")
+                           withCredentials(credentials) {
+                               openshift.verbose()
+                               openshift.newBuild( "https://${githubUser}:${githubPwd}@github.com/pfeimich/qwc-service.git", "--name=qwc-service", "--strategy=docker", "--context-dir=qwc-service", "--build-arg QWC2_VERSION=${QWC2_VERSION}", "--env GIT_USER=deployso", "--env GIT_PASSWORD=UwM4LdvEUTV7")
+                               openshift.verbose(false)
+                           }
+                       }
+                   }
+               } // script
+           } // steps
+       } // stage
+       //stage('create buildconfig') {
+       //    when {
+       //        expression {
+       //            openshift.withCluster() {
+       //                openshift.withProject('gdi-devel') {
+       //                    return !openshift.selector('bc', 'qwc-service').exists();
+       //                }
+       //            }
+       //         }
+       //    }
+       //    steps {
+       //        script {
+       //            openshift.withCluster() {
+       //                openshift.withProject('gdi-devel') {
+       //                    openshift.newApp(buildTemplatePath) 
+       //                }
+       //            }
+       //         }
+       //     }
+       //}
+       stage('build') {
+           steps {
+               script {
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           dc = openshift.selector( "dc/qwc-service" ).object()
+                           dcImage = dc.spec.template.spec.containers[0].image
+                           if ( dcImage != newImage ) {
+                               def builds = openshift.selector( "bc", serviceName).startBuild( "--wait" )
+                           }
+                           else {
+                               println "No build because Image already used"
+                           }
+                       }
+                   }
+               }
+           }
+       }
+       stage('Tag Image') {
+           steps {
+               script {
+                   openshift.withCluster() {
+                       openshift.withProject('gdi-devel') {
+                           if ( dcImage != newImage ) {
+                               openshift.tag( "qwc-service:latest", "qwc-service:${version}")
+                           }
+                           else {
+                               println "No new tag because tag already exists"
+                           }
+                       }
+                   }
+               }
+           }
+       }
+       stage('Config Changes') {
+           steps {
+               script {
+                   openshift.withProject('gdi-devel') {
+                       def dc = openshift.process( "https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/qwc-service.yaml", "-p", "NAMESPACE=gdi-devel" ) 
+                       if ( dcImage != newImage ) {
+                            for ( o in dc ) {
+                                o.spec.template.spec.containers[0].image = "docker-registry.default.svc:5000/gdi-devel/qwc-service:${version}"
+                            }
+                       }
+                       openshift.apply( dc )
+                       timeout(3) { 
+                           def latestDeploymentVersion = openshift.selector('dc', 'qwc-service' ).object().status.latestVersion
+                           def rc = openshift.selector('rc', "qwc-service-${latestDeploymentVersion}")
+                           println latestDeploymentVersion
+                           rc.untilEach(1) {
+                               def rcMap = it.object()
+                               return (rcMap.status.replicas.equals(rcMap.status.readyReplicas))
+                           }
+                       }
+                   }
+               }
+            }
+       }
+    }
+} // pipeline

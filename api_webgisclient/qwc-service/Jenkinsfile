@@ -1,0 +1,93 @@
+// path of the template to use
+def buildTemplatePath = 'https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/buildconfig.yaml'
+// name of the template that will be created
+def serviceName = 'qwc-service'
+def version
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+credentials = [
+    usernamePassword(credentialsId: 'agi-apps-test-github-secret'          , usernameVariable: 'githubUser'              , passwordVariable: 'githubPwd'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
+    usernamePassword(credentialsId: 'agi-apps-test-gitlab-sourcepole'      , usernameVariable: 'gitlabUser'              , passwordVariable: 'gitlabPwd'),
+    usernamePassword(credentialsId: 'agi-apps-test-gitlab-sourcepole-token', usernameVariable: 'gitlabTokenUser'         , passwordVariable: 'gitlabToken')
+]
+library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+pipeline {
+    agent any 
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 10, unit: 'MINUTES')
+    }
+    stages {
+        stage ('preamble') {
+            steps {
+                script {
+                    version = stagePreamble.call()
+                }
+            }
+        }
+        stage ('Configure Ressources') {
+            steps {
+                script { 
+                    configureRessources credentials, 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/${serviceName}' 
+                }
+            }
+        }
+        stage ('Create Image Builder permission-service') {
+            steps {
+                script {
+                    createImageBuilder credentials, '--name=permission-service --strategy=docker --context-dir=docker/wsgi-service --build-arg QWC2_VERSION=${QWC2_VERSION} --env GIT_USER=${gitlabUser} --env GIT_PASSWORD=${gitlabPwd} --env GIT_TOKEN=${gitlabToken}', 'permission-service'
+                }
+            }
+        }
+        stage ('Build new Image for permission-service if necessary') {
+            steps {
+                script {
+                    buildImage 'permission-service', version
+                }
+            }
+        }
+        stage ('Tag Image for permission-service') {
+            steps {
+                script {
+                    tagImage 'permission-service', version
+                }
+            }
+        }
+        stage ('Deploy permission-service in Test env') {
+            steps {
+                script {
+                    deployImage
+                }
+            }
+        }
+        stage ('Create Image Builder qwc-service') {
+            steps {
+                script {
+                    createImageBuilder credentials, '--name=qwc-service --strategy=docker --context-dir=docker/qwc-service --build-arg QWC2_VERSION=${QWC2_VERSION} --env GIT_USER=${gitlabUser} --env GIT_PASSWORD=${gitlabPwd}', 'qwc-service'
+                }
+            }
+        }
+        stage ('Build new Image for qwc-service if necessary') {
+            steps {
+                script {
+                    buildImage 'qwc-service', version
+                }
+            }
+        }
+        stage ('Tag Image for qwc-service') {
+            steps {
+                script {
+                    tagImage 'qwc-service', version
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,457 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-qwc-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for qwc-service"
+parameters:
+  - description: DB Server Url
+    name: DB_SERVER
+    value: geodb-t.rootso.org
+  - description: Password DB User ogc_server
+    name: PW_OGC_SERVER
+    value: password
+  - description: Geo DB Server
+    name: GEO_DB_SERVER
+    value: geodb-t.verw.rootso.org
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+    value:
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=pub
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [soconfig_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=soconfig
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_geodb]
+      host=${GEO_DB_SERVER}
+      port=5432
+      dbname=sogis
+      user=mspublic
+      password=${PW_MSPUBLIC}
+      sslmode=require
+
+      [sogis_edit]
+      host=${DB_SERVER}
+      port=5432
+      dbname=edit
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+      
+      [sogis_oereb]
+      host=${DB_SERVER}
+      port=5432
+      dbname=oereb
+      user=ogc_server
+      password=${PW_OGC_SERVER}
+      sslmode=require
+  kind: Secret
+  metadata:
+    name: qwc-service-pg-config
+- apiVersion: v1
+  data:
+    config.json: |
+      {
+        "permalinkServiceUrl": "{{ permalink_service_url }}",
+        "elevationServiceUrl": "{{ elevation_service_url }}",
+        "editServiceUrl": "{{ data_service_url }}",
+        "dataproductServiceUrl": "{{ dataproduct_service_url }}",
+        "searchServiceUrl": "{{ search_service_url }}",
+        "authServiceUrl": "{{ auth_service_url }}",
+        "mapInfoService": "{{ mapinfo_service_url }}",
+        "featureReportService": "{{ feature_report_service_url }}",
+        "landRegisterService": "/api/v1/landreg",
+        "cccConfigService": "/api/v1/ccc/",
+        "plotInfoService": "/api/v1/plotinfo/",
+        "translationsPath": "/map/translations",
+        "assetsPath": "/map/assets",
+        "urlPositionFormat": "centerAndZoom",
+        "urlPositionCrs": "",
+        "urlReverseLayerOrder": true,
+        "preserveExtentOnThemeSwitch": true,
+        "preserveBackgroundOnThemeSwitch": true,
+        "preserveNonThemeLayersOnThemeSwitch": true,
+        "allowReorderingLayers": true,
+        "allowRemovingThemeLayers": true,
+        "wmsDpi": {{ wms_dpi }},
+        "defaultFeatureStyle": {
+          "strokeColor": [255, 128, 0, 1],
+          "strokeWidth": 2,
+          "strokeDash": [],
+          "fillColor": [255, 255, 64, 0.33],
+          "circleRadius": 10,
+          "circleBorder": 2,
+          "textFill": "black",
+          "textStroke": "white"
+        },
+        "plugins": {
+            "mobile": [
+              {
+                "name": "Map"
+              },
+              {
+                "name": "HomeButton"
+                ,
+                "cfg": {
+                  "position": 2
+                }
+              },
+              {
+                "name": "LocateButton",
+                "cfg": {
+                  "position": 1
+                }
+              },
+              {
+                "name": "BackgroundSwitcher",
+                "cfg": {
+                  "position": 0
+                }
+              },
+              {
+                  "name": "TopBar",
+                  "cfg": {
+                    "logoFormat": "jpg",
+                    "menuItems": [
+                      {"key": "LayerTree", "icon": "layers", "identifyEnabled": true},
+                      {"key": "PlotInfoTool", "icon": "plot_info", "comment": true},
+                      {"key": "Share", "icon": "share", "identifyEnabled": true},
+                      {"key": "Tools", "icon": "tools", "subitems": [
+                        {"key": "Measure", "icon": "measure"},
+                        {"key": "Redlining", "icon": "draw"},
+                        {"key": "Editing",{{ editing_theme_whitelist }} "icon": "editing"},
+                        {"key": "RasterExport", "icon": "rasterexport"}
+                      ]},
+                      {"key": "Print", "icon": "print"},
+                      {"key": "LandRegisterExtract", "icon": "print"},
+                      {"key": "Help", "icon": "info", "identifyEnabled": true},
+                      {{ login_logout_item }}
+                    ],
+                    "searchOptions": {
+                      "minScale": 100,
+                      "resultLimit": 10,
+                      "showProviderSelection": true,
+                      "providerSelectionAllowAll": true,
+                      "zoomToLayers": false
+                    },
+                    "appMenuClearsTask": true,
+                    "logoClickResetsTheme": true,
+                    "logoUrl": "/map"
+                  }
+              },
+              {
+                "name": "ThemeSwitcher"
+              },
+              {
+                "name": "Measure",
+                "cfg": {
+                  "showMeasureModeSwitcher": true
+                }
+              },
+              {
+                "name": "Identify",
+                "cfg": {
+                  "params": {
+                    "FI_POINT_TOLERANCE": 32,
+                    "FI_LINE_TOLERANCE": 16,
+                    "FI_POLYGON_TOLERANCE": 8,
+                    "feature_count": 20
+                  },
+                  "exportFormat": null,
+                  "longAttributesDisplay": "wrap",
+                  "displayResultTree": false
+                }
+              },
+              {
+              "name": "Share",
+                "cfg": {
+                  "showSocials": true,
+                  "showLink": true,
+                  "showQRCode": true
+                }
+              },
+              {
+                "name": "Print",
+                "cfg": {
+                  "printExternalLayers": true
+                }
+              },
+              {
+                "name": "Help"
+              },
+              {
+                "name": "MapCopyright"
+              },
+              {
+                "name": "LayerTree",
+                "cfg": {
+                  "width": "30em",
+                  "allowMapTips": false,
+                  "showLegendIcons": false,
+                  "showRootEntry": true,
+                  "showQueryableIcon": false,
+                  "groupTogglesSublayers": false,
+                  "grayUnchecked": true,
+                  "flattenGroups": true,
+                  "legendThumbnail": "legend_thumbnail.svg",
+                  "layerInfoWindowSize": {"width": 480, "height": 400}
+                }
+              },
+              {
+                "name": "RasterExport",
+                "cfg": {
+                  "dpis": [96, 300]
+                }
+              },
+              {
+                "name": "Redlining",
+                "cfg": {
+                  "allowGeometryLabels": false
+                }
+              },
+              {
+                "name": "Editing"
+              },
+              {
+                "name": "MapCompare"
+              },
+              {
+                "name": "HeightProfile"
+              },
+              {
+                "name": "MapInfoTooltip"
+              },
+              {
+                "name": "Authentication"
+              },
+              {
+                "name": "LandRegisterExtract"
+              },
+              {
+                "name": "CCCInterface"
+              },
+              {
+                "name": "PlotInfoTool"
+              }
+            ],
+            "desktop": [
+              {
+                "name": "Map"
+              },
+              {
+                "name": "HomeButton"
+                ,
+                "cfg": {
+                  "position": 4
+                }
+              },
+              {
+                "name": "LocateButton"
+                ,
+                "cfg": {
+                  "position": 3
+                }
+              },
+              {
+                "name": "ZoomIn",
+                "cfg": {
+                  "position": 2
+                }
+              },
+              {
+                "name": "ZoomOut",
+                "cfg": {
+                  "position": 1
+                }
+              },
+              {
+                "name": "BackgroundSwitcher",
+                "cfg": {
+                  "position": 0
+                }
+              },
+              {
+                  "name": "TopBar",
+                  "cfg": {
+                    "logoFormat": "png",
+                    "menuItems": [
+                      {"key": "LayerTree", "icon": "layers", "identifyEnabled": true},
+                      {"key": "PlotInfoTool", "icon": "plot_info", "comment": true},
+                      {"key": "Share", "icon": "share", "identifyEnabled": true},
+                      {"key": "Tools", "icon": "tools", "subitems": [
+                      {"key": "Measure", "icon": "measure"},
+                      {"key": "Redlining", "icon": "draw"},
+                      {"key": "Editing",{{ editing_theme_whitelist }} "icon": "editing"},
+                      {"key": "RasterExport", "icon": "rasterexport"}
+                    ]},
+                      {"key": "Print", "icon": "print"},
+                      {"key": "LandRegisterExtract", "icon": "print"},
+                      {"key": "Help", "icon": "info", "identifyEnabled": true},
+                      {{ login_logout_item }}
+                    ],
+                    "searchOptions": {
+                      "minScale": 100,
+                      "resultLimits": 15,
+                      "showProviderSelection": true,
+                      "providerSelectionAllowAll": true,
+                      "zoomToLayers": false
+                    },
+                    "appMenuClearsTask": true,
+                    "logoClickResetsTheme": true,
+                    "logoUrl": "/map"
+                  }
+              },
+              {
+                "name": "BottomBar",
+                "cfg": {
+                  "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+                  "termsUrl":  "https://www.so.ch/rechtliches/"
+  
+                }
+              },
+              {
+                "name": "Measure",
+                "cfg": {
+                  "showMeasureModeSwitcher": true
+                }
+              },
+              {
+                "name": "ThemeSwitcher"
+              },
+              {
+                "name": "LayerTree",
+                "cfg": {
+                  "width": "30em",
+                  "allowMapTips": false,
+                  "showLegendIcons": false,
+                  "showRootEntry": true,
+                  "showQueryableIcon": false,
+                  "groupTogglesSublayers": false,
+                  "grayUnchecked": true,
+                  "flattenGroups": true,
+                  "legendThumbnail": "legend_thumbnail.svg",
+                  "layerInfoWindowSize": {"width": 480, "height": 400}
+                }
+              },
+              {
+                "name": "Identify",
+                "cfg": {
+                  "params": {
+                    "FI_POINT_TOLERANCE": 16,
+                    "FI_LINE_TOLERANCE": 8,
+                    "FI_POLYGON_TOLERANCE": 4,
+                    "feature_count": 20
+                  },
+                  "exportFormat": null,
+                  "longAttributesDisplay": "wrap",
+                  "displayResultTree": false,
+                  "initialWidth": 480,
+                  "initialHeight": 550
+                }
+              },
+              {
+                "name": "MapTip"
+              },
+              {
+                "name": "Share",
+                "cfg": {
+                  "showSocials": true,
+                  "showLink": true,
+                  "showQRCode": true
+                }
+              },
+              {
+                "name": "Print",
+                "cfg": {
+                  "printExternalLayers": true
+                }
+              },
+              {
+                 "name": "Help"
+              },
+              {
+                "name": "MapCopyright"
+              },
+              {
+                "name": "RasterExport",
+                "cfg": {
+                  "dpis": [96, 300]
+                }
+              },
+              {
+                "name": "Redlining",
+                "cfg": {
+                  "allowGeometryLabels": false
+                }
+              },
+              {
+                "name": "Editing"
+              },
+              {
+                "name": "MapCompare"
+              },
+              {
+                "name": "HeightProfile",
+                "cfg": {
+                  "height": 200
+                }
+              },
+              {
+                "name": "MapInfoTooltip"
+              },
+              {
+                "name": "Authentication"
+              },
+              {
+                "name": "LandRegisterExtract"
+              },
+              {
+                "name": "CCCInterface"
+              },
+              {
+                "name": "PlotInfoTool",
+                "cfg": {
+                  "toolLayers": ["Grundstücke"],
+                  "infoQueries": [
+                    {
+                      "key": "plotdescr",
+                      "title": "Grundstückbeschrieb",
+                      "query": "/plot/$egrid$",
+                      "pdfQuery": null
+                  }
+                  ]
+                }
+              }
+            ]
+        }
+      }
+  kind: ConfigMap
+  metadata:
+    name: config-json
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: qwc-assets-claim
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi 
+    storageClassName: nfs 

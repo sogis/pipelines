@@ -26,7 +26,7 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
     stages {
-        stage ('preamble') {
+        stage ('Ask for Version') {
             steps {
                 script {
                     version = stagePreamble.call()
@@ -37,34 +37,6 @@ pipeline {
             steps {
                 script { 
                     configureRessources credentials, 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/${serviceName}' 
-                }
-            }
-        }
-        stage ('Create Image Builder permission-service') {
-            steps {
-                script {
-                    createImageBuilder credentials, '--name=permission-service --strategy=docker --context-dir=docker/wsgi-service --build-arg QWC2_VERSION=${QWC2_VERSION} --env GIT_USER=${gitlabUser} --env GIT_PASSWORD=${gitlabPwd} --env GIT_TOKEN=${gitlabToken}', 'permission-service'
-                }
-            }
-        }
-        stage ('Build new Image for permission-service if necessary') {
-            steps {
-                script {
-                    buildImage 'permission-service', version
-                }
-            }
-        }
-        stage ('Tag Image for permission-service') {
-            steps {
-                script {
-                    tagImage 'permission-service', version
-                }
-            }
-        }
-        stage ('Deploy permission-service in Test env') {
-            steps {
-                script {
-                    deployImage
                 }
             }
         }
@@ -86,6 +58,13 @@ pipeline {
             steps {
                 script {
                     tagImage 'qwc-service', version
+                }
+            }
+        }
+        stage ('Deploy qwc-service in Test env') {
+            steps {
+                script {
+                    deployImage
                 }
             }
         }

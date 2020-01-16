@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: qwc-service
+  annotations:
+    openshift.io/display-name: "All components for qwc-service"
+    description: >-
+      "Creates all necessary components for qwc-service"
+    openshift.io/long-description: >-
+      "Creates all necessary components for qwc-service"
+    tags: "agi,gdi,python,web gis client, agdi"
+    iconClass: icon-python
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+labels:
+  application: GDI-Test
+  createdBy: template-GDI
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      io.kompose.service: qwc-service
+    name: qwc-service
+  spec:
+    replicas: 2
+    selector:
+      io.kompose.service: qwc-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          io.kompose.service: qwc-service
+      spec:
+        containers:
+        - env:
+          - name: AUTH_SERVICE_URL
+            value: /auth/
+          - name: DATA_SERVICE_URL
+            value: /api/v1/data/
+          - name: ELEVATION_SERVICE_URL
+            value: /elevation/
+          - name: INFO_SERVICE_URL
+            value: /api/v1/featureinfo/
+          - name: LEGEND_SERVICE_URL
+            value: /api/v1/legend/
+          - name: MAPINFO_SERVICE_URL
+            value: /api/v1/mapinfo/
+          - name: FEATURE_REPORT_SERVICE_URL
+            value: /api/v1/document/
+          - name: PERMALINK_SERVICE_URL
+            value: /api/v1/permalink/
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc
+          - name: PRINT_SERVICE_URL
+            value: /api/v1/print/
+          - name: QGIS_SERVER_URL
+            value: /ows/
+          - name: SEARCH_SERVICE_URL
+            value: /api/search/v2/
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: WMS_DPI
+            value: "96"
+          - name: DATAPRODUCT_SERVICE_URL
+            value: /api/dataproduct/v1/
+          - name: MIN_RESULTS_EXANDED
+            value: "100"
+          image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service 
+          imagePullPolicy: IfNotPresent
+          name: sogis-qwc-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /srv/somap/qwc_service/templates
+            name: config-json-claim
+          - mountPath: /var/www
+            name: qwc-service-config-claim
+          - mountPath: /srv/somap/qwc_service/qwc2/assets/img/custommapthumbs
+            name: qwc-assets
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            secretName: qwc-service-pg-config
+          name: qwc-service-config-claim
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: config.json
+                path: config.json
+            name: config-json
+          name: config-json-claim
+        - name: qwc-assets
+          persistentVolumeClaim:
+            claimName: qwc-assets-claim
+            readOnly: true
+    triggers:
+    - type: ConfigChange

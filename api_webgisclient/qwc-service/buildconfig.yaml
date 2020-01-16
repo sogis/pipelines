@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: build-qwc-service
+  annotations:
+    openshift.io/display-name: "Buildconfig for qwc-service"
+    description: >-
+      "Creates BuildConfig for qwc-service"
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      build: qwc-service
+    name: qwc-service
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: qwc-service:latest
+    source:
+      contextDir: docker/qwc-service
+      git:
+        ref: release_so
+        uri: https://git.sourcepole.ch/ktso/somap.git
+      sourceSecret:
+        name: deployso-at-gitlab-token
+      type: Git
+    strategy:
+      dockerStrategy:
+        buildArgs:
+        - name: QWC2_VERSION
+          value: 1.5.4
+        - name: GIT_VERSION
+          value: v1.5.4
+        env:
+        - name: GIT_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: deployso-at-gitlab-token
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: deployso-at-gitlab-token
+        from:
+          kind: DockerImage
+          name: ubuntu:16.04
+      type: Docker

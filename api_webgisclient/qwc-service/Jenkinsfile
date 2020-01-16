@@ -1,7 +1,5 @@
-// path of the template to use
-def buildTemplatePath = 'https://raw.githubusercontent.com/sogis/openshift-templates/master/web_gis_client/buildconfig.yaml'
-// name of the template that will be created
 def serviceName = 'qwc-service'
+def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def version
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -36,7 +34,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 script { 
-                    configureRessources credentials, 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName, 'gdi-devel' 
+                    configureRessources credentials, repo, 'gdi-devel' 
                 }
             }
         }
@@ -57,7 +55,7 @@ pipeline {
         stage ('Deploy qwc-service in Test env') {
             steps {
                 script {
-                    deployImage
+                    deployImage 'qwc-service', version, repo, 'gdi-devel'
                 }
             }
         }

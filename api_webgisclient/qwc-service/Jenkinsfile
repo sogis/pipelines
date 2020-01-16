@@ -41,7 +41,7 @@ pipeline {
         stage ('Build new Image for qwc-service if necessary') {
             steps {
                 script {
-                    buildImage 'qwc-service', version
+                    buildImage 'qwc-service', version, repo
                 }
             }
         }
@@ -55,7 +55,7 @@ pipeline {
         stage ('Deploy qwc-service in Test env') {
             steps {
                 script {
-                    deployImage 'qwc-service', version, repo, 'gdi-devel'
+                    deployImage 'qwc-service', repo, 'gdi-devel'
                 }
             }
         }

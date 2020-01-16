@@ -40,13 +40,6 @@ pipeline {
                 }
             }
         }
-        stage ('Create Image Builder qwc-service') {
-            steps {
-                script {
-                    createImageBuilder credentials, '--name=qwc-service --strategy=docker --context-dir=docker/qwc-service --build-arg QWC2_VERSION=${QWC2_VERSION} --env GIT_USER=${gitlabUser} --env GIT_PASSWORD=${gitlabPwd}', 'qwc-service'
-                }
-            }
-        }
         stage ('Build new Image for qwc-service if necessary') {
             steps {
                 script {

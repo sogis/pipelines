@@ -36,7 +36,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 script { 
-                    configureRessources credentials, 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/${serviceName}', 'gdi-devel' 
+                    configureRessources credentials, 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/'serviceName, 'gdi-devel' 
                 }
             }
         }

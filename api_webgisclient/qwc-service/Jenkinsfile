@@ -41,7 +41,6 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    println ${version}
                     println version
                     //version = stagePreamble.call().version
                     //build = stagePreamble.call().build

@@ -25,26 +25,26 @@ objects:
         ref: release_so
         uri: https://git.sourcepole.ch/ktso/somap.git
       sourceSecret:
-        name: deployso-at-gitlab-token
+        name: deployso-at-gitlab
       type: Git
     strategy:
       dockerStrategy:
         buildArgs:
         - name: QWC2_VERSION
-          value: 1.5.4
+          value: 2.0.7
         - name: GIT_VERSION
-          value: v1.5.4
+          value: v2.0.7
         env:
         - name: GIT_USER
           valueFrom:
             secretKeyRef:
               key: username
-              name: deployso-at-gitlab-token
+              name: deployso-at-gitlab
         - name: GIT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: password
-              name: deployso-at-gitlab-token
+              name: deployso-at-gitlab
         from:
           kind: DockerImage
           name: ubuntu:16.04

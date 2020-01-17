@@ -23,6 +23,15 @@ pipeline {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')
         }
+    input {
+        message 'Bitte Version angeben und ob das Image gebaut werden soll'
+        ok 'Start Pipeline'
+        parameters {
+            booleanParam defaultValue: true, description: '', name: 'build'
+            string defaultValue: 'none', description: '', name: 'version', trim: false
+            }
+        }
+
     stages {
         stage ('Ask for Version') {
             steps {

@@ -42,7 +42,7 @@ pipeline {
         stage ('Build new Image for qwc-service if necessary') {
             when {
                 expression {
-                    (build == 'Ja')
+                    (build == 'ja')
                     }
                 }
             steps {
@@ -54,7 +54,7 @@ pipeline {
         stage ('Tag Image for qwc-service') {
             when {
                 expression {
-                    (build == 'Ja')
+                    (build == 'ja')
                     }
                 }    
             steps {

@@ -26,7 +26,7 @@ pipeline {
 
     stages {
         stage ('Ask for Version') {
-            steps {
+            //steps {
                 
                 input {message 'Bitte Version angeben und ob das Image gebaut werden soll'
                        ok 'Start Pipeline'
@@ -38,7 +38,7 @@ pipeline {
                 //    version = stagePreamble.call().version
                 //    build = stagePreamble.call().build
                 //    }
-                }
+              //  }
             }
         stage ('Configure Ressources') {
             steps {

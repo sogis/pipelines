@@ -22,43 +22,53 @@ pipeline {
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')
-    }
+        }
     stages {
         stage ('Ask for Version') {
             steps {
                 script {
                     version = stagePreamble.call().version
                     build = stagePreamble.call().build
+                    }
                 }
             }
-        }
         stage ('Configure Ressources') {
             steps {
                 script { 
                     configureRessources credentials, repo, 'gdi-devel' 
+                    }
                 }
             }
-        }
         stage ('Build new Image for qwc-service if necessary') {
+            when {
+                expression {
+                    (build == 'Ja')
+                    }
+                }
             steps {
                 script {
                     buildImage 'qwc-service', version, repo
+                    }
                 }
             }
-        }
         stage ('Tag Image for qwc-service') {
+            when {
+                expression {
+                    (build == 'Ja')
+                    }
+                }    
             steps {
                 script {
                     tagImage 'qwc-service', version
+                    }
                 }
             }
-        }
         stage ('Deploy qwc-service in Test env') {
             steps {
                 script {
                     deployImage 'qwc-service', repo, 'gdi-devel'
+                    }
                 }
             }
         }
     }
-}

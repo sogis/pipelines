@@ -23,11 +23,13 @@ properties([
                description: 'Bitte Version auswählen',
                name: 'version'
                ),
-        choice(choices: ['ja','nein'.join('\n'),
+        choice(choices: ['ja','nein'].join('\n'),
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
+               )
         ])
     ])
+
 pipeline {
     agent any 
     options {

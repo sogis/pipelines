@@ -1,11 +1,3 @@
-input {
-    message 'Bitte Version angeben und ob das Image gebaut werden soll'
-    ok 'Start Pipeline'
-    parameters {
-       booleanParam defaultValue: true, description: '', name: 'build'
-       string defaultValue: 'none', description: '', name: 'version', trim: false
-       }
-    }
 def serviceName = 'qwc-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def version

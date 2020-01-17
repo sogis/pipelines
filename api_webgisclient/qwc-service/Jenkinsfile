@@ -40,7 +40,7 @@ pipeline {
                 //    version = stagePreamble.call().version
                 //    build = stagePreamble.call().build
                 //    }
-                //}
+                }
             }
         stage ('Configure Ressources') {
             steps {

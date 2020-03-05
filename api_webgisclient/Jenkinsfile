@@ -17,7 +17,7 @@ pipeline {
         }
         stage ('Deploy qwc-service') {
             steps {
-                build job: 'agi-apps-test\/qwc-service' 
+                build job: 'agi-apps-test-qwc-service' 
                 }
             }
         }

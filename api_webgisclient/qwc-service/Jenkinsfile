@@ -62,7 +62,7 @@ pipeline {
                 }
             steps {
                 script {
-                    buildImage 'qwc-service', version, repo
+                    buildImage 'qwc-service', version, repo, build
                     }
                 }
             }

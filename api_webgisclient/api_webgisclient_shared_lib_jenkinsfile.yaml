@@ -1,7 +1,7 @@
 kind: BuildConfig
 apiVersion: v1
 metadata:
-  name: qwc-service-pipeline-shared-lib
+  name: qwc-service-pipeline-shared-lib-jenkinsfile
 spec:
   source:
     git:

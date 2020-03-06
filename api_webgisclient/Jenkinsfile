@@ -17,7 +17,7 @@ pipeline {
         }
         stage ('Deploy qwc-service') {
             steps {
-                build job: 'agi-apps-test-qwc-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ] 
+                build job: 'agi-apps-test-qwc-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true 
                 }
             }
         }

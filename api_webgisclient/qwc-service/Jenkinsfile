@@ -24,7 +24,7 @@ properties([
                ),
         string(defaultValue: "2.0.14",
                description: 'Bitte QWC Version auswählen',
-               name: 'qwc-version'
+               name: 'qwcVersion'
                ),
         choice(choices: ['ja','nein'].join('\n'),
                description: 'Soll das Image gebaut werden?',
@@ -46,7 +46,7 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
-                    qwc-version = params.qwc-version
+                    qwcVersion = params.qwcVersion
                     println version
                     }
                 }
@@ -66,7 +66,7 @@ pipeline {
                 }
             steps {
                 script {
-                    buildImage 'qwc-service', version, qwc-version, repo, build
+                    buildImage 'qwc-service', version, qwcVersion, repo, build
                     }
                 }
             }

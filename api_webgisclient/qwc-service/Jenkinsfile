@@ -1,6 +1,5 @@
 def serviceName = 'qwc-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def version
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -19,9 +18,13 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 properties([
     parameters([
-        string(defaultValue: "none",
+        string(defaultValue: "2.0.8",
                description: 'Bitte Version auswählen',
                name: 'version'
+               ),
+        string(defaultValue: "2.0.14",
+               description: 'Bitte QWC Version auswählen',
+               name: 'qwc-version'
                ),
         choice(choices: ['ja','nein'].join('\n'),
                description: 'Soll das Image gebaut werden?',
@@ -43,6 +46,7 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
+                    qwc-version = params.qwc-version
                     println version
                     }
                 }
@@ -62,7 +66,7 @@ pipeline {
                 }
             steps {
                 script {
-                    buildImage 'qwc-service', version, repo, build
+                    buildImage 'qwc-service', version, qwc-version, repo, build
                     }
                 }
             }

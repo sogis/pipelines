@@ -16,8 +16,15 @@ credentials = [
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
-properties([
-    parameters([
+
+pipeline {
+    agent any 
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 10, unit: 'MINUTES')
+        timestamps() // Timestamper Plugin
+        }
+    parameters {
         string(defaultValue: "2.0.8",
                description: 'Bitte Version auswählen',
                name: 'version'
@@ -30,14 +37,6 @@ properties([
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
                )
-        ])
-    ])
-
-pipeline {
-    agent any 
-    options {
-        // set a timeout of 10 minutes for this pipeline
-        timeout(time: 10, unit: 'MINUTES')
         }
 
     stages {

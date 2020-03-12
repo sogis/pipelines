@@ -51,9 +51,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                script { 
-                    configureRessources credentials, repo, 'gdi-devel' 
-                    }
+                configureRessources credentials, repo, 'gdi-devel' 
                 }
             }
         stage ('Build new Image for qwc-service if necessary') {
@@ -63,9 +61,7 @@ pipeline {
                     }
                 }
             steps {
-                
                 buildImage 'qwc-service', version, qwcVersion, repo, build, credentials
-                    
                 }
             }
         stage ('Tag Image for qwc-service') {
@@ -75,16 +71,12 @@ pipeline {
                     }
                 }    
             steps {
-                script {
-                    tagImage 'qwc-service', version
-                    }
+                tagImage 'qwc-service', version
                 }
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                script {
-                    deployImage 'qwc-service', repo, 'gdi-devel'
-                    }
+                deployImage 'qwc-service', repo, 'gdi-devel'
                 }
             }
         }

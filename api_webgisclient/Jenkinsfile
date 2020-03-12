@@ -5,7 +5,7 @@ pipeline {
     agent any 
     options {
         // set a timeout of 10 minutes for this pipeline
-        timeout(time: 10, unit: 'MINUTES')
+        timeout(time: 5, unit: 'MINUTES')
     }
     stages {
         stage ('preamble') {

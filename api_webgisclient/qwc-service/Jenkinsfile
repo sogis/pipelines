@@ -22,7 +22,6 @@ pipeline {
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')
-        timestamps() // Timestamper Plugin
         }
     parameters {
         string(defaultValue: "2.0.8",
@@ -64,9 +63,9 @@ pipeline {
                     }
                 }
             steps {
-                script {
-                    buildImage 'qwc-service', version, qwcVersion, repo, build, credentials
-                    }
+                
+                buildImage 'qwc-service', version, qwcVersion, repo, build, credentials
+                    
                 }
             }
         stage ('Tag Image for qwc-service') {

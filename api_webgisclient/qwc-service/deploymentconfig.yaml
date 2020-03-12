@@ -78,7 +78,7 @@ objects:
           - name: DATAPRODUCT_SERVICE_URL
             value: /api/dataproduct/v1/
           - name: MIN_RESULTS_EXANDED
-            value: "100"
+            value: "80"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service 
           imagePullPolicy: IfNotPresent
           name: sogis-qwc-service

@@ -32,7 +32,7 @@ pipeline {
                description: 'Bitte QWC Version auswählen',
                name: 'qwcVersion'
                )
-        choice(choices: ['ja','nein'].join('\n'),
+        choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
                )

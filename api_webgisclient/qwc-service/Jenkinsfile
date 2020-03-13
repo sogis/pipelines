@@ -27,11 +27,11 @@ pipeline {
         string(defaultValue: "2.0.8",
                description: 'Bitte Version auswählen',
                name: 'version'
-               ),
+               )
         string(defaultValue: "2.0.14",
                description: 'Bitte QWC Version auswählen',
                name: 'qwcVersion'
-               ),
+               )
         choice(choices: ['ja','nein'].join('\n'),
                description: 'Soll das Image gebaut werden?',
                name: 'build'     

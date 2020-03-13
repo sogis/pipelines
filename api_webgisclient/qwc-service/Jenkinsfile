@@ -76,7 +76,7 @@ pipeline {
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                deployImage 'qwc-service', repo, 'gdi-devel'
+                deployImage 'qwc-service', repo, 'gdi-devel', 'latest'
                 }
             }
         }

@@ -18,6 +18,9 @@ parameters:
   - description: Password DB User sogis_service
     name: PW_SOGIS_SERVICE
     value:
+  - decription: Namespace
+    name: NAMESPACE
+    value: gdi-devel
 objects:
 - apiVersion: v1
   stringData:
@@ -459,3 +462,9 @@ objects:
   kind: ImageStream
   metadata:
     name: qwc-service
+  spec:
+    tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: 'docker-registry.default.svc:5000/${NAMESPACE}/qwc-service:latest'

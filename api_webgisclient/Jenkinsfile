@@ -22,7 +22,6 @@ pipeline {
                         build job: 'qwc-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
-                }
                 stage ('Deploy permission-service') {
                     steps {
                         build job: 'permission-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 

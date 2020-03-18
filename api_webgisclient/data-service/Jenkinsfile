@@ -56,7 +56,7 @@ pipeline {
                     }
                 }
             steps {
-                buildImage 'data-service', version, repo, build, credentials
+                buildImage 'data-service', version, repo, build, credentials, ''
                 }
             }
         stage ('Tag Image for data-service') {

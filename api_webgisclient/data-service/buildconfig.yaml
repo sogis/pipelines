@@ -20,7 +20,7 @@ objects:
         kind: ImageStreamTag
         name: data-service:latest
     source:
-      contextDir: docker/data-service
+      contextDir: docker/wsgi-service
       git:
         ref: release_so
         uri: https://git.sourcepole.ch/ktso/somap.git
@@ -30,8 +30,6 @@ objects:
     strategy:
       dockerStrategy:
         buildArgs:
-        - name: QWC2_VERSION
-          value: 2.0.14
         - name: GIT_VERSION
           value: v2.0.8
         env:

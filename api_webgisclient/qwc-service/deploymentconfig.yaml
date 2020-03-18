@@ -3,20 +3,13 @@ kind: Template
 metadata:
   name: qwc-service
   annotations:
-    openshift.io/display-name: "All components for qwc-service"
-    description: >-
-      "Creates all necessary components for qwc-service"
-    openshift.io/long-description: >-
-      "Creates all necessary components for qwc-service"
-    tags: "agi,gdi,python,web gis client, agdi"
-    iconClass: icon-python
+    description: "Creates deploymentConfig for qwc-service"
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
 labels:
-  application: GDI-Test
-  createdBy: template-GDI
+  application: gdi
 objects:
 - apiVersion: v1
   kind: DeploymentConfig

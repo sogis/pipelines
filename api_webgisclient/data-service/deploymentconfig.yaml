@@ -5,9 +5,9 @@ metadata:
   annotations:
     description: "Creates deploymentConfig for data-service"
 parameters:
-   description: Openshift Namespace
-   name: NAMESPACE
-   value:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
 labels:
   application: gdi
 objects:

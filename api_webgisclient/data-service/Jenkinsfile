@@ -1,4 +1,4 @@
-def serviceName = 'qwc-service'
+def serviceName = 'data-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -28,10 +28,6 @@ pipeline {
                description: 'Bitte Version auswählen',
                name: 'version'
                )
-        string(defaultValue: "2.0.14",
-               description: 'Bitte QWC Version auswählen',
-               name: 'qwcVersion'
-               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -44,7 +40,6 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
-                    qwcVersion = params.qwcVersion
                     println version
                     }
                 }
@@ -54,29 +49,29 @@ pipeline {
                 configureRessources credentials, repo, 'gdi-devel' 
                 }
             }
-        stage ('Build new Image for qwc-service if necessary') {
+        stage ('Build new Image for data-service if necessary') {
             when {
                 expression {
                     (build == 'ja')
                     }
                 }
             steps {
-                buildImage 'qwc-service', version, qwcVersion, repo, build, credentials
+                buildImage 'data-service', version, repo, build, credentials
                 }
             }
-        stage ('Tag Image for qwc-service') {
+        stage ('Tag Image for data-service') {
             when {
                 expression {
                     (build == 'ja')
                     }
                 }    
             steps {
-                tagImage 'qwc-service', version
+                tagImage 'data-service', version
                 }
             }
-        stage ('Deploy qwc-service in Test env') {
+        stage ('Deploy data-service in Test env') {
             steps {
-                deployImage 'qwc-service', repo, 'gdi-devel', version
+                deployImage 'data-service', repo, 'gdi-devel', version
                 }
             }
         }

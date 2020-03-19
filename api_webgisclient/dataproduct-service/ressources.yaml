@@ -103,9 +103,3 @@ objects:
   kind: ImageStream
   metadata:
     name: dataproduct-service
-  spec:
-    tags:
-      - name: latest
-        from:
-          kind: DockerImage
-          name: 'docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:latest'

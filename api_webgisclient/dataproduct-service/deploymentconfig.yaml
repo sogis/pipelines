@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: dataproduct-service
+  annotations:
+    description: "Creates deploymentConfig for dataproduct-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f ../docker-compose-k8s.yml
+      kompose.version: 1.16.0 (0c01309)
+    labels:
+      app: dataproduct-service
+    name: dataproduct-service
+  spec:
+    replicas: 2
+    selector:
+      app: dataproduct
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          io.kompose.service: dataproduct-service
+          service: dataproduct
+      spec:
+        containers:
+        - env:
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc/
+          - name: WMS_SERVICE_URL
+            value: https://geo-t.so.ch/api/wms
+          - name: QGS_RESOURCES_DIR
+            value: /qgs-resources
+          image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service
+          imagePullPolicy: IfNotPresent
+          name: sogis-dataproduct-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www
+              name: wsgi-service-config-claim
+            - mountPath: /qgs-resources
+              name: qgs-resources
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationPeriodSeconds: 30
+        volumes:
+          - secret:
+              items:
+              - key: pg_service.conf
+                path: .pg_service.conf
+              secretName: wsgi-service-pg-config
+            name: wsgi-service-config-claim
+          - name: qgs-resources
+            persistentVolumeClaim:
+              claimName: qgs-resources-claim
+  triggers:
+  - type: ConfigChange

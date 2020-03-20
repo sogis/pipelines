@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: build-document-service
+  annotations:
+    openshift.io/display-name: "Buildconfig for document-service"
+    description: >-
+      "Creates BuildConfig for document-service"
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      app: document-service
+    name: document-service
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: document-service:latest
+    source:
+      contextDir: docker/wsgi-service
+      git:
+        ref: release_so
+        uri: https://git.sourcepole.ch/ktso/somap.git
+      sourceSecret:
+        name: deployso-at-gitlab
+      type: Git
+    strategy:
+      dockerStrategy:
+        buildArgs:
+        - name: GIT_VERSION
+          value: v2.0.8
+        env:
+        - name: GIT_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: deployso-at-gitlab
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: deployso-at-gitlab
+        from:
+          kind: DockerImage
+          name: ubuntu:16.04
+      type: Docker

@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: Template
-metadataproduct:
+metadata:
   name: build-dataproduct-service
   annotations:
     openshift.io/display-name: "Buildconfig for dataproduct-service"
@@ -9,7 +9,7 @@ metadataproduct:
 objects:
 - apiVersion: v1
   kind: BuildConfig
-  metadataproduct:
+  metadata:
     annotations:
     labels:
       build: dataproduct-service

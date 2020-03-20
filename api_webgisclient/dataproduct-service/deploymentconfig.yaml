@@ -39,6 +39,7 @@ objects:
         labels:
           io.kompose.service: dataproduct-service
           service: dataproduct
+          app: dataproduct-service
       spec:
         containers:
         - env:

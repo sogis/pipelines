@@ -53,7 +53,7 @@ objects:
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
           - name: JASPER_TIMEOUT
-            value: 1200
+            value: "1200"
           image: docker-registry.default.svc:5000/gdi/document-service
           imagePullPolicy: IfNotPresent
           name: sogis-document-service

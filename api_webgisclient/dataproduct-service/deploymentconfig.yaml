@@ -23,7 +23,7 @@ objects:
   spec:
     replicas: 2
     selector:
-      app: dataproduct
+      app: dataproduct-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}

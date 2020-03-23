@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-elevation-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for elevation-service"
+parameters:
+  - description: Namespace
+    name: NAMESPACE
+    value: gdi-devel
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: datensogispicmir-claim1
+  spec:
+    accessModes:
+    - ReadOnlyMany
+    resources:
+      requests:
+        storage: 5Gi
+    storageClassName: nfs
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: elevation-service
+    labels:
+      application: gdi
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:latest
+      name: latest

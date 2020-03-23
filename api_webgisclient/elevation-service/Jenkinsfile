@@ -48,7 +48,7 @@ pipeline {
             steps {
                 // def parameters =  " \"${repo}ressources.yaml\" ,\"-p\", \"NAMESPACE=gdi-devel\" "
                 // println parameters
-                configureRessources credentials, repo, 'gdi-devel', " \"${repo}/ressources.yaml\" ,\"-p\", \"NAMESPACE=gdi-devel\" "
+                configureRessources credentials, repo, 'gdi-devel', " -f ${repo}/ressources.yaml -p NAMESPACE=gdi-devel "
                 }
             }
         stage ('Build new Image for elevation-service if necessary') {

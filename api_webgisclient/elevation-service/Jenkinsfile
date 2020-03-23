@@ -1,5 +1,6 @@
 def serviceName = 'elevation-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
+def environment = 'gdi-devel'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -46,7 +47,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources 'gdi-devel', " -f ${repo}/ressources.yaml -p NAMESPACE=gdi-devel "
+                configureRessources 'gdi-devel', " -f ${repo}/ressources.yaml -p NAMESPACE=${environment} "
                 }
             }
         stage ('Build new Image for elevation-service if necessary') {

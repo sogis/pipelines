@@ -51,7 +51,9 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources credentials, repo, 'gdi-devel' 
+                withCredentials (credentials ) {
+                    configureRessources 'gdi-devel', "-f ${repo}/ressources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p NAMESPACE=${stage}"
+                    }
                 }
             }
         stage ('Build new Image for qwc-service if necessary') {

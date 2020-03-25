@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: featureinfo-service
+  annotations:
+    description: "Creates deploymentConfig for featureinfo-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+  - description: Application Environment
+    name: ENVIRONMENT
+    value:
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      app: featureinfo-service
+    name: featureinfo-service
+  spec:
+    replicas: 2
+    selector:
+      app: featureinfo-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: featureinfo-service
+      spec:
+        containers:
+        - env:
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc/
+          - name: QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: LANG
+            value: de_ch.utf-8
+          - name: HEATDRILL_SERVICE_URL
+            value: http://heatdrill-service.agi-apps-${ENVIRONMENT}/service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service
+          imagePullPolicy: IfNotPresent
+          name: sogis-featureinfo-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/www
+            name: wsgi-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            name: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+    test: false
+    triggers:
+    - type: ConfigChange

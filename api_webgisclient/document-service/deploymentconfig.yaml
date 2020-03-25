@@ -54,7 +54,7 @@ objects:
             value: "True"
           - name: JASPER_TIMEOUT
             value: "1200"
-          image: docker-registry.default.svc:5000/gdi/document-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/document-service
           imagePullPolicy: IfNotPresent
           name: sogis-document-service
           ports:

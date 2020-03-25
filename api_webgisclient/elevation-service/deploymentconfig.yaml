@@ -41,7 +41,7 @@ objects:
         - env:
           - name: ELEVATION_DATASET
             value: /data/daten_aktuell/agi/hoehenmodelle/lidar/2014/dtm/50cm/lidar_2014_dtm_50cm.vrt
-          image: docker-registry.default.svc:5000/gdi/elevation-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service
           imagePullPolicy: IfNotPresent
           name: sogis-elevation-service
           ports:

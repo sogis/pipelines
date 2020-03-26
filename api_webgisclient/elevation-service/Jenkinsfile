@@ -1,6 +1,6 @@
 def serviceName = 'elevation-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def environment = 'gdi-devel'
+def namespace = 'gdi-devel'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -47,7 +47,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources 'gdi-devel', " -f ${repo}/ressources.yaml -p NAMESPACE=${environment} "
+                configureRessources 'gdi-devel', " -f ${repo}/ressources.yaml -p NAMESPACE=${namespace} "
                 }
             }
         stage ('Build new Image for elevation-service if necessary') {
@@ -57,7 +57,7 @@ pipeline {
                     }
                 }
             steps {
-                buildImage 'elevation-service', version, repo, build, credentials, ''
+                buildImage serviceName, version, repo, build, credentials, ''
                 }
             }
         stage ('Tag Image for elevation-service') {
@@ -67,12 +67,19 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage 'elevation-service', version
+                tagImage serviceName, version
                 }
             }
         stage ('Deploy elevation-service in Test env') {
             steps {
-                deployImage 'elevation-service', repo, 'gdi-devel', version
+                script {
+                    openshift.withCluster() {
+                        openshift.withProject(namespace) {
+                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}" )
+                            deployImage serviceName, namespace, version, dcConfig
+                            }
+                        }
+                    }
                 }
             }
         }

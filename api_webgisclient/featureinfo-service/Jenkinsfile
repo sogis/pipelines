@@ -75,10 +75,12 @@ pipeline {
             }
         stage ('Deploy featureinfo-service in Test env') {
             steps {
-                openshift.withCluster() {
-                    openshift.withProject(${namespace}) {
-                        def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${environment}" )
-                        deployImage 'featureinfo-service', repo, 'gdi-devel', version, "-p ENVIRONMENT=${environment} -p NAMESPACE=${namespace}"
+                script {
+                    openshift.withCluster() {
+                        openshift.withProject(${namespace}) {
+                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${environment}" )
+                            deployImage 'featureinfo-service', repo, 'gdi-devel', version, "-p ENVIRONMENT=${environment} -p NAMESPACE=${namespace}"
+                            }
                         }
                     }
                 }

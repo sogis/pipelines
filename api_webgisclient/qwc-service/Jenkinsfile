@@ -74,7 +74,7 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage namespace, version
+                tagImage serviceName, version
                 }
             }
         stage ('Deploy qwc-service in Test env') {

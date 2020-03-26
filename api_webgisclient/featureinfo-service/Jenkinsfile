@@ -53,7 +53,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for featureinfo-service if necessary') {
+        stage ('Build new Image for ${serviceName} if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -63,7 +63,7 @@ pipeline {
                 buildImage serviceName, version, repo, build, credentials, ''
                 }
             }
-        stage ('Tag Image for featureinfo-service') {
+        stage ('Tag Image for ${serviceName}') {
             when {
                 expression {
                     (build == 'ja')

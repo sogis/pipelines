@@ -53,7 +53,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for ${serviceName} if necessary') {
+        stage ('Build new Image for featureinfo-service if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -63,7 +63,7 @@ pipeline {
                 buildImage serviceName, version, repo, build, credentials, ''
                 }
             }
-        stage ('Tag Image for ${serviceName}') {
+        stage ('Tag Image for featureinfo-service') {
             when {
                 expression {
                     (build == 'ja')
@@ -73,7 +73,7 @@ pipeline {
                 tagImage serviceName, version
                 }
             }
-        stage ("Deploy ${serviceName} in Test env") {
+        stage ('Deploy featureinfo-service in Test env') {
             steps {
                 script {
                     openshift.withCluster() {

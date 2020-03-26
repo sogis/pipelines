@@ -64,7 +64,7 @@ pipeline {
                     }
                 }
             steps {
-                buildImage namespace, version, repo, build, credentials, qwcVersion
+                buildImage serviceName, version, repo, build, credentials, qwcVersion
                 }
             }
         stage ('Tag Image for qwc-service') {

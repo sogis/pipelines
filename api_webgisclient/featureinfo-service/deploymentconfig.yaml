@@ -25,7 +25,7 @@ objects:
       app: featureinfo-service
     name: featureinfo-service
   spec:
-    replicas: 2
+    replicas: 3
     selector:
       app: featureinfo-service
     strategy:

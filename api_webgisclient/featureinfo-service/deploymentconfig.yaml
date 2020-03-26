@@ -25,7 +25,7 @@ objects:
       app: featureinfo-service
     name: featureinfo-service
   spec:
-    replicas: 3
+    replicas: 2
     selector:
       app: featureinfo-service
     strategy:
@@ -52,7 +52,7 @@ objects:
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
-            value: "False"
+            value: "True"
           - name: LANG
             value: de_ch.utf-8
           - name: HEATDRILL_SERVICE_URL

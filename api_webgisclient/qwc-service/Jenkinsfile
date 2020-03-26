@@ -1,6 +1,6 @@
 def serviceName = 'qwc-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def environment = 'gdi-devel'
+def namespace = 'gdi-devel'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -53,7 +53,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials (credentials ) {
-                    configureRessources 'gdi-devel', "-f ${repo}/ressources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p NAMESPACE=${environment}"
+                    configureRessources 'gdi-devel', "-f ${repo}/ressources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p NAMESPACE=${namespace}"
                     }
                 }
             }
@@ -64,7 +64,7 @@ pipeline {
                     }
                 }
             steps {
-                buildImage 'qwc-service', version, repo, build, credentials, qwcVersion
+                buildImage namespace, version, repo, build, credentials, qwcVersion
                 }
             }
         stage ('Tag Image for qwc-service') {
@@ -74,12 +74,19 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage 'qwc-service', version
+                tagImage namespace, version
                 }
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                deployImage 'qwc-service', repo, 'gdi-devel', version
+                script {
+                    openshift.withCluster () {
+                        openshift.withProject(namespace) {
+                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}" )
+                            deployImage serviceName, namespace, version, dcConfig
+                            }
+                        }
+                    }
                 }
             }
         }

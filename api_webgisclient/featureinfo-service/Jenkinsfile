@@ -73,7 +73,7 @@ pipeline {
                 tagImage serviceName, version
                 }
             }
-        stage ('Deploy ${serviceName} in Test env') {
+        stage ("Deploy ${serviceName} in Test env") {
             steps {
                 script {
                     openshift.withCluster() {

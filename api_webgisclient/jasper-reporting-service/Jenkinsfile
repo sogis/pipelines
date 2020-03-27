@@ -1,4 +1,4 @@
-def serviceName = 'featureinfo-service'
+def serviceName = 'jasper-reporting-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def namespace = 'gdi-devel'
 def environment = 'test'
@@ -54,7 +54,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for featureinfo-service if necessary') {
+        stage ('Build new Image for jasper-reporting-service if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -64,7 +64,7 @@ pipeline {
                 buildImage serviceName, version, repo, build, credentials, ''
                 }
             }
-        stage ('Tag Image for featureinfo-service') {
+        stage ('Tag Image for jasper-reporting-service') {
             when {
                 expression {
                     (build == 'ja')
@@ -74,7 +74,7 @@ pipeline {
                 tagImage serviceName, version
                 }
             }
-        stage ('Deploy featureinfo-service in Test env') {
+        stage ('Deploy jasper-reporting-service in Test env') {
             steps {
                 script {
                     openshift.withCluster() {

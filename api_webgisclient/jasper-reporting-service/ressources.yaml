@@ -83,7 +83,7 @@ objects:
 
       spring.datasource3.username=sogis_service
 
-    spring.datasource3.password=${PW_SOGIS_SERVICE}
+      spring.datasource3.password=${PW_SOGIS_SERVICE}
 
       spring.datasource3.driver-class-name=org.postgresql.Driver
 

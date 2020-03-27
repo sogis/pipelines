@@ -32,6 +32,8 @@ objects:
         buildArgs:
         - name: GIT_VERSION
           value: v2.0.8
+        - name: JASPER_REPORTING_VERSION
+          value:
         env:
         - name: GIT_USER
           valueFrom:

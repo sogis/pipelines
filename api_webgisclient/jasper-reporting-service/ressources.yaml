@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-jasper-reporting-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for jasper-reporting-service"
+parameters:
+  - description: DB Server Url
+    name: DB_SERVER
+    value: geodb-t.rootso.org
+  - description: Geo DB Server
+    name: GEO_DB_SERVER
+    value: geodb-t.verw.rootso.org
+  - description: Imdas DB Server
+    name: IMDAS_DB_SERVER
+    value:
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+    value:
+  - description: Password DB User report_server
+    name: PW_REPORT_SERVER
+    value:
+  - description: Password DB User mswrite
+    name: PW_MSWRITE
+    value:
+  - description: Password Imdas DB User
+    name: PW_IMDAS_DB_USER
+    value:
+  - description: Namespace
+    name: NAMESPACE
+    value: gdi-devel
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_webmapping]
+      host=${DB_SERVER}
+      port=5432
+      dbname=pub
+      user=report_server
+      password=${PW_REPORT_SERVER}
+      sslmode=require
+  kind: Secret
+  metadata:
+    labels:
+      application: gdi
+    name: jasper-reporting-service-pg-config
+    namespace: ${NAMESPACE}
+- apiVersion: v1
+  stringData:
+    application.properties: |
+      # H2
+      spring.h2.console.enabled=false
+      # Datasource
+      spring.datasource0.url=jdbc:postgresql://${DB_SERVER}/pub?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+
+      spring.datasource0.username=report_server
+
+      spring.datasource0.password=${PW_REPORT_SERVER}
+
+      spring.datasource0.driver-class-name=org.postgresql.Driver
+
+      spring.datasource1.url=jdbc:postgresql://${GEO_DB_SERVER}/sogis?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+
+      spring.datasource1.username=mswrite
+
+      spring.datasource1.password=${PW_MSWRITE}
+
+      spring.datasource1.driver-class-name=org.postgresql.Driver
+
+      spring.datasource2.url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=imdaspro
+
+      spring.datasource2.username=imdaspro_gis
+
+      spring.datasource2.password=${PW_IMDASPRO_GIS}
+
+      spring.datasource2.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+      # Datasource configDB
+
+      spring.datasource3.url=jdbc:postgresql://${DB_SERVER}/soconfig?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+
+      spring.datasource3.username=sogis_service
+
+    spring.datasource3.password=${PW_SOGIS_SERVICE}
+
+      spring.datasource3.driver-class-name=org.postgresql.Driver
+
+      # Datasource Edit DB
+
+      spring.datasource4.url=jdbc:postgresql://${DB_SERVER}/edit?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+
+      spring.datasource4.username=report_server
+
+      spring.datasource4.password=${PW_REPORT_SERVER}
+
+      spring.datasource4.driver-class-name=org.postgresql.Driver
+
+      # Custom Parameters
+      reports.directory=/reports/
+
+      reports.locale=de_CH
+  kind: Secret
+  metadata:
+    labels:
+      application: gdi
+    name: jasper-config
+    namespace: ${NAMESPACE}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: jasper-reporting-service
+    labels:
+      application: gdi
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:latest
+      name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    creationTimestamp: null
+    labels:
+      app: jasper-reporting-service
+    name: jasper-reporting-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      app: jasper-reporting-service
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: reports-claim
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: nfs

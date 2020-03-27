@@ -1,0 +1,11 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: jasper-reporting-service
+spec:
+  source:
+    git:
+      uri: "https://github.com/sogis/pipelines.git"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: api_webgisclient/jasper-reporting-service/Jenkinsfile

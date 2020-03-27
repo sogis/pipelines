@@ -48,7 +48,7 @@ objects:
     name: jasper-reporting-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
-  stringData:
+  data:
     application.properties: |
       # H2
       spring.h2.console.enabled=false
@@ -101,7 +101,7 @@ objects:
       reports.directory=/reports/
 
       reports.locale=de_CH
-  kind: Secret
+  kind: ConfigMap
   metadata:
     labels:
       application: gdi

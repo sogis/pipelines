@@ -73,7 +73,7 @@ objects:
 
       spring.datasource2.username=imdaspro_gis
 
-      spring.datasource2.password=${PW_IMDASPRO_GIS}
+      spring.datasource2.password=${PW_IMDAS_DB_USER}
 
       spring.datasource2.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 

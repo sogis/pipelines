@@ -59,6 +59,7 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    }
                 }
             }
         stage ('Tag Image for elevation-service') {

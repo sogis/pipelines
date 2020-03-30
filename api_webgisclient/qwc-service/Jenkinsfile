@@ -66,6 +66,7 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg QWC2_VERSION=${qwc-version} --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    }
                 }
             }
         stage ('Tag Image for qwc-service') {

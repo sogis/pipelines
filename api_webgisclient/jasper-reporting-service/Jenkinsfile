@@ -62,7 +62,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, version, namespace, "--build-arg GIT_VERSION=v${version} --build-arg JASPER_REPORTING_VERSION=0.5.1 --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg JASPER_REPORTING_VERSION=0.5.1 --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

@@ -32,6 +32,12 @@ objects:
         buildArgs:
         - name: GIT_VERSION
           value: v2.0.8
+        - name: SERVICE_MOUNTPOINT
+          value:
+        - name: SERVICE
+          value:
+        - name: SERVICE_PACKAGES
+          value:
         env:
         - name: GIT_USER
           valueFrom:

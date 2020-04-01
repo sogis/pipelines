@@ -58,7 +58,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=/elevation --build-arg SERVICE=elevation --build-arg SERVICE_PACKAGES=python3-gdal --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

@@ -72,12 +72,12 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - configMap:
+        - secret:
             defaultMode: 420
             items:
               - key: pg_service.conf
                 path: .pg_service.conf
-            name: wsgi-service-pg-config
+            secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
     triggers:

@@ -80,7 +80,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "ENVIRONMENT=${environment}", "-p", "NAMESPACE=${namespace}" )
+                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "-p", "NAMESPACE=${namespace}" )
                             deployImage serviceName, namespace, version, dcConfig
                             }
                         }

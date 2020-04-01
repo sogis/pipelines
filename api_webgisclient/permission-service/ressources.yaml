@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-permission-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for permission-service"
+parameters:
+  - description: DB Server Url
+    name: DB_SERVER
+    value: geodb-t.rootso.org
+  - description: Password DB User ogc_server
+    name: PW_OGC_SERVER
+    value: password
+  - description: Geo DB Server
+    name: GEO_DB_SERVER
+    value: geodb-t.verw.rootso.org
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+    value:
+  - description: Password DB User sogis_service_write
+    name: PW_SOGIS_SERVICE_WRITE
+    value:
+  - description: Namespace
+    name: NAMESPACE
+    value: gdi-devel
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=pub
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_services_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=pub
+      user=sogis_service_write
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [soconfig_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=soconfig
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_geodb]
+      host=${GEO_DB_SERVER}
+      port=5432
+      dbname=sogis
+      user=mspublic
+      sslmode=disable
+
+      [sogis_edit]
+      host=${DB_SERVER}
+      port=5432
+      dbname=edit
+      user=sogis_service
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_edit_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=edit
+      user=sogis_service_write
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [sogis_oereb]
+      host=${DB_SERVER}
+      port=5432
+      dbname=oereb
+      user=ogc_server
+      password=${PW_OGC_SERVER}
+      sslmode=require
+  kind: Secret
+  metadata:
+    labels:
+      application: gdi
+    name: wsgi-service-pg-config
+    namespace: ${NAMESPACE}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: permission-service
+    labels:
+      application: gdi
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/${NAMESPACE}/permission-service:latest
+      name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+    labels:
+      app: permission-service
+    name: permission-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      app: permission-service
+    sessionAffinity: None
+    type: ClusterIP

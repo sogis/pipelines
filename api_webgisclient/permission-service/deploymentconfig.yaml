@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: permission-service
+  annotations:
+    description: "Creates deploymentConfig for permission-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+  - description: Openshift Environment
+    name: ENVIRONMENT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    creationTimestamp: null
+    generation: 1
+    labels:
+      io.kompose.service: permission-service
+    name: permission-service
+  spec:
+    replicas: 2
+    selector:
+      io.kompose.service: permission-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: permission-service
+      spec:
+        containers:
+        - env:
+          - name: SERVICE
+            value: rest_services/permission_service
+          - name: DEFAULT_PRINT_GRID
+            value: [{"s": 100000000, "x": 10000000, "y": 10000000},{"s": 50000000, "x": 5000000, "y": 5000000},{"s": 10000000, "x": 2500000, "y": 2500000},{"s": 5000000, "x": 250000, "y": 250000},{"s": 1000000, "x": 100000, "y": 100000},{"s": 500000, "x": 50000, "y": 50000},{"s": 100000, "x": 10000, "y": 10000},{"s": 50000, "x": 5000, "y": 5000},{"s": 25000, "x": 2000, "y": 2000},{"s": 12000, "x": 2000, "y": 2000},{"s": 5000, "x": 1000, "y": 1000},{"s": 2500, "x": 500, "y": 500},{"s": 1000, "x": 200, "y": 200},{"s": 500, "x": 100, "y": 100},{"s": 250, "x": 50, "y": 50},{"s": 100, "x": 25, "y": 25}]
+          - name: DEFAULT_PRINT_LAYOUT
+            value: A4 hoch
+          - name: JWT_SESSION_COOKIE
+            value: False
+          - name: DEFAULT_PRINT_RESOLUTION
+            value: [200]
+          - name: DEFAULT_THEME_ATTRIBUTION_ONLINE_RESOURCE
+            value: https://${ENVIRONMENT}/api/wms
+          image: docker-registry.default.svc:5000/${NAMESPACE}/permission-service
+          imagePullPolicy: IfNotPresent
+          name: sogis-permission-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/www
+            name: wsgi-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            name: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+    test: false
+    triggers:
+    - type: ConfigChange

@@ -1,4 +1,4 @@
-def serviceName = 'permission-service'
+def serviceName = 'qgis-server'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def namespace = 'gdi-devel'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
@@ -45,7 +45,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for permission-service if necessary') {
+        stage ('Build new Image for qgis-server if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -57,7 +57,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image for permission-service') {
+        stage ('Tag Image for qgis-server') {
             when {
                 expression {
                     (build == 'ja')
@@ -67,7 +67,7 @@ pipeline {
                 tagImage serviceName, version
                 }
             }
-        stage ('Deploy permission-service in Test env') {
+        stage ('Deploy qgis-server in Test env') {
             steps {
                 script {
                     openshift.withCluster() {

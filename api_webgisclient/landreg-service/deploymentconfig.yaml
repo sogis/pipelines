@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: landreg-service
+  annotations:
+    description: "Creates deploymentConfig for landreg-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 1
+    labels:
+      app: landreg-service
+    name: landreg-service
+  spec:
+    replicas: 2
+    selector:
+      app: landreg-service
+      deploymentconfig: landreg-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        labels:
+          app: landreg-service
+          deploymentconfig: landreg-service
+      spec:
+        containers:
+        - env:
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc
+          - name: QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: LANDREG_PRINT_LAYERS
+            value: mopublic_fixpunkt.geometrie,mopublic_hoheitsgrenzpunkt.geometrie,liegenschaften_grenzpunkt,mopublic_gemeindegrenze_proj,mopublic_gemeindegrenze,liegenschaften_grundstueckpos.pos,mopublic_grundstueck_proj.pos,liegenschaften_grundstueckpos.hilfslinie,liegenschaften_liegenschaft,mopublic_grundstueck_proj.geometrie,mopublic_grundstueck.geometrie,mopublic_grundstueck_proj.geometrie,mopublic_ortsname.pos,mopublic_gelaendename,mopublic_flurname.pos,mopublic_gebaeudeadresse.pos,mopublic_strassenname_pos,mopublic_rohrleitung,mopublic_einzelobjekt_punkt,mopublic_einzelobjekt_linie,mopublic_einzelobjekt_flaeche,mopublic_bodenbedeckung_proj,bodenbedeckung_boflaechesymbol,mopublic_ortsname.pos,mopublic_bodenbedeckung,mopublic_einzelobjekt_flaeche
+          - name: LANDREG_PROJECT
+            value: grundbuchplanauszug
+          - name: LANDREG_PRINTINFO_TABLE
+            value: agi_av_nachfuehrung_pub.angaben_grundbuchplanauszug
+          - name: DEFAULT_LANDREG_LAYOUT
+            value: A4-Hoch
+          image: docker-registry.default.svc:5000/${NAMESPACE}/landreg-service
+          imagePullPolicy: Always
+          name: sogis-landreg-service
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+            - mountPath: /var/www
+              name: wsgi-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: pg_service.conf
+                path: .pg_service.conf
+            name: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+    test: false
+    triggers:
+    - type: ConfigChange

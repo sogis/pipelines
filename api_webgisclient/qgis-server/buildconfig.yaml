@@ -29,6 +29,9 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
+        buildArgs:
+        - name: URL_PREFIX
+          value:
         from:
           kind: DockerImage
           name: phusion/baseimage:0.10.0

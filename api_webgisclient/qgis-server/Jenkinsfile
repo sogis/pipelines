@@ -53,7 +53,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, ""
+                    buildImage serviceName, repo, namespace, "--build-arg URL_PREFIX=/ows"
                     }
                 }
             }

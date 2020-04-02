@@ -61,7 +61,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} build-arg SERVICE=rest_services/permission-service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

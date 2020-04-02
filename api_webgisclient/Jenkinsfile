@@ -62,6 +62,11 @@ pipeline {
                         build job: 'landreg-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
+                stage ('Deploy legend-service') {
+                    steps {
+                        build job: 'legend-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        }
+                    }
                 }
             }
         }

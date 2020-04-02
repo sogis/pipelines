@@ -34,6 +34,12 @@ objects:
           value: 2.0.14
         - name: GIT_VERSION
           value: v2.0.8
+        - name: SERVICE_MOUNTPOINT
+          value:
+        - name: SERVICE
+          value:
+        - name: ANALYTICS_URL
+          value:
         env:
         - name: GIT_USER
           valueFrom:

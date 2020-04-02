@@ -30,21 +30,8 @@ objects:
     strategy:
       dockerStrategy:
         buildArgs:
-        - name: GIT_VERSION
-          value: v2.0.8
         - name: JASPER_REPORTING_VERSION
           value:
-        env:
-        - name: GIT_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: deployso-at-gitlab
-        - name: GIT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: deployso-at-gitlab
         from:
           kind: DockerImage
           name: openjdk:9

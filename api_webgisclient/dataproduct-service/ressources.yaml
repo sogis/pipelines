@@ -8,13 +8,13 @@ metadata:
 parameters:
   - description: DB Server Url
     name: DB_SERVER
-    value: geodb-t.rootso.org
+    value:
   - description: Password DB User ogc_server
     name: PW_OGC_SERVER
-    value: password
+    value:
   - description: Geo DB Server
     name: GEO_DB_SERVER
-    value: geodb-t.verw.rootso.org
+    value:
   - description: Password DB User sogis_service
     name: PW_SOGIS_SERVICE
     value:
@@ -23,7 +23,7 @@ parameters:
     value:
   - description: Namespace
     name: NAMESPACE
-    value: gdi-devel
+    value:
 objects:
 - apiVersion: v1
   stringData:

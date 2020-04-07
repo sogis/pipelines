@@ -21,7 +21,6 @@ objects:
       kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
         convert
       kompose.version: 1.10.0 (8bb0907)
-    creationTimestamp: ndull
     generation: 1
     labels:
       app: ogc-service

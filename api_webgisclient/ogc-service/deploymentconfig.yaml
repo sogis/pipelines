@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ogc-service
+  annotations:
+    description: "Creates deploymentConfig for ogc-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+  - description: Base Url of consumed services
+    name: BASEURL
+    value:
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    creationTimestamp: ndull
+    generation: 1
+    labels:
+      app: ogc-service
+    name: ogc-service
+  spec:
+    replicas: 0
+    selector:
+      app: ogc-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          io.kompose.service: ogc-service
+      spec:
+        containers:
+        - env:
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc
+          - name: QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: PRECACHE_WMS_NAMES
+            value: somap
+          - name: WMS_SERVICE_URL
+            value: https://${BASEURL}.so.ch/api/wms
+          - name: WFS_SERVICE_URL
+            value: https://geo-t.so.ch/api/wfs
+          image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: '/ows/api/'
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: sogis-ogc-service
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: '/ows/api/'
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/www
+            name: wsgi-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+    test: false
+    triggers:
+    - type: ConfigChange

@@ -1,6 +1,7 @@
 def serviceName = 'dataproduct-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def namespace = 'gdi-devel'
+def baseurl = 'geo-t'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -77,7 +78,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}" )
+                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}", "-p", "BASEURL=${baseurl} )
                             deployImage serviceName, namespace, version, dcConfig
                             }
                         }

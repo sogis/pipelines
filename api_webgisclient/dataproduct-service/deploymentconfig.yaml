@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Base Url of consumed services
+    name: BASEURL
+    value:
 labels:
   application: gdi
 objects:
@@ -48,7 +51,7 @@ objects:
           - name: PERMISSION_SERVICE_URL
             value: http://permission-service.${NAMESPACE}.svc/
           - name: WMS_SERVICE_URL
-            value: https://geo-t.so.ch/api/wms
+            value: https://${BASEURL}.so.ch/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
           image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service

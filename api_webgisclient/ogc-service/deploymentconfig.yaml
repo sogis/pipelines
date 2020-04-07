@@ -42,7 +42,7 @@ objects:
     template:
       metadata:
         labels:
-          io.kompose.service: ogc-service
+          app: ogc-service
       spec:
         containers:
         - env:

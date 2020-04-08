@@ -4,8 +4,8 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
 pipeline {
     agent any 
     options {
-        // set a timeout of 10 minutes for this pipeline
-        timeout(time: 10, unit: 'MINUTES')
+        // set a timeout of 15 minutes for this pipeline
+        timeout(time: 15, unit: 'MINUTES')
     }
     stages {
         stage ('preamble') {

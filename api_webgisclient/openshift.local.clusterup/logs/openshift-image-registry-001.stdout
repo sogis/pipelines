@@ -1,6 +1,0 @@
---> Creating registry registry ...
-    serviceaccount "registry" created
-    clusterrolebinding.authorization.openshift.io "registry-registry-role" created
-    deploymentconfig.apps.openshift.io "docker-registry" created
-    service "docker-registry" created
---> Success

@@ -1,6 +1,0 @@
---> Creating router router ...
-    secret "router-certs" created
-    clusterrolebinding.authorization.openshift.io "router-router-role" created
-    deploymentconfig.apps.openshift.io "router" created
-    service "router" created
---> Success

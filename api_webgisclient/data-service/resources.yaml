@@ -58,55 +58,55 @@ objects:
       [sogis_services]
       host=${DB_SERVER}
       port=5432
-      dbname=pub
-      user=sogis_service
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE}
       password=${PW_SOGIS_SERVICE}
       sslmode=require
 
       [sogis_services_write]
       host=${DB_SERVER}
       port=5432
-      dbname=pub
-      user=sogis_service_write
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE_WRITE}
       password=${PW_SOGIS_SERVICE_WRITE}
       sslmode=require
 
       [soconfig_services]
       host=${DB_SERVER}
       port=5432
-      dbname=soconfig
-      user=sogis_service
+      dbname=${DB_CONFIG}
+      user=${USER_SOGIS_SERVICE}
       password=${PW_SOGIS_SERVICE}
       sslmode=require
 
       [sogis_geodb]
       host=${GEO_DB_SERVER}
       port=5432
-      dbname=sogis
+      dbname=${DB_SOGIS}
       user=mspublic
       sslmode=disable
 
       [sogis_edit]
       host=${DB_SERVER}
       port=5432
-      dbname=edit
-      user=sogis_service
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE}
       password=${PW_SOGIS_SERVICE}
       sslmode=require
 
       [sogis_edit_write]
       host=${DB_SERVER}
       port=5432
-      dbname=edit
-      user=sogis_service_write
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE_WRITE}
       password=${PW_SOGIS_SERVICE_WRITE}
       sslmode=require
 
       [sogis_oereb]
       host=${DB_SERVER}
       port=5432
-      dbname=oereb
-      user=ogc_server
+      dbname=${DB_OEREB}
+      user=${USER_OGC_SERVER}
       password=${PW_OGC_SERVER}
       sslmode=require
   kind: Secret

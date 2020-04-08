@@ -1,0 +1,59 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: openshiftplugin-example-pipeline
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        openshift.withCluster() { // Use "default" cluster or fallback toOpenShift cluster detection
+            /** Selectors are a core concept in the DSL. They allow the user to invoke operations **/
+            /** on group of objects which satisfy a given criteria. **/
+            
+            // Create a Selector capable of selecting all services in clusters default project
+            def svcSelector = openshift.selector('service')
+            
+            // Prints `oc describe service` to Jenkins console
+            svcSelector.describe()
+            
+            // Selectors also allow you to easily iterate through all objects they currently select.
+            svcSelector.withEach {  // The closure body will be executed once for each selected object.
+                // The 'it' variable will be bound to a Selector which selects a single
+                // object which is the focus of the iteration.
+                echo "Service account: ${it.name()} is defined in ${openshift.project()}"
+            }
+            
+            // Selectors can also be defined using qualified names
+            openshift.selector( 'deploymentconfig/heatdrill-service' ).describe()
+            
+            // Or Kind + Label information
+            openshift.selector( 'dc', [ tier: 'ilivalidator-service' ] ).describe()
+
+            // Or a static list of names
+            openshift.selector( [ 'dc/heatdrill-service', 'svc/jenkins' ] ).describe()
+            
+            // Also, you can easily test to see if the selector found what 
+            // were looking for and vary your pipeline's logic as needed.
+            def templateSelector = openshift.selector( "template", "ilivalidator-template")
+            def templateExists = templateSelector.exists()
+            def template
+            if (!templateExists) {
+              template = openshift.create('https://raw.githubusercontent.com/sogis/openshift-templates/master/ilivalidator/ilivalidator-web-service.yaml').object()
+              echo "Template created"
+            } 
+            else {
+              template = templateSelector.object()
+              echo "Template ${templateSelector}.name() exists"
+            }
+            
+            // Change to another project
+            openshift.withProject('gdi-test') {
+                // Create a Selector capable of selecting all services in clusters default project
+                def svcSelector2 = openshift.selector('service')
+            
+                // Prints `oc describe service` to Jenkins console
+                svcSelector2.describe()
+                echo "Hello from project ${openshift.project()} in cluster ${openshift.cluster()}"
+            }
+        }
+    type: JenkinsPipeline

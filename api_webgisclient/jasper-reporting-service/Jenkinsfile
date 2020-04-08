@@ -47,7 +47,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources namespace, "-f ${repo}/ressources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p PW_REPORT_SERVER=${PwdReportServer} -p PW_MSWRITE=${PwdMswrite} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
+                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p PW_REPORT_SERVER=${PwdReportServer} -p PW_MSWRITE=${PwdMswrite} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
                     }
                 }
             }

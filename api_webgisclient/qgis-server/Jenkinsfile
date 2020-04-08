@@ -41,7 +41,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources namespace, "-f ${repo}/ressources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p NAMESPACE=${namespace}"
+                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p NAMESPACE=${namespace}"
                     }
                 }
             }

@@ -1,0 +1,40 @@
+openshift-service-cert-signer-operator
+total 96K
+drwxr-xr-x   1 root root 4.0K Dec 12 08:13 .
+drwxr-xr-x   1 root root 4.0K Dec 12 08:13 ..
+-rwxr-xr-x   1 root root    0 Dec 12 08:13 .dockerenv
+-rw-r--r--   1 root root  12K Mar  5  2019 anaconda-post.log
+lrwxrwxrwx   1 root root    7 Mar  5  2019 bin -> usr/bin
+drwxr-xr-x  17 root root 4.2K Dec 12 08:13 dev
+drwxr-xr-x   1 root root 4.0K Dec 12 08:13 etc
+drwxr-xr-x   2 root root 4.0K Apr 11  2018 home
+-rwxr-xr-x   1 root root  857 Jan  1  1970 install.sh
+-rw-r--r--   1 root root 2.9K Jan  1  1970 install.yaml
+-rw-r--r--   1 root root 5.6K Jan  1  1970 kubeconfig.kubeconfig
+lrwxrwxrwx   1 root root    7 Mar  5  2019 lib -> usr/lib
+lrwxrwxrwx   1 root root    9 Mar  5  2019 lib64 -> usr/lib64
+drwxr-xr-x   2 root root 4.0K Apr 11  2018 media
+drwxr-xr-x   2 root root 4.0K Apr 11  2018 mnt
+-rw-r--r--   1 root root   24 Jan  1  1970 namespace-file
+-rw-r--r--   1 root root  173 Jan  1  1970 namespace.yaml
+drwxr-xr-x   2 root root 4.0K Apr 11  2018 opt
+-rw-r--r--   1 root root  744 Jan  1  1970 param-file.txt
+-rw-r--r--   1 root root    0 Jan  1  1970 privileged-sa-list.txt
+dr-xr-xr-x 349 root root    0 Dec 10 11:05 proc
+-rw-r--r--   1 root root  631 Jan  1  1970 rbac.yaml
+dr-xr-x---   1 root root 4.0K May  2  2019 root
+drwxr-xr-x   1 root root 4.0K May  2  2019 run
+lrwxrwxrwx   1 root root    8 Mar  5  2019 sbin -> usr/sbin
+drwxr-xr-x   2 root root 4.0K Apr 11  2018 srv
+dr-xr-xr-x  13 root root    0 Dec 10 11:05 sys
+drwxrwxrwt   1 root root 4.0K May  2  2019 tmp
+drwxr-xr-x   1 root root 4.0K Mar  5  2019 usr
+drwxr-xr-x   1 root root 4.0K Mar  5  2019 var
+namespace/openshift-core-operators created
+clusterrolebinding.rbac.authorization.k8s.io/system:openshift:operator:service-cert-signer reconciled
+namespace/openshift-core-operators configured
+customresourcedefinition.apiextensions.k8s.io/servicecertsigneroperatorconfigs.servicecertsigner.config.openshift.io created
+configmap/openshift-service-cert-signer-operator-config created
+deployment.apps/openshift-service-cert-signer-operator created
+serviceaccount/openshift-service-cert-signer-operator created
+servicecertsigneroperatorconfig.servicecertsigner.config.openshift.io/instance created

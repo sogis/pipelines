@@ -6,11 +6,9 @@ def environment = 'test'
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
 credentials = [
-    usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
@@ -47,7 +45,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p PW_REPORT_SERVER=${PwdReportServer} -p PW_MSWRITE=${PwdMswrite} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
+                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
                     }
                 }
             }

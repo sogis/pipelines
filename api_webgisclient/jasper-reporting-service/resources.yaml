@@ -15,17 +15,44 @@ parameters:
   - description: Imdas DB Server
     name: IMDAS_DB_SERVER
     value:
-  - description: Password DB User sogis_service
-    name: PW_SOGIS_SERVICE
+  - description: Pub DB
+    name: DB_PUB
+    value:
+  - description: Edit DB
+    name: DB_EDIT
+    value:
+  - description: Config DB
+    name: DB_CONFIG
+    value:
+  - description: Imdas DB
+    name: DB_IMDAS
+    value:
+  - description: Sogis DB
+    name: DB_SOGIS
+    value:
+  - description: DB User report_server
+    name: USER_REPORT_SERVER
     value:
   - description: Password DB User report_server
     name: PW_REPORT_SERVER
     value:
+  - description: DB User mswrite
+    name: USER_MSWRITE
+    value:
   - description: Password DB User mswrite
     name: PW_MSWRITE
     value:
+  - description: Imdas DB User
+    name: USER_IMDAS_DB
+    value:
   - description: Password Imdas DB User
     name: PW_IMDAS_DB_USER
+    value:
+  - description: DB User sogis_service
+    name: USER_SOGIS_SERVICE
+    value:
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
     value:
   - description: Namespace
     name: NAMESPACE
@@ -37,8 +64,8 @@ objects:
       [sogis_webmapping]
       host=${DB_SERVER}
       port=5432
-      dbname=pub
-      user=report_server
+      dbname=${DB_PUB}
+      user=${USER_REPORT_SERVER}
       password=${PW_REPORT_SERVER}
       sslmode=require
   kind: Secret
@@ -53,25 +80,25 @@ objects:
       # H2
       spring.h2.console.enabled=false
       # Datasource
-      spring.datasource0.url=jdbc:postgresql://${DB_SERVER}/pub?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource0.url=jdbc:postgresql://${DB_SERVER}/${DB_PUB}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource0.username=report_server
+      spring.datasource0.username=${USER_REPORT_SERVER}
 
       spring.datasource0.password=${PW_REPORT_SERVER}
 
       spring.datasource0.driver-class-name=org.postgresql.Driver
 
-      spring.datasource1.url=jdbc:postgresql://${GEO_DB_SERVER}/sogis?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource1.url=jdbc:postgresql://${GEO_DB_SERVER}/${DB_SOGIS}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource1.username=mswrite
+      spring.datasource1.username=${USER_MSWRITE}
 
       spring.datasource1.password=${PW_MSWRITE}
 
       spring.datasource1.driver-class-name=org.postgresql.Driver
 
-      spring.datasource2.url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=imdaspro
+      spring.datasource2.url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=${DB_IMDAS}
 
-      spring.datasource2.username=imdaspro_gis
+      spring.datasource2.username=${USER_IMDAS_DB}
 
       spring.datasource2.password=${PW_IMDAS_DB_USER}
 
@@ -79,9 +106,9 @@ objects:
 
       # Datasource configDB
 
-      spring.datasource3.url=jdbc:postgresql://${DB_SERVER}/soconfig?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource3.url=jdbc:postgresql://${DB_SERVER}/${DB_CONFIG}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource3.username=sogis_service
+      spring.datasource3.username=${USER_SOGIS_SERVICE}
 
       spring.datasource3.password=${PW_SOGIS_SERVICE}
 
@@ -89,9 +116,9 @@ objects:
 
       # Datasource Edit DB
 
-      spring.datasource4.url=jdbc:postgresql://${DB_SERVER}/edit?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource4.url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource4.username=report_server
+      spring.datasource4.username=${USER_REPORT_SERVER}
 
       spring.datasource4.password=${PW_REPORT_SERVER}
 

@@ -1,15 +1,12 @@
 def serviceName = 'landreg-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def namespace = 'gdi-devel'
-def environment = 'test'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
 credentials = [
     usernamePassword(credentialsId: 'agi-apps-test-github-secret'          , usernameVariable: 'githubUser'              , passwordVariable: 'githubPwd'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
-    usernamePassword(credentialsId: 'agi-apps-test-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-    usernamePassword(credentialsId: 'agi-apps-test-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
     usernamePassword(credentialsId: 'agi-apps-test-gitlab-sourcepole'      , usernameVariable: 'gitlabUser'              , passwordVariable: 'gitlabPwd'),
@@ -49,7 +46,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p PW_OGC_SERVER=${PwdOgcServer} -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p PW_SOGIS_SERVICE=${PwdSogisService} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
+                    configureRessources 'gdi-devel', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SE    RVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_OEREB=${en    v.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SE    RVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW    _SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
                     }
                 }
             }

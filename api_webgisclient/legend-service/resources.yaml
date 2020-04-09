@@ -52,6 +52,7 @@ objects:
   - description: Namespace
     name: NAMESPACE
     value:
+objects:
 - apiVersion: v1
   stringData:
     pg_service.conf: |

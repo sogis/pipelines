@@ -5,8 +5,7 @@ metadata:
   annotations:
     description: >-
       "Creates necessary ressources for legend-service"
-objects:
-  parameters:
+parameters:
   - description: DB Server Url 
     name: DB_SERVER
     value:

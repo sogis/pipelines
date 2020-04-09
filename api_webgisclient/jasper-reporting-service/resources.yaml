@@ -77,7 +77,7 @@ objects:
 - apiVersion: v1
   stringData:
     application.properties: |
-      # H2
+      # H3
       spring.h2.console.enabled=false
       # Datasource
       spring.datasource0.url=jdbc:postgresql://${DB_SERVER}/${DB_PUB}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory

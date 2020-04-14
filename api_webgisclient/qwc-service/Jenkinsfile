@@ -62,7 +62,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg QWC2_VERSION=${qwcVersion} --build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc-service --build-arg ANALYTICS_URL=//geo-i.so.ch/analytics --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg QWC2_VERSION=${qwcVersion} --build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc_service --build-arg ANALYTICS_URL=//geo-i.so.ch/analytics --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

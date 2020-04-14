@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: print-service
+  annotations:
+    description: "Creates deploymentConfig for print-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+    value:
+  - description: Basis Url für benutzte Dienste
+    name: BASEURL
+    value:
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    generation: 1
+    labels:
+      app: print-service
+    name: print-service
+  spec:
+    replicas: 2
+    selector:
+      app: print-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: print-service
+      spec:
+        containers:
+        - env:
+          - name: PERMISSION_SERVICE_URL
+            value: http://permission-service.${NAMESPACE}.svc
+          - name: QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          image: docker-registry.default.svc:5000/${NAMESPACE}/print-service
+          imagePullPolicy: IfNotPresent
+          name: sogis-print-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/www
+            name: wsgi-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+    test: false
+    triggers:
+    - type: ConfigChange

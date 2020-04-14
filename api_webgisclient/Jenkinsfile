@@ -77,6 +77,11 @@ pipeline {
                         build job: 'ogc-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
+                stage ('Deploy permalink-service') {
+                    steps {
+                        build job: 'permalink-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        }
+                    }
                 }
             }
         }

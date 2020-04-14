@@ -30,10 +30,10 @@ parameters:
   - description: Pub DB
     name: DB_PUB
     value:
-  - description: DB User permalink_server
+  - description: DB User ogc_server
     name: USER_OGC_SERVER
     value:
-  - description: Password DB User permalink_server
+  - description: Password DB User ogc_server
     name: PW_OGC_SERVER
     value:
   - description: DB User sogis_service

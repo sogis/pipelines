@@ -36,8 +36,6 @@ objects:
           value:
         - name: SERVICE
           value:
-        - name: SERVICE_PACKAGES
-          value:
         env:
         - name: GIT_USER
           valueFrom:

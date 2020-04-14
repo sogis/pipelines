@@ -82,6 +82,11 @@ pipeline {
                         build job: 'permalink-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
+                stage ('Deploy plotinfo-service') {
+                    steps {
+                        build job: 'plotinfo-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        }
+                    }
                 }
             }
         }

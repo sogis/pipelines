@@ -40,7 +40,7 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
-                    searchln version
+                    println version
                     }
                 }
             }

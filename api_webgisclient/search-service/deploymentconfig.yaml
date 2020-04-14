@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: print-service
+  name: search-service
   annotations:
-    description: "Creates deploymentConfig for print-service"
+    description: "Creates deploymentConfig for search-service"
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
+    value:
+  - description: Infrastructure Environment
+    name: ENVIRONMENT
     value:
 labels:
   application: gdi
@@ -20,12 +23,12 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: print-service
-    name: print-service
+      app: search-service
+    name: search-service
   spec:
     replicas: 2
     selector:
-      app: print-service
+      app: search-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -39,21 +42,23 @@ objects:
     template:
       metadata:
         labels:
-          app: print-service
+          app: search-service
       spec:
         containers:
         - env:
           - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc
-          - name: QGIS_SERVER_URL
-            value: http://qgis-server.${NAMESPACE}.svc/ows/
+            value: http://permission-service.${NAMESPACE}.svc/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/print-service
+          - name: SEARCH_RESULT_LIMIT
+            value: '25'
+          - name: SOLR_SERVICE_URL
+            value: http://solr-headless.solr-cloud-${ENVIRONMENT}:8983/solr/gdi/select
+          image: docker-registry.default.svc:5000/${NAMESPACE}/search-service
           imagePullPolicy: IfNotPresent
-          name: sogis-print-service
+          name: sogis-search-service
           ports:
           - containerPort: 9090
             protocol: TCP

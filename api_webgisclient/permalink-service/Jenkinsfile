@@ -58,7 +58,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=/api/permalink/v1 --build-arg SERVICE=rest_services/permalink-service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=/api/permalink/v1 --build-arg SERVICE=rest_services/permalink_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

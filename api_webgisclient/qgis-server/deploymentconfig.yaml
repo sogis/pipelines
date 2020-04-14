@@ -21,7 +21,7 @@ objects:
       app: qgis-server
     name: qgis-server
   spec:
-    replicas: 2
+    replicas: 0
     selector:
       app: qgis-server
       deploymentconfig: qgis-server
@@ -46,24 +46,18 @@ objects:
         containers:
         - env:
           - name: LOG_LEVEL
-            value: 2
+            value: "2"
           - name: QGIS_FCGI_MIN_PROCESSES
-            value: 2
+            value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
-            value: 2
+            value: "2"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server
           imagePullPolicy: Always
           name: sogis-qgis-server
           ports:
           - containerPort: 80
             protocol: TCP
-          resources:
-            limits:
-              cpu: '4'
-              memory: 10Gi
-            requests:
-              cpu: '4'
-              memory: 10Gi
+          resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /data
@@ -77,12 +71,11 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - configMap:
-            defaultMode: 420
+        - secret:
             items:
             - key: pg_service.conf
               path: pg_service.conf
-            name: qgis-server-pg-config
+            secretName: qgis-server-pg-config
           name: qgis-server-config-claim
         - name: qgs-resources
           persistentVolumeClaim:

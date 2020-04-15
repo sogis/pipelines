@@ -6,6 +6,10 @@ metadata:
     openshift.io/display-name: "Buildconfig for data-service"
     description: >-
       "Creates BuildConfig for data-service"
+parameters:
+  - description: branch to build
+    name: BRANCH
+    value:
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -23,7 +27,7 @@ objects:
     source:
       contextDir: docker/wsgi-service
       git:
-        ref: release_so
+        ref: ${BRANCH}
         uri: https://git.sourcepole.ch/ktso/somap.git
       sourceSecret:
         name: deployso-at-gitlab

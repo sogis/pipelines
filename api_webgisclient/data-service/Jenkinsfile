@@ -1,6 +1,5 @@
 def serviceName = 'data-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def namespace = 'gdi-devel'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -27,6 +26,14 @@ pipeline {
                description: 'Bitte Version auswählen',
                name: 'version'
                )
+        string(defaultValue: "test",
+               description: 'Bitte Umgebung auswählen',
+               name: 'env'
+               )
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
+               name: 'branch'
+               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -39,7 +46,8 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
-                    println version
+                    namespace = params.env
+                    branch = params.branch
                     }
                 }
             }
@@ -58,7 +66,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

@@ -26,9 +26,9 @@ pipeline {
                description: 'Bitte Version auswählen',
                name: 'version'
                )
-        string(defaultValue: "test",
-               description: 'Bitte Umgebung auswählen',
-               name: 'env'
+        string(defaultValue: "gdi-test",
+               description: 'Bitte Namespace auswählen',
+               name: 'namespace'
                )
         string(defaultValue: "release_so",
                description: 'Bitte Branch auswählen',
@@ -46,7 +46,7 @@ pipeline {
                 script {
                     version = params.version
                     build = params.build
-                    namespace = params.env
+                    namespace = params.namespace
                     branch = params.branch
                     }
                 }

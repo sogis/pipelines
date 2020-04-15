@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: "ImageStream Tag"
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -76,3 +79,11 @@ objects:
           name: wsgi-service-config-claim
     triggers:
     - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - sogis-data-service
+        from:
+          kind: ImageStreamTag
+          name: data-service:${TAG}

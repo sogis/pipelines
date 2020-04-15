@@ -23,9 +23,11 @@ pipeline {
         }
     parameters {
         string(defaultValue: "2.0.8",
-               description: 'Bitte Version auswählen',
-               name: 'version'
+               description: 'Bitte Basis Image Version auswählen',
+               name: 'vBaseImage'
                )
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
         string(defaultValue: "gdi-test",
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
@@ -44,7 +46,8 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    version = params.version
+                    vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
                     branch = params.branch
@@ -66,7 +69,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=v${version} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=v${vBaseImage} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }
@@ -77,7 +80,7 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage serviceName, version
+                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy data-service in Test env') {
@@ -86,7 +89,7 @@ pipeline {
                     openshift.withCluster() {
                         openshift.withProject(namespace) {
                             def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}" )
-                            deployImage serviceName, namespace, version, dcConfig
+                            deployImage serviceName, namespace, vDeployImage, dcConfig
                             }
                         }
                     }

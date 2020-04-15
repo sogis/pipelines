@@ -12,7 +12,8 @@ objects:
   metadata:
     annotations:
     labels:
-      build: data-service
+      service: data-service
+      app: gdi
     name: data-service
   spec:
     output:

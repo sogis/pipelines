@@ -112,13 +112,17 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
+      service: data-service
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: ImageStream
   metadata:
     name: data-service
+    labels:
+      app: gdi
+      service: data-service
   spec:
     tags:
       - name: latest

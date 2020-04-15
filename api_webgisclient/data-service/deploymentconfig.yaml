@@ -20,12 +20,13 @@ objects:
     creationTimestamp: null
     generation: 1
     labels:
-      io.kompose.service: data-service
+      service: data-service
+      app: gdi
     name: data-service
   spec:
     replicas: 2
     selector:
-      io.kompose.service: data-service
+      service: data-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -40,7 +41,8 @@ objects:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: data-service
+          service: data-service
+          app: gdi
       spec:
         containers:
         - env:

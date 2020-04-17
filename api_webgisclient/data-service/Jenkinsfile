@@ -86,14 +86,7 @@ pipeline {
             }
         stage ('Deploy data-service in Test env') {
             steps {
-                script {
-                    openshift.withCluster() {
-                        openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}", "-p", "TAG=${vDeployImage}" )
-                            deployImage serviceName, namespace, vDeployImage, dcConfig
-                            }
-                        }
-                    }
+                deployImage serviceName, namespace, vDeployImage
                 }
             }
         }

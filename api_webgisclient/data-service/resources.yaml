@@ -113,7 +113,6 @@ objects:
   metadata:
     labels:
       app: gdi
-      service: data-service
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1

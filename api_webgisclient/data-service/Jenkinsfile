@@ -86,7 +86,7 @@ pipeline {
             }
         stage ('Deploy data-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage
+                deployImage serviceName, namespace, vDeployImage, repo
                 }
             }
         }

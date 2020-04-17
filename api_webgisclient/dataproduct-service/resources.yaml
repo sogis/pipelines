@@ -109,12 +109,14 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
+    labels:
+      app: gdi
     name: qgs-resources-claim
   spec:
     accessModes:
@@ -128,7 +130,8 @@ objects:
   metadata:
     name: dataproduct-service
     labels:
-      application: gdi
+      app: gdi
+      service: dataproduct-service
   spec:
     tags:
     - from:

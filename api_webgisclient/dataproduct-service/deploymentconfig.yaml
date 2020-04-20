@@ -85,4 +85,4 @@ objects:
           - name: qgs-resources
             persistentVolumeClaim:
               claimName: qgs-resources-claim
-  triggers: []
+    triggers: []

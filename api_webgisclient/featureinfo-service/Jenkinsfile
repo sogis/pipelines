@@ -36,7 +36,7 @@ pipeline {
                namespace: 'namespace'
               )
         string(defaultValue: "release_so",
-               description: 'Bitte Branch auswählen'
+               description: 'Bitte Branch auswählen',
                name: 'namespace'
               )
         choice(choices: ['ja','nein'],

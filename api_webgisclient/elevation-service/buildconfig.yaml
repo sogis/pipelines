@@ -25,7 +25,7 @@ objects:
         kind: ImageStreamTag
         name: elevation-service:latest
     source:
-      contextDir: docker/wsgi-service
+      contextDir: docker/qwc2-server-service
       git:
         ref: ${BRANCH}
         uri: https://git.sourcepole.ch/ktso/somap.git

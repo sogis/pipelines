@@ -27,7 +27,7 @@ pipeline {
                name: 'vDeployImage'
               )
         string(defaultValue: "gdi-test",
-               description: 'Bitte Namespace auswählen'
+               description: 'Bitte Namespace auswählen',
                name: 'namespace'
               )
         string(defaultValue: "release_so",

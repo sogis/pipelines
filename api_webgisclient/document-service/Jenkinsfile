@@ -23,7 +23,7 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "2.0.8",
+        string(defaultValue: "v2.0.8",
                description: 'Bitte Basis Image Version auswählen',
                name: 'vBaseImage'
                )

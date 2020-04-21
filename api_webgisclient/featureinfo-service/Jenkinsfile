@@ -33,7 +33,7 @@ pipeline {
               )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
-               namespace: 'namespace'
+               name: 'namespace'
               )
         string(defaultValue: "release_so",
                description: 'Bitte Branch auswählen',

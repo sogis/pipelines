@@ -36,7 +36,7 @@ pipeline {
               )
         string(defaultValue: "release_so",
                description: 'Bitte Branch auswählen',
-               name: 'Branch'
+               name: 'branch'
               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',

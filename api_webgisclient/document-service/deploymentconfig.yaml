@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: "Image Stream Tag"
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -20,12 +23,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: document-service
+      service: document-service
+      app: gdi
     name: document-service
   spec:
     replicas: 2
     selector:
-      app: document-service
+      service: document-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -40,7 +44,8 @@ objects:
       metadata:
         creationTimestamp: null
         labels:
-          app: document-service
+          service: document-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -54,7 +59,7 @@ objects:
             value: "True"
           - name: JASPER_TIMEOUT
             value: "1200"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/document-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/document-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-document-service
           ports:
@@ -76,5 +81,4 @@ objects:
               path: .pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
-    triggers:
-    - type: ConfigChange
+    triggers: []

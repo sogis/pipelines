@@ -112,7 +112,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -120,7 +120,8 @@ objects:
   metadata:
     name: document-service
     labels:
-      application: gdi
+      app: gdi
+      service: document-service
   spec:
     tags:
     - from:

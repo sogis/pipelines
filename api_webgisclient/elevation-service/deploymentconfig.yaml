@@ -8,19 +8,24 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: "Image Stream Tag"
+    name: TAG
+    value:
 labels:
-  application: gdi
+  app: gdi
+  service: elevation-service
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      io.kompose.service: elevation-service
+      service: elevation-service
+      app: gdi
     name: elevation-service
   spec:
     replicas: 2
     selector:
-      io.kompose.service: elevation-service
+      service: elevation-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -33,15 +38,15 @@ objects:
       type: Rolling
     template:
       metadata:
-        creationTimestamp: null
         labels:
-          io.kompose.service: elevation-service
+          service: elevation-service
+          app: gdi
       spec:
         containers:
         - env:
           - name: ELEVATION_DATASET
             value: /data/daten_aktuell/agi/hoehenmodelle/lidar/2014/dtm/50cm/lidar_2014_dtm_50cm.vrt
-          image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-elevation-service
           ports:
@@ -63,5 +68,4 @@ objects:
             claimName: datensogispicmir-claim1
             readOnly: true
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

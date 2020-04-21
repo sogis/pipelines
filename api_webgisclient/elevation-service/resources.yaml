@@ -14,6 +14,8 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     name: datensogispicmir-claim1
+    labels:
+      app: gdi
   spec:
     accessModes:
     - ReadOnlyMany
@@ -26,7 +28,8 @@ objects:
   metadata:
     name: elevation-service
     labels:
-      application: gdi
+      app: gdi
+      service: elevation-service
   spec:
     tags:
     - from:

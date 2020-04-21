@@ -11,6 +11,9 @@ parameters:
   - description: Application Environment
     name: ENVIRONMENT
     value:
+  - description: "Image Stream Tag"
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -22,12 +25,13 @@ objects:
         convert
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      app: featureinfo-service
+      service: featureinfo-service
+      app: gdi
     name: featureinfo-service
   spec:
     replicas: 2
     selector:
-      app: featureinfo-service
+      service: featureinfo-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -41,7 +45,8 @@ objects:
     template:
       metadata:
         labels:
-          app: featureinfo-service
+          service: featureinfo-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -57,7 +62,7 @@ objects:
             value: de_ch.utf-8
           - name: HEATDRILL_SERVICE_URL
             value: http://heatdrill-service.agi-apps-${ENVIRONMENT}/service
-          image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-featureinfo-service
           ports:
@@ -80,5 +85,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

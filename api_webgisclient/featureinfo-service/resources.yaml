@@ -120,7 +120,7 @@ objects:
   metadata:
     name: featureinfo-service
     labels:
-      application: gdi
+      app: gdi
   spec:
     tags:
     - from:
@@ -136,7 +136,8 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     creationTimestamp: null
     labels:
-      app: featureinfo-service
+      service: featureinfo-service
+      app: gdi
     name: featureinfo-service
   spec:
     ports:
@@ -145,6 +146,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: featureinfo-service
+      service: featureinfo-service
     sessionAffinity: None
     type: ClusterIP

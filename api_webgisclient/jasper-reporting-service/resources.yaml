@@ -168,7 +168,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      app: jasper-reporting-service
+      service: jasper-reporting-service
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1

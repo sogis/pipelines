@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -20,12 +23,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: legend-service
+      service: legend-service
+      app: gdi
     name: legend-service
   spec:
     replicas: 2
     selector:
-      app: legend-service
+      service: legend-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -38,9 +42,9 @@ objects:
       type: Rolling
     template:
       metadata:
-        creationTimestamp: null
         labels:
-          app: legend-service
+          service: legend-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -52,7 +56,7 @@ objects:
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/legend-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/legend-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-legend-service
           ports:
@@ -76,5 +80,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

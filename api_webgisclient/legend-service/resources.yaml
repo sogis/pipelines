@@ -112,7 +112,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -120,7 +120,8 @@ objects:
   metadata:
     name: legend-service
     labels:
-      application: gdi
+      app: gdi
+      service: legend-service
   spec:
     tags:
     - from:
@@ -135,7 +136,8 @@ objects:
         up
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      app: legend-service
+      service: legend-service
+      app: gdi
     name: legend-service
   spec:
     ports:
@@ -144,6 +146,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: legend-service
+      service: legend-service
     sessionAffinity: None
     type: ClusterIP

@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -20,12 +23,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: permalink-service
+      service: permalink-service
+      app: gdi
     name: permalink-service
   spec:
     replicas: 2
     selector:
-      app: permalink-service
+      service: permalink-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -39,10 +43,11 @@ objects:
     template:
       metadata:
         labels:
-          app: permalink-service
+          service: permalink-service
+          app: gdi
       spec:
         containers:
-        - image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service
+        - image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-permalink-service
           ports:
@@ -65,5 +70,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

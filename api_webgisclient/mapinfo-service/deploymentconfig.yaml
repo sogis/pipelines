@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -20,12 +23,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: mapinfo-service
+      service: mapinfo-service
+      app: gdi
     name: mapinfo-service
   spec:
     replicas: 2
     selector:
-      app: mapinfo-service
+      service: mapinfo-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -39,13 +43,14 @@ objects:
     template:
       metadata:
         labels:
-          app: mapinfo-service
+          service: mapinfo-service
+          app: gdi
       spec:
         containers:
         - env:
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
-          image: docker-registry.default.svc:5000/${NAMESPACE}/mapinfo-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/mapinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-mapinfo-service
           ports:
@@ -68,5 +73,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

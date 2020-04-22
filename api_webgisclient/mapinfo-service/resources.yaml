@@ -120,7 +120,7 @@ objects:
   metadata:
     name: mapinfo-service
     labels:
-      application: gdi
+      app: gdi
   spec:
     tags:
     - from:
@@ -135,7 +135,8 @@ objects:
         up
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      app: mapinfo-service
+      service: mapinfo-service
+      app: gdi
     name: mapinfo-service
   spec:
     ports:
@@ -144,6 +145,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: mapinfo-service
+      service: mapinfo-service
     sessionAffinity: None
     type: ClusterIP

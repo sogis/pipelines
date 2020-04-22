@@ -34,7 +34,7 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        string(defaultValue: "release_so,
+        string(defaultValue: "release_so",
                description: 'Bitte Branch auswählen',
                name: 'branch'
                )

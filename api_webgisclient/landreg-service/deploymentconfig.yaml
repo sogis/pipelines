@@ -26,7 +26,6 @@ objects:
     replicas: 2
     selector:
       service: landreg-service
-      deploymentconfig: landreg-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}

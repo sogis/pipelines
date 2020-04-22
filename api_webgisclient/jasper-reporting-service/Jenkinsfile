@@ -22,10 +22,21 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "2.0.8",
-               description: 'Bitte Version auswählen',
-               name: 'version'
+        string(defaultValue: "v2.0.8",
+               description: 'Bitte Basis Image Version auswählen',
+               name: 'vBaseImage'
                )
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+              )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+              )
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
+               name: 'branch'
+              )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -36,16 +47,18 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    version = params.version
+                    vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
                     build = params.build
-                    println version
+                    namespace = params.namespace
+                    branch = params.branch
                     }
                 }
             }
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources namespace, "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
                     }
                 }
             }
@@ -57,7 +70,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg JASPER_REPORTING_VERSION=0.5.1"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg JASPER_REPORTING_VERSION=0.5.1"
                     }
                 }
             }
@@ -68,19 +81,12 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage serviceName, version
+                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy jasper-reporting-service in Test env') {
             steps {
-                script {
-                    openshift.withCluster() {
-                        openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "ENVIRONMENT=${environment}", "-p", "NAMESPACE=${namespace}" )
-                            deployImage serviceName, namespace, version, dcConfig
-                            }
-                        }
-                    }
+                deployImage serviceName, namespace, vDeployImage, repo
                 }
             }
         }

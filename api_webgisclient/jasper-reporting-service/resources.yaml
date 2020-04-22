@@ -71,7 +71,8 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
+      service: jasper-reporting-service
     name: jasper-reporting-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -131,7 +132,8 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
+      service: jasper-reporting-service
     name: jasper-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -139,7 +141,8 @@ objects:
   metadata:
     name: jasper-reporting-service
     labels:
-      application: gdi
+      app: gdi
+      service: jasper-reporting-service
   spec:
     tags:
     - from:
@@ -155,7 +158,8 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     creationTimestamp: null
     labels:
-      app: jasper-reporting-service
+      service: jasper-reporting-service
+      app: gdi
     name: jasper-reporting-service
   spec:
     ports:
@@ -171,6 +175,9 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     name: reports-claim
+    labels:
+      service: jasper-reporting-service
+      app: gdi
   spec:
     accessModes:
     - ReadWriteMany

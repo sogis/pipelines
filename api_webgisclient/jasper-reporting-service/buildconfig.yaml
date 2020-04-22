@@ -6,13 +6,18 @@ metadata:
     openshift.io/display-name: "Buildconfig for jasper-reporting-service"
     description: >-
       "Creates BuildConfig for jasper-reporting-service"
+parameters:
+  - description: branch to build
+    name: BRANCH
+    value:
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
     labels:
-      app: jasper-reporting-service
+      service: jasper-reporting-service
+      app: gdi
     name: jasper-reporting-service
   spec:
     output:
@@ -22,7 +27,7 @@ objects:
     source:
       contextDir: docker/jasper-reporting-service
       git:
-        ref: release_so
+        ref: ${BRANCH}
         uri: https://git.sourcepole.ch/ktso/somap.git
       sourceSecret:
         name: deployso-at-gitlab

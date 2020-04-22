@@ -11,6 +11,9 @@ parameters:
   - description: Application Environment
     name: ENVIRONMENT
     value:
+  - description: "Image Stream Tag"
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -22,12 +25,13 @@ objects:
         convert
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      app: jasper-reporting-service
+      service: jasper-reporting-service
+      app: gdi
     name: jasper-reporting-service
   spec:
     replicas: 2
     selector:
-      app: jasper-reporting-service
+      service: jasper-reporting-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -41,7 +45,8 @@ objects:
     template:
       metadata:
         labels:
-          app: jasper-reporting-service
+          service: jasper-reporting-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -52,7 +57,7 @@ objects:
                   fieldPath: metadata.namespace
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
-          image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-jasper-reporting-service
           ports:
@@ -91,5 +96,4 @@ objects:
             secretName: jasper-config
           name: jasper-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

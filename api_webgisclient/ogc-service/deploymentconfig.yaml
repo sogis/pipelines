@@ -12,7 +12,7 @@ parameters:
     name: BASEURL
     value:
   - description: Image Stream Tag
-    name: Tag
+    name: TAG
     value:
 labels:
   application: gdi

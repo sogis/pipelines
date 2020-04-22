@@ -8,6 +8,9 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
+    value:
 labels:
   application: gdi
 objects:
@@ -16,12 +19,13 @@ objects:
   metadata:
     generation: 1
     labels:
-      app: landreg-service
+      service: landreg-service
+      app: gdi
     name: landreg-service
   spec:
     replicas: 2
     selector:
-      app: landreg-service
+      service: landreg-service
       deploymentconfig: landreg-service
     strategy:
       activeDeadlineSeconds: 21600
@@ -38,8 +42,8 @@ objects:
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
-          app: landreg-service
-          deploymentconfig: landreg-service
+          service: landreg-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -59,7 +63,7 @@ objects:
             value: agi_av_nachfuehrung_pub.angaben_grundbuchplanauszug
           - name: DEFAULT_LANDREG_LAYOUT
             value: A4-Hoch
-          image: docker-registry.default.svc:5000/${NAMESPACE}/landreg-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/landreg-service:${TAG}
           imagePullPolicy: Always
           name: sogis-landreg-service
           resources: {}
@@ -80,5 +84,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

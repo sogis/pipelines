@@ -112,7 +112,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -120,7 +120,8 @@ objects:
   metadata:
     name: landreg-service
     labels:
-      application: gdi
+      app: gdi
+      service: landreg-service
   spec:
     tags:
     - from:
@@ -136,7 +137,8 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     creationTimestamp: null
     labels:
-      app: landreg-service
+      service: landreg-service
+      app: gdi
     name: landreg-service
   spec:
     ports:

@@ -11,6 +11,9 @@ parameters:
   - description: Base Url of consumed services
     name: BASEURL
     value:
+  - description: Image Stream Tag
+    name: Tag
+    value:
 labels:
   application: gdi
 objects:
@@ -23,12 +26,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: ogc-service
+      service: ogc-service
+      app: gdi
     name: ogc-service
   spec:
     replicas: 0
     selector:
-      app: ogc-service
+      service: ogc-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -42,7 +46,8 @@ objects:
     template:
       metadata:
         labels:
-          app: ogc-service
+          service: ogc-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -60,7 +65,7 @@ objects:
             value: https://${BASEURL}.so.ch/api/wms
           - name: WFS_SERVICE_URL
             value: https://geo-t.so.ch/api/wfs
-          image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -103,5 +108,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

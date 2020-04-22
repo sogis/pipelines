@@ -147,6 +147,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: landreg-service
+      service: landreg-service
     sessionAffinity: None
     type: ClusterIP

@@ -28,7 +28,7 @@ pipeline {
                name: 'vBaseImage'
                )
         string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
-               name: 'vDeployImage
+               name: 'vDeployImage'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',

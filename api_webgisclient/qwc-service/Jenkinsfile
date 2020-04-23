@@ -43,7 +43,7 @@ pipeline {
                )
         string(defaultValue: "geo-i.so.ch",
                description: "Matomo Url",
-               name: analyticsUrl
+               name: 'analyticsUrl'
                )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',

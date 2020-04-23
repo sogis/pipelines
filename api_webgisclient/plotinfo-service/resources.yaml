@@ -112,7 +112,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -120,7 +120,8 @@ objects:
   metadata:
     name: plotinfo-service
     labels:
-      application: gdi
+      app: gdi
+      service: plotinfo-service
   spec:
     tags:
     - from:
@@ -135,7 +136,8 @@ objects:
         up
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      app: plotinfo-service
+      service: plotinfo-service
+      app: gdi
     name: plotinfo-service
   spec:
     ports:
@@ -144,6 +146,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: plotinfo-service
+      service: plotinfo-service
     sessionAffinity: None
     type: ClusterIP

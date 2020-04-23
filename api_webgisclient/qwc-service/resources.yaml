@@ -88,6 +88,9 @@ objects:
   kind: Secret
   metadata:
     name: qwc-service-pg-config
+    labels:
+      service: qwc-service
+      app: gdi
 - apiVersion: v1
   data:
     config.json: |
@@ -468,10 +471,16 @@ objects:
   kind: ConfigMap
   metadata:
     name: config-json
+    labels:
+      service: qwc-service
+      app: gdi
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: qwc-assets-claim
+    labels:
+      service: qwc-service
+      app: gdi
   spec:
     accessModes:
     - ReadWriteOnce
@@ -483,9 +492,33 @@ objects:
   kind: ImageStream
   metadata:
     name: qwc-service
+    labels:
+      service: qwc-service
+      app: gdi
   spec:
     tags:
       - name: latest
         from:
           kind: DockerImage
           name: 'docker-registry.default.svc:5000/${NAMESPACE}/qwc-service:latest'
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: qwc-service
+      app: gdi
+    name: qwc-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      service: qwc-service
+    sessionAffinity: None
+    type: ClusterIP

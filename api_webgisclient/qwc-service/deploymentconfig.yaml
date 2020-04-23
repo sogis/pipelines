@@ -8,6 +8,8 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
 labels:
   application: gdi
 objects:
@@ -15,12 +17,13 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
-      io.kompose.service: qwc-service
+      service: qwc-service
+      app: gdi
     name: qwc-service
   spec:
     replicas: 2
     selector:
-      io.kompose.service: qwc-service
+      service: qwc-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -34,7 +37,8 @@ objects:
     template:
       metadata:
         labels:
-          io.kompose.service: qwc-service
+          service: qwc-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -72,7 +76,7 @@ objects:
             value: /api/dataproduct/v1/
           - name: MIN_RESULTS_EXANDED
             value: "80"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service 
+          image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-qwc-service
           ports:
@@ -109,5 +113,4 @@ objects:
           persistentVolumeClaim:
             claimName: qwc-assets-claim
             readOnly: true
-    triggers:
-    - type: ConfigChange
+    triggers: []

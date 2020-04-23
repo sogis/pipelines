@@ -35,10 +35,10 @@ pipeline {
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
-               name: 'namespace',
+               name: 'namespace'
                )
-        string(defaultValue: "release_so"
-               description: 'Bitte Branch auswählen'
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
                name: 'branch'
                )
         string(defaultValue: "geo-i.so.ch",

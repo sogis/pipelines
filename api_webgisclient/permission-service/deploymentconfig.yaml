@@ -10,6 +10,8 @@ parameters:
     value:
   - description: Openshift Environment
     name: ENVIRONMENT
+  - description: Image Stream Tag
+    name: TAG
 labels:
   application: gdi
 objects:
@@ -20,15 +22,15 @@ objects:
       kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
         convert
       kompose.version: 1.10.0 (8bb0907)
-    creationTimestamp: null
     generation: 1
     labels:
-      io.kompose.service: permission-service
+      service: permission-service
+      app: gdi
     name: permission-service
   spec:
     replicas: 2
     selector:
-      io.kompose.service: permission-service
+      service: permission-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -41,9 +43,9 @@ objects:
       type: Rolling
     template:
       metadata:
-        creationTimestamp: null
         labels:
-          io.kompose.service: permission-service
+          service: permission-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -57,7 +59,7 @@ objects:
             value: '[200]'
           - name: DEFAULT_THEME_ATTRIBUTION_ONLINE_RESOURCE
             value: https://${ENVIRONMENT}/api/wms
-          image: docker-registry.default.svc:5000/${NAMESPACE}/permission-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/permission-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-permission-service
           ports:
@@ -80,5 +82,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

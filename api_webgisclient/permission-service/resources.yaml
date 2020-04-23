@@ -112,7 +112,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -120,7 +120,8 @@ objects:
   metadata:
     name: permission-service
     labels:
-      application: gdi
+      app: gdi
+      service: permission-service
   spec:
     tags:
     - from:
@@ -134,7 +135,8 @@ objects:
       kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
         up
     labels:
-      app: permission-service
+      service: permission-service
+      app: gdi
     name: permission-service
   spec:
     ports:
@@ -143,6 +145,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      app: permission-service
+      service: permission-service
     sessionAffinity: None
     type: ClusterIP

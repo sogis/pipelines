@@ -24,9 +24,20 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "2.0.8",
-               description: 'Bitte Version auswählen',
-               name: 'version'
+        string(defaultValue: "v2.0.8",
+               description: 'Bitte Basis Image Version auswählen',
+               name: 'vBaseImage'
+               )
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+               )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte Namespace auswählen',
+               name: 'namespace'
+               )
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
+               name: 'branch'
                )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
@@ -38,16 +49,18 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    version = params.version
+                    vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
                     build = params.build
-                    println version
+                    namespace = params.namespace
+                    branch = params.branch
                     }
                 }
             }
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources 'gdi-devel', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
                     }
                 }
             }
@@ -59,7 +72,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg GIT_VERSION=v${version} --build-arg SERVICE=rest_services/permission_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE=rest_services/permission_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }
@@ -70,19 +83,12 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage serviceName, version
+                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy permission-service in Test env') {
             steps {
-                script {
-                    openshift.withCluster() {
-                        openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "ENVIRONMENT=${environment}", "-p", "NAMESPACE=${namespace}" )
-                            deployImage serviceName, namespace, version, dcConfig
-                            }
-                        }
-                    }
+                deployImage serviceName, namespace, vDeployImage, repo
                 }
             }
         }

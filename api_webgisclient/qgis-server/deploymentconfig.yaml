@@ -8,6 +8,8 @@ parameters:
   - description: Openshift Namespace
     name: NAMESPACE
     value:
+  - description: Image Stream Tag
+    name: TAG
 labels:
   application: gdi
 objects:
@@ -18,13 +20,13 @@ objects:
       openshift.io/generated-by: OpenShiftWebConsole
     generation: 1
     labels:
-      app: qgis-server
+      service: qgis-server
+      app: gdi
     name: qgis-server
   spec:
     replicas: 0
     selector:
-      app: qgis-server
-      deploymentconfig: qgis-server
+      service: qgis-server
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -40,8 +42,8 @@ objects:
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
-          app: qgis-server
-          deploymentconfig: qgis-server
+          service: qgis-server
+          app: gdi
       spec:
         containers:
         - env:
@@ -51,7 +53,7 @@ objects:
             value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
             value: "2"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server
+          image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
           name: sogis-qgis-server
           ports:
@@ -85,5 +87,4 @@ objects:
             claimName: datensogispicmir-claim1
             readOnly: true
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

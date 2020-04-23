@@ -6,13 +6,17 @@ metadata:
     openshift.io/display-name: "Buildconfig for qgis-server"
     description: >-
       "Creates BuildConfig for qgis-server"
+parameters:
+  - description: branch to build
+    name: BRANCH
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
     labels:
-      app: qgis-server
+      service: qgis-server
+      app: gdi
     name: qgis-server
   spec:
     output:
@@ -22,7 +26,7 @@ objects:
     source:
       contextDir: docker/qgis-server
       git:
-        ref: release_so
+        ref: ${BRANCH}
         uri: https://git.sourcepole.ch/ktso/somap.git
       sourceSecret:
         name: deployso-at-gitlab

@@ -70,7 +70,8 @@ objects:
   kind: Secret
   metadata:
     labels:
-      application: gdi
+      app: gdi
+      service: qgis-server
     name: qgis-server-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
@@ -78,7 +79,8 @@ objects:
   metadata:
     name: qgis-server
     labels:
-      application: gdi
+      app: gdi
+      service: qgis-server
   spec:
     tags:
     - from:
@@ -92,7 +94,8 @@ objects:
       kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
         up
     labels:
-      app: qgis-server
+      service: qgis-server
+      app: gdi
     name: qgis-server
   spec:
     ports:
@@ -101,13 +104,15 @@ objects:
       protocol: TCP
       targetPort: 80
     selector:
-      app: qgis-server
+      service: qgis-server
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: qgs-resources-claim
+    labels:
+      app: gdi
   spec:
     accessModes:
     - ReadWriteOnce
@@ -119,6 +124,8 @@ objects:
   kind: PersistentVolumeClaim
   metadata:
     name: datensogispicmir-claim1
+    labels:
+      app: gdi
   spec:
     accessModes:
     - ReadOnlyMany

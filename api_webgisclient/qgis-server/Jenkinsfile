@@ -18,9 +18,16 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "2.0.8",
-               description: 'Bitte Version auswählen',
-               name: 'version'
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+               )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
+               name: 'branch'
                )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
@@ -32,16 +39,17 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    version = params.version
+                    vDeployImage = params.vDeployImage
                     build = params.build
-                    println version
+                    namespace = params.namespace
+                    branch = params.branch
                     }
                 }
             }
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources 'gdi-devel', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
                     }
                 }
             }
@@ -53,7 +61,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "--build-arg URL_PREFIX=/ows"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg URL_PREFIX=/ows"
                     }
                 }
             }
@@ -64,19 +72,12 @@ pipeline {
                     }
                 }    
             steps {
-                tagImage serviceName, version
+                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy qgis-server in Test env') {
             steps {
-                script {
-                    openshift.withCluster() {
-                        openshift.withProject(namespace) {
-                            def dcConfig = openshift.process( "${repo}/deploymentconfig.yaml", "-p", "NAMESPACE=${namespace}" )
-                            deployImage serviceName, namespace, version, dcConfig
-                            }
-                        }
-                    }
+                deployImage serviceName, namespace, vDeployImage, repo
                 }
             }
         }

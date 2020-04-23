@@ -6,13 +6,17 @@ metadata:
     openshift.io/display-name: "Buildconfig for print-service"
     description: >-
       "Creates BuildConfig for print-service"
+parameters:
+  - description: branch to build
+    name: BRANCH
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
     labels:
-      app: print-service
+      service: print-service
+      app: gdi
     name: print-service
   spec:
     output:
@@ -22,7 +26,7 @@ objects:
     source:
       contextDir: docker/wsgi-service
       git:
-        ref: release_so
+        ref: ${BRANCH}
         uri: https://git.sourcepole.ch/ktso/somap.git
       sourceSecret:
         name: deployso-at-gitlab

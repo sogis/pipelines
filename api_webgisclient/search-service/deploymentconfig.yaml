@@ -7,10 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Infrastructure Environment
     name: ENVIRONMENT
-    value:
+  - description: Image Stream Tag
+    name: TAG
 labels:
   application: gdi
 objects:
@@ -23,12 +23,13 @@ objects:
       kompose.version: 1.10.0 (8bb0907)
     generation: 1
     labels:
-      app: search-service
+      service: search-service
+      app: gdi
     name: search-service
   spec:
     replicas: 2
     selector:
-      app: search-service
+      service: search-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -42,7 +43,8 @@ objects:
     template:
       metadata:
         labels:
-          app: search-service
+          service: search-service
+          app: gdi
       spec:
         containers:
         - env:
@@ -56,7 +58,7 @@ objects:
             value: '25'
           - name: SOLR_SERVICE_URL
             value: http://solr-headless.solr-cloud-${ENVIRONMENT}:8983/solr/gdi/select
-          image: docker-registry.default.svc:5000/${NAMESPACE}/search-service
+          image: docker-registry.default.svc:5000/${NAMESPACE}/search-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-search-service
           ports:
@@ -79,5 +81,4 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
     test: false
-    triggers:
-    - type: ConfigChange
+    triggers: []

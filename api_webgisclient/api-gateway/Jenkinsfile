@@ -40,19 +40,19 @@ pipeline {
                     namespace = params.namespace
                     branch = params.branch
                     if ( namespace == 'gdi-test' ) {
-                      environment = test
-                      baseUrl = geo-t.so.ch
-                      wmtsUrl = geo-wmts-t
+                      environment = 'test'
+                      baseUrl = 'geo-t.so.ch'
+                      wmtsUrl = 'geo-wmts-t'
                       }
                     else if ( namespace == 'gdi-integration' ) {
-                      environment = integration
-                      baseUrl = geo-i.so.ch
-                      wmtsUrl = geo-wmts
+                      environment = 'integration'
+                      baseUrl = 'geo-i.so.ch'
+                      wmtsUrl = 'geo-wmts'
                       }
                     else if ( namespace == 'gdi' ) {
-                      environment = production
-                      baseUrl = geo.so.ch
-                      wmtsUrl = geo-wmts
+                      environment = 'production'
+                      baseUrl = 'geo.so.ch'
+                      wmtsUrl = 'geo-wmts'
                       }
                     else {
                       environment = test

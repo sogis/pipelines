@@ -7,8 +7,6 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-  - description: Infrastructure Environment
-    name: ENVIRONMENT
   - description: Image Stream Tag
     name: TAG
 labels:

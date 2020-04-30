@@ -39,17 +39,17 @@ pipeline {
                     build = params.build
                     namespace = params.namespace
                     branch = params.branch
-                    if (namespace='gdi-test') {
+                    if ( namespace == 'gdi-test' ) {
                       environment = test
                       baseUrl = geo-t.so.ch
                       wmtsUrl = geo-wmts-t
                       }
-                    else if (namespace='gdi-integration') {
+                    else if ( namespace == 'gdi-integration' ) {
                       environment = integration
                       baseUrl = geo-i.so.ch
                       wmtsUrl = geo-wmts
                       }
-                    else if (namespace='gdi') {
+                    else if ( namespace == 'gdi' ) {
                       environment = production
                       baseUrl = geo.so.ch
                       wmtsUrl = geo-wmts

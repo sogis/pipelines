@@ -98,7 +98,7 @@ pipeline {
             }
         stage ('Deploy ccc-config-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, "-p BASEURL=${baseUrl}
+                deployImage serviceName, namespace, vDeployImage, repo, "-p BASEURL=${baseUrl}"
                 }
             }
         }

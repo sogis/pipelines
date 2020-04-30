@@ -36,3 +36,24 @@ objects:
         kind: DockerImage
         name: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:latest
       name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: elevation-service
+      app: gdi 
+    name: elevation-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP 
+      targetPort: 9090
+    selector:
+      service: elevation-service
+    sessionAffinity: None
+    type: ClusterIP

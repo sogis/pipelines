@@ -14,3 +14,10 @@ Ausserdem ist ein Zugriff auf Jenkins für GDI/AGI externe Personen unproblemati
 
 Für jede Pipeline wird ein eigener Ordner angelegt. Dort befindet sich das Jenkinsfile, so wie alle für die Ausführung der Pipeline erforderlichen Files.
 Dies wären z.B. ImageStream Definitionen für erforderliche Custom Slaves, Secrets für Zugriffe auf geschützte Repos oder auch für einen Image Build erforderliche Dateien, sofern es dafür kein Applikationsrepository gibt bzw. diese dort nicht abgelegt werden können (Beispiel Konfigurationsdateien für extern entwickelte Software mit verschiedenen Usern).
+
+Dem von Jenkins genutzten ServiceAccount müssen die notwendigen Rechte gegeben werden um über die API in anderen Namespaces Anpassungen vorzunehmen.
+Dies macht man mit 
+```
+oc policy add-role-to-user edit system:serviceaccount:agi-apps-integration:jenkins -n gdi-devel
+```
+Hier werden bspw dem jenkins serviceaccount im namespace agi-apps-integration edit Rechte im Namespace gdi-devel gegeben.

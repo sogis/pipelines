@@ -55,9 +55,9 @@ pipeline {
                       wmtsUrl = 'geo-wmts'
                       }
                     else {
-                      environment = test
-                      baseUrl = geo-t.so.ch
-                      wmtsUrl = geo-wmts-t
+                      environment = 'test'
+                      baseUrl = 'geo-t.so.ch'
+                      wmtsUrl = 'geo-wmts-t'
                       }
                    }
                 }

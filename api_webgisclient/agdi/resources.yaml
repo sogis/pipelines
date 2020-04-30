@@ -190,6 +190,7 @@ objects:
     storageClassName: nfs
 - apiVersion: v1
   kind: PersistentVolumeClaim
+  metadata:
     name: qgs-resources-claim
     app: gdi
   spec:

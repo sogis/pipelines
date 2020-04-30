@@ -100,7 +100,7 @@ pipeline {
             }
         stage ('Deploy agdi in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}
+                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

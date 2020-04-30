@@ -1,0 +1,233 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-search-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for search-service"
+parameters:
+  - description: DB Server Url 
+    name: DB_SERVER
+    value:
+  - description: Geo DB Server
+    name: GEO_DB_SERVER
+    value:
+  - description: Pub DB
+    name: DB_PUB
+    value:
+  - description: Edit DB
+    name: DB_EDIT
+    value:
+  - description: Config DB
+    name: DB_CONFIG
+    value:
+  - description: Oereb DB
+    name: DB_OEREB
+    value:
+  - description: Sogis DB
+    name: DB_SOGIS
+    value:
+  - description: Pub DB
+    name: DB_PUB
+    value:
+  - description: DB User ogc_server
+    name: USER_OGC_SERVER
+    value:
+  - description: Password DB User ogc_server
+    name: PW_OGC_SERVER
+    value:
+  - description: DB User sogis_service
+    name: USER_SOGIS_SERVICE
+    value:
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+    value:
+  - description: DB User sogis_service_write
+    name: USER_SOGIS_SERVICE_WRITE
+    value:
+  - description: Password DB User sogis_service_write
+    name: PW_SOGIS_SERVICE_WRITE
+    value:
+  - description: Namespace
+    name: NAMESPACE
+  - description: Base Url of AGI GDI
+    name: BASEURL
+  - description: Url of the SES
+    name: IDP_URL
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_services_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE_WRITE}
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [soconfig_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_CONFIG}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_geodb]
+      host=${GEO_DB_SERVER}
+      port=5432
+      dbname=${DB_SOGIS}
+      user=mspublic
+      sslmode=disable
+
+      [sogis_edit]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_edit_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE_WRITE}
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [sogis_oereb]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_OEREB}
+      user=${USER_OGC_SERVER}
+      password=${PW_OGC_SERVER}
+      sslmode=require
+  kind: Secret
+  metadata:
+    labels:
+      app: gdi
+    name: wsgi-service-pg-config
+    namespace: ${NAMESPACE}
+- apiVersion: v1
+  data:
+    advanced_settings.json: |-
+      {
+        "security": {
+            "nameIdEncrypted": false,
+            "authnRequestsSigned": false,
+            "logoutRequestSigned": false,
+            "logoutResponseSigned": false,
+            "signMetadata": false,
+            "wantMessagesSigned": false,
+            "wantAssertionsSigned": false,
+            "wantNameId" : true,
+            "wantNameIdEncrypted": false,
+            "wantAssertionsEncrypted": false,
+            "metadataValidUntil": "2030-06-01T06:00:00Z",
+            "signatureAlgorithm": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+            "digestAlgorithm": "http://www.w3.org/2000/09/xmldsig#sha1"
+        },
+        "contactPerson": {
+            "technical": {
+                "givenName": "technical_name",
+                "emailAddress": "technical@example.com"
+            },
+            "support": {
+                "givenName": "support_name",
+                "emailAddress": "support@example.com"
+            }
+        },
+        "organization": {
+            "en-US": {
+                "name": "sp_test",
+                "displayname": "SP test",
+                "url": "http://sp.example.com"
+            }
+        }
+      }
+    settings.json: |
+      {
+        "strict": true,
+        "debug": true,
+        "sp": {
+            "entityId": "https://${BASEURL}/auth/metadata/",
+            "assertionConsumerService": {
+                "url": "https://${BASEURL}/auth/acs",
+                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            },
+            "singleLogoutService": {
+                "url": "https://${BASEURL}/auth/sls",
+                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+            },
+            "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+            "x509cert": "",
+            "privateKey": ""
+        },
+        "idp": {
+            "entityId": "https://${IDP_URL}:443/login/sls",
+            "singleSignOnService": {
+                "url": "https://${IDP_URL}:443/login/sls/auth",
+                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+            },
+            "singleLogoutService": {
+                "url": "https://${IDP_URL}:443/login/sls/slo",
+                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+            },
+            "x509certMulti": {
+                  "signing": [
+                      "MIIDmTCCAoGgAwIBAgIHAO0r2XNOhjANBgkqhkiG9w0BAQUFADCBjDEdMBsGA1UEAwwUU2VjdXJlIExvZ2luIFNlcnZpY2UxHDAaBgNVBAsME1NlY3VyZSBFbnRyeSBTZXJ2ZXIxIjAgBgNVBAoMGVVuaXRlZCBTZWN1cml0eSBQcm92aWRlcnMxDzANBgNVBAcMBlp1cmljaDELMAkGA1UECAwCWkgxCzAJBgNVBAYTAkNIMB4XDTE3MDIxNDExMjk0OFoXDTI4MDIxMjExMjk0OFowgYwxHTAbBgNVBAMMFFNlY3VyZSBMb2dpbiBTZXJ2aWNlMRwwGgYDVQQLDBNTZWN1cmUgRW50cnkgU2VydmVyMSIwIAYDVQQKDBlVbml0ZWQgU2VjdXJpdHkgUHJvdmlkZXJzMQ8wDQYDVQQHDAZadXJpY2gxCzAJBgNVBAgMAlpIMQswCQYDVQQGEwJDSDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANi4AYe3SrvCVUAxoTqRus17L9ZiTuFzNTbUL7uHraTCfPt4uwhMo3+cGdC0c4g9ZmpwCIUt4Vx6H4PLThta1foI/O1WFrXsME1LorARYovPTIninHoTx4MUGG+lORs58oF3U7nEi/sgrKe7bCjI47xCllrwQ6UqZlUGb628dmhVW5KoxrCJ6Hm1tp2XFF/ihdEQOYJkH5Pd68DRr+p68/GFypR6deRlSJ2miDrY8AM8Fmvqsba+P8eH9OhR2xpBCJceU42FJfy6dikZAFXMUEt4X4vKUs/yufor7G1iGfJKrlCxyq8vo1snGIL/8BcKN6fn/hADWneaLuUFOdwk1e0CAwEAATANBgkqhkiG9w0BAQUFAAOCAQEAnrEI3Jp0PbJdNgp7Yd0H0+VftGE21BexsWMrUoOyz7PDnB4GzsHe2NPR1W90XrDHffBoB0RcLtpCrt6Qb1wgav0I+4N+xjhzfNp9hiqPRmSopq/Xa73mIx3dF6vV3NtPYDjhecpJYghLytPoddfQl2deeag6OLYBYEtv3HTYYldeqAJ7e6rO0K78ikz2s2N4F9J4M9ZGW0wC4j2l8q1Z/yqx6dqfDTCMxcQVYq5dnX2ucVddZMgd1EZMjYqGFuC4HlESlOpWCmMKMQg9KbWiMP+Fc6iZmHGv3se4Wk5d5oAsysNkAPOtw9ZQsB3XE+e9NBdbbV1i8NZwJvqR0GXwZA==",
+                      "MIICkTCCAfqgAwIBAgIETa6dvjANBgkqhkiG9w0BAQUFADCBjDELMAkGA1UEBhMCQ0gxCzAJBgNVBAgTAlpIMQ8wDQYDVQQHEwZadXJpY2gxIjAgBgNVBAoTGVVuaXRlZCBTZWN1cml0eSBQcm92aWRlcnMxHDAaBgNVBAsTE1NlY3VyZSBFbnRyeSBTZXJ2ZXIxHTAbBgNVBAMTFFNlY3VyZSBMb2dpbiBTZXJ2aWNlMB4XDTExMDQyMDA4NDc1OFoXDTIxMDQxNzA4NDc1OFowgYwxCzAJBgNVBAYTAkNIMQswCQYDVQQIEwJaSDEPMA0GA1UEBxMGWnVyaWNoMSIwIAYDVQQKExlVbml0ZWQgU2VjdXJpdHkgUHJvdmlkZXJzMRwwGgYDVQQLExNTZWN1cmUgRW50cnkgU2VydmVyMR0wGwYDVQQDExRTZWN1cmUgTG9naW4gU2VydmljZTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAql3AFsYb6uJTSHWzjMgqbH6EZFG4UcBfg3lgadQXGo3C7lE2NUPCbj2nGHEEk0NWLnnYS7mmLu2Nxse1KJ0PBNRtfDMHN0Kp4NX5pDmcmd/0WQ+e4vu1AZGT6TEt/k03AZWalrazkgP7w0MvbqVGr825+6f2Eu9O8xDpVZbHdKsCAwEAATANBgkqhkiG9w0BAQUFAAOBgQBdrLGvbj8CejgSrWY1HULwB8oQsd8PSszxiGUOOK+S7IdcADnDmWWVtWlHduxBc48fj7/NlWfxxvjmXCmYXHCP66d3ipFK5D0brUkG2P0uaVy2+lI4FAynsgzMGAj/SSIRK/guIFX7NRrsLdzakJvMcL4/ntf7P2KtSlzI+V9KXA=="
+                  ]
+            }
+        }
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: gdi
+      service: auth-service
+    name: auth-service-config
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: auth-service
+    labels:
+      app: gdi
+      service: auth-service
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/${NAMESPACE}/auth-service:latest
+      name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: auth-service
+      app: gdi
+    name: auth-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      service: auth-service
+    sessionAffinity: None
+    type: ClusterIP

@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: auth-service
+  annotations:
+    description: "Creates deploymentConfig for auth-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Infrastructure Environment
+    name: ENVIRONMENT
+  - description: Image Stream Tag
+    name: TAG
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    generation: 1
+    labels:
+      service: auth-service
+      app: gdi
+    name: auth-service
+  spec:
+    replicas: 2
+    selector:
+      service: auth-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          service: auth-service
+          app: gdi
+      spec:
+        containers:
+        - env:
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          image: docker-registry.default.svc:5000/gdi/auth-service@sha256:3a06606b99bf0f23c6bb85f38381a966179af32241bc1e46400db1b916d63e97
+          imagePullPolicy: IfNotPresent
+          name: sogis-auth-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/www
+            name: wsgi-service-config-claim
+          - mountPath: /srv/somap/auth/auth_saml/saml
+            name: auth-service-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: .pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: settings.json
+              path: settings.json
+            - key: advanced_settings.json
+              path: advanced_settings.json
+            name: auth-service-config
+          name: auth-service-config-claim
+    test: false
+    triggers: []

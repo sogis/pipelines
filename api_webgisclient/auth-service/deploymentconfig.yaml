@@ -52,7 +52,7 @@ objects:
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
-          image: docker-registry.default.svc:5000/gdi/auth-service@sha256:3a06606b99bf0f23c6bb85f38381a966179af32241bc1e46400db1b916d63e97
+          image: docker-registry.default.svc:5000/${NAMESPACE}/auth-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-auth-service
           ports:

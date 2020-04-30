@@ -64,9 +64,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace}"
-                    }
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace}"
                 }
             }
         stage ('Build new Image for data-service if necessary') {
@@ -76,9 +74,7 @@ pipeline {
                     }
                 }
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", ""
-                    }
+                buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", ""
                 }
             }
         stage ('Tag Image for data-service') {

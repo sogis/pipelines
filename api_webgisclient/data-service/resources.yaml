@@ -128,3 +128,24 @@ objects:
         from:
           kind: DockerImage
           name: 'docker-registry.default.svc:5000/${NAMESPACE}/data-service:latest'
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: data-service
+      app: gdi 
+    name: data-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP 
+      targetPort: 9090
+    selector:
+      service: data-service
+    sessionAffinity: None
+    type: ClusterIP

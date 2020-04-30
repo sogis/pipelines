@@ -86,7 +86,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_MOUNTPOINT=/api/search/v2 --build-arg SERVICE=rest_services/solr_search_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_PACKAGES="python3-dev libxmlsec1-dev" --build-arg SERVICE=auth/auth_saml --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

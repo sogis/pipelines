@@ -34,5 +34,5 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: twalter/nginx:mainline-alpine
+          name: twalter/openshift-nginx:mainline-alpine
       type: Docker

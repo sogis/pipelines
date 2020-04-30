@@ -128,3 +128,24 @@ objects:
         kind: DockerImage
         name: docker-registry.default.svc:5000/${NAMESPACE}/document-service:latest
       name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: document-service
+      app: gdi 
+    name: document-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP 
+      targetPort: 9090
+    selector:
+      service: document-service
+    sessionAffinity: None
+    type: ClusterIP

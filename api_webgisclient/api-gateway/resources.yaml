@@ -13,7 +13,7 @@ parameters:
   - description: URL for GDI Environment
     name: BASEURL
   - description: WMTS URL
-    name: URL_WMTS
+    name: WMTS_URL
 objects:
 - apiVersion: v1
   data:
@@ -179,12 +179,12 @@ objects:
             proxy_pass http://landreg-service.${NAMESPACE}.svc;
         }
         location /api/wms-cache/ {
-            proxy_pass https://${URL_WMTS}.so.ch/mapcache/;
+            proxy_pass https://${WMTS_URL}.so.ch/mapcache/;
             proxy_set_header Host       $proxy_host;
         }
 
         location /api/wmts/ {
-            proxy_pass https://${URL_WMTS}.so.ch/mapcache/wmts/;
+            proxy_pass https://${WMTS_URL}.so.ch/mapcache/wmts/;
             proxy_set_header Host       $proxy_host;
         }
 

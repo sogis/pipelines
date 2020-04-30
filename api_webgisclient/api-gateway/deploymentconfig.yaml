@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: api-gateway
+  annotations:
+    description: "Creates deploymentConfig for api-gateway"
+labels:
+  application: gdi
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: ImageStream Tag
+    name: TAG
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    generation: 1
+    labels:
+      service: api-gateway
+      app: gdi
+    name: api-gateway
+  spec:
+    replicas: 2
+    selector:
+      service: api-gateway
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          service: api-gateway
+          app: gdi
+      spec:
+        containers:
+        - image: docker-registry.default.svc:5000/${NAMESPACE}/api-gateway:${TAG}
+          imagePullPolicy: IfNotPresent
+          name: sogis-api-gateway
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /etc/nginx/conf.d
+            name: nginx-config-claim
+          - mountPath: /geodata
+            name: datensogispicmir
+          - mountPath: /etc/nginx/certs
+            name: nginx-cert-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: nginx_os.conf
+              path: nginx.conf
+            name: nginx-config
+          name: nginx-config-claim
+        - name: nginx-cert-volume
+          secret:
+            defaultMode: 420
+            secretName: api-gateway-cert
+        - name: datensogispicmir
+          persistentVolumeClaim:
+            claimName: datensogispicmir-claim1
+            readOnly: true
+    test: false
+    triggers: []

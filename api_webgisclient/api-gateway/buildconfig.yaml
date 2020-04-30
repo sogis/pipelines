@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: build-api-gateway
+  annotations:
+    openshift.io/display-name: "Buildconfig for data-service"
+    description: >-
+      "Creates BuildConfig for data-service"
+parameters:
+  - description: branch to build
+    name: BRANCH
+    value:
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      service: api-gateway
+      app: gdi
+    name: api-gateway
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: api-gateway:latest
+    source:
+      contextDir: /
+      git:
+        ref: ${BRANCH}
+        uri: https://github.com/sogis/pipelines/api_webgisclient/api-gateway
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: twalter/nginx:mainline-alpine
+      type: Docker

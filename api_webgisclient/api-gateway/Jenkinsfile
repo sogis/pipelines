@@ -1,0 +1,100 @@
+def serviceName = 'api-gateway'
+def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+
+pipeline {
+    agent any 
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 10, unit: 'MINUTES')
+        }
+    parameters {
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+               )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte Namespace auswählen',
+               name: 'namespace'
+               )
+        string(defaultValue: "release_so",
+               description: 'Bitte Branch auswählen',
+               name: 'branch'
+               )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'     
+               )
+        }
+
+    stages {
+        stage ('Ask for Version') {
+            steps {
+                script {
+                    vDeployImage = params.vDeployImage
+                    build = params.build
+                    namespace = params.namespace
+                    branch = params.branch
+                    if ( namespace = 'gdi-test' ) {
+                      environment = test
+                      baseUrl = geo-t.so.ch
+                      wmtsUrl = geo-wmts-t
+                      }
+                    else if ( namespace = 'gdi-integration' ) {
+                      environment = integration
+                      baseUrl = geo-i.so.ch
+                      wmtsUrl = geo-wmts
+                      }
+                    else if ( namespace = 'gdi' ) {
+                      environment = production
+                      baseUrl = geo.so.ch
+                      wmtsUrl = geo-wmts
+                      }
+                    else {
+                      environment = test
+                      baseUrl = geo-t.so.ch
+                      wmtsUrl = geo-wmts-t
+                      }
+                   }
+                }
+            }
+        stage ('Configure Ressources') {
+            steps {
+                withCredentials ( credentials ) {
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace}"
+                    }
+                }
+            }
+        stage ('Build new Image for data-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }
+            steps {
+                withCredentials ( credentials ) {
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", ""
+                    }
+                }
+            }
+        stage ('Tag Image for data-service') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }    
+            steps {
+                tagImage serviceName, vDeployImage
+                }
+            }
+        stage ('Deploy data-service in Test env') {
+            steps {
+                deployImage serviceName, namespace, vDeployImage, repo
+                }
+            }
+        }
+    }

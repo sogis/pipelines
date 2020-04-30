@@ -25,10 +25,10 @@ objects:
         kind: ImageStreamTag
         name: api-gateway:latest
     source:
-      contextDir: /
+      contextDir: /api_webgisclient/api-gateway
       git:
         ref: ${BRANCH}
-        uri: https://github.com/sogis/pipelines/api_webgisclient/api-gateway
+        uri: https://github.com/sogis/pipelines.git
       type: Git
     strategy:
       dockerStrategy:

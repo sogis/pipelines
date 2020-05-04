@@ -19,7 +19,7 @@ objects:
   data:
     nginx_os.conf: |
       server {
-        listen 443 ssl;
+        listen 8081 ssl;
         server_name  localhost;
         ssl_certificate /etc/nginx/certs/tls.crt;
         ssl_certificate_key /etc/nginx/certs/tls.key;

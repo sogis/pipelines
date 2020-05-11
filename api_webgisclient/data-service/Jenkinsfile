@@ -62,6 +62,12 @@ pipeline {
                     }
                 }
             }
+        stage ('Create configs') {
+            agent ('config-generator-jenkins-slave')
+            steps {
+                echo "In jenkins slave"
+                }
+        }
         stage ('Build new Image for data-service if necessary') {
             when {
                 expression {

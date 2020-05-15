@@ -63,7 +63,7 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            agent { label 'jenkins-slave-python' }
+            agent { label 'config-generator-slave' }
             steps {
                 println "In jenkins slave"
                 }

@@ -65,7 +65,7 @@ pipeline {
         stage ('Create configs') {
             agent { label 'python-slave' }
             steps {
-                sh "python3 config-generator.py --help"
+                sh "python3 config_generator.py --help"
                 }
             }
         stage ('Build new Image for data-service if necessary') {

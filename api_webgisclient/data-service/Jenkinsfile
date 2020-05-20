@@ -65,7 +65,7 @@ pipeline {
         stage ('Create configs') {
             agent { label 'python-slave' }
             steps {
-                println "In jenkins slave"
+                sh "python3 config-generator.py --help"
                 }
             }
         stage ('Build new Image for data-service if necessary') {

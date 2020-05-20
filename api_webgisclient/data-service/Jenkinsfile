@@ -63,7 +63,7 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            agent { label 'evarga-jenkins-slave' }
+            agent { label 'python-slave' }
             steps {
                 println "In jenkins slave"
                 }

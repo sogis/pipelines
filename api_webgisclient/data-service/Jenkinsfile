@@ -82,7 +82,7 @@ pipeline {
                 withCredentials ( credentials ) {
                     sh """
                         if [ -d "qwc_services" ]; then 
-                          rm -rf qwc_services/* 
+                          rm -rf qwc_services/* rm -rf qwc_services/.git 
                         fi
                     """
                     sh "git clone https://github.com/sogis/qwc_services.git"

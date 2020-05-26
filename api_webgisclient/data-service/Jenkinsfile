@@ -69,7 +69,7 @@ pipeline {
                 sh "mkdir /tmp/workspace/data-service/legends"
                 sh "chown www-data:www-data /tmp/workspace/data-service/config /tmp/workspace/data-service/legends"
                 sh "PGSERVICEFILE=/var/www/.pg_service.conf python3 /srv/qwc_service/config_generator.py /srv/qwc_service/configGeneratorConfig.json service_configs"
-                stash includes: '/tmp/workspace/data-service/config', name: 'configFile'
+                stash includes: '/tmp/workspace/data-service/config/*', name: 'configFile'
                 sh "pwd"
                 }
             }

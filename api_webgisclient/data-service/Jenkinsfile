@@ -65,7 +65,7 @@ pipeline {
         stage ('Create configs') {
             agent { label 'python-slave' }
             steps {
-                sh "python3 /srv/qwc_service/config_generator.py --help"
+                sh "PGSERVICEFILE=/var/www/.pg_service.conf python3 /srv/qwc_service/config_generator.py ./configGeneraratorConfig.json service_configs"
                 }
             }
         stage ('Build new Image for data-service if necessary') {

@@ -79,7 +79,8 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    sh "git clone https://github.com/sogis/qwc_services.git"
+                    #buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }
                 }
             }

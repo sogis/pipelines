@@ -69,6 +69,7 @@ pipeline {
                 sh "mkdir /tmp/workspace/data-service/legends"
                 sh "chown www-data:www-data /tmp/workspace/data-service/config /tmp/workspace/data-service/legends"
                 sh "PGSERVICEFILE=/var/www/.pg_service.conf python3 /srv/qwc_service/config_generator.py /srv/qwc_service/configGeneratorConfig.json service_configs"
+                stash includes /tmp/workspace/data-service/config, name: 'configFile'
                 sh "pwd"
                 }
             }
@@ -86,7 +87,8 @@ pipeline {
                         fi
                     """
                     sh "git clone https://github.com/sogis/qwc_services.git"
-                    sh "cp /tmp/workspace/data-service/config/default/agdiConfig.json qwc_services"
+                    unstash 'configFile'
+                    sh "ls -la"
                     sh "pwd"
                     // buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_MOUNTPOINT=api/data/v1 --build-arg SERVICE=rest_services/data_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
                     }

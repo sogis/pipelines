@@ -69,9 +69,9 @@ pipeline {
                 sh "mkdir /tmp/workspace/data-service/legends"
                 sh "chown www-data:www-data /tmp/workspace/data-service/config /tmp/workspace/data-service/legends"
                 sh "PGSERVICEFILE=/var/www/.pg_service.conf python3 /srv/qwc_service/config_generator.py /srv/qwc_service/configGeneratorConfig.json service_configs"
-                sh "ls -la /tmp/workspace/data-service/config"
+                sh "ls -la /tmp/workspace/data-service"
                 sh "pwd"
-                stash allowEmpty: true, name: 'configFile'
+                stash allowEmpty: true, includes: config/**, name: 'configFile'
                 }
             }
         stage ('Build new Image for data-service if necessary') {

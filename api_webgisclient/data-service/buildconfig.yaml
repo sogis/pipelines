@@ -9,7 +9,8 @@ metadata:
 parameters:
   - description: branch to build
     name: BRANCH
-    value:
+  - description: tag of image
+    name: TAG
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -20,39 +21,20 @@ objects:
       app: gdi
     name: data-service
   spec:
+    failedBuildsHistoryLimit: 5
     output:
       to:
         kind: ImageStreamTag
-        name: data-service:latest
+        name: data-service:${TAG}
     source:
-      contextDir: docker/wsgi-service
+      contextDir: data-service
       git:
         ref: ${BRANCH}
-        uri: https://git.sourcepole.ch/ktso/somap.git
-      sourceSecret:
-        name: deployso-at-gitlab
+        uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
       dockerStrategy:
-        buildArgs:
-        - name: GIT_VERSION
-          value: v2.0.8
-        - name: SERVICE_MOUNTPOINT
-          value:
-        - name: SERVICE
-          value:
-        env:
-        - name: GIT_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: deployso-at-gitlab
-        - name: GIT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: deployso-at-gitlab
         from:
-          kind: DockerImage
-          name: ubuntu:16.04
+          kind: ImageStreamTag
+          name: qwc-data-service:${TAG}
       type: Docker

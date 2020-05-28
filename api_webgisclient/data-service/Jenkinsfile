@@ -93,7 +93,7 @@ pipeline {
                     sh "ls -la"
                     sh "pwd"
                     sh "cp config/default/* qwc_services/data-service"
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", ""
                     }
                 }
             }

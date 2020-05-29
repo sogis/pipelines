@@ -102,7 +102,6 @@ pipeline {
                     }
                     sh "ls -la qwc_services/data-service"
                     buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", ""
-                    sh "ls -la qwc-services/data-service"
                     }
                 }
             }

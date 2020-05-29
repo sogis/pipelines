@@ -95,6 +95,8 @@ pipeline {
                     sh "cp config/default/* qwc_services/data-service"
                     dir("qwc_services") {
                       sh "ls -la data-service"
+                      sh "git config user.email mpfeiffer1975@gmail.com"
+                      sh "git config user.name pfeimich"
                       sh "git add data-service/agdiConfig.json"
                       sh "git commit -m 'added file'"
                     }

@@ -94,6 +94,8 @@ pipeline {
                     sh "pwd"
                     sh "cp config/default/* qwc_services/data-service"
                     sh "cd qwc_services"
+                    sh "ls -la"
+                    sh "ls -la data-service"
                     sh "git add data-service/agdiConfig.json"
                     sh "git commit -m 'added file'"
                     sh "ls -la qwc_services/data-service"

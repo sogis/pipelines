@@ -29,7 +29,7 @@ objects:
     source:
       contextDir: data-service
       git:
-        ref: ${BRANCH}
+        ref: master
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:

@@ -1,4 +1,5 @@
 def serviceName = 'data-service'
+def configFileName = 'dataConfig'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -79,36 +80,8 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    sh """
-                        if [ -d "qwc_services" ]; then 
-                          rm -rf qwc_services/* rm -rf qwc_services/.git 
-                        fi
-                    """
-                    sh "git clone https://github.com/sogis/qwc_services.git"
-                    unstash 'configFile'
-                    sh "ls -la"
-                    sh "pwd"
-                    sh "cp config/default/* qwc_services/data-service"
-                    dir("qwc_services") {
-                      sh "ls -la data-service"
-                      sh "git config user.email mpfeiffer1975@gmail.com"
-                      sh "git config user.name pfeimich"
-                      sh "git add data-service/agdiConfig.json"
-                      sh "git commit -m 'added file'"
+                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", configFileName, ""
                     }
-                    sh "ls -la qwc_services/data-service"
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", ""
-                    }
-                }
-            }
-        stage ('Tag Image for data-service') {
-            when {
-                expression {
-                    (build == 'xxx')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage, namespace
                 }
             }
         stage ('Deploy data-service in Test env') {

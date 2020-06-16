@@ -36,5 +36,5 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: qwc-data-service:${TAG}
+          name: sourcepole/qwc-data-service:${TAG}
       type: Docker

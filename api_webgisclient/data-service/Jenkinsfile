@@ -67,6 +67,7 @@ pipeline {
             steps {
                 script {
                     createConfigs
+                    stash allowEmpty: true, includes: 'config/**', name: 'configFile'
                     }
                 }
             }

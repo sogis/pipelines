@@ -104,7 +104,7 @@ pipeline {
         stage ('Tag Image for data-service') {
             when {
                 expression {
-                    (build == 'ja')
+                    (build == 'xxx')
                     }
                 }    
             steps {

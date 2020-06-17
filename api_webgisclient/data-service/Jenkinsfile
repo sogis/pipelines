@@ -66,12 +66,10 @@ pipeline {
         stage ('Create configs') {
             agent { label 'python-slave' }
             steps {
-                script {
-                    createConfigs
-                    sh "pwd"
-                    sh "ls -la config"
-                    stash allowEmpty: true, includes: 'config/**', name: 'configFile'
-                    }
+                createConfigs([:])
+                sh "pwd"
+                sh "ls -la config"
+                stash allowEmpty: true, includes: 'config/**', name: 'configFile'
                 }
             }
         stage ('Build new Image for data-service if necessary') {

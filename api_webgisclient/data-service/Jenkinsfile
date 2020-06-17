@@ -68,6 +68,8 @@ pipeline {
             steps {
                 script {
                     createConfigs
+                    sh "pwd"
+                    sh "ls -la config"
                     stash allowEmpty: true, includes: 'config/**', name: 'configFile'
                     }
                 }
@@ -80,6 +82,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
+                    sh "pwd"
                     buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", configFileName, ""
                     }
                 }

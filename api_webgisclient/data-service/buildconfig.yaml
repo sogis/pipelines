@@ -9,8 +9,10 @@ metadata:
 parameters:
   - description: branch to build
     name: BRANCH
-  - description: tag of image
-    name: TAG
+  - description: tag of base image
+    name: BASETAG
+  - description: tag of deploy image
+    name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -25,7 +27,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: data-service:${TAG}
+        name: data-service:${DEPLOYTAG}
     source:
       contextDir: data-service
       git:
@@ -36,5 +38,5 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: sourcepole/qwc-data-service:${TAG}
+          name: sourcepole/qwc-data-service:${BASETAG}
       type: Docker

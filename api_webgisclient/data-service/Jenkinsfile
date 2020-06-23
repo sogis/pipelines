@@ -56,6 +56,11 @@ pipeline {
                 }
             }
         stage ('Create configs') {
+            when {
+               expression {
+                   (params.configs == true)
+                   }
+               }
             agent { label 'python-slave' }
             steps {
                 createConfigs([:])

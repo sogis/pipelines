@@ -34,10 +34,6 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
                )
-        string(defaultValue: "release_so",
-               description: 'Bitte Branch auswählen',
-               name: 'branch'
-               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -52,7 +48,6 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
-                    branch = params.branch
                     }
                 }
             }
@@ -67,8 +62,6 @@ pipeline {
             agent { label 'python-slave' }
             steps {
                 createConfigs([:])
-                sh "pwd"
-                sh "ls -la config"
                 stash allowEmpty: true, includes: 'config/**', name: 'configFile'
                 }
             }
@@ -80,8 +73,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    sh "pwd"
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch} -p TAG=${vDeployImage}", configFileName, ""
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, ""
                     }
                 }
             }

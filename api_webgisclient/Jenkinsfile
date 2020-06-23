@@ -15,7 +15,14 @@ pipeline {
                 }
             }
         }
-        
+        stage(create configs) {
+            agent { label 'python-slave' }
+            steps {
+                createConfigs([:])
+                stash allowEmpty: true, includes: 'config/**', name: 'configFile'
+                params.config = true
+                }
+            } 
         stage('Deploy Services') {
             parallel {
                 stage ('Deploy permission-service') {

@@ -34,7 +34,7 @@ pipeline {
                     }
                 stage ('Deploy data-service') {
                     steps {
-                        build job: 'data-service', parameters: [ string(name: 'version', value: "${version.version}"), string(name: 'qwcVersion', value: "${version.qwcVersion}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy dataproduct-service') {

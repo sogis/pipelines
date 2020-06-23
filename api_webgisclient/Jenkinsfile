@@ -15,7 +15,7 @@ pipeline {
                 }
             }
         }
-        stage(create configs) {
+        stage('create configs') {
             agent { label 'python-slave' }
             steps {
                 createConfigs([:])

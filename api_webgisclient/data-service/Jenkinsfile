@@ -39,11 +39,6 @@ pipeline {
 
     stages {
         stage ('Ask for Version') {
-            when {
-                expression {
-                    (!vBaseImage)
-                    }
-                }
             steps {
                 script {
                     vBaseImage = params.vBaseImage

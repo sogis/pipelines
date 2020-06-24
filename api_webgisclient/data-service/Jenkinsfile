@@ -58,7 +58,7 @@ pipeline {
         stage ('Create configs') {
             when {
                expression {
-                   (configs != true)
+                   (env.configs != true)
                    }
                }
             agent { label 'python-slave' }

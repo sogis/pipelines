@@ -64,7 +64,6 @@ pipeline {
             agent { label 'python-slave' }
             steps {
                 createConfigs([:])
-                stash allowEmpty: true, includes: 'config/**', name: 'configFile'
                 }
             }
         stage ('Build new Image for data-service if necessary') {

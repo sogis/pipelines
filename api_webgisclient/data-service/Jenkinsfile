@@ -58,12 +58,11 @@ pipeline {
         stage ('Create configs') {
             when {
                expression {
-                   (param.configs != true)
+                   (params.configs != true)
                    }
                }
             agent { label 'python-slave' }
             steps {
-                sh "printenv"
                 createConfigs([:])
                 }
             }

@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     createConfigs([:])
-                    stash allowEmpty: true, includes: 'config/**', name: 'configFile'
+                    stash allowEmpty: true, includes: '/srv/qwc_service/config/**', name: 'configFile'
                     params.config = true
                     }
                 }

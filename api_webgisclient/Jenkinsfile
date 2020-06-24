@@ -21,7 +21,6 @@ pipeline {
                 script {
                     createConfigs([:])
                     sh """ls -la /srv/qwc_service/config"""
-                    stash allowEmpty: true, includes: '/srv/qwc_service/config/**', name: 'configFile'
                     params.config = true
                     println "test"
                     }

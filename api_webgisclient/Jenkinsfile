@@ -7,9 +7,6 @@ pipeline {
         // set a timeout of 15 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
     }
-    environment {
-        configs = true
-        }
     stages {
         stage ('preamble') {
             steps {
@@ -47,7 +44,7 @@ pipeline {
                     }
                 stage ('Deploy data-service') {
                     steps {
-                        build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true
+                        build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), boolean(name: 'configs', value: true) ], wait: true, propagate: true
                         }
                     }
                 stage ('Deploy dataproduct-service') {

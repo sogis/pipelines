@@ -8,6 +8,7 @@ credentials = [
     usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
+    usernamePassword(credentialsId: 'pfeiffer michael-admin-edit-view'     , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',

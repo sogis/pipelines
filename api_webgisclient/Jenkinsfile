@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     createConfigs([:])
-                    stash allowEmpty: true, includes: 'config/**', name: 'configFile'
+                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                     sh """ls -la /srv/qwc_service/config"""
                     println "test"
                     }

@@ -50,7 +50,7 @@ pipeline {
                         buildNumber = params.buildNumber
                         }
                     else {
-                        buildNumber = $BUILD_NUMBER
+                        buildNumber = ${BUILD_NUMBER}
                         }
                     }
                 }

@@ -46,6 +46,12 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
+                    if (params.configs) {
+                        buildNumber = params.buildNumber
+                        }
+                    else {
+                        buildNumber = $BUILD_NUMBER
+                        }
                     }
                 }
             }
@@ -75,7 +81,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, ""
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, buildNumber, ""
                     }
                 }
             }

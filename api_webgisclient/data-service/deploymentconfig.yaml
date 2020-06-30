@@ -55,6 +55,8 @@ objects:
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
+          - name: SERVICE_MOUNTPOINT
+            value: "/api/data/v1"
           image: docker-registry.default.svc:5000/${NAMESPACE}/data-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-data-service

@@ -62,7 +62,7 @@ pipeline {
                     }
                 stage ('Deploy elevation-service') {
                     steps {
-                        build job: 'elevation-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        build job: 'elevation-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy featureinfo-service') {

@@ -23,38 +23,23 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: elevation-service:latest
+        name: elevation-service:${DEPLOYTAG}
     source:
-      contextDir: docker/qwc2-server-service
+      contextDir: elevation-service
       git:
-        ref: ${BRANCH}
-        uri: https://git.sourcepole.ch/ktso/somap.git
+        ref: master
+        uri: https://github.com/sogis/qwc_services.git
       sourceSecret:
         name: deployso-at-gitlab
       type: Git
     strategy:
       dockerStrategy:
         buildArgs:
-        - name: GIT_VERSION
-          value: v2.0.8
-        - name: SERVICE_MOUNTPOINT
-          value:
         - name: SERVICE
           value:
         - name: SERVICE_PACKAGES
           value:
-        env:
-        - name: GIT_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: deployso-at-gitlab
-        - name: GIT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: deployso-at-gitlab
         from:
           kind: DockerImage
-          name: ubuntu:16.04
+          name: sourcepole/qwc-elevation-service:${BASETAG}
       type: Docker

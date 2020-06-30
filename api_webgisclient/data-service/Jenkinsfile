@@ -48,9 +48,11 @@ pipeline {
                     namespace = params.namespace
                     if (params.configs) {
                         buildNumber = params.buildNumber
+                        jobName = params.jobName
                         }
                     else {
                         buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
                         }
                     }
                 }
@@ -81,7 +83,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, buildNumber, ""
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
                     }
                 }
             }

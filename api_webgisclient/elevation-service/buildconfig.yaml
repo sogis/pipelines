@@ -7,9 +7,10 @@ metadata:
     description: >-
       "Creates BuildConfig for elevation-service"
 parameters:
-  - description: branch to build
-    name: BRANCH
-    value:
+  - description: tag of base image
+    name: BASETAG
+  - description: tag of deploy image
+    name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig

@@ -87,16 +87,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image for elevation-service') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
-                }
-            }
         stage ('Deploy elevation-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo

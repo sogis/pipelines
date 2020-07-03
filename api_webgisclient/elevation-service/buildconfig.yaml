@@ -7,9 +7,10 @@ metadata:
     description: >-
       "Creates BuildConfig for elevation-service"
 parameters:
-  - description: branch to build
-    name: BRANCH
-    value:
+  - description: tag of base image
+    name: BASETAG
+  - description: tag of deploy image
+    name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -29,8 +30,6 @@ objects:
       git:
         ref: master
         uri: https://github.com/sogis/qwc_services.git
-      sourceSecret:
-        name: deployso-at-gitlab
       type: Git
     strategy:
       dockerStrategy:

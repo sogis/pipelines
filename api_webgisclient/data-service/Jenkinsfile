@@ -15,7 +15,7 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent any 
+    agent { label 'master' } 
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')

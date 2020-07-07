@@ -23,8 +23,6 @@ pipeline {
             steps {
                 script {
                     createConfigs([:])
-                    sh """ls -la /srv/qwc_service/config"""
-                    println "test"
                     }
                 }
             } 

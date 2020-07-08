@@ -90,17 +90,9 @@ pipeline {
                     }
                 }
             steps {
-                buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc_service --build-arg ANALYTICS_URL=//${analyticsUrl}/analytics"
-                }
-            }
-        stage ('Tag Image for qwc-service') {
-            when {
-                expression {
-                    (build == 'ja')
+                withCredentials ( credentials ) {
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc_service --build-arg ANALYTICS_URL=//${analyticsUrl}/analytics"
                     }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy qwc-service in Test env') {

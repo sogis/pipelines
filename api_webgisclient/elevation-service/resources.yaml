@@ -21,7 +21,7 @@ objects:
     - ReadOnlyMany
     resources:
       requests:
-        storage: 500Gi
+        storage: 5000Gi
     storageClassName: nfs
 - apiVersion: v1
   kind: ImageStream

@@ -57,6 +57,8 @@ objects:
             value: "True"
           - name: SERVICE_MOUNTPOINT
             value: "/api/data/v1"
+          - name: CONFIG_PATH
+            value: "/srv/qwc_service/config"
           image: docker-registry.default.svc:5000/${NAMESPACE}/data-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-data-service

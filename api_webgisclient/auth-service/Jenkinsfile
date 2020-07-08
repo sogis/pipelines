@@ -99,7 +99,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_PACKAGES='python3-dev libxmlsec1-dev' --build-arg SERVICE=auth/auth_saml"
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_PACKAGES='python3-dev libxmlsec1-dev' --build-arg SERVICE=auth/auth_saml"
                     }
                 }
             }

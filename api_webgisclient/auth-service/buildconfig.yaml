@@ -40,5 +40,5 @@ objects:
           value:
         from:
           kind: DockerImage
-          name: sourcepole/qwc-auth-service:${BASETAG}
+          name: sourcepole/sogis-auth-service:${BASETAG}
       type: Docker

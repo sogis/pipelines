@@ -78,6 +78,8 @@ objects:
             value: "80"
           - name: SERVICE_MOUNTPOINT
             value: /map
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
           image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-qwc-service

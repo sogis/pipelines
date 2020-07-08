@@ -93,6 +93,11 @@ pipeline {
                 withCredentials ( credentials ) {
                     buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc_service --build-arg ANALYTICS_URL=//${analyticsUrl}/analytics"
                     }
+                script {
+                    sh """ 
+                        sed -i "s|geo-i.so.ch/analytics|geo.so.ch/analytics|" $appName/index.html
+                    """
+                    }
                 }
             }
         stage ('Deploy qwc-service in Test env') {

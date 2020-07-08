@@ -24,3 +24,10 @@ oc label secret github-secret credential.sync.jenkins.openshift.io=true
 * Now the secret should be available in Jenkins as a global credential
 
 For further information see https://docs.openshift.com/container-platform/3.11/using_images/other_images/jenkins.html#sync-plug-in
+
+## First setup of the openshift environment
+
+If you setup the environment for SO!API and Web GIS Client you must first create the necessary PVCs. Please use pvc_resources.yaml to create them. 
+The Persistent volumes are not part of the pipeline because they are created by the AIO in the environment of the Canton of Solothurn. They are created as nfs storage and are immutable after creation.
+Though in the pipeline oc apply would fail with an error.
+

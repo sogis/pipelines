@@ -11,19 +11,6 @@ parameters:
     value: gdi-devel
 objects:
 - apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: datensogispicmir-claim1
-    labels:
-      app: gdi
-  spec:
-    accessModes:
-    - ReadOnlyMany
-    resources:
-      requests:
-        storage: 5000Gi
-    storageClassName: nfs
-- apiVersion: v1
   kind: ImageStream
   metadata:
     name: elevation-service

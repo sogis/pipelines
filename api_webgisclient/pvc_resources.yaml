@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: pvc-ressources
+  annotations:
+    description: >-
+      "Creates necessary persistent volume claims for SO!API and Web GIS Client"
+parameters:
+  - description: Namespace
+    name: NAMESPACE
+    value: gdi-devel
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: datensogispicmir-claim1
+    labels:
+      app: gdi
+  spec:
+    accessModes:
+    - ReadOnlyMany
+    resources:
+      requests:
+        storage: 5000Gi
+    storageClassName: nfs
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: qwc-assets-claim
+    labels:
+      service: qwc-service
+      app: gdi
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: nfs

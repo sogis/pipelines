@@ -31,10 +31,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        string(defaultValue: "geo-i.so.ch",
-               description: "Matomo Url",
-               name: 'analyticsUrl'
-               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     

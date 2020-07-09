@@ -45,7 +45,7 @@ objects:
           - name: AUTH_SERVICE_URL
             value: /auth/
           - name: DATA_SERVICE_URL
-            value: /api/v1/data/
+            value: /api/data/v1/
           - name: ELEVATION_SERVICE_URL
             value: /elevation/
           - name: INFO_SERVICE_URL

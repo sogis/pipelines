@@ -63,7 +63,7 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
-          - mountPath: /srv/somap/auth/auth_saml/saml
+          - mountPath: /srv/qwc_service/saml
             name: auth-service-config-claim
         dnsPolicy: ClusterFirst
         restartPolicy: Always

@@ -7,13 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Base Url of consumed services
     name: BASEURL
-    value:
   - description: ImageStream Tag
     name: TAG
-    value:
 labels:
   application: gdi
 objects:
@@ -53,8 +50,10 @@ objects:
             value: "True"
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc/
+          - name: SERVICE_MOUNTPOINT
+            value: /api/dataproduct/v1
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
           - name: WMS_SERVICE_URL
             value: https://${BASEURL}.so.ch/api/wms
           - name: QGS_RESOURCES_DIR

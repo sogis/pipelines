@@ -26,7 +26,7 @@ objects:
         kind: ImageStreamTag
         name: ccc-config-service:${DEPLOYTAG}
     source:
-      contextDir: ccc-service
+      contextDir: ccc-config-service
       git:
         ref: master
         uri: https://github.com/sogis/qwc_service.git

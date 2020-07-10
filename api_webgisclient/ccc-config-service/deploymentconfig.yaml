@@ -48,84 +48,12 @@ objects:
       spec:
         containers:
           - env:
-            - name: CCC_CLIENT_CONFIG
-              value: >-
-                {
-                  "baugk": {
-                    "cccServer": "wss://${BASEURL}/ccc-service",
-                    "title": "BauGK - GIS",
-                    "map": "baugk",
-                    "editGeomType": "Point",
-                    "notifyLayers": [
-                      {
-                        "layer": "ch.so.afu.baugk.ccccache",
-                        "mapping": {
-                          "laufnummer": "geschaeft_laufnr"
-                        }
-                      }
-                    ],
-                    "notifyLinkTitle": "In Axioma anzeigen"
-                  },
-                  "uplus_anlage": {
-                    "cccServer": "wss://${BASEURL}/ccc-service",
-                    "title": "Umweltplus - GIS",
-                    "map": "ews",
-                    "editGeomType": "Point",
-                    notifyLayers": [
-                      {
-                        "layer": "ch.so.afu.erdwaerme.uplus.anlage",
-                        "mapping": {
-                          "anlage_uuid": "uplus_anlage"
-                        }
-                      }
-                    ],
-                    "notifyLinkTitle": "In Umweltplus anzeigen"
-                  },
-                  "uplus_tank":{
-                    "cccServer": "wss://${BASEURL}/ccc-service",
-                    "title": "Umweltplus - GIS",
-                    "map": "uplus_tank",
-                    "editGeomType":"Point",
-                    "notifyLayers": [
-                      {
-                        "layer": "ch.so.afu.uplus.tank",
-                        "mapping":{
-                          "anlage_uuid": "uplus_anlage"
-                        }
-                      }
-                    ],
-                    "notifyLinkTitle": "In Umweltplus anzeigen"
-                  },
-                  "uplus_luft":{
-                    "cccServer": "wss://${BASEURL}/ccc-service",
-                    "title": "Umweltplus - GIS",
-                    "map": "uplus_luft",
-                    "editGeomType":"Point",
-                    "notifyLayers": [
-                      {
-                        "layer": "ch.so.afu.uplus.luft_anlage",
-                        "mapping":{
-                          "anlage_uuid": "uplus_anlage"
-                        }
-                      },
-                      {
-                        "layer": "ch.so.afu.uplus.luft_betrieb",
-                        "mapping":{
-                          "betrieb_uuid": "uplus_betrieb"
-                        }
-                      }
-                    ],
-                    "notifyLinkTitle": "In Umweltplus anzeigen"
-                  }
-                }
             - name: CCC_ZOOMTO_DATA_SERVICE_URL
               value: 'http://data-service.${NAMESPACE}.svc'
-            - name: CCC_ZOOMTO_CONFIG
-              value: >-
-                { "PriorityLocator": [{ "dataset": "ch.so.agi.av.grundstuecke.rechtskraeftig",
-                "filter": [["nbident", "=", "{grundbuch_nbident}"], "and", ["nummer", "=", "{parzelle_nr}"]] },
-                { "dataset": "ch.so.agi.gemeindegrenzen",
-                "filter": [["bfs_gemeindenummer", "=", "{bfs}"]] }] }
+            - name: CONFIG_PATH
+              value: "/srv/qwc_service/config"
+            - name: SERVICE_MOUNTPOINT
+              value: "/api/v1/ccc"
             image: >-
               docker-registry.default.svc:5000/${NAMESPACE}/ccc-config-service:${TAG}
             imagePullPolicy: Always

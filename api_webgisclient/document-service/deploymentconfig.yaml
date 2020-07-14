@@ -58,7 +58,7 @@ objects:
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
           - name: JASPER_TIMEOUT
-            value: "1200"
+            value: 1200
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT

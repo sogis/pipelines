@@ -59,6 +59,10 @@ objects:
             value: "True"
           - name: JASPER_TIMEOUT
             value: "1200"
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/document
           image: docker-registry.default.svc:5000/${NAMESPACE}/document-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-document-service

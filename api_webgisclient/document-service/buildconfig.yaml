@@ -7,9 +7,10 @@ metadata:
     description: >-
       "Creates BuildConfig for document-service"
 parameters:
-   - description: branch to build
-     name: BRANCH
-     value:
+   - description: tag of base image
+     name: BASETAG
+   - description: tag of deploy image
+     name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -23,36 +24,18 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: document-service:latest
+        name: document-service:${DEPLOYTAG}
     source:
-      contextDir: docker/wsgi-service
+      contextDir: document-service
       git:
-        ref: ${BRANCH}
-        uri: https://git.sourcepole.ch/ktso/somap.git
+        ref: master
+        uri: https://github.com/sogis/qwc_service.git
       sourceSecret:
         name: deployso-at-gitlab
       type: Git
     strategy:
       dockerStrategy:
-        buildArgs:
-        - name: GIT_VERSION
-          value: v2.0.8
-        - name: SERVICE_MOUNTPOINT
-          value:
-        - name: SERVICE
-          value:
-        env:
-        - name: GIT_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: deployso-at-gitlab
-        - name: GIT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: deployso-at-gitlab
         from:
           kind: DockerImage
-          name: ubuntu:16.04
+          name: sourcepole/qwc-document-service:${BASETAG}
       type: Docker

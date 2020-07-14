@@ -7,13 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Application Environment
     name: ENVIRONMENT
-    value:
   - description: "Image Stream Tag"
     name: TAG
-    value:
 labels:
   application: gdi
 objects:
@@ -50,8 +47,6 @@ objects:
       spec:
         containers:
         - env:
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc/
           - name: QGIS_SERVER_URL
             value: http://qgis-server.${NAMESPACE}.svc/ows
           - name: JWT_SECRET_KEY
@@ -62,6 +57,10 @@ objects:
             value: de_ch.utf-8
           - name: HEATDRILL_SERVICE_URL
             value: http://heatdrill-service.agi-apps-${ENVIRONMENT}/service
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/featureinfo
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
           image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-featureinfo-service

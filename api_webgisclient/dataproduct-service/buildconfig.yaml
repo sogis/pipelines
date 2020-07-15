@@ -29,7 +29,7 @@ objects:
       contextDir: dataproduct-service
       git:
         ref: master
-        uri: https://github.com/sogis/qwc_service.git
+        uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
       dockerStrategy:

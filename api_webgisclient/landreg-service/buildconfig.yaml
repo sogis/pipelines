@@ -37,5 +37,5 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: sogis-landreg-service:${BASETAG}
+          name: sourcepole/sogis-landreg-service:${BASETAG}
       type: Docker

@@ -7,13 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Base Url of consumed services
     name: BASEURL
-    value:
   - description: Image Stream Tag
     name: TAG
-    value:
 labels:
   application: gdi
 objects:
@@ -30,7 +27,7 @@ objects:
       app: gdi
     name: ogc-service
   spec:
-    replicas: 0
+    replicas: 1
     selector:
       service: ogc-service
     strategy:
@@ -51,8 +48,6 @@ objects:
       spec:
         containers:
         - env:
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc
           - name: QGIS_SERVER_URL
             value: http://qgis-server.${NAMESPACE}.svc/ows/
           - name: JWT_SECRET_KEY
@@ -64,7 +59,11 @@ objects:
           - name: WMS_SERVICE_URL
             value: https://${BASEURL}.so.ch/api/wms
           - name: WFS_SERVICE_URL
-            value: https://geo-t.so.ch/api/wfs
+            value: https://${BASEURL}/api/wfs
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/ogc
           image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

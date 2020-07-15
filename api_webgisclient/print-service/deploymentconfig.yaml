@@ -47,14 +47,16 @@ objects:
       spec:
         containers:
         - env:
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc
           - name: QGIS_SERVER_URL
             value: http://qgis-server.${NAMESPACE}.svc/ows/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/print
           image: docker-registry.default.svc:5000/${NAMESPACE}/print-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-print-service

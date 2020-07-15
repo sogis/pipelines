@@ -65,7 +65,7 @@ objects:
 
       [sogis_services_write]
       host=${DB_SERVER}
-      port=5432
+      port=5433
       dbname=${DB_PUB}
       user=${USER_SOGIS_SERVICE_WRITE}
       password=${PW_SOGIS_SERVICE_WRITE}

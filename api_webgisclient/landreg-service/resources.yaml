@@ -27,9 +27,6 @@ parameters:
   - description: Sogis DB
     name: DB_SOGIS
     value:
-  - description: Pub DB
-    name: DB_PUB
-    value:
   - description: DB User ogc_server
     name: USER_OGC_SERVER
     value:
@@ -65,7 +62,7 @@ objects:
 
       [sogis_services_write]
       host=${DB_SERVER}
-      port=5433
+      port=5432
       dbname=${DB_PUB}
       user=${USER_SOGIS_SERVICE_WRITE}
       password=${PW_SOGIS_SERVICE_WRITE}

@@ -7,10 +7,8 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Image Stream Tag
     name: TAG
-    value:
 labels:
   application: gdi
 objects:
@@ -47,7 +45,12 @@ objects:
           app: gdi
       spec:
         containers:
-        - image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service:${TAG}
+        - env:
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/permalink
+          image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-permalink-service
           ports:

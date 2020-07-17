@@ -91,7 +91,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_MOUNTPOINT=/map --build-arg SERVICE=qwc_service --build-arg ANALYTICS_URL=//${analyticsUrl}/analytics"
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
                     }
                 }
             }

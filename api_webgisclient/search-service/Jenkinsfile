@@ -99,16 +99,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image for search-service') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
-                }
-            }
         stage ('Deploy search-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"

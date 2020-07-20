@@ -26,7 +26,7 @@ objects:
         kind: ImageStreamTag
         name: search-service:${DEPLOYTAG}
     source:
-      contextDir: docker/wsgi-service
+      contextDir: search-service
       git:
         ref: master
         uri: https://github.com/sogis/qwc_services.git

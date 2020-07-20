@@ -48,8 +48,6 @@ objects:
       spec:
         containers:
         - env:
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
@@ -58,6 +56,10 @@ objects:
             value: '25'
           - name: SOLR_SERVICE_URL
             value: http://solr-headless.solr-cloud-${ENVIRONMENT}:8983/solr/gdi/select
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/search/v2
           image: docker-registry.default.svc:5000/${NAMESPACE}/search-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-search-service

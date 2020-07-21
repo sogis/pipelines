@@ -54,7 +54,7 @@ pipeline {
                     else {
                       analyticsUrl = 'geo-i.so.ch'
                       }
-                    if (params.config) {
+                    if (params.containsKey("configs")) {
                         println "config"
                         println params.buildNumber
                         buildNumber = params.buildNumber

@@ -43,7 +43,7 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
-                    if (params.configs) {
+                    if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
                         }

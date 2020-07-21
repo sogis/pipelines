@@ -59,7 +59,7 @@ pipeline {
                       environment = 'test'
                       }
 
-                    if (params.config) {
+                    if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
                         }

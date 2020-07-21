@@ -62,7 +62,7 @@ pipeline {
                       baseUrl = 'geo-t.so.ch'
                       idpUrl = 'idp-t.so.ch'
                       }
-                    if (params.config) {
+                    if (params.containsKey("config")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
                         }

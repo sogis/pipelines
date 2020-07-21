@@ -1,24 +1,21 @@
 def serviceName = 'plotinfo-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def namespace = 'gdi-devel'
-def baseurl = 'geo-t'
+def configFileName = 'plotinfoConfig.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
 credentials = [
-    usernamePassword(credentialsId: 'agi-apps-test-github-secret'          , usernameVariable: 'githubUser'              , passwordVariable: 'githubPwd'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
-    usernamePassword(credentialsId: 'agi-apps-test-gitlab-sourcepole'      , usernameVariable: 'gitlabUser'              , passwordVariable: 'gitlabPwd'),
-    usernamePassword(credentialsId: 'agi-apps-test-gitlab-sourcepole-token', usernameVariable: 'gitlabTokenUser'         , passwordVariable: 'gitlabToken')
+    usernamePassword(credentialsId: 'jenkins-api'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent any 
+    agent { label 'master' }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')
@@ -35,10 +32,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        string(defaultValue: "release_so",
-               description: 'Bitte Branch auswählen',
-               name: 'branch'
-               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -53,7 +46,26 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
-                    branch = params.branch
+                    if ( namespace == 'gdi-test' ) {
+                      baseUrl = 'geo-t.so.ch'
+                      }
+                    else if ( namespace == 'gdi-integration' ) {
+                      baseUrl = 'geo-i.so.ch'
+                      }
+                    else if ( namespace == 'gdi' ) {
+                      baseUrl = 'geo.so.ch'
+                      }
+                    else {
+                      baseUrl = 'geo-t.so.ch'
+                      }
+                    if (params.config) {
+                        buildNumber = params.buildNumber
+                        jobName = params.jobName
+                        }
+                    else {
+                        buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
+                        }
                     }
                 }
             }
@@ -64,6 +76,17 @@ pipeline {
                     }
                 }
             }
+        stage ('Create configs') {
+            when {
+               expression {
+                   (params.configs != true)
+                   }
+               }
+            agent { label 'python-slave' }
+            steps {
+                createConfigs([:])
+                }
+            }
         stage ('Build new Image for plotinfo-service if necessary') {
             when {
                 expression {
@@ -72,23 +95,13 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg GIT_VERSION=${vBaseImage} --build-arg SERVICE_MOUNTPOINT=/api/v1/plotinfo --build-arg SERVICE=rest_services/plotinfo_service --env GIT_TOKEN=${gitlabToken} --env GIT_PASSWORD=${gitlabPwd}"
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", ""
                     }
-                }
-            }
-        stage ('Tag Image for plotinfo-service') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
                 }
             }
         stage ('Deploy plotinfo-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo
+                deployImage serviceName, namespace, vDeployImage, repo, "-p BASEURL=${baseUrl}"
                 }
             }
         }

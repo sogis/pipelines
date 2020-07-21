@@ -7,10 +7,8 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Basis Url für benutzte Dienste
     name: BASEURL
-    value:
   - description: Image Stream Tag
     name: TAG
 labels:

@@ -55,6 +55,8 @@ pipeline {
                       analyticsUrl = 'geo-i.so.ch'
                       }
                     if (params.config) {
+                        println "config"
+                        println params.buildNumber
                         buildNumber = params.buildNumber
                         jobName = params.jobName
                         }

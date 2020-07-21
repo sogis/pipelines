@@ -70,6 +70,10 @@ objects:
             value: siehe keepass
           - name: HIDE_OWNER_ADRESSES
             value: "True"
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/plotinfo
           image: docker-registry.default.svc:5000/${NAMESPACE}/plotinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-plotinfo-service

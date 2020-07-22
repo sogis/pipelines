@@ -70,8 +70,9 @@ pipeline {
                 }
             steps {
                 script {
-                    sh """                    
-                       println "test"
+                    sh """   
+                       oc process -f https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/api-gateway/buildconfig.yaml -p DEPLOYTAG=2.0.9 | oc apply -n gdi-devel -f- 
+                       oc start-build api-gateway -n gdi-devel --wait
                     """
                     }
                 }

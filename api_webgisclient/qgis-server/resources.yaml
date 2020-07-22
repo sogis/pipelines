@@ -107,29 +107,3 @@ objects:
       service: qgis-server
     sessionAffinity: None
     type: ClusterIP
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: qgs-resources-claim
-    labels:
-      app: gdi
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 5Gi
-    storageClassName: nfs
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: datensogispicmir-claim1
-    labels:
-      app: gdi
-  spec:
-    accessModes:
-    - ReadOnlyMany
-    resources:
-      requests:
-        storage: 5Gi
-    storageClassName: nfs

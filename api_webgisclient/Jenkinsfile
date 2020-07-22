@@ -28,17 +28,22 @@ pipeline {
             } 
         stage('Deploy Services') {
             parallel {
+                  stage ('Deploy agdi') {
+                    steps {
+                        build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        }
+                     }
 /*                stage ('Deploy qwc-service') {
                     steps {
                         build job: 'qwc-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
-                    } */
+                    }
                 stage ('Deploy qgis-server') {
                     steps {
                         build job: 'qgis-server', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
-/*                stage ('Deploy data-service') {
+                stage ('Deploy data-service') {
                     steps {
                         build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true
                         }

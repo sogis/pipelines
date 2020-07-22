@@ -58,6 +58,10 @@ objects:
             value: 255,255,0,119
           - name: SOLR_UPDATE_URL
             value: http://indexupdater.solr-cloud-${ENVIRONMENT}.svc/queue?ds=foreground,background&dih=solr/gdi/dih_metadata
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /agdi
           image: docker-registry.default.svc:5000/${NAMESPACE}/agdi:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-agdi

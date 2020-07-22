@@ -10,7 +10,7 @@ parameters:
   - description: tag of base image
     name: BASETAG
   - description: tag of deploy image
-    value: DEPLOYTAG
+    name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig

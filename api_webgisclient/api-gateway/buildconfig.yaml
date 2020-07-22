@@ -7,9 +7,10 @@ metadata:
     description: >-
       "Creates BuildConfig for data-service"
 parameters:
-  - description: branch to build
-    name: BRANCH
-    value:
+  - description: tag of base image
+    name: BASETAG
+  - description: tag of deploy image
+    name: DEPLOYTAG
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -23,16 +24,16 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: api-gateway:latest
+        name: api-gateway:${DEPLOYTAG}
     source:
-      contextDir: /api_webgisclient/api-gateway
+      contextDir: api-gateway
       git:
-        ref: ${BRANCH}
-        uri: https://github.com/sogis/pipelines.git
+        ref: master
+        uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: twalter/openshift-nginx:mainline-alpine
+          name: twalter/openshift-nginx:mainline-alpine:${BASETAG}
       type: Docker

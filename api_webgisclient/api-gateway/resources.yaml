@@ -68,8 +68,8 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location ~ /docs/(ch.so.arp.nutzungsvereinbarungen|ch.so.afu.altlasten) {
-            alias /geodata/documents/$1;
+        location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.afu\.altlasten|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
+            alias /geodata/documents/$1/$2;
             autoindex off;
         }
 
@@ -81,6 +81,11 @@ objects:
         location ~ /geodata/ch.swisstopo.lk(.*) {
             allow 193.135.87.0/24;
             deny all;
+        }
+
+        location ~ ^/geodata/ch.so.agi.lidar_2019.ept/(ept-data)/(.*)$ {
+            alias /geodata/geodata/ch.so.agi.lidar_2019.ept/$1/$2;
+            autoindex off;
         }
 
         location /geodata {

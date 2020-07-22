@@ -27,7 +27,9 @@ pipeline {
                 }
             } 
         stage('get requirements') {
-            unstash 'requirements'
+            steps {
+                unstash 'requirements'
+                }
             }
         stage('Deploy Services') {
             parallel {

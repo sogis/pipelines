@@ -1,7 +1,5 @@
 def serviceName = 'jasper-reporting-service'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def namespace = 'gdi-devel'
-def environment = 'test'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -26,21 +24,10 @@ pipeline {
                description: 'Bitte Basis Image Version auswählen',
                name: 'vBaseImage'
                )
-        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
-               name: 'vDeployImage'
-              )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
               )
-        string(defaultValue: "release_so",
-               description: 'Bitte Branch auswählen',
-               name: 'branch'
-              )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'     
-               )
         }
 
     stages {
@@ -48,10 +35,7 @@ pipeline {
             steps {
                 script {
                     vBaseImage = params.vBaseImage
-                    vDeployImage = params.vDeployImage
                     build = params.build
-                    namespace = params.namespace
-                    branch = params.branch
                     }
                 }
             }
@@ -61,32 +45,8 @@ pipeline {
                     configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
                     }
                 }
-            }
-        stage ('Build new Image for jasper-reporting-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", "--build-arg JASPER_REPORTING_VERSION=0.5.1"
-                    }
-                }
-            }
-        stage ('Tag Image for jasper-reporting-service') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
-                }
-            }
-        stage ('Deploy jasper-reporting-service in Test env') {
-            steps {
-                deployImage serviceName, namespace, vDeployImage, repo
+                serviceName, namespace, vBaseImage, repo
                 }
             }
         }

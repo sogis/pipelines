@@ -7,13 +7,8 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
-  - description: Application Environment
-    name: ENVIRONMENT
-    value:
   - description: "Image Stream Tag"
     name: TAG
-    value:
 labels:
   application: gdi
 objects:

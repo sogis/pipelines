@@ -14,16 +14,15 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
+        string(description: 'Bitte Basis Image Version auswählen',
+               name: 'vBaseImage'
+               )
         string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
                name: 'vDeployImage'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
-               )
-        string(defaultValue: "release_so",
-               description: 'Bitte Branch auswählen',
-               name: 'branch'
                )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
@@ -35,10 +34,10 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
+                    vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
-                    branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
@@ -74,17 +73,10 @@ pipeline {
                     }
                 }
             steps {
-                buildImage serviceName, repo, namespace, "-p BRANCH=${branch}", ""
-                }
-            }
-        stage ('Tag Image for data-service') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }    
-            steps {
-                tagImage serviceName, vDeployImage
+                sh """   
+                   oc process -f $repo/buildconfig.yaml -p BASETAG=$vBaseImage -p DEPLOYTAG=${vDeployImage} | oc apply -n $stage -f- 
+                   oc start-build $serviceName -n $namespace --wait
+                """
                 }
             }
         stage ('Deploy data-service in Test env') {

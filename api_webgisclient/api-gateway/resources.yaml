@@ -325,16 +325,3 @@ objects:
     wildcardPolicy: None
   status:
     ingress: null
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: datensogispicmir-claim1
-    labels:
-      app: gdi 
-  spec:
-    accessModes:
-    - ReadOnlyMany
-    resources:
-      requests:
-        storage: 5Gi 
-    storageClassName: nfs

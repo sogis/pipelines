@@ -7,8 +7,6 @@ metadata:
     description: >-
       "Creates BuildConfig for data-service"
 parameters:
-  - description: tag of base image
-    name: BASETAG
   - description: tag of deploy image
     name: DEPLOYTAG
 objects:
@@ -35,5 +33,5 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: twalter/openshift-nginx:mainline-alpine:${BASETAG}
+          name: twalter/openshift-nginx:mainline-alpine
       type: Docker

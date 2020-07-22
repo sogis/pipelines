@@ -14,9 +14,6 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(description: 'Bitte Basis Image Version auswählen',
-               name: 'vBaseImage'
-               )
         string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
                name: 'vDeployImage'
                )
@@ -34,7 +31,6 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
@@ -74,7 +70,7 @@ pipeline {
                 }
             steps {
                 sh """   
-                   oc process -f $repo/buildconfig.yaml -p BASETAG=$vBaseImage -p DEPLOYTAG=${vDeployImage} | oc apply -n $stage -f- 
+                   oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=${vDeployImage} | oc apply -n $stage -f- 
                    oc start-build $serviceName -n $namespace --wait
                 """
                 }

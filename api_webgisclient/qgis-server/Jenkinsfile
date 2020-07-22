@@ -42,7 +42,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Deploy qgis-server in Test env') {
+        stage ('Deploy qgis-server') {
             steps {
                 deployImage serviceName, namespace, vBaseImage, repo
                 }

@@ -70,7 +70,9 @@ pipeline {
                 }
             steps {
                 script {
-                    println "test"
+                    sh """                    
+                       println "test"
+                    """
                     }
                 }
             }

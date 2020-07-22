@@ -26,6 +26,9 @@ pipeline {
                     }
                 }
             } 
+        stage('get requirements') {
+            unstash 'requirements'
+            }
         stage('Deploy Services') {
             parallel {
                   stage ('Deploy agdi') {

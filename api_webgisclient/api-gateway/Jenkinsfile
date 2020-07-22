@@ -71,8 +71,8 @@ pipeline {
             steps {
                 script {
                     sh """   
-                       oc process -f https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/api-gateway/buildconfig.yaml -p DEPLOYTAG=2.0.9 | oc apply -n gdi-devel -f- 
-                       oc start-build api-gateway -n gdi-devel --wait
+                       oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n gdi-devel -f- 
+                       oc start-build $serviceName -n $namespace --wait
                     """
                     }
                 }

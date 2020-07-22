@@ -71,7 +71,7 @@ pipeline {
             steps {
                 script {
                     sh """   
-                       oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n gdi-devel -f- 
+                       oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n $namespace -f- 
                        oc start-build $serviceName -n $namespace --wait
                     """
                     }

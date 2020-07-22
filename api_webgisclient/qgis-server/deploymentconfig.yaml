@@ -23,7 +23,7 @@ objects:
       app: gdi
     name: qgis-server
   spec:
-    replicas: 0
+    replicas: 1
     selector:
       service: qgis-server
     strategy:

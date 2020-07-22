@@ -69,10 +69,12 @@ pipeline {
                     }
                 }
             steps {
-                sh """   
-                   oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=${vDeployImage} | oc apply -n $stage -f- 
-                   oc start-build $serviceName -n $namespace --wait
-                """
+                script {
+                    sh """   
+                       oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=${vDeployImage} | oc apply -n $stage -f- 
+                       oc start-build $serviceName -n $namespace --wait
+                    """
+                    }
                 }
             }
         stage ('Deploy data-service in Test env') {

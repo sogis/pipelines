@@ -35,7 +35,7 @@ pipeline {
                       pwd
                     """
                     def requirements = []
-                    def reqName = 'requirementsImages.txt'
+                    def reqName = 'requirements/requirementsImages.txt'
 
                     File reqFile = new File( reqName )
  

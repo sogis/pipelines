@@ -30,20 +30,18 @@ pipeline {
             steps {
                 unstash 'requirements'
                 script {    
-                    dir ( "/tmp/workspace/WebGISClient/" ) {
-                        sh """
-                          ls -la
-                          pwd
-                        """
-                        def requirements = []
-                        def reqName = 'requirementsImages.txt'
+                    sh """
+                      ls -la
+                      pwd
+                    """
+                    def requirements = []
+                    def reqName = 'requirementsImages.txt'
 
-                        File reqFile = new File( reqName )
+                    File reqFile = new File( reqName )
  
-                        if ( !reqFile.exists() ) {
-                          println "File requirementsImages.txt doesn't exist"
-                          } 
-                        }
+                    if ( !reqFile.exists() ) {
+                      println "File requirementsImages.txt doesn't exist"
+                      } 
                     }
                 }
             }

@@ -34,9 +34,9 @@ pipeline {
                       pwd
                     """
                     def requirements = []
-                    def reqName = 'requirementsImages.txt'
+                    def reqName = '/tmp/workspace/WebGISClient/requirementsImages.txt'
 
-                    File reqFile = new File( '/tmp/'+ WORKSPACE + '/' + reqName )
+                    File reqFile = new File( reqName )
  
                     if ( !reqFile.exists() ) {
                       println "File requirementsImages.txt doesn't exist"

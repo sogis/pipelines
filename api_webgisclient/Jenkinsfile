@@ -28,14 +28,16 @@ pipeline {
             } 
         stage('get requirements') {
             steps {
-                sh """
-                   pwd
-                   def requirements = []
-                   def reqFile = 'requirementsImages.txt'
-                   if ( !reqFile.exists() ) {
-                     println "File requirementsImages.txt doesn't exist"
-                     }
-                 """
+                script {
+                    sh """
+                      ls -la
+                    """
+                    def requirements = []
+                    def reqFile = 'requirementsImages.txt'
+                    if ( !reqFile.exists() ) {
+                      println "File requirementsImages.txt doesn't exist"
+                      }
+                    }
                 }
             }
         stage('Deploy Services') {

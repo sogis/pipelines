@@ -28,7 +28,7 @@ pipeline {
             } 
         stage('get requirements') {
             steps {
-                unstash : 'requirements'
+                unstash 'requirements'
                 script {    
                     dir ( "/tmp/workspace/WebGISClient/" ) {
                         sh """

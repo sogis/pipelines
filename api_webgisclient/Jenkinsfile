@@ -29,18 +29,20 @@ pipeline {
         stage('get requirements') {
             steps {
                 script {
-                    sh """
-                      ls -la
-                      pwd
-                    """
-                    def requirements = []
-                    def reqName = '/tmp/workspace/WebGISClient/requirementsImages.txt'
+                    dir ( "/tmp/workspace/WebGISClient/" ) {
+                        sh """
+                          ls -la
+                          pwd
+                        """
+                        def requirements = []
+                        def reqName = 'requirementsImages.txt'
 
-                    File reqFile = new File( reqName )
+                        File reqFile = new File( reqName )
  
-                    if ( !reqFile.exists() ) {
-                      println "File requirementsImages.txt doesn't exist"
-                      }
+                        if ( !reqFile.exists() ) {
+                          println "File requirementsImages.txt doesn't exist"
+                          } 
+                        }
                     }
                 }
             }

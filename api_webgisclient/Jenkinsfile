@@ -31,9 +31,13 @@ pipeline {
                 script {
                     sh """
                       ls -la
+                      pwd
                     """
                     def requirements = []
-                    def reqFile = 'requirementsImages.txt'
+                    def reqName = 'requirementsImages.txt'
+
+                    File reqFile = new File( /tmp/$WORKSPACE/reqName )
+ 
                     if ( !reqFile.exists() ) {
                       println "File requirementsImages.txt doesn't exist"
                       }

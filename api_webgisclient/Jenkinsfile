@@ -28,8 +28,8 @@ pipeline {
             } 
         stage('get requirements') {
             steps {
-                unstash 'requirements'
                 sh """
+                   pwd
                    def requirements = []
                    def reqFile = 'requirementsImages.txt'
                    if ( !reqFile.exists() ) {

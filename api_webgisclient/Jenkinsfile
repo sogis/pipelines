@@ -29,6 +29,13 @@ pipeline {
         stage('get requirements') {
             steps {
                 unstash 'requirements'
+                sh """
+                   def requirements = []
+                   def reqFile = 'requirementsImages.txt'
+                   if ( !reqFile.exists() ) {
+                     println "File requirementsImages.txt doesn't exist"
+                     }
+                 """
                 }
             }
         stage('Deploy Services') {

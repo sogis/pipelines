@@ -79,6 +79,7 @@ pipeline {
             }
         stage ('Create configs') {
             when {
+               beforeAgent true
                expression {
                    (params.configs != true)
                    }

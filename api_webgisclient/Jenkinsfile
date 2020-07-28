@@ -36,9 +36,8 @@ pipeline {
                           pwd
                         """
                         }
-                    Properties properties = new Properties()
-                    File propertiesFile = new File('/var/lib/jenkins/jobs/WebGISClient/workspace/requirements/requirementsImages.txt')
-                    propertiesFile.withInputStream {
+                    def properties = new Properties()
+                    this.getClass().getResource( '/var/lib/jenkins/jobs/WebGISClient/workspace/requirements/requirementsImages.txt' ).withInputStream {
                         properties.load(it)
                         }
                     assert properties.sogis-agdi

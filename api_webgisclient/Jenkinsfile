@@ -37,7 +37,7 @@ pipeline {
                         """
                         }
                     Properties properties = new Properties()
-                    File propertiesFile = new File('requirements/requirementsImages.txt')
+                    File propertiesFile = new File('/var/lib/jenkins/jobs/WebGISClient/workspace/requirements/requirementsImages.txt')
                     propertiesFile.withInputStream {
                         properties.load(it)
                         }

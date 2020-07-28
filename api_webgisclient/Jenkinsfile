@@ -38,7 +38,9 @@ pipeline {
                         }
                     def requirements = []
                     def reqName = 'requirements/requirementsImages.txt'
-
+                    
+                    def records = readCSV file: 'requirements/requirementsImages.txt'
+                    println records
                     File reqFile = new File( reqName )
  
                     if ( !reqFile.exists() ) {

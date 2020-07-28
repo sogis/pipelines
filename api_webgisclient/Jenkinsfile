@@ -41,15 +41,7 @@ pipeline {
                     propertiesFile.withInputStream {
                         properties.load(it)
                         }
-                    println properties.sogis-agdi
-                    def requirements = []
-                    def reqName = 'requirements/requirementsImages.txt'
-                    
-                    File reqFile = new File( reqName )
- 
-                    if ( !reqFile.exists() ) {
-                      println "File requirementsImages.txt doesn't exist"
-                      } 
+                    assert properties.sogis-agdi
                     }
                 }
             }

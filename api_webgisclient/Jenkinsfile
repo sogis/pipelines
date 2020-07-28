@@ -36,11 +36,15 @@ pipeline {
                           pwd
                         """
                         }
+                    Properties properties = new Properties()
+                    File propertiesFile = new File('requirements/requirementsImages.txt')
+                    propertiesFile.withInputStream {
+                        properties.load(it)
+                        }
+                    println properties.sogis-agdi
                     def requirements = []
                     def reqName = 'requirements/requirementsImages.txt'
                     
-                    def records = readCSV file: 'requirements/requirementsImages.txt'
-                    println records
                     File reqFile = new File( reqName )
  
                     if ( !reqFile.exists() ) {

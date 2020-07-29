@@ -58,14 +58,14 @@ objects:
             value: /api/v1/document/
           - name: PERMALINK_SERVICE_URL
             value: /api/v1/permalink/
-          - name: PERMISSION_SERVICE_URL
-            value: http://permission-service.${NAMESPACE}.svc
           - name: PRINT_SERVICE_URL
             value: /api/v1/print/
           - name: QGIS_SERVER_URL
             value: /ows/
           - name: SEARCH_SERVICE_URL
-            value: /api/search/v2/fts
+            value: /api/search/v2/fts/
+          - name: SEARCH_DATA_SERVICE_URL
+            value: /api/data/v1/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER

@@ -55,7 +55,7 @@ objects:
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           - name: WMS_SERVICE_URL
-            value: https://${BASEURL}.so.ch/api/wms
+            value: https://${BASEURL}/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
           image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}

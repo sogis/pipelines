@@ -46,6 +46,18 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) { 
+                      baseUrl = 'geo-t.so.ch'
+                      }
+                    else if ( namespace == 'gdi-integration' ) { 
+                      baseUrl = 'geo-i.so.ch'
+                      }
+                    else if ( namespace == 'gdi' ) { 
+                      baseUrl = 'geo.so.ch'
+                      }
+                    else {
+                      baseUrl = 'geo-t.so.ch'
+                      }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
@@ -90,7 +102,7 @@ pipeline {
             }
         stage ('Deploy print-service in Test env') {
             steps {
-                  deployImage serviceName, namespace, vDeployImage, repo
+                  deployImage serviceName, namespace, vDeployImage, repo, "-p BASEURL=${baseUrl}"
                 }
             }
         }

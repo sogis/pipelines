@@ -7,9 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: Image Stream Tag
     name: TAG
+  - description: Base Url of AGI GDI
+    name: BASEURL
 labels:
   application: gdi
 objects:
@@ -48,7 +49,7 @@ objects:
         containers:
         - env:
           - name: OGC_SERVICE_URL
-            value: http://ogc-service.${NAMESPACE}.svc/
+            value: https://${BASEURL}/ows/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER

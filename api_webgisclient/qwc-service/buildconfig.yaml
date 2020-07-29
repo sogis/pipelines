@@ -49,5 +49,5 @@ objects:
         cpu: "1000m"
         memory: "4096Mi"
       requests:
-        cpu: "1000"
+        cpu: "1000m"
         memory: "4096Mi"

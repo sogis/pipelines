@@ -37,3 +37,10 @@ objects:
           kind: DockerImage
           name: sourcepole/qwc-print-service:${BASETAG}
       type: Docker
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "4096Mi"
+      requests:
+        cpu: "1000m"
+        memory: "4096Mi"

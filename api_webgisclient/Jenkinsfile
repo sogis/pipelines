@@ -35,9 +35,11 @@ pipeline {
                           ls -la
                           pwd
                         """
-                        def data = readFile(file: 'requirementsImages.txt')
-                        def groups = data.split('\n')
-                        println(groups[0])
+                        def req = readFile(file: 'requirementsImages.txt')
+                        def services = req.split('\n')
+                        def version = services.split(':')
+                        println(version[0])
+                        println(version[1])
                         }
                     }
                 }

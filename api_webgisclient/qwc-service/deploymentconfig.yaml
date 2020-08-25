@@ -75,7 +75,7 @@ objects:
           - name: DATAPRODUCT_SERVICE_URL
             value: /api/dataproduct/v1/
           - name: MIN_RESULTS_EXANDED
-            value: "80"
+            value: "100"
           - name: SERVICE_MOUNTPOINT
             value: /map
           - name: CONFIG_PATH

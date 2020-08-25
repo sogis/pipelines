@@ -34,6 +34,8 @@ pipeline {
                         sh """
                           ls -la
                           pwd
+                          def data = readFile(file: 'requirementsImages.txt')
+                          println(data)
                         """
                         }
                     }

@@ -37,9 +37,10 @@ pipeline {
                         """
                         def req = readFile(file: 'requirementsImages.txt')
                         def services = req.split('\n')
-                        def version = services.split(':')
-                        println(version[0])
-                        println(version[1])
+                        services.eachWithIndex { item, index ->
+                            println item
+                            println index
+                            }
                         }
                     }
                 }

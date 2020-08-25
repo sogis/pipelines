@@ -36,7 +36,8 @@ pipeline {
                           pwd
                         """
                         def data = readFile(file: 'requirementsImages.txt')
-                        println(data)
+                        def groups = data.split('\n')
+                        println(groups)
                         }
                     }
                 }

@@ -46,8 +46,8 @@ pipeline {
                             serviceMap = [(serviceName):(serviceVersion)]
                             }
                         }
-                        serviceMap.each { it ->
-                            println it
+                        serviceMap.each { key ->
+                            println key
                             }
                     }
                 }

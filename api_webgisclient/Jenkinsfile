@@ -36,12 +36,16 @@ pipeline {
                           pwd
                         """
                         def req = readFile(file: 'requirementsImages.txt')
+                        def serviceMap = [:]
                         def services = req.split('\n')
-                        services.eachWithIndex { item, index ->
-                            service = item.split(':')
-                            println service[0]
-                            println service[1]
+                        services.each { item ->
+                            serviceName = item.split(':')[0]
+                            serviceVersion = item.split(':')[1]
+                            println serviceName
+                            println serviceVersion
+                            def serviceMap = [(serviceName):(serviceVersion)]
                             }
+                        assertTrue(serviceMap.qwc-ogc-service == "v2.0.0-rc1")
                         }
                     }
                 }

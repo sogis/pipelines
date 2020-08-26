@@ -30,7 +30,7 @@ pipeline {
             steps {
                 unstash 'requirements'
                 script {    
-                    def serviceMap = [:]
+                    serviceMap = [:]
                     dir ('requirements') {
                         sh """
                           ls -la

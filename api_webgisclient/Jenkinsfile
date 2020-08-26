@@ -45,8 +45,10 @@ pipeline {
                             println serviceVersion
                             serviceMap = [(serviceName):(serviceVersion)]
                             }
-                        assertTrue(serviceMap["qwc-ogc-service"] == "v2.0.0-rc1")
                         }
+                        serviceMap.each { it ->
+                            println it
+                            }
                     }
                 }
             }

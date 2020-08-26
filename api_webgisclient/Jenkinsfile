@@ -43,7 +43,7 @@ pipeline {
                             serviceVersion = item.split(':')[1]
                             println serviceName
                             println serviceVersion
-                            serviceMap = [(serviceName):(serviceVersion)]
+                            serviceMap.put((serviceName), (serviceVersion))
                             }
                         serviceMap.each { entry ->
                             println "$entry.key: $entry.value"

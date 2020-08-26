@@ -45,10 +45,10 @@ pipeline {
                             println serviceVersion
                             serviceMap = [(serviceName):(serviceVersion)]
                             }
-                        }
                         serviceMap.each { entry ->
                             println "$entry.key: $entry.value"
                             }
+                        }
                     }
                 }
             }

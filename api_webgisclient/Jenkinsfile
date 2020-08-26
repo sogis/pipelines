@@ -30,13 +30,13 @@ pipeline {
             steps {
                 unstash 'requirements'
                 script {    
+                    def serviceMap = [:]
                     dir ('requirements') {
                         sh """
                           ls -la
                           pwd
                         """
                         def req = readFile(file: 'requirementsImages.txt')
-                        def serviceMap = [:]
                         def services = req.split('\n')
                         services.each { item ->
                             serviceName = item.split(':')[0]

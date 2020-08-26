@@ -43,7 +43,7 @@ pipeline {
                             serviceVersion = item.split(':')[1]
                             println serviceName
                             println serviceVersion
-                            def serviceMap = [(serviceName):(serviceVersion)]
+                            serviceMap = [(serviceName):(serviceVersion)]
                             }
                         assertTrue(serviceMap.qwc-ogc-service == "v2.0.0-rc1")
                         }

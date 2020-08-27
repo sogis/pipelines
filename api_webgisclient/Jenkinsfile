@@ -50,55 +50,55 @@ pipeline {
             parallel {
 /*                 stage ('Deploy agdi') {
                     steps {
-                        build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-agdi-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
-                     } 
+                     } */
                  stage ('Deploy qwc-service') {
                     steps {
-                        build job: 'qwc-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'qwc-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-map-viewer-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-map-viewer-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy qgis-server') {
                     steps {
-                        build job: 'qgis-server', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        build job: 'qgis-server', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-qgis-server-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-qgis-server-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy data-service') {
                     steps {
-                        build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true
+                        build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-data-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-data-serviceBaseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true
                         }
                     }
                 stage ('Deploy dataproduct-service') {
                     steps {
-                        build job: 'dataproduct-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'dataproduct-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-dataproduct-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-dataproduct-service-buildImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy document-service') {
                     steps {
-                        build job: 'document-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'document-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-document-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-document-service-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy elevation-service') {
                     steps {
-                        build job: 'elevation-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'elevation-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-elevation-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-elevation-service-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy featureinfo-service') {
                     steps {
-                        build job: 'featureinfo-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'featureinfo-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-feature-info-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-feature-info-service-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     } 
                 stage ('Deploy jasper-reporting-service') {
                     steps {
-                        build job: 'jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
+                        build job: 'jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['jasper-reporting-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['jasper-reporting-service-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}") ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy landreg-service') {
                     steps {
-                        build job: 'landreg-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
+                        build job: 'landreg-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-landreg-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-landreg-service-baseImage']}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     }
-                stage ('Deploy legend-service') {
+/*                stage ('Deploy legend-service') {
                     steps {
                         build job: 'legend-service', parameters: [ string(name: 'vDeployImage', value: "${version.vDeployImage}"), string(name: 'vBaseImage', value: "${version.vBaseImage}"), string(name: 'namespace', value: "${version.namespace}"), string(name: 'build', value: "${version.build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }

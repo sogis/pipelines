@@ -32,7 +32,7 @@ pipeline {
                 script {    
                     serviceMap = [:]
                     dir ('requirements') {
-                        def req = readFile(file: 'requirementsImages.txt')
+                        def req = readFile(file: 'requirements/uploadFile')
                         def services = req.split('\n')
                         services.each { item ->
                             serviceName = item.split(':')[0]

@@ -31,8 +31,9 @@ pipeline {
                 unstash 'requirements'
                 script {    
                     serviceMap = [:]
-                    dir ('requirements') {
-                        def req = readFile(file: 'requirements/uploadFile')
+                    buildDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/builds/$BUILD_NUMBER"
+                    dir (buildDir) {
+                        def req = readFile(file: 'requirements.txt')
                         def services = req.split('\n')
                         services.each { item ->
                             serviceName = item.split(':')[0]

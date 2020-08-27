@@ -39,7 +39,8 @@ pipeline {
                             serviceVersionBaseImage = item.split(':')[1]
                             serviceNameDeployImage = item.split(':')[0]+'-deployImage' 
                             serviceVersionDeployImage = item.split(':')[2]
-                            serviceMap.put((serviceName), (serviceVersion), (serviceVersion)
+                            serviceMap.put((serviceNameBaseImage), (serviceVersionBaseImage))
+                            serviceMap.put((serviceNameDeployImage), (serviceVersionDeployImage))
                             }
                         }
                     }

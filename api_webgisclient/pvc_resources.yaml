@@ -50,3 +50,17 @@ objects:
       requests:
         storage: 5Gi
     storageClassName: nfs
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: reports-claim
+    labels:
+      service: jasper-reporting-service
+      app: gdi
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: nfs

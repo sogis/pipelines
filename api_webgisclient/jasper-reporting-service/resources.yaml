@@ -126,6 +126,7 @@ objects:
       spring.datasource4.driver-class-name=org.postgresql.Driver
 
       # Custom Parameters
+      
       reports.directory=/reports/
 
       reports.locale=de_CH

@@ -7,8 +7,7 @@ def configFileName = 'searchConfig.json'
 credentials = [
     usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
-    usernamePassword(credentialsId: 'jenkins-api'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
+    usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite')
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',

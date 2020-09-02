@@ -2,7 +2,7 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 credentials = [
-    usernamePassword(credentialsId: 'jenkins-api'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
+    usernamePassword(credentialsId: 'jenkinsApi'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
     ]
 pipeline {
     agent { label 'master' } 

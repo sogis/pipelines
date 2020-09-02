@@ -5,7 +5,7 @@ def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisc
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
 credentials = [
-    usernamePassword(credentialsId: 'jenkins-api', usernameVariable: 'apiUser', passwordVariable: 'PwdApiUser'),
+    usernamePassword(credentialsId: 'jenkinsApi', usernameVariable: 'apiUser', passwordVariable: 'PwdApiUser'),
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',

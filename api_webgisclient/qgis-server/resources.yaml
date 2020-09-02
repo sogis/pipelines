@@ -56,7 +56,7 @@ objects:
       host=${DB_SERVER}
       port=5432
       dbname=${DB_EDIT}
-      user=${USER_OGC_SERVER
+      user=${USER_OGC_SERVER}
       password=${PW_OGC_SERVER}
       sslmode=require
 

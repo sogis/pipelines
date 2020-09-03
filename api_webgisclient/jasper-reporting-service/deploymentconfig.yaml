@@ -61,10 +61,10 @@ objects:
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /srv/jasper/reports
+          - mountPath: /srv/jasper-reporting-service/reports
             name: reports
             readOnly: true
-          - mountPath: /srv/jasper/config
+          - mountPath: /srv/jasper-reporting-service/config
             name: jasper-config-claim
             readOnly: true
           - mountPath: /etc/postgresql-common

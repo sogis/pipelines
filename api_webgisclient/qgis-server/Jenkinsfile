@@ -1,5 +1,6 @@
 def serviceName = 'qgis-server'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
+def configFileName = 'somap.qgs qgis-server/somap_print.qgs qgis-server/somap_wfs.qgs'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -11,7 +12,7 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent any 
+    agent { label 'master' }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')
@@ -20,9 +21,16 @@ pipeline {
         string(description: 'Bitte Image Version auswählen',
                name: 'vBaseImage'
                )
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+               )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
+               )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'    
                )
         }
 
@@ -32,6 +40,14 @@ pipeline {
                 script {
                     vBaseImage = params.vBaseImage
                     namespace = params.namespace
+                    if (params.containsKey("configs")) {
+                        buildNumber = params.buildNumber
+                        jobName = params.jobName
+                        }
+                    else {
+                        buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
+                        }
                     }
                 }
             }
@@ -39,6 +55,30 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
+                    }
+                }
+            }
+        stage ('Create configs') {
+            when {
+               beforeAgent true
+               expression {
+                   (params.configs != true)
+                   }
+               }
+            agent { label 'python-slave' }
+            steps {
+                createConfigs([:])
+                }
+            }
+        stage ('Build new Image for search-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }
+            steps {
+                withCredentials ( credentials ) {
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
                     }
                 }
             }

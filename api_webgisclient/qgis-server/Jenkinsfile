@@ -6,6 +6,7 @@ def configFileName = 'somap.qgs qgis-server/somap_print.qgs qgis-server/somap_wf
 // will not be fully engaged.
 credentials = [
     usernamePassword(credentialsId: 'agi-apps-test-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
+    userNamePassword(credentialsId: 'jenkinsApi'                           , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',

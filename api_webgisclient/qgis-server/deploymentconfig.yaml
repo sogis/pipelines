@@ -61,8 +61,12 @@ objects:
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /data
+          - mountPath: /data/symbols
             name: qgs-resources
+            subPath: symbols
+          - mountPath: /data/print
+            name: qgs-resources
+            subPath: print
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/postgresql-common

@@ -52,7 +52,7 @@ objects:
             value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
             value: "2"
-          image: docker-registry.default.svc:5000/gdi/qgis-server:${TAG}
+          image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
           name: sogis-qgis-server
           ports:

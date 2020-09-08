@@ -10,28 +10,27 @@ pipeline {
         // set a timeout of 15 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
     }
-    parameters {
-        file(description: 'Bitte requirements File hochladen',
-             name: '/tmp/requirements.txt'
-             )
-        string(defaultValue: "gdi-test",
-               description: 'Bitte namespace auswählen',
-               name: 'namespace'
-               )
-        }
     stages {
-        stage ('Ask for Version') {
+        stage ('preamble') {
             steps {
                 script {
-                    namespace = params.namespace
-                    }
+                    version = stagePreamble.call()
                 }
             }
+        }
+        stage('create configs') {
+            agent { label 'python-slave' }
+            steps {
+                script {
+                    createConfigs([:])
+                    }
+                }
+            } 
         stage('get requirements') {
             steps {
                 script {    
                     serviceMap = [:]
-                    buildDir = "/tmp"
+                    buildDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/builds/$BUILD_NUMBER"
                     dir (buildDir) {
                         def req = readFile(file: 'requirements.txt')
                         def services = req.split('\n')
@@ -47,14 +46,6 @@ pipeline {
                     }
                 }
             }
-        stage('create configs') {
-            agent { label 'python-slave' }
-            steps {
-                script {
-                    createConfigs([:])
-                    }
-                }
-            } 
         stage('Deploy Services') {
             parallel {
 /*                 stage ('Deploy agdi') {

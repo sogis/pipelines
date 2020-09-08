@@ -32,7 +32,7 @@ pipeline {
                     serviceMap = [:]
                     buildDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/builds/$BUILD_NUMBER"
                     dir (buildDir) {
-                        def req = readFile(file: 'requirements.txt')
+                        def req = readFile(file: 'requirements')
                         def services = req.split('\n')
                         services.each { item ->
                             serviceNameBaseImage = item.split(':')[0]+'-baseImage'

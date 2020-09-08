@@ -10,14 +10,24 @@ pipeline {
         // set a timeout of 15 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
     }
+    parameters {
+        file(description: 'Bitte requirements File hochladen',
+             name: 'requirements'
+             )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        }
     stages {
-        stage ('preamble') {
+        stage ('Ask for Version') {
             steps {
                 script {
-                    version = stagePreamble.call()
+                    requirements = params.requirements
+                    namespace = params.namespace
+                    }
                 }
             }
-        }
         stage('create configs') {
             agent { label 'python-slave' }
             steps {

@@ -14,6 +14,8 @@ parameters:
     name: BASEURL
   - description: WMTS URL
     name: WMTS_URL
+  - description: Matomo URL
+    name: MATOMO_URL
 objects:
 - apiVersion: v1
   data:
@@ -249,7 +251,7 @@ objects:
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/analytics';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://analytics.dev.so.ch/;
+            proxy_pass http://${MATOMO_URL}/;
         }
 
         #error_page  404   /404.html;

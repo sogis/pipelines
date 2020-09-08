@@ -38,28 +38,32 @@ pipeline {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'geo-wmts-t'
+                      matomoUrl = 'analytics-i.dev.so.ch'
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       environment = 'integration'
                       baseUrl = 'geo-i.so.ch'
                       wmtsUrl = 'geo-wmts'
+                      matomoUrl = 'analytics-i.dev.so.ch'
                       }
                     else if ( namespace == 'gdi' ) {
                       environment = 'production'
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'geo-wmts'
+                      matomoUrl = 'analytics.dev.so.ch'
                       }
                     else {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'geo-wmts-t'
+                      matomoUrl = 'analytics-i.dev.so.ch'
                       }
                    }
                 }
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace}"
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl}"
                 }
             }
         stage ('Build new Image for data-service if necessary') {

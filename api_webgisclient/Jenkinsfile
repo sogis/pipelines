@@ -10,14 +10,25 @@ pipeline {
         // set a timeout of 15 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
     }
+    parameters {
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+              )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'
+              )
+        }
     stages {
-        stage ('preamble') {
+        stage ('Ask for Version') {
             steps {
                 script {
-                    version = stagePreamble.call()
+                    build = params.build
+                    namespace = params.namespace
+                    }
                 }
             }
-        }
         stage('create configs') {
             agent { label 'python-slave' }
             steps {

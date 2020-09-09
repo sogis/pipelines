@@ -238,6 +238,10 @@ objects:
         location /solr {
             proxy_pass http://solr-headless.solr-cloud-${ENVIRONMENT}.svc:8983;
         }
+        
+        location /api/v1/embed {
+            proxy_pass http://wgc-embedded.agi-apps-test.svc/; 
+        }
 
         # For Statuscake Tests
         location /indexupdater {

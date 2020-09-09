@@ -30,8 +30,8 @@ pipeline {
             steps {
                 script {    
                     serviceMap = [:]
-                    buildDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/builds/$BUILD_NUMBER"
-                    dir (buildDir) {
+                    workDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/workspace/api_webgisclient"
+                    dir (workDir) {
                         def req = readFile(file: 'requirements.txt')
                         def services = req.split('\n')
                         services.each { item ->

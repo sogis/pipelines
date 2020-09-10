@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: Image Stream Tag
     name: TAG
+  - description: Environment
+    name: ENVIRONMENT
 labels:
   application: gdi
 objects:
@@ -87,7 +89,6 @@ objects:
             claimName: qgs-resources-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim1
-            readOnly: true
+            claimName: datensogispicmir-claim-${ENVIRONMENT}
     test: false
     triggers: []

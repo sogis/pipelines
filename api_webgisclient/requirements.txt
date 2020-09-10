@@ -1,4 +1,4 @@
-qwc-qgis-server:2.0.11:2.0.12
+qwc-qgis-server:2.0.13:2.0.13
 jasper-reporting-service:0.6.0:2.0.16
 qwc-fulltext-search-service:latest:2.0.17
 qwc-data-service:latest:2.0.16

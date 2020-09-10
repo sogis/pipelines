@@ -7,10 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: "Image Stream Tag"
     name: TAG
-    value:
+  - description: Environment
+    name: ENVIRONMENT
 labels:
   app: gdi
   service: elevation-service
@@ -67,7 +67,7 @@ objects:
         volumes:
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim1
+            claimName: datensogispicmir-claim-${ENVIRONMENT}
             readOnly: true
     test: false
     triggers: []

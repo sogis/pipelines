@@ -43,6 +43,18 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) { 
+                      environment = 'test'
+                      }
+                    else if ( namespace == 'gdi-integration' ) { 
+                      environment = 'integration'
+                      }
+                    else if ( namespace == 'gdi' ) { 
+                      environment = 'production'
+                      }
+                    else {
+                      environment = 'test'
+                      }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
@@ -85,7 +97,7 @@ pipeline {
             }
         stage ('Deploy elevation-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo
+                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

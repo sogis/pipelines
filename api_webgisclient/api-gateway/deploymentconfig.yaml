@@ -11,6 +11,8 @@ parameters:
     name: NAMESPACE
   - description: ImageStream Tag
     name: TAG
+  - description: Environment
+    name: ENVIRONMENT
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -78,7 +80,7 @@ objects:
             secretName: api-gateway-cert
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim1
+            claimName: datensogispicmir-claim-${ENVIRONMENT}
             readOnly: true
     test: false
     triggers: []

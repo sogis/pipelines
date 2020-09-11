@@ -40,7 +40,9 @@ pipeline {
             steps {
                 script {
                     vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
                     namespace = params.namespace
+                    build = params.build
                     if ( namespace == 'gdi-test' ) { 
                       environment = 'test'
                       }
@@ -83,7 +85,7 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Build new Image for search-service if necessary') {
+        stage ('Build new Image for qgis-server if necessary') {
             when {
                 expression {
                     (build == 'ja')

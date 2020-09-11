@@ -24,10 +24,17 @@ pipeline {
                description: 'Bitte Basis Image Version auswählen',
                name: 'vBaseImage'
                )
+        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+               name: 'vDeployImage'
+               )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
-              )
+               )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: build
+               )
         }
 
     stages {
@@ -35,7 +42,19 @@ pipeline {
             steps {
                 script {
                     vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
+                    namespace = params.namespace
                     build = params.build
+                    if (params.containsKey("configs")) {
+                        buildNumber = params.buildNumber
+                        jobName = params.jobName
+                        }
+                    else {
+                        buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
+                        }
+                    }
+
                     }
                 }
             }
@@ -46,6 +65,18 @@ pipeline {
                     }
                 }
              }
+        stage ('Build new Image for jasper-reporting-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }
+            steps {
+                withCredentials ( credentials ) { 
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    }
+                }
+            }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
                 deployImage serviceName, namespace, vBaseImage, repo

@@ -81,7 +81,7 @@ objects:
       # H2
       spring.h2.console.enabled=false
       # Datasource
-      spring.datasource0.url=jdbc:postgresql://${DB_SERVER}/${DB_PUB}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource0.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_PUB}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource0.username=${USER_REPORT_SERVER}
 
@@ -89,7 +89,7 @@ objects:
 
       spring.datasource0.driver-class-name=org.postgresql.Driver
 
-      spring.datasource1.url=jdbc:postgresql://${GEO_DB_SERVER}/${DB_SOGIS}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource1.jdbc-url=jdbc:postgresql://${GEO_DB_SERVER}/${DB_SOGIS}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource1.username=${USER_MSWRITE}
 
@@ -97,7 +97,7 @@ objects:
 
       spring.datasource1.driver-class-name=org.postgresql.Driver
 
-      spring.datasource2.url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=${DB_IMDAS}
+      spring.datasource2.jdbc-url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=${DB_IMDAS}
 
       spring.datasource2.username=${USER_IMDAS_DB}
 
@@ -107,7 +107,7 @@ objects:
 
       # Datasource configDB
 
-      spring.datasource3.url=jdbc:postgresql://${DB_SERVER}/${DB_CONFIG}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource3.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_CONFIG}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource3.username=${USER_SOGIS_SERVICE}
 
@@ -117,7 +117,7 @@ objects:
 
       # Datasource Edit DB
 
-      spring.datasource4.url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource4.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource4.username=${USER_REPORT_SERVER}
 

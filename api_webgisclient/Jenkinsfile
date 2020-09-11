@@ -99,11 +99,11 @@ pipeline {
                         build job: 'featureinfo-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-feature-info-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-feature-info-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                     } 
-                stage ('Deploy jasper-reporting-service') {
+/*                stage ('Deploy jasper-reporting-service') {
                     steps {
                         build job: 'jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['jasper-reporting-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['jasper-reporting-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}") ], wait: true, propagate: true 
                         }
-                    }
+                    } */
                 stage ('Deploy landreg-service') {
                     steps {
                         build job: 'landreg-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-landreg-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-landreg-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 

@@ -80,7 +80,7 @@ pipeline {
             }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo
+                deployImage serviceName, namespace, vDeployImage, repo
                 }
             }
         }

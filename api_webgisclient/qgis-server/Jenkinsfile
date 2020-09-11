@@ -99,7 +99,7 @@ pipeline {
             }
         stage ('Deploy qgis-server') {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

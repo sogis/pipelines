@@ -54,8 +54,6 @@ pipeline {
                         jobName = JOB_NAME
                         }
                     }
-
-                    }
                 }
             }
         stage ('Configure Ressources') {

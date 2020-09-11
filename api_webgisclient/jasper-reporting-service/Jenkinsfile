@@ -75,7 +75,7 @@ pipeline {
                        oc process -f $repo/buildconfig.yaml | oc apply -n $namespace -f- 
                        oc start-build $serviceName -n $namespace --from-repo=qwc_services --wait -p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}
                     """
-
+                    }
                 }
             }
         stage ( 'Deploy jasper-reporting-service' ) {

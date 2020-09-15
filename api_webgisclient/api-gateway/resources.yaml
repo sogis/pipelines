@@ -239,7 +239,11 @@ objects:
             proxy_pass http://solr-headless.solr-cloud-${ENVIRONMENT}.svc:8983;
         }
         
-        location /api/v1/embed {
+        location /api/cadastre/v1 {
+            proxy_pass http://cadastre-web-service.agi-apps-test.svc/;
+        } 
+
+        location /api/embed/v1 {
             proxy_pass http://wgc-embedded.agi-apps-test.svc/; 
         }
 

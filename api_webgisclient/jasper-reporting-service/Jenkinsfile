@@ -63,7 +63,7 @@ pipeline {
                     }
                 }
              }
-        stage ('Build new Image for jasper-reporting-service if necessary') {
+/*        stage ('Build new Image for jasper-reporting-service if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -77,7 +77,7 @@ pipeline {
                     """
                     }
                 }
-            }
+            } */
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo

@@ -126,6 +126,10 @@ objects:
       spring.datasource4.driver-class-name=org.postgresql.Driver
 
       # Custom Parameters
+ 
+      logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
+
+      logging.level.com.zaxxer.hikari=TRACE
       
       reports.directory=/reports/
 

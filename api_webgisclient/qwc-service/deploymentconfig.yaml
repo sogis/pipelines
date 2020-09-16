@@ -21,7 +21,7 @@ objects:
       app: gdi
     name: qwc-service
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       service: qwc-service
     strategy:

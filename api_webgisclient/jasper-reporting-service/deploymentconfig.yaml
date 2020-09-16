@@ -24,7 +24,7 @@ objects:
       app: gdi
     name: jasper-reporting-service
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       service: jasper-reporting-service
     strategy:
@@ -52,7 +52,7 @@ objects:
                   fieldPath: metadata.namespace
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
-          image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
+          image: sogis/jasper-reporting-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-jasper-reporting-service
           ports:

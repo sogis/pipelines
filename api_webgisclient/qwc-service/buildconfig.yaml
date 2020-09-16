@@ -33,13 +33,6 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
-        buildArgs:
-        - name: SERVICE_MOUNTPOINT
-          value:
-        - name: SERVICE
-          value:
-        - name: ANALYTICS_URL
-          value:
         from:
           kind: DockerImage
           name: sourcepole/sogis-map-viewer

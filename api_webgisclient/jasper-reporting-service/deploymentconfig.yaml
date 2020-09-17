@@ -54,10 +54,32 @@ objects:
               value: 0.5.1
           image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: >-
+                /reports/liveness_readiness_test/master/?format=pdf&dataset=ch.so.agi.gemeindegrenzen
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-jasper-reporting-service
           ports:
           - containerPort: 8080
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: >-
+                /reports/liveness_readiness_test/master/?format=pdf&dataset=ch.so.agi.gemeindegrenzen
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

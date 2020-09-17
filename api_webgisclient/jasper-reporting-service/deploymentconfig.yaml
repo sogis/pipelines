@@ -52,7 +52,7 @@ objects:
                   fieldPath: metadata.namespace
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
-          image: sogis/jasper-reporting-service:${TAG}
+          image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
           imagePullPolicy: IfNotPresent
           name: sogis-jasper-reporting-service
           ports:

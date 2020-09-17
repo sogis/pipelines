@@ -31,10 +31,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'
-               )
         }
 
     stages {
@@ -44,15 +40,6 @@ pipeline {
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
                     namespace = params.namespace
-                    build = params.build
-                    if (params.containsKey("configs")) {
-                        buildNumber = params.buildNumber
-                        jobName = params.jobName
-                        }
-                    else {
-                        buildNumber = BUILD_NUMBER
-                        jobName = JOB_NAME
-                        }
                     }
                 }
             }
@@ -63,21 +50,13 @@ pipeline {
                     }
                 }
              }
-/*        stage ('Build new Image for jasper-reporting-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
+        stage ( 'Tag Image in Openshift' ) {
+            script {
+                sh """
+                   oc tag -n $namespace --source=docker sogis/jasper-reporting-service:$vBaseImage jasper-reporting-service:$vDeployImage
+                """
                 }
-            steps {
-                script {
-                    sh """   
-                       oc process -f $repo/buildconfig.yaml -p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage} | oc apply -n $namespace -f- 
-                       oc start-build $serviceName -n $namespace --wait
-                    """
-                    }
-                }
-            } */
+            }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo

@@ -51,10 +51,12 @@ pipeline {
                 }
              }
         stage ( 'Tag Image in Openshift' ) {
-            script {
-                sh """
-                   oc tag -n $namespace --source=docker sogis/jasper-reporting-service:$vBaseImage jasper-reporting-service:$vDeployImage
-                """
+            steps {
+                script {
+                    sh """
+                       oc tag -n $namespace --source=docker sogis/jasper-reporting-service:$vBaseImage jasper-reporting-service:$vDeployImage
+                    """
+                    }
                 }
             }
         stage ( 'Deploy jasper-reporting-service' ) {

@@ -105,11 +105,11 @@ objects:
 
       spring.datasource2.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
       
-      spring.datasource0.hikari.connection-test-query=SELECT 1
+      spring.datasource2.hikari.connection-test-query=SELECT 1
 
-      spring.datasource0.hikari.connection-timeout=5000
+      spring.datasource2.hikari.connection-timeout=5000
 
-      spring.datasource0.hikari.validation-timeout=2000
+      spring.datasource2.hikari.validation-timeout=2000
 
       # Datasource configDB
 

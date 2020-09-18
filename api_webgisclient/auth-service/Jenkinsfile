@@ -29,7 +29,7 @@ pipeline {
                name: 'vDeployImage'
                )
         string(description: 'Anzahl der Replicas',
-                defaultValue: 1,
+                defaultValue: '1',
                 name: 'replicas'
                 )
         string(defaultValue: "gdi-test",

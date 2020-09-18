@@ -28,7 +28,7 @@ pipeline {
         string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
                )
-        integer(description: 'Anzahl der Replicas',
+        string(description: 'Anzahl der Replicas',
                 defaultValue: 1,
                 name: 'replicas'
                 )

@@ -244,7 +244,7 @@ objects:
         } 
 
         location /api/embed/v1 {
-            proxy_pass http://wgc-embedded.agi-apps-test.svc/; 
+            proxy_pass http://wgc-embedded.agi-apps-${ENVIRONMENT}.svc/; 
         }
 
         # For Statuscake Tests

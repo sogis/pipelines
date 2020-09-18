@@ -64,6 +64,11 @@ pipeline {
                         build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-agdi-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 
                         }
                      } */
+                 stage ('Deploy auth-service') {
+                    steps {
+                        build job: 'auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-auth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-auth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build, value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true
+                        }
+                    }
                  stage ('Deploy qwc-service') {
                     steps {
                         build job: 'qwc-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-map-viewer-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-map-viewer-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}") ], wait: true, propagate: true 

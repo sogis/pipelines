@@ -61,8 +61,8 @@ objects:
                 /reports/liveness_readiness_test/master/?format=pdf&dataset=ch.so.agi.gemeindegrenzen
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 60
+            initialDelaySeconds: 20
+            periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 1
           name: sogis-jasper-reporting-service
@@ -76,8 +76,8 @@ objects:
                 /reports/liveness_readiness_test/master/?format=pdf&dataset=ch.so.agi.gemeindegrenzen
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 60
+            initialDelaySeconds: 20
+            periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 1
           resources: {}

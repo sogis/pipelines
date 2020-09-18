@@ -27,7 +27,7 @@ objects:
       app: gdi
     name: auth-service
   spec:
-    replicas: ${REPLICAS}
+    replicas: "${REPLICAS}"
     selector:
       service: auth-service
     strategy:

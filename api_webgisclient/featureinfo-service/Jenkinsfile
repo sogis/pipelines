@@ -30,7 +30,7 @@ pipeline {
               )
         string(description: 'Anzahl der Replicas',
                defaultValue: '1',
-               name: replicas
+               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',

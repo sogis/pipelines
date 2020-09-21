@@ -50,7 +50,83 @@ objects:
       spec:
         containers:
           - env:
-            - name: CCC_ZOOMTO_DATA_SERVICE_URL
+            - name: CLIENTS
+              value: >-
+                {
+              "id": "baugk",
+              "cccServer": "wss://${BASEURL}/ccc-service",
+              "title": "BauGK - GIS",
+              "map": "baugk",
+              "editGeomType": "Point",
+              "notifyLayers": [{
+                "layer": "ch.so.afu.baugk.geschaefte",
+                "mapping": [
+                  {
+                    "agdi_attr_name": "laufnummer",
+                    "ccc_attr_name": "geschaeft_laufnr"
+                  }
+                ]
+              }],
+              "notifyLinkTitle": "In Axioma anzeigen"
+            },
+            {
+              "id": "uplus_anlage",
+              "cccServer": "wss://geo-i.so.ch/ccc-service",
+              "title": "Umweltplus - GIS",
+              "map": "ews_v2",
+              "editGeomType": "Point",
+              "notifyLayers": [{
+                "layer": "ch.so.afu.erdwaerme.uplus.anlage_v2",
+                "mapping": [
+                  {
+                    "agdi_attr_name": "anlage_uuid",
+                    "ccc_attr_name": "uplus_anlage"
+                  }
+                ]
+              }],
+              "notifyLinkTitle": "In Umweltplus anzeigen"
+            },
+            {
+              "id": "uplus_tank",
+              "cccServer": "wss://geo-i.so.ch/ccc-service",
+              "title": "Umweltplus - GIS",
+              "map": "uplus_tank",
+              "editGeomType": "Point",
+              "notifyLayers": [{
+                "layer": "ch.so.afu.uplus.tank",
+                "mapping": [
+                  {
+                    "agdi_attr_name": "anlage_uuid",
+                    "ccc_attr_name": "uplus_anlage"
+                  }
+                ]
+              }],
+              "notifyLinkTitle": "In Umweltplus anzeigen"
+            },
+            {
+              "id": "uplus_luft",
+              "cccServer": "wss://geo-i.so.ch/ccc-service",
+              "title": "Umweltplus - GIS",
+              "map": "uplus_luft",
+              "editGeomType": "Point",
+              "notifyLayers": [{
+                "layer": "ch.so.afu.uplus.luft_anlage",
+                "mapping": [
+                  {
+                    "agdi_attr_name": "anlage_uuid",
+                    "ccc_attr_name": "uplus_anlage"
+                  }
+                ]
+              }, {
+                "layer": "ch.so.afu.uplus.luft_betrieb",
+                "mapping": [
+                  {
+                    "agdi_attr_name": "betrieb_uuid",
+                    "ccc_attr_name": "uplus_betrieb"
+                  }
+                ]
+              }
+            - name: ZOOMTO_DATA_SERVICE_URL
               value: 'http://data-service.${NAMESPACE}.svc'
             - name: CONFIG_PATH
               value: "/srv/qwc_service/config"

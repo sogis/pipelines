@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: Image Stream Tag
     name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -25,7 +27,7 @@ objects:
       app: gdi
     name: permalink-service
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: permalink-service
     strategy:
@@ -52,10 +54,30 @@ objects:
             value: /api/v1/permalink
           image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-permalink-service
           ports:
           - containerPort: 9090
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

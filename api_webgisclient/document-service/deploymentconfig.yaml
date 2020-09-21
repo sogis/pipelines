@@ -7,10 +7,10 @@ metadata:
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
-    value:
   - description: "Image Stream Tag"
     name: TAG
-    value:
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -27,7 +27,7 @@ objects:
       app: gdi
     name: document-service
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: document-service
     strategy:
@@ -61,10 +61,30 @@ objects:
             value: /api/v1/document
           image: docker-registry.default.svc:5000/${NAMESPACE}/document-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-document-service
           ports:
           - containerPort: 9090
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

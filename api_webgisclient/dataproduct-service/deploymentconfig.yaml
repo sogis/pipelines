@@ -11,6 +11,8 @@ parameters:
     name: BASEURL
   - description: ImageStream Tag
     name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -25,7 +27,7 @@ objects:
       app: gdi
     name: dataproduct-service
   spec:
-    replicas: 2
+    replicas: {{$REPLICAS}}
     selector:
       service: dataproduct-service
     strategy:
@@ -60,10 +62,30 @@ objects:
             value: /qgs-resources
           image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-dataproduct-service
           ports:
           - containerPort: 9090
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           volumeMounts:
             - mountPath: /var/www

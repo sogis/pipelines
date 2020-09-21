@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: "ImageStream Tag"
     name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -25,7 +27,7 @@ objects:
       app: gdi
     name: data-service
   spec:
-    replicas: 1
+    replicas: ${{REPLICAS}}
     selector:
       service: data-service
     strategy:
@@ -57,10 +59,30 @@ objects:
             value: "/srv/qwc_service/config"
           image: docker-registry.default.svc:5000/${NAMESPACE}/data-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-data-service
           ports:
           - containerPort: 9090
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

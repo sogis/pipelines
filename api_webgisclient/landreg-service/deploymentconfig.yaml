@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: Image Stream Tag
     name: TAG
+  - description: Number of replicas
+    name: replicas
 labels:
   application: gdi
 objects:
@@ -21,7 +23,7 @@ objects:
       app: gdi
     name: landreg-service
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: landreg-service
     strategy:
@@ -64,7 +66,27 @@ objects:
             value: /api/v1/landreg
           image: docker-registry.default.svc:5000/${NAMESPACE}/landreg-service:${TAG}
           imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-landreg-service
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

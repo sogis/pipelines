@@ -11,6 +11,8 @@ parameters:
     name: BASEURL
   - description: Image Stream Tag
     name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -27,7 +29,7 @@ objects:
       app: gdi
     name: ogc-service
   spec:
-    replicas: 1
+    replicas: ${{REPLICAS}}
     selector:
       service: ogc-service
     strategy:
@@ -69,13 +71,13 @@ objects:
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: '/ows/api/'
+              path: healthz
               port: 9090
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 5
             periodSeconds: 30
             successThreshold: 1
-            timeoutSeconds: 2
+            timeoutSeconds: 1
           name: sogis-ogc-service
           ports:
             - containerPort: 9090
@@ -83,13 +85,13 @@ objects:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: '/ows/api/'
+              path: ready
               port: 9090
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 5
             periodSeconds: 30
             successThreshold: 1
-            timeoutSeconds: 2
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

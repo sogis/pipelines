@@ -11,6 +11,8 @@ parameters:
     name: TAG
   - description: Base Url of AGI GDI
     name: BASEURL
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -25,7 +27,7 @@ objects:
       app: gdi
     name: ccc-config-service
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: ccc-config-service
     strategy:
@@ -57,7 +59,27 @@ objects:
             image: >-
               docker-registry.default.svc:5000/${NAMESPACE}/ccc-config-service:${TAG}
             imagePullPolicy: Always
+            livenessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: healthz
+                port: 9090
+                scheme: HTTP
+              initialDelaySeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 1
             name: sogis-ccc-config-service
+            readinessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: ready
+                port: 9090
+                scheme: HTTP
+              initialDelaySeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 1
             resources: {}
         dnsPolicy: ClusterFirst
         restartPolicy: Always

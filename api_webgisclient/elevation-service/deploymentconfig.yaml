@@ -11,6 +11,8 @@ parameters:
     name: TAG
   - description: Environment
     name: ENVIRONMENT
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   app: gdi
   service: elevation-service
@@ -23,7 +25,7 @@ objects:
       app: gdi
     name: elevation-service
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: elevation-service
     strategy:
@@ -50,10 +52,30 @@ objects:
             value: "/srv/qwc_service/config"
           image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-elevation-service
           ports:
           - containerPort: 9090
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

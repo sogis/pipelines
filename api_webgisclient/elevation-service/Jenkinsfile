@@ -18,13 +18,17 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "v2.0.8",
-               description: 'Bitte Basis Image Version auswählen',
+        string(defaultValue: "latest",
+               description: 'Basis Image Version',
                name: 'vBaseImage'
                )
-        string(description: 'Bitte Tag des generierten bzw. des deployten Images angeben',
+        string(description: 'Tag des generierten bzw. des deployten Images',
                name: 'vDeployImage'
               )
+        string(description: 'Anzahl der Replicas',
+               defaultValue: '1',
+               name: 'replicas'
+               )
         string(defaultValue: "gdi-test",
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
@@ -41,6 +45,7 @@ pipeline {
                 script {
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
+                    replicas = params.replicas
                     build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
@@ -97,7 +102,7 @@ pipeline {
             }
         stage ('Deploy elevation-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

@@ -10,7 +10,7 @@ parameters:
   - description: Image Stream Tag
     name: TAG
   - description: Number of replicas
-    name: replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:

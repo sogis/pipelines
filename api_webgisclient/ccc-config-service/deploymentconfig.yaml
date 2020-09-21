@@ -125,7 +125,9 @@ objects:
                     "ccc_attr_name": "uplus_betrieb"
                   }
                 ]
-              }
+              }],
+              "notifyLinkTitle": "In Umweltplus anzeigen"
+            }
             - name: ZOOMTO_DATA_SERVICE_URL
               value: 'http://data-service.${NAMESPACE}.svc'
             - name: CONFIG_PATH

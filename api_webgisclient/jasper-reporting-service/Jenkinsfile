@@ -21,11 +21,15 @@ pipeline {
         }
     parameters {
         string(defaultValue: "v2.0.8",
-               description: 'Bitte Basis Image Version auswählen',
-               name: 'vBaseImage'
+               description: 'Basis Image Version',
+               name: 'vBaseImage' 
                )
-        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+        string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
+               )
+        string(description: 'Anzahl der Replicas',
+               defaultValue: '1',
+               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
@@ -39,6 +43,7 @@ pipeline {
                 script {
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
+                    replicas = params.replicas
                     namespace = params.namespace
                     }
                 }
@@ -61,7 +66,7 @@ pipeline {
             }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo
+                deployImage serviceName, namespace, vDeployImage, repo, replicas
                 }
             }
         }

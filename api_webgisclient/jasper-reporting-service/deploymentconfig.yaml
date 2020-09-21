@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: "Image Stream Tag"
     name: TAG
+  - description: 'Number of Replicas'
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -24,7 +26,7 @@ objects:
       app: gdi
     name: jasper-reporting-service
   spec:
-    replicas: 1
+    replicas: ${{REPLICAS}}
     selector:
       service: jasper-reporting-service
     strategy:

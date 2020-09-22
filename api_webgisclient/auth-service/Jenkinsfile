@@ -10,7 +10,7 @@ credentials = [
     usernamePassword(credentialsId: 'agi-apps-test-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
     usernamePassword(credentialsId: 'jenkinsApi', usernameVariable: 'apiUser', passwordVariable: 'PwdApiUser'),
 ]
-library identifier: 'jenkins-shared-libs@replicas_params', retriever: modernSCM(
+library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 

@@ -133,9 +133,9 @@ objects:
 
       # Custom Parameters
  
-      logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
+      #logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
 
-      logging.level.com.zaxxer.hikari=TRACE
+      #logging.level.com.zaxxer.hikari=TRACE
       
       reports.directory=/reports/
 

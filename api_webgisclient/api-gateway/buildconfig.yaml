@@ -33,5 +33,6 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: twalter/openshift-nginx:mainline-alpine
+        #  name: twalter/openshift-nginx:mainline-alpine
+          name: openresty/openresty:1.11.2.5-alpine
       type: Docker

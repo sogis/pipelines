@@ -13,6 +13,8 @@ parameters:
     name: TAG
   - description: Environment
     name: ENVIRONMENT
+  - description: Number of Replicas
+    name: REPLICAS
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -27,7 +29,7 @@ objects:
       app: gdi
     name: api-gateway
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: api-gateway
     strategy:

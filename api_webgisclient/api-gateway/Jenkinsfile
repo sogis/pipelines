@@ -21,6 +21,10 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
                )
+        string(defaultValue: "1",
+               description: 'Anzahl Replicas',
+               name: 'replicas'
+               }
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'     
@@ -34,6 +38,7 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace
+                    replicas = params.replicas
                     if ( namespace == 'gdi-test' ) {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
@@ -83,7 +88,7 @@ pipeline {
             }
         stage ('Deploy data-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

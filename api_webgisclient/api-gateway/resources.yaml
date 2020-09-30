@@ -307,7 +307,7 @@ objects:
     - name: 443-tcp
       port: 443
       protocol: TCP
-      targetPort: 8081
+      targetPort: 443
     selector:
       service: api-gateway
     sessionAffinity: None

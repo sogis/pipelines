@@ -71,7 +71,12 @@ objects:
         }
 
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.afu\.altlasten|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
-            alias /geodata/documents/$1/$2;
+            set $url1 $1; 
+            set $url2 $2;
+            if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) { 
+                return 403;
+            }
+            alias /geodata/documents/$url1/$url2;
             autoindex off;
         }
 
@@ -307,7 +312,7 @@ objects:
     - name: 443-tcp
       port: 443
       protocol: TCP
-      targetPort: 443
+      targetPort: 8081
     selector:
       service: api-gateway
     sessionAffinity: None

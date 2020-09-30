@@ -29,7 +29,7 @@ objects:
       app: gdi
     name: search-service
   spec:
-    replicas: $${{REPLICAS}}
+    replicas: ${{REPLICAS}}
     selector:
       service: search-service
     strategy:

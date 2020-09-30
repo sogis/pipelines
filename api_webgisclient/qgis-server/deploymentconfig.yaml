@@ -11,6 +11,8 @@ parameters:
     name: TAG
   - description: Environment
     name: ENVIRONMENT
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -25,7 +27,7 @@ objects:
       app: gdi
     name: qgis-server
   spec:
-    replicas: 1
+    replicas: ${{REPLICAS}}
     selector:
       service: qgis-server
     strategy:

@@ -19,11 +19,15 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(description: 'Bitte Image Version auswählen',
+        string(description: 'Image Version',
                name: 'vBaseImage'
                )
-        string(description: 'Bitte Tag des generierten bzw. deployten Images angeben',
+        string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
+               )
+        string(description: 'Anzahl der Replicas',
+               defaultValue: '1',
+               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
@@ -41,6 +45,7 @@ pipeline {
                 script {
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
+                    replicas = params.replicas
                     namespace = params.namespace
                     build = params.build
                     if ( namespace == 'gdi-test' ) { 
@@ -99,7 +104,7 @@ pipeline {
             }
         stage ('Deploy qgis-server') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

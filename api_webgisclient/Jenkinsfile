@@ -71,7 +71,7 @@ pipeline {
                      }*/ 
                  stage ('Deploy auth-service') {
                     steps {
-                        build job: 'auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-auth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-auth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build, value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true
+                        build job: 'auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-auth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-auth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true
                         }
                     }
                  stage ('Deploy qwc-service') {

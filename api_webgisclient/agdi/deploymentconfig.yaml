@@ -11,6 +11,8 @@ parameters:
     name: ENVIRONMENT
   - description: Image Stream Tag
     name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
 labels:
   application: gdi
 objects:
@@ -27,7 +29,7 @@ objects:
       app: gdi
     name: agdi 
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: agdi 
     strategy:
@@ -64,10 +66,30 @@ objects:
             value: /agdi
           image: docker-registry.default.svc:5000/${NAMESPACE}/agdi:${TAG}
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           name: sogis-agdi
           ports:
           - containerPort: 9090 
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:

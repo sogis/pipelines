@@ -115,7 +115,7 @@ objects:
             name: config-json-claim
           - mountPath: /var/www
             name: qwc-service-config-claim
-          - mountPath: /srv/somap/qwc_service/qwc2/assets/img/custommapthumbs
+          - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
         dnsPolicy: ClusterFirst
         restartPolicy: Always

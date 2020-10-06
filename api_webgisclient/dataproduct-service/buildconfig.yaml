@@ -36,4 +36,5 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-dataproduct-service:${BASETAG}
+        noCache: true
       type: Docker

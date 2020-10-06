@@ -2,9 +2,9 @@ qwc-qgis-server:2.0.13:2.0.13
 jasper-reporting-service:31:2.0.18
 qwc-fulltext-search-service:latest:2.0.18
 qwc-data-service:latest:2.0.18
-sogis-dataproduct-service:latest:2.0.18
+sogis-dataproduct-service:latest:2.0.19
 qwc-ogc-service:latest:2.0.18
-qwc-legend-service:latest:2.0.18
+qwc-legend-service:latest:2.0.19
 qwc-feature-info-service:latest:2.0.18
 qwc-mapinfo-service:latest:2.0.18
 sogis-plotinfo-service:latest:2.0.18
@@ -15,6 +15,6 @@ qwc-print-service:latest:2.0.18
 sogis-landreg-service:latest:2.0.18
 sogis-ccc-config:latest:2.0.18
 sogis-auth-service:latest:2.0.18
-sogis-map-viewer:latest:2.0.18
-sogis-agdi:v3.0.0-rc1:2.0.16
-sogis-config-generator:v3.0.0-rc1:2.0.16
+sogis-map-viewer:latest:2.0.22
+sogis-agdi:v3.0.0-rc1:2.0.18
+sogis-config-generator:v3.0.0-rci1:1.4

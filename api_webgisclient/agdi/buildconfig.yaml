@@ -36,8 +36,12 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-agdi:${BASETAG}
+        noCache: true
       type: Docker
     resources:
       limits:
         cpu: "1500m" 
         memory: "2048Mi"
+      requests:
+        cpu: "250m"
+        memory: "1024Mi"

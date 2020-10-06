@@ -41,4 +41,12 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/qwc-elevation-service:${BASETAG}
+        noCache: true
       type: Docker
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "4096Mi"
+      requests:
+        cpu: "250m"
+        memory: "1024Mi"

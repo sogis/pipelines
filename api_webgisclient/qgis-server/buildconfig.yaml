@@ -36,6 +36,7 @@ objects:
         from:
           kind: DockerImage
           name: sogis/qgis-server:${BASETAG}
+        noCache: true
       type: Docker
     resources:
       limits:

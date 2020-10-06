@@ -35,7 +35,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: sourcepole/sogis-map-viewer
+          name: sourcepole/sogis-map-viewer:${BASETAG}
       type: Docker
     resources:
       limits:

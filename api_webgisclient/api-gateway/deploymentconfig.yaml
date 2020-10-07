@@ -50,7 +50,7 @@ objects:
       spec:
         containers:
         - image: docker-registry.default.svc:5000/${NAMESPACE}/api-gateway:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: sogis-api-gateway
           ports:
           - containerPort: 8081

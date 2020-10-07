@@ -65,7 +65,7 @@ objects:
           - name: SERVICE_MOUNTPOINT
             value: /agdi
           image: docker-registry.default.svc:5000/${NAMESPACE}/agdi:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

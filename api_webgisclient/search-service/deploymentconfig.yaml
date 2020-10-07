@@ -65,7 +65,7 @@ objects:
           - name: SERVICE_MOUNTPOINT
             value: /api/search/v2
           image: docker-registry.default.svc:5000/${NAMESPACE}/search-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

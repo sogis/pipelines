@@ -67,7 +67,7 @@ objects:
           - name: SERVICE_MOUNTPOINT
             value: /ows
           image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

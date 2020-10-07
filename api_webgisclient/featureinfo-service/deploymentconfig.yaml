@@ -64,7 +64,7 @@ objects:
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

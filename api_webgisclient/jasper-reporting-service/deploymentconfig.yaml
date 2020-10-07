@@ -55,7 +55,7 @@ objects:
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
           image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

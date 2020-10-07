@@ -61,7 +61,7 @@ objects:
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
           image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

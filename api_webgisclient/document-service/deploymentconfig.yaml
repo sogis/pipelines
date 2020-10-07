@@ -60,7 +60,7 @@ objects:
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/document
           image: docker-registry.default.svc:5000/${NAMESPACE}/document-service:${TAG}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:

@@ -101,6 +101,10 @@ objects:
             alias /geodata/geodata;
             autoindex on;
         }
+        
+        location /gb2av {
+          proxy_pass http://gb2av.${NAMESPACE}.svc/;
+        }
 
         location /auth/ {
             proxy_pass http://auth-service.${NAMESPACE}.svc;

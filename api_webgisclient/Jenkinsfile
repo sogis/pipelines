@@ -19,6 +19,10 @@ pipeline {
                description: 'Anzahl der Replicas',
                name: 'replicas'
                )
+        choice(choices: ['nein','ja'],
+               description: 'Rollout der gesamten Applikation?',
+               name: 'rolloutAll'
+               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
                name: 'build'
@@ -30,6 +34,7 @@ pipeline {
                 script {
                     build = params.build
                     namespace = params.namespace
+                    rolloutAll = params.rolloutAll
                     replicas = params.replicas
                     }
                 }
@@ -64,11 +69,22 @@ pipeline {
             }
         stage('Deploy Services') {
             parallel {
-/*                 stage ('Deploy agdi') {
+                 stage ('Deploy agdi') {
+                    when {
+                        expression { rolloutAll }
+                    }
                     steps {
                         build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-agdi-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true 
                         }
-                     }*/ 
+                     }
+                 stage ('Deploy ccc-service') {
+                    when {
+                        expression { rolloutAll }
+                    }
+                    steps {
+                        build job: 'ccc-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-ccc-config-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-ccc-config-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true
+                        }
+                    }
                  stage ('Deploy auth-service') {
                     steps {
                         build job: 'auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-auth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-auth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true
@@ -110,6 +126,9 @@ pipeline {
                         }
                     } 
                 stage ('Deploy jasper-reporting-service') {
+                    when {
+                        expression { rolloutAll }
+                    }
                     steps {
                         build job: 'jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['jasper-reporting-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['jasper-reporting-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), string(name: 'replicas', value: "${replicas}") ], wait: true, propagate: true 
                         }

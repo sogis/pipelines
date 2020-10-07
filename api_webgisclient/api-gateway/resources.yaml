@@ -101,10 +101,6 @@ objects:
             alias /geodata/geodata;
             autoindex on;
         }
-        
-        location /gb2av {
-          proxy_pass http://gb2av.${NAMESPACE}.svc/;
-        }
 
         location /auth/ {
             proxy_pass http://auth-service.${NAMESPACE}.svc;
@@ -213,6 +209,10 @@ objects:
             proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
         }
         
+        location /gb2av {
+            proxy_pass http://gb2av.agi-apps-${ENVIRONMENT}.svc/;
+        }
+
         location /ilivalidator {
             proxy_set_header   X-Forwarded-For $remote_addr;
             proxy_set_header   Host $http_host;
@@ -225,7 +225,7 @@ objects:
         location /ili2gpkg {
             proxy_set_header   X-Forwarded-For $remote_addr;
             proxy_set_header   Host $http_host;
-            proxy_pass http://ili2gpkg-web-service.agi-apps-test.svc/;  
+            proxy_pass http://ili2gpkg-web-service.agi-apps-${ENVIRONMENT}.svc/;  
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
             proxy_set_header   Connection "upgrade";

@@ -27,9 +27,6 @@ parameters:
   - description: Sogis DB
     name: DB_SOGIS
     value:
-  - description: Pub DB
-    name: DB_PUB
-    value:
   - description: DB User ogc_server
     name: USER_OGC_SERVER
     value:

@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: Basis Url für benutzte Dienste
     name: BASEURL
+  - description: Url für Terravis App
+    name: TERRAVISURL
   - description: Image Stream Tag
     name: TAG
   - description: Number of Replicas
@@ -59,7 +61,7 @@ objects:
           - name: DETAILED_INFO_SQL
             value: "SELECT g.flaechenmass, CASE WHEN g.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, gb.aname as grundbuch,gb.amtschreiberei || E'\r\n' || gb.amt || E'\r\n'  || gb.strasse || ' ' || gb.hausnummer || E'\r\n' || gb.plz || ' ' || gb.ortschaft AS grundbuchamt, nf.firma || E'\r\n' || nf.firma_zusatz || E'\r\n'  || nf.strasse || ' ' || nf.hausnummer || E'\r\n' || nf.plz || ' ' || nf.ortschaft AS nfgeometer   FROM agi_mopublic_pub.mopublic_grundstueck g   JOIN (SELECT nbident,aname,amtschreiberei,amt,strasse,CASE WHEN hausnummer is NULL THEN '' ELSE hausnummer END AS hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis) gb ON g.nbident = gb.nbident   JOIN (SELECT bfsnr,firma,CASE WHEN firma_zusatz is NULL THEN '' ELSE firma_zusatz END AS firma_zusatz,strasse,hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.nachfuehrngskrise_gemeinde) nf ON g.bfs_nr = nf.bfsnr WHERE g.egrid = :egrid LIMIT 1;"
           - name: GBDBS_SERVICE_URL
-            value: https://${TERRAVIS_ENV}/gbdbs/gbdbs
+            value: https://${TERRAVISURL}/gbdbs/gbdbs
           - name: LAND_COVER_FRACTIONS_SQL
             value: "WITH bodenbedeckung AS (SELECT ST_Area(ST_Intersection(b.geometrie, g.geometrie)) AS b_area,ST_Area(g.geometrie) AS g_area,CASE WHEN b.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, b.art_txt FROM         agi_mopublic_pub.mopublic_bodenbedeckung b JOIN agi_mopublic_pub.mopublic_grundstueck g ON ST_Intersects(b.geometrie, g.geometrie) AND NOT ST_Touches(b.geometrie, g.geometrie) WHERE g.egrid = :egrid ) SELECT SUM(b_area) AS area, SUM(b_area/g_area) * 100 AS area_percent, art, art_txt FROM bodenbedeckung b GROUP BY art, art_txt ORDER BY area DESC;"
           - name: SDR_INFOS_LIEGENSCHAFT_SQL

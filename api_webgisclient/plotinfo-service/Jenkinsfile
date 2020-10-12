@@ -53,15 +53,19 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       baseUrl = 'geo-t.so.ch'
+                      terravisUrl = 'terravis-t.so.ch'
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       baseUrl = 'geo-i.so.ch'
+                      terravisUrl = 'terravis.so.ch'
                       }
                     else if ( namespace == 'gdi' ) {
                       baseUrl = 'geo.so.ch'
+                      terravisUrl = 'terravis.so.ch'
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'
+                      terravisUrl = 'terravis.so.ch'
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
@@ -107,7 +111,7 @@ pipeline {
             }
         stage ('Deploy plotinfo-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p BASEURL=${baseUrl}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p BASEURL=${baseUrl} -p TERRAVISURL=${terravisUrl}"
                 }
             }
         }

@@ -53,7 +53,7 @@ objects:
           imagePullPolicy: Always
           name: sogis-api-gateway
           ports:
-          - containerPort: 8080
+          - containerPort: 8081
             protocol: TCP
           resources: {}
           terminationMessagePath: /dev/termination-log

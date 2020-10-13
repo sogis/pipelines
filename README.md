@@ -1,5 +1,5 @@
-# AGI Pipelines
-Pipelines for AGI GDI
+# AGI Jenkins
+Betrieb AGI Jenkins und Pipeline Definitionen
 
 ## Betrieb Jenkins
 Die Pipelines werden mit dem in Openshift enthaltenen Jenkins betrieben.

@@ -31,3 +31,12 @@ If you setup the environment for SO!API and Web GIS Client you must first create
 The Persistent volumes are not part of the pipeline because they are created by the AIO in the environment of the Canton of Solothurn. They are created as nfs storage and are immutable after creation.
 Though in the pipeline oc apply would fail with an error.
 
+## Give Jenkins service account edit access to GDI environment projects
+
+```
+oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkins -n gdi-test
+oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkins -n gdi-integration
+oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkins -n gdi
+```
+
+Now the the jenkins service account of the project *agi-apps-production* has edit access to the three gdi environments test,int and prod

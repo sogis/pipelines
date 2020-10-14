@@ -31,8 +31,9 @@ If you setup the environment for SO!API and Web GIS Client you must first create
 The Persistent volumes are not part of the pipeline because they are created by the AIO in the environment of the Canton of Solothurn. They are created as nfs storage and are immutable after creation.
 Though in the pipeline oc apply would fail with an error.
 
-## Give Jenkins service account edit access to GDI environment projects
+## Adjustments in Jenkins and agi-apps to run the pipeline
 
+Give jenkins service account edit access to the gdi environments
 ```
 oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkins -n gdi-test
 oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkins -n gdi-integration
@@ -40,3 +41,10 @@ oc policy add-role-to-user edit system:serviceaccount:agi-apps-production:jenkin
 ```
 
 Now the the jenkins service account of the project *agi-apps-production* has edit access to the three gdi environments test,int and prod
+
+To run the pipeline you need aconfig-generator-agent in jenkins. Run the following commands to make the config-generator-agent available in jenkins.
+Use name of the project where jenkins is running for *projectname* and the tag of the config generator agent image for *tag*
+```
+oc project agi-apps-test
+oc process -f configMap-configGenAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
+```

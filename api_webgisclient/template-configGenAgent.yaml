@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Template
+labels:
+  app: wgc-pipeline
+  template: wgc-pipeline
+metadata:
+  name: wgc-pipeline
+objects:
+- apiVersion: v1
+  data:
+    template: |-
+      <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+        <inheritFrom></inheritFrom>
+        <name>python-slave</name>
+        <namespace></namespace>
+        <privileged>false</privileged>
+        <capOnlyOnAlivePods>false</capOnlyOnAlivePods>
+        <alwaysPullImage>true</alwaysPullImage>
+        <instanceCap>4</instanceCap>
+        <slaveConnectTimeout>100</slaveConnectTimeout>
+        <idleMinutes>600</idleMinutes>
+        <activeDeadlineSeconds>0</activeDeadlineSeconds>
+        <label>config-generator-agent</label>
+        <serviceAccount>jenkins</serviceAccount>
+        <nodeSelector></nodeSelector>
+        <nodeUsageMode>NORMAL</nodeUsageMode>
+        <customWorkspaceVolumeEnabled>false</customWorkspaceVolumeEnabled>
+        <workspaceVolume class="org.csanchez.jenkins.plugins.kubernetes.volumes.workspace.EmptyDirWorkspaceVolume">
+          <memory>false</memory>
+        </workspaceVolume>
+        <volumes>
+          <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
+            <mountPath>/var/www</mountPath>
+            <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
+            <secretName>config-generator-agent-pg-service</secretName>
+          </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
+        </volumes>
+        <containers>
+          <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+            <name>jnlp</name>
+            <image>docker-registry.default.svc:5000/${PROJECTNAME}/config-generator-agent:${IMAGE_TAG_AGENT}</image>
+            <privileged>false</privileged>
+            <alwaysPullImage>true</alwaysPullImage>
+            <workingDir>/tmp</workingDir>
+            <command></command>
+            <args>${computer.jnlpmac} ${computer.name}</args>
+            <ttyEnabled>false</ttyEnabled>
+            <resourceRequestCpu>750m</resourceRequestCpu>
+            <resourceRequestMemory>2Gi</resourceRequestMemory>
+            <resourceLimitCpu>3000m</resourceLimitCpu>
+            <resourceLimitMemory>8Gi</resourceLimitMemory>
+            <envVars/>
+            <ports/>
+            <livenessProbe>
+              <execArgs></execArgs>
+              <timeoutSeconds>0</timeoutSeconds>
+              <initialDelaySeconds>0</initialDelaySeconds>
+              <failureThreshold>0</failureThreshold>
+              <periodSeconds>0</periodSeconds>
+              <successThreshold>0</successThreshold>
+            </livenessProbe>
+          </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+        </containers>
+        <envVars/>
+        <annotations/>
+        <imagePullSecrets/>
+        <nodeProperties/>
+        <yaml>
+          apiVersion: v1
+          kind: Pod
+          spec:
+            volumes:
+              - name: pg-service-claim
+                secret:
+                  defaultMode: 420
+                  items:
+                    - key: pg_service.conf
+                      path: .pg_service.conf
+                  secretName: config-generator-agent-pg-service
+        </yaml>
+      </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+  kind: ConfigMap
+  metadata:
+    labels:
+      role: jenkins-slave
+    name: config-generator-agent
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: config-generator-agent
+    labels:
+      app: wgc-pipeline
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: sogis/config-generator-agent
+      name: latest
+parameters:
+- description: Name of the project
+  name: PROJECTNAME
+  value: agi-apps-test
+- description: Tag of the config generator image
+  name: IMAGE_TAG_AGENT

@@ -136,6 +136,9 @@ objects:
       #logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
 
       #logging.level.com.zaxxer.hikari=TRACE
+      management.security.enabled=false
+
+      endpoints.health.sensitive=false
       
       reports.directory=/reports/
 

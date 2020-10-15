@@ -65,7 +65,7 @@ oc label secret pw-sogis-service-write credential.sync.jenkins.openshift.io=true
 **Every of these steps needs a restart of the jenkins pod**
 
 ### Activate 'Projektbasierte Matrix-Zugriffssteuerung'
-* To start a build of the  *WebGISClient* Job as anonymous user from outside the Jenkins Server via the API you do the following things.
+To start a build of the  *WebGISClient* Job as anonymous user from outside the Jenkins Server via the API you have to do the following steps.
 * Go to *Jenkins verwalten/Globale Sicherheit konfigurieren* activate *Projektbasierte Matrix-Zugriffssteuerung*.
 * Then go to *WebGISClient/Konfigurieren* and activate *Projektbasierte Sicherheit aktivieren*
 * Give *Anonymous Users* and *Authenticated Users* *Build* Access

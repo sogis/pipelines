@@ -1,4 +1,4 @@
-# Pipeline for the SO!API and the Web GIS Client
+# Pipeline for SO!API and Web GIS Client
 
 ## First setup of the openshift environment
 

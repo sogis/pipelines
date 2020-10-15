@@ -52,7 +52,15 @@ oc apply -f secret-jenkins-pw-report-server.yaml
 oc apply -f secret-jenkins-pw-sogis-service.yaml
 oc apply -f secret-jenkins-pw-sogis-service-write.yaml
 ```
-
+Therefor the *secrets* can be used in Jenkins as *global credentials* they have to be labeled with *credential.sync.jenkins.openshift.io=true*
+```
+oc label secret pw-imdas-db-user credential.sync.jenkins.openshift.io=true
+oc label secret pw-mswrite credential.sync.jenkins.openshift.io=true
+oc label secret pw-ogc-server credential.sync.jenkins.openshift.io=true
+oc label secret pw-report-server credential.sync.jenkins.openshift.io=true
+oc label secret pw-sogis-service credential.sync.jenkins.openshift.io=true
+oc label secret pw-sogis-service-write credential.sync.jenkins.openshift.io=true
+```
 
 **Every of these steps needs a restart of the jenkins pod**
 

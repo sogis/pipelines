@@ -4,10 +4,10 @@ def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisc
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
 credentials = [
-    usernamePassword(credentialsId: $env.NAMESPACE + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-    usernamePassword(credentialsId: $env.NAMESPACE + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-    usernamePassword(credentialsId: $env.NAMESPACE + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-    usernamePassword(credentialsId: $env.NAMESPACE + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+    usernamePassword(credentialsId: ${env.NAMESPACE} + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+    usernamePassword(credentialsId: ${env.NAMESPACE} + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+    usernamePassword(credentialsId: ${env.NAMESPACE} + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+    usernamePassword(credentialsId: ${env.NAMESPACE} + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
 ]
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',

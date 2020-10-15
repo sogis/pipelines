@@ -73,8 +73,8 @@ To start a build of the  *WebGISClient* Job as anonymous user from outside the J
 * Name it with a descriptive name, for here we use exemplary *tokenName*, and click generate. Save the token in H:\BJSVW\Agi\KeePass\GDI_Passwort.kdbx
 * Go to *WebGISClient/Konfigurieren/Build Triggers* and activate *Builds von ausserhalb starten*.
 * In *Authentifizerungstoken* add the name of the generated Token.
-* Now you could start the build with https://jenkins-agi-apps-integration.dev.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
+* Now you could start the build with https://jenkins-agi-apps-test.dev.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
 
-## Tbd
+### Install and use of the Config Generator Agent
 
-Config Generator Pod erläutern => in Repo von Config Generator. Hier nach dort verweisen.
+=> https://github.com/sogis/config-generator-jenkins-agent/blob/main/README.md

@@ -12,15 +12,12 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
 
 pipeline {
     agent { label 'master' } 
-    environment {
-      credentials = [
-          usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-         // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-          usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-         // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-         // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
-      ]
-      }
+    credentials = withCredentials([
+        usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+    ])
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')

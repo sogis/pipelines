@@ -13,12 +13,7 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
 pipeline {
     agent { label 'master' } 
     environment {
-      CREDENTIALS = withCredentials([
-          usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-         // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-          usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-         // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
-      ])
+
     }
     options {
         // set a timeout of 10 minutes for this pipeline
@@ -50,12 +45,18 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     namespace = params.namespace
+                    credentials = [
+                        usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+                       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+                       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+                        ]
                     }
                 }
             }
         stage ('Configure Ressources') {
             steps {
-                withCredentials ( CREDENTIALS ) {
+                withCredentials ( credentials ) {
                     println(env.NAMESPACE_JENKINS)
                     println(env.EDIT_DB)
                     configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=geodb-t.rootso.org -p GEO_DB_SERVER=geodb-t.verw.rootso.org -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"

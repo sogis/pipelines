@@ -69,6 +69,7 @@ pipeline {
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
+                        usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
                         ]
                     }
                 }

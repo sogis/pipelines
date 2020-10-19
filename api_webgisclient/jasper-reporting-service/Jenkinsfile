@@ -5,19 +5,20 @@ def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisc
 // will not be fully engaged.
 println(env.NAMESPACE_JENKINS)
 println(env.EDIT_DB)
-credentials = [
-    usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-   // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-    usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-   // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-   // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
-]
+
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
     agent { label 'master' } 
+    credentials = [
+        usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+       // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+    ]
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')

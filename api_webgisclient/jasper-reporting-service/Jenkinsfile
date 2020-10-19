@@ -8,7 +8,7 @@ println(env.EDIT_DB)
 credentials = [
     usernamePassword(credentialsId: 'agi-apps-integration-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
    // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-   // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+    usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
    // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
    // usernamePassword(credentialsId: (env.NAMESPACE) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
 ]

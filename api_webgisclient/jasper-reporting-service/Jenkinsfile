@@ -12,9 +12,6 @@ library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
 
 pipeline {
     agent { label 'master' } 
-    environment {
-
-    }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')

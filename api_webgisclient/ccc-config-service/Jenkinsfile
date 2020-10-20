@@ -72,7 +72,6 @@ pipeline {
                         usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
                         ]
                     }
-                    }
                 }
             }
         stage ('Configure Ressources') {

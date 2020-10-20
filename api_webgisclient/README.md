@@ -23,7 +23,7 @@ To run the pipeline you need a config-generator-agent in jenkins. Run the follow
 Use name of the project where jenkins is running for *projectname* and the tag of the config generator agent image for *tag*
 ```
 oc project agi-apps-test
-oc process -f configMap-configGenAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
+oc process -f template-configGenAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
 ```
 The config-generator-agent pod requires a secret named config-generator-agent-pg-service. The secret definition is saved in H:\BJSVW\Agi\GDI\Betrieb\Openshift\Pipelines\secret-config-generator-agent-pg-service.yaml
 Create the secret

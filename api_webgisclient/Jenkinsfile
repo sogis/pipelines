@@ -40,7 +40,7 @@ pipeline {
                 }
             }
         stage('create configs') {
-            agent { label 'python-slave' }
+            agent { label 'config-generator-agent' }
             steps {
                 script {
                     createConfigs([:])

@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ressources-search-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for search-service"
+parameters:
+  - description: DB Server Url 
+    name: DB_SERVER
+    value:
+  - description: Geo DB Server
+    name: GEO_DB_SERVER
+    value:
+  - description: Pub DB
+    name: DB_PUB
+    value:
+  - description: Edit DB
+    name: DB_EDIT
+    value:
+  - description: Config DB
+    name: DB_CONFIG
+    value:
+  - description: Oereb DB
+    name: DB_OEREB
+    value:
+  - description: Sogis DB
+    name: DB_SOGIS
+    value:
+  - description: DB User ogc_server
+    name: USER_OGC_SERVER
+    value:
+  - description: Password DB User ogc_server
+    name: PW_OGC_SERVER
+    value:
+  - description: DB User sogis_service
+    name: USER_SOGIS_SERVICE
+    value:
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+    value:
+  - description: DB User sogis_service_write
+    name: USER_SOGIS_SERVICE_WRITE
+    value:
+  - description: Password DB User sogis_service_write
+    name: PW_SOGIS_SERVICE_WRITE
+    value:
+  - description: Namespace
+    name: NAMESPACE
+    value:
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_services_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE_WRITE}
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [soconfig_services]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_CONFIG}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_geodb]
+      host=${GEO_DB_SERVER}
+      port=5432
+      dbname=${DB_SOGIS}
+      user=mspublic
+      sslmode=disable
+
+      [sogis_edit]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+
+      [sogis_edit_write]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_EDIT}
+      user=${USER_SOGIS_SERVICE_WRITE}
+      password=${PW_SOGIS_SERVICE_WRITE}
+      sslmode=require
+
+      [sogis_oereb]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_OEREB}
+      user=${USER_OGC_SERVER}
+      password=${PW_OGC_SERVER}
+      sslmode=require
+  kind: Secret
+  metadata:
+    labels:
+      app: gdi
+    name: wsgi-service-pg-config
+    namespace: ${NAMESPACE}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: search-service
+    labels:
+      app: gdi
+      service: search-service
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/${NAMESPACE}/search-service:latest
+      name: latest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        up
+      kompose.version: 1.10.0 (8bb0907)
+    labels:
+      service: search-service
+      app: gdi
+    name: search-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      service: search-service
+    sessionAffinity: None
+    type: ClusterIP

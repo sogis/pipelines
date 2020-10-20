@@ -1,6 +1,6 @@
-def serviceName = 'plotinfo-service'
+def serviceName = 'config-generator'
 def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
-def configFileName = 'plotinfoConfig.json'
+def configFileName = 'searchConfig.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -52,20 +52,16 @@ pipeline {
                     build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
-                      baseUrl = 'geo-t.so.ch'
-                      terravisUrl = 'terravis-t.so.ch'
+                      environment = 'test'
                       }
                     else if ( namespace == 'gdi-integration' ) {
-                      baseUrl = 'geo-i.so.ch'
-                      terravisUrl = 'terravis.so.ch'
+                      environment = 'integration'
                       }
                     else if ( namespace == 'gdi' ) {
-                      baseUrl = 'geo.so.ch'
-                      terravisUrl = 'terravis.so.ch'
+                      environment = 'production'
                       }
                     else {
-                      baseUrl = 'geo-t.so.ch'
-                      terravisUrl = 'terravis.so.ch'
+                      environment = 'test'
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
@@ -82,6 +78,8 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
+                    println apiUser
+                    println PwdApiUser
                     }
                 }
             }
@@ -97,7 +95,7 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Build new Image for plotinfo-service if necessary') {
+        stage ('Build new Image for search-service if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -109,9 +107,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Deploy plotinfo-service in Test env') {
+        stage ('Deploy search-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p BASEURL=${baseUrl} -p TERRAVISURL=${terravisUrl}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p ENVIRONMENT=${environment}"
                 }
             }
         }

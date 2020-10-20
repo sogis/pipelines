@@ -85,7 +85,7 @@ pipeline {
                    (params.configs != true)
                    }
                }
-            agent { label 'python-slave' }
+            agent { label 'config-generator-agent' }
             steps {
                 createConfigs([:])
                 }

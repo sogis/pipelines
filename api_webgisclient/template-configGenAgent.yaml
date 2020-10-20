@@ -102,6 +102,6 @@ objects:
 parameters:
 - description: Name of the project
   name: PROJECTNAME
-  value: agi-apps-test
+  required: true
 - description: Tag of the config generator image
   name: IMAGE_TAG_AGENT

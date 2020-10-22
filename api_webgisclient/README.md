@@ -1,6 +1,6 @@
 # Pipeline for SO!API and Web GIS Client
 
-## First setup of the openshift environment
+## First setup of the Web GIS Client environment in Openshift
 
 If you setup the environment for SO!API and Web GIS Client you must first create the necessary PVCs. Please use pvc_resources.yaml to create them. 
 The Persistent volumes are not part of the pipeline because they are created by the AIO in the environment of the Canton of Solothurn. They are created as nfs storage and are immutable after creation.
@@ -74,6 +74,9 @@ To start a build of the  *WebGISClient* Job as anonymous user from outside the J
 * Go to *WebGISClient/Konfigurieren/Build Triggers* and activate *Builds von ausserhalb starten*.
 * In *Authentifizerungstoken* add *WebGISClientToken*.
 * Now you could start the build with https://jenkins-agi-apps-test.dev.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
+
+### Number of Build Processors
+For an efficient use of the pipeline the *Anzahl der Build-Prozessoren* has to be increased to 20 => https://jenkins-agi-apps-test.dev.so.ch/configure
 
 ### Install and use of the Config Generator Agent
 

@@ -66,13 +66,13 @@ oc label secret pw-sogis-service-write credential.sync.jenkins.openshift.io=true
 
 ### Activate 'Projektbasierte Matrix-Zugriffssteuerung'
 To start a build of the  *WebGISClient* Job as anonymous user from outside the Jenkins Server via the API you have to do the following steps.
-* Go to *Jenkins verwalten/Globale Sicherheit konfigurieren* activate *Projektbasierte Matrix-Zugriffssteuerung*.
+* Go to *Jenkins verwalten/Globale Sicherheit konfigurieren* activate *Projektbasierte Matrix-Zugriffssteuerung* (should be the default).
 * Then go to *WebGISClient/Konfigurieren* and activate *Projektbasierte Sicherheit aktivieren*
-* Give *Anonymous Users* and *Authenticated Users* *Build* Access
-* Go to *Benutzer/YourUserName/Einstellungen* and click *Add new Token*
-* Name it with a descriptive name, for here we use exemplary *tokenName*, and click generate. Save the token in H:\BJSVW\Agi\KeePass\GDI_Passwort.kdbx
+* Give *Anonymous Users* *Build* Access
+* Login as *sogis_service* and go to *Benutzer/sogis_service/Einstellungen* and click *Add new Token*
+* Name the token *WebGISClientToken* and click generate. Save the token in H:\BJSVW\Agi\KeePass\GDI_Passwort.kdbx
 * Go to *WebGISClient/Konfigurieren/Build Triggers* and activate *Builds von ausserhalb starten*.
-* In *Authentifizerungstoken* add the name of the generated Token.
+* In *Authentifizerungstoken* add *WebGISClientToken*.
 * Now you could start the build with https://jenkins-agi-apps-test.dev.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
 
 ### Install and use of the Config Generator Agent

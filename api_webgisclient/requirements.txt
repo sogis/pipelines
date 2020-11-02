@@ -8,13 +8,13 @@ qwc-legend-service:latest:2.0.19
 qwc-feature-info-service:latest:2.0.20
 qwc-mapinfo-service:latest:2.0.18
 sogis-plotinfo-service:latest:2.0.19
-qwc-permalink-service:latest:2.0.18
+qwc-permalink-service:latest:2.0.19
 qwc-elevation-service:latest:2.0.18
 qwc-document-service:latest:2.0.18
 qwc-print-service:latest:2.0.18
 sogis-landreg-service:latest:2.0.18
 sogis-ccc-config:latest:2.0.19
 sogis-auth-service:latest:2.0.18
-sogis-map-viewer:latest:2.0.23
+sogis-map-viewer:latest:2.0.25
 sogis-agdi:v3.0.0-rc1:2.0.18
 sogis-config-generator:v3.0.0-rci1:1.4

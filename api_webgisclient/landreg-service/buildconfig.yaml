@@ -38,7 +38,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-landreg-service:${BASETAG}
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

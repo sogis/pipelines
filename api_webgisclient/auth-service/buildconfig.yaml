@@ -41,7 +41,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-auth-service:${BASETAG}
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

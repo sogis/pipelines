@@ -36,7 +36,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-agdi:${BASETAG}
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

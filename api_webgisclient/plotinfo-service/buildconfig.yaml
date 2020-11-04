@@ -36,7 +36,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-plotinfo-service:${BASETAG}
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

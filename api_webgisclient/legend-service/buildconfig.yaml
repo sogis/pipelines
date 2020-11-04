@@ -35,7 +35,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/qwc-legend-service:${BASETAG}
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

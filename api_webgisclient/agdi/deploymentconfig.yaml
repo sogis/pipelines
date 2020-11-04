@@ -13,6 +13,14 @@ parameters:
     name: TAG
   - description: Number of Replicas
     name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
 labels:
   application: gdi
 objects:
@@ -80,6 +88,13 @@ objects:
           ports:
           - containerPort: 9090 
             protocol: TCP
+          resources:
+            limits:
+              cpu: ${{CPU_LIMIT}}m
+              memory: ${{MEMORY_LIMIT}}Mi
+            requests:
+              cpu: ${{CPU_REQUEST}}m
+              memory: ${{MEMORY_REQUEST}}Mi
           readinessProbe:
             failureThreshold: 3
             httpGet:

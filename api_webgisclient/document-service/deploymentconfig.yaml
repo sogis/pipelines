@@ -52,7 +52,7 @@ objects:
           - name: JASPER_SERVICE_URL
             value: http://jasper-reporting-service.${NAMESPACE}.svc/reports
           - name: JASPER_TIMEOUT
-            value: 3600
+            value: '3600'
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER

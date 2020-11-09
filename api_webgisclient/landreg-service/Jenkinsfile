@@ -49,10 +49,10 @@ pipeline {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
-                      resources = ['cpu_request': '250m', 'cpu_limit': '1500m', 'memory_request': '200Mi', 'memory_limit': '400Mi']
+                      resources = ['cpu_request': '16m', 'cpu_limit': '500m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
-                      resources = ['cpu_request': '250m', 'cpu_limit': '1500m', 'memory_request': '400Mi', 'memory_limit': '400Mi']
+                      resources = ['cpu_request': '16m', 'cpu_limit': '500m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']

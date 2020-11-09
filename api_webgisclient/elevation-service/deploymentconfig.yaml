@@ -20,7 +20,7 @@ parameters:
   - description: Memory Request
     name: MEMORY_REQUEST
   - description: Memory Limit
-    name: MEMORY_LIMI
+    name: MEMORY_LIMIT
 labels:
   app: gdi
   service: elevation-service

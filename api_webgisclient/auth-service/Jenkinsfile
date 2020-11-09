@@ -1,10 +1,10 @@
 def serviceName = 'auth-service'
 def configFileName = 'samlAuthConfig.json'
-def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
+def repo = 'https://raw.githubusercontent.com/sogis/pipelines/add_resources/api_webgisclient/' + serviceName
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
-library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+library identifier: 'jenkins-shared-libs@add_resources', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
@@ -48,18 +48,22 @@ pipeline {
                     if ( namespace == 'gdi-test' ) {
                       baseUrl = 'geo-t.so.ch'
                       idpUrl = 'idp-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       baseUrl = 'geo-i.so.ch'
                       idpUrl = 'idp.so.ch'
+                      resources = ['cpu_request': '2m', 'cpu_limit': '5m', 'memory_request': '35Mi', 'memory_limit': '35Mi']
                       }
                     else if ( namespace == 'gdi' ) {
                       baseUrl = 'geo.so.ch'
                       idpUrl = 'idp.so.ch'
+                      resources = ['cpu_request': '5m', 'cpu_limit': '5m', 'memory_request': '35Mi', 'memory_limit': '35Mi']
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'
                       idpUrl = 'idp-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
@@ -111,7 +115,7 @@ pipeline {
             }
         stage ('Deploy auth-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit']
                 }
             }
         }

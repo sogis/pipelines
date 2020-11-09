@@ -1,9 +1,9 @@
 def serviceName = 'api-gateway'
-def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
+def repo = 'https://raw.githubusercontent.com/sogis/pipelines/add_resources/api_webgisclient/' + serviceName
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
-library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+library identifier: 'jenkins-shared-libs@add_resources', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
@@ -44,24 +44,28 @@ pipeline {
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'geo-wmts-t'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       environment = 'integration'
                       baseUrl = 'geo-i.so.ch'
                       wmtsUrl = 'geo-wmts'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '80Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi' ) {
                       environment = 'production'
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'geo-wmts'
                       matomoUrl = 'analytics.dev.so.ch'
+                      resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'geo-wmts-t'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      resources = ['cpu_request': '250', 'cpu_limit': '1500', 'memory_request': '200', 'memory_limit': '400']
                       }
                    }
                 }
@@ -71,7 +75,7 @@ pipeline {
                 configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl}"
                 }
             }
-        stage ('Build new Image for data-service if necessary') {
+        stage ('Build new Image for api-gateway if necessary') {
             when {
                 expression {
                     (build == 'ja')
@@ -86,9 +90,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Deploy data-service in Test env') {
+        stage ('Deploy api-gateway in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, "${resources['cpu_request']}","${resources['cpu_limit']}","${resources['memory_request']}","${resources['memory_limit']}","-p ENVIRONMENT=${environment}"  
                 }
             }
         }

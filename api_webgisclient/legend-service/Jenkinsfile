@@ -107,7 +107,7 @@ pipeline {
             }
         stage ('Deploy legend-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
                 }
             }
         }

@@ -13,6 +13,14 @@ parameters:
     name: ENVIRONMENT
   - description: Number of Replicas
     name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
 labels:
   application: gdi
 objects:
@@ -53,16 +61,22 @@ objects:
           - name: LOG_LEVEL
             value: "2"
           - name: QGIS_FCGI_MIN_PROCESSES
-            value: "2"
+            value: "1"
           - name: QGIS_FCGI_MAX_PROCESSES
-            value: "2"
+            value: "1"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
           name: sogis-qgis-server
           ports:
           - containerPort: 80
             protocol: TCP
-          resources: {}
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /data/symbols

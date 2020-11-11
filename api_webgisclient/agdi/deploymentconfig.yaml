@@ -90,11 +90,11 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: ${{CPU_LIMIT}}m
-              memory: ${{MEMORY_LIMIT}}Mi
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
             requests:
-              cpu: ${{CPU_REQUEST}}m
-              memory: ${{MEMORY_REQUEST}}Mi
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
           readinessProbe:
             failureThreshold: 3
             httpGet:

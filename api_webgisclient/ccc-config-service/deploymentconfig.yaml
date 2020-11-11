@@ -13,6 +13,14 @@ parameters:
     name: BASEURL
   - description: Number of Replicas
     name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
 labels:
   application: gdi
 objects:
@@ -32,7 +40,13 @@ objects:
       service: ccc-config-service
     strategy:
       activeDeadlineSeconds: 21600
-      resources: {}
+      resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
       rollingParams:
         intervalSeconds: 1
         maxSurge: 10%

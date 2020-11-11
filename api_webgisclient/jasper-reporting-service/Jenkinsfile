@@ -40,6 +40,18 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) { 
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    else if ( namespace == 'gdi-integration' ) { 
+                      resources = ['cpu_request': '750m', 'cpu_limit': '1500m', 'memory_request': '1000Mi', 'memory_limit': '2000Mi']
+                      }
+                    else if ( namespace == 'gdi' ) { 
+                      resources = ['cpu_request': '750m', 'cpu_limit': '1500m', 'memory_request': '2000Mi', 'memory_limit': '2000Mi']
+                      }
+                    else {
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
                     credentials = [
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
@@ -67,7 +79,7 @@ pipeline {
             }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
                 }
             }
         }

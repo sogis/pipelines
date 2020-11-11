@@ -47,15 +47,19 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       baseUrl = 'geo-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       baseUrl = 'geo-i.so.ch'
+                      resources = ['cpu_request': '8m', 'cpu_limit': '16m', 'memory_request': '125Mi', 'memory_limit': '250Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
                       baseUrl = 'geo.so.ch'
+                      resources = ['cpu_request': '16m', 'cpu_limit': '16m', 'memory_request': '250Mi', 'memory_limit': '250Mi']
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
@@ -107,7 +111,7 @@ pipeline {
             }
         stage ('Deploy print-service in Test env') {
             steps {
-                  deployImage serviceName, namespace, vDeployImage, repo, replicas,  "-p BASEURL=${baseUrl}"
+                  deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
                 }
             }
         }

@@ -185,7 +185,7 @@ objects:
         }
 
         location /agdi {
-            proxy_pass http://agdi.${NAMESPACE}.svc/agdi;
+            proxy_pass http://agdi.${NAMESPACE}.svc;
         }
 
         location /api/v1/landreg {

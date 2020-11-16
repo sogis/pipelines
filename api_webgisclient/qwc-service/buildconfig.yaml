@@ -36,7 +36,6 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/sogis-map-viewer:${BASETAG}
-        noCache: false
       type: Docker
     resources:
       limits:

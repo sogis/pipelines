@@ -66,10 +66,30 @@ objects:
             value: "1"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 5
           name: sogis-qgis-server
           ports:
           - containerPort: 80
             protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 5
           resources:
             limits:
               cpu: ${CPU_LIMIT}

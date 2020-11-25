@@ -43,9 +43,9 @@ objects:
       resources: {}
       rollingParams:
         intervalSeconds: 1
-        maxSurge: 10%
+        maxSurge: 0
         maxUnavailable: 10%
-        timeoutSeconds: 120
+        timeoutSeconds: 600
         updatePeriodSeconds: 1
       type: Rolling
     template:
@@ -75,19 +75,19 @@ objects:
             initialDelaySeconds: 1
             periodSeconds: 60
             successThreshold: 1
-            timeoutSeconds: 5
+            timeoutSeconds: 8
           name: sogis-qgis-server
           ports:
           - containerPort: 80
             protocol: TCP
           readinessProbe:
-            failureThreshold: 3
+            failureThreshold: 1
             httpGet:
               path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
               port: 80
               scheme: HTTP
             initialDelaySeconds: 1
-            periodSeconds: 60
+            periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 5
           resources:

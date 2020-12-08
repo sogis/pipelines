@@ -15,6 +15,6 @@ qwc-print-service:latest:2.0.20
 sogis-landreg-service:latest:2.0.18
 sogis-ccc-config:latest:2.0.19
 sogis-auth-service:latest:2.0.18
-sogis-map-viewer:latest:2.0.33
+sogis-map-viewer:latest:2.0.35
 sogis-agdi:v3.0.0-rc1:2.0.19
 sogis-config-generator:v3.0.0-rci1:1.4

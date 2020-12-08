@@ -35,7 +35,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: pfeimich/sogis-map-viewer:${BASETAG}
+          name: sourcepole/sogis-map-viewer:${BASETAG}
         noCache: true
       type: Docker
     resources:

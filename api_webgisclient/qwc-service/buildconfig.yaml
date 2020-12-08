@@ -38,7 +38,7 @@ objects:
           name: sourcepole/sogis-map-viewer:${BASETAG}
         noCache: true
         env:
-          - name: "BUILD LOGLEVEL"
+          - name: "BUILD_LOGLEVEL"
             value: "5"
       type: Docker
     resources:

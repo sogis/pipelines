@@ -113,7 +113,7 @@ pipeline {
             steps {
                 script {
                     sh """ 
-                       oc tag -n $namespace --source=docker sogis/qgis-server:$vBaseImage qgis-server:latest
+                       oc tag -n $namespace --source=imagestreamtag sogis/qgis-server:$vDeployImage qgis-server:latest
                     """
                     }
                 }

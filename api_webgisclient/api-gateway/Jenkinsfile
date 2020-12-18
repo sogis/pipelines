@@ -42,28 +42,28 @@ pipeline {
                     if ( namespace == 'gdi-test' ) {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
-                      wmtsUrl = 'geo-wmts-t'
+                      wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       environment = 'integration'
                       baseUrl = 'geo-i.so.ch'
-                      wmtsUrl = 'geo-wmts'
+                      wmtsUrl = 'geo-wmts.so.ch'
                       matomoUrl = 'analytics-i.dev.so.ch'
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '80Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi' ) {
                       environment = 'production'
                       baseUrl = 'geo.so.ch'
-                      wmtsUrl = 'geo-wmts'
+                      wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics.dev.so.ch'
                       resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'
-                      wmtsUrl = 'geo-wmts-t'
+                      wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
                       resources = ['cpu_request': '250', 'cpu_limit': '1500', 'memory_request': '200', 'memory_limit': '400']
                       }

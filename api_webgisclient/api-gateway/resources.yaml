@@ -192,12 +192,12 @@ objects:
             proxy_pass http://landreg-service.${NAMESPACE}.svc;
         }
         location /api/wms-cache/ {
-            proxy_pass https://${WMTS_URL}.so.ch/mapcache/;
+            proxy_pass http://${WMTS_URL}/mapcache/;
             proxy_set_header Host       $proxy_host;
         }
 
         location /api/wmts/ {
-            proxy_pass https://${WMTS_URL}.so.ch/mapcache/wmts/;
+            proxy_pass http://${WMTS_URL}/mapcache/wmts/;
             proxy_set_header Host       $proxy_host;
         }
 

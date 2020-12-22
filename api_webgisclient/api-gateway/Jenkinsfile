@@ -38,7 +38,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    def repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace

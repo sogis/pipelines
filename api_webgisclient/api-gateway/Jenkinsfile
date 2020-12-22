@@ -1,4 +1,5 @@
 def serviceName = 'api-gateway'
+def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -20,10 +21,6 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
                )
-        string(defaultValue: "master",
-               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
-               name: 'branch'
-               )
         string(defaultValue: "1",
                description: 'Anzahl Replicas',
                name: 'replicas'
@@ -38,7 +35,6 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vDeployImage = params.vDeployImage
                     build = params.build
                     namespace = params.namespace

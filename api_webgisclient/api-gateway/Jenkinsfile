@@ -1,5 +1,5 @@
 def serviceName = 'api-gateway'
-def branch = env.JENKINS_SHARED_LIBS_BRANCH
+def branch = env.EDIT_DB
 
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine

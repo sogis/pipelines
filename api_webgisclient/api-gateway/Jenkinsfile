@@ -1,5 +1,4 @@
 def serviceName = 'api-gateway'
-def branch = "${sh printenv}"
 
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -35,7 +34,7 @@ pipeline {
                name: 'build'     
                )
         }
-
+    library identifier: 'jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}', retriever: modernSCM([$class: 'GitSCMSource', credentialsId: '', remote: 'https://github.com/sogis/jenkins-shared-libs.git', traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]])
     stages {
         stage ('Ask for Version') {
             steps {

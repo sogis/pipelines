@@ -6,9 +6,7 @@ def serviceName = 'api-gateway'
 library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
-libraries {
-    lib('jenkins-shared-lib')
-    }
+@library('jenkins-shared-lib')
 pipeline {
     agent any 
     options {

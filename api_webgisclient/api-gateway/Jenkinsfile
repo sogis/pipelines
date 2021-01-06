@@ -9,6 +9,9 @@ def serviceName = 'api-gateway'
 
 pipeline {
     agent any 
+    println(env.NAMESPACE_JENKINS)
+    println(env.DB_SERVER_TEST)
+    println(env.JENKINS_SHARED_LIBS_BRANCH)
     libraries {
         lib("jenkins-shared-libs@${env.JENKINS_SHARED_LIBS_BRANCH}")
         }

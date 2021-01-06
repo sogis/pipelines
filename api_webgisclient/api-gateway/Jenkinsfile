@@ -10,7 +10,7 @@ def serviceName = 'api-gateway'
 pipeline {
     agent any 
     environment {
-        SHARED_LIBS_BRANCH = env.JENKINS_SHARED_LIBS_BRANCH
+        SHARED_LIBS_BRANCH = "${env.JENKINS_SHARED_LIBS_BRANCH}"
         }
     libraries {
         lib("jenkins-shared-libs@${SHARED_LIBS_BRANCH}")

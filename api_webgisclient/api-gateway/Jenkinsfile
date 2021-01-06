@@ -3,12 +3,15 @@ def serviceName = 'api-gateway'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
-library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
-    [$class: 'GitSCMSource',
-     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+// library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+//     [$class: 'GitSCMSource',
+//      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
     agent any 
+    libraries {
+        lib("jenkins-shared-libs@${env.JENKINS_SHARED_LIBS_BRANCH}")
+        }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 10, unit: 'MINUTES')

@@ -10,7 +10,7 @@ def serviceName = 'api-gateway'
 pipeline {
     agent any 
     libraries {
-        lib("jenkins-shared-libs@master")
+        lib("jenkins-shared-libs@${env.JENKINS_SHARED_LIBS_BRANCH}")
         }
     options {
         // set a timeout of 10 minutes for this pipeline

@@ -10,7 +10,7 @@ def serviceName = 'api-gateway'
 pipeline {
     agent any 
     libraries {
-        lib("jenkins-shared-libs@${env.JENKINS_SHARED_LIBS_BRANCH}")
+        lib("jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}")
         }
     options {
         // set a timeout of 10 minutes for this pipeline
@@ -44,7 +44,7 @@ pipeline {
                     sh """
                         printenv
                     """
-                    println(branch)
+                    println(env.JENKINS_SHARED_LIBS_BRANCH)
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vDeployImage = params.vDeployImage
                     build = params.build

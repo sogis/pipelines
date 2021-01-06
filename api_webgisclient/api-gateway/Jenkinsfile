@@ -10,10 +10,10 @@ def serviceName = 'api-gateway'
 pipeline {
     agent any 
     environment {
-        SHARED_LIBS_BRANCH = "${env.JENKINS_SHARED_LIBS_BRANCH}"
+        SHARED_LIBS_BRANCH = "${sh(script: 'echo $JENKINS_SHARED_LIBS_BRANCH', returnStdout: true).trim()}"
         }
     libraries {
-        lib("jenkins-shared-libs@${env.SHARED_LIBS_BRANCH}")
+        lib("jenkins-shared-libs@${params.shared_lib_branch}")
         }
     options {
         // set a timeout of 10 minutes for this pipeline
@@ -30,6 +30,10 @@ pipeline {
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
+               )
+        string(defaultValue: "${env.SHARED_LIBS_BRANCH}",
+               description: 'Bitte Branch auswählen, der für die Shared Library verwendet werden soll',
+               name: 'shared_lib_branch'
                )
         string(defaultValue: "1",
                description: 'Anzahl Replicas',

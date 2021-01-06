@@ -10,7 +10,7 @@ def serviceName = 'api-gateway'
 pipeline {
     agent any 
     libraries {
-        lib("jenkins-shared-libs@${env.NAMESPACE_JENKINS}")
+        lib("jenkins-shared-libs@master")
         }
     options {
         // set a timeout of 10 minutes for this pipeline
@@ -92,6 +92,7 @@ pipeline {
             steps {
                 script {
                     sh """   
+                       printenv
                        oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n $namespace -f- 
                        oc start-build $serviceName -n $namespace --wait
                     """

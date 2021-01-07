@@ -8,7 +8,7 @@ def serviceName = 'api-gateway'
 //      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent master 
+    agent any 
     libraries {
         lib("jenkins-shared-libs@${env.JENKINS_SHARED_LIBS_BRANCH}")
         }

@@ -19,11 +19,5 @@ In Jenkins können für häufig genutzten Code, der in mehreren Pipelines verwen
 
 Für das AGI findet man die Shared Library unter https://github.com/sogis/jenkins-shared-libs. Falls notwendig können hier weitere Klassen ergänzt werden.
 Für die Nutzung der Shared Library wird in der Jenkins Konfiguration die Globale Variable JENKINS_SHARED_LIBS_BRANCH gesetzt. Hier wird der Branch der Shared Library eingetragen, der in der Jenkins Umgebung verwendet wird.
-=> https://jenkins-agi-apps-test.dev.so.ch/configure
-
-Damit die Variable persistiert wird muss die Anpassung direkt unter https://github.com/sogis/jenkins in der Datei config.xml erfolgen. Anschliessend die Datei in den Jenkins Pod hochladen.
-```
-cd jenkins
-oc rsync config.xml jenkins-pod:/var/lib/jenkins/
-```
-Den Namen von *jenkins-pod* mit oc get pods ermitteln
+Die Anpassung erfolgt unter https://jenkins-agi-apps-test.dev.so.ch/configure
+![](https://github.com/sogis/pipelines/blob/master/createGlobalVar.png)

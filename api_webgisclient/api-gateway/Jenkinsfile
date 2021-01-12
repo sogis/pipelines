@@ -21,6 +21,10 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
                )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
         string(defaultValue: "1",
                description: 'Anzahl Replicas',
                name: 'replicas'

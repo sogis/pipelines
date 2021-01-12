@@ -21,6 +21,10 @@ pipeline {
         string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
                )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
         string(description: 'Anzahl der Replicas',
                defaultValue: '1',
                name: 'replicas'

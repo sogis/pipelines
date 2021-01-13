@@ -1,10 +1,9 @@
 def serviceName = 'document-service'
-def repo = 'https://raw.githubusercontent.com/sogis/pipelines/master/api_webgisclient/' + serviceName
 def configFileName = 'documentConfig.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
-library identifier: 'jenkins-shared-libs@master', retriever: modernSCM(
+library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
@@ -22,6 +21,10 @@ pipeline {
         string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
               )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
         string(description: 'Anzahl der Replicas',
                defaultValue: '1',
                name: 'replicas'
@@ -40,6 +43,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/'+ params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas

@@ -47,6 +47,7 @@ pipeline {
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
+                    branch = params.branch
                     build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {

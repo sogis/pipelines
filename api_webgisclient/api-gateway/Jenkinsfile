@@ -43,6 +43,7 @@ pipeline {
                     build = params.build
                     namespace = params.namespace
                     replicas = params.replicas
+                    branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                       environment = 'test'
                       baseUrl = 'geo-t.so.ch'

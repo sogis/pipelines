@@ -72,7 +72,7 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.afu\.altlasten|ch\.so\.alw\.strukturverbesserungen\/nicht_oeffentlich|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
+        location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.afu\.altlasten|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
             set $url1 $1; 
             set $url2 $2;
             if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) { 
@@ -80,6 +80,16 @@ objects:
             }
             alias /geodata/documents/$url1/$url2;
             autoindex off;
+        }
+
+        location ~ ^/docs/(ch\.so\.alw\.strukturverbesserungen\/nicht_oeffentlich)/(.*)$ {
+            set $url1 $1; 
+            set $url2 $2;
+            if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) { 
+                return 403;
+            }
+            alias /geodata/documents/$url1/$url2;
+            autoindex on;
         }
 
         location /docs {

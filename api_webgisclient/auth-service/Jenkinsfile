@@ -106,15 +106,10 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Build new Image for auth-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Create ConfigMaps') {
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_PACKAGES='python3-dev libxmlsec1-dev' --build-arg SERVICE=auth/auth_saml"
+                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
                     }
                 }
             }

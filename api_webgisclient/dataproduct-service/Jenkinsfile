@@ -102,15 +102,10 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Build new Image for dataproduct-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Create ConfigMaps') {
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
                     }
                 }
             }

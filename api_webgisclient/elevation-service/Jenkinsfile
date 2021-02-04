@@ -97,15 +97,10 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Build new Image for elevation-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Create ConfigMaps') {
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE=elevation --build-arg SERVICE_PACKAGES=python3-gdal"
+                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
                     }
                 }
             }

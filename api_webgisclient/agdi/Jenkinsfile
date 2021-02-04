@@ -109,18 +109,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for agdi if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
-            steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
-                    }
-                }
-            }
         stage ('Deploy agdi in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${environment}"

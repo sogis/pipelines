@@ -33,10 +33,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'     
-               )
         }
 
     stages {
@@ -46,7 +42,6 @@ pipeline {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
-                    build = params.build
                     replicas = params.replicas
                     branch = params.branch
                     namespace = params.namespace

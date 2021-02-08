@@ -101,6 +101,8 @@ objects:
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/saml
             name: auth-service-config-claim
+          - mountPath: /srv/qwc_service/config/default
+            name: config-json-files
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -121,5 +123,13 @@ objects:
               path: advanced_settings.json
             name: auth-service-config
           name: auth-service-config-claim
+        - configMap:
+            items:
+            - key: authConfig.json
+              path: authConfig.json
+            - key: permissions.json
+              path: permissions.json
+            name: authconfig-json
+          name: config-json-files
     test: false
     triggers: []

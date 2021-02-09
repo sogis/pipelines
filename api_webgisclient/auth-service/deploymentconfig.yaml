@@ -125,7 +125,7 @@ objects:
           name: auth-service-config-claim
         - configMap:
             items:
-            - key: authConfig.json
+            - key: samlAuthConfig.json
               path: samlAuthConfig.json
             - key: permissions.json
               path: permissions.json

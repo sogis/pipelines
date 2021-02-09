@@ -102,8 +102,13 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
+            subPath: permissions.json
           - mountPath: /srv/qwc_service/config/default
-            name: config-json-files
+            name: config-json-file
+            subPath: dataConfig.json
+          - mountPath: /srv/qwc-service/config/default
+            name: permission-json-file
+            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -119,8 +124,12 @@ objects:
             items:
             - key: dataConfig.json
               path: dataConfig.json
+            name: permission-json
+          name: permission-json-file
+        - configMap:
+            items:
             - key: permissions.json
               path: permissions.json
             name: dataconfig-json
-          name: config-json-files
+          name: config-json-file
     triggers: []

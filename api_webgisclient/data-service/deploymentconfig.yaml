@@ -107,7 +107,7 @@ objects:
             name: config-json-file
             subPath: dataConfig.json
           - mountPath: /srv/qwc-service/config/default
-            name: permission-json-file
+            name: permission-file
             subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -124,12 +124,12 @@ objects:
             items:
             - key: dataConfig.json
               path: dataConfig.json
-            name: permission-json
-          name: permission-json-file
+            name: dataconfig-json
+          name: config-json-file
         - configMap:
             items:
             - key: permissions.json
               path: permissions.json
-            name: dataconfig-json
-          name: config-json-file
+            name: permission-json
+          name: permission-file
     triggers: []

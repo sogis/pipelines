@@ -40,13 +40,7 @@ objects:
       service: ccc-config-service
     strategy:
       activeDeadlineSeconds: 21600
-      resources:
-            limits:
-              cpu: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
-            requests:
-              cpu: ${CPU_REQUEST}
-              memory: ${MEMORY_REQUEST}
+      resources: {}
       rollingParams:
         intervalSeconds: 1
         maxSurge: 10%
@@ -172,11 +166,29 @@ objects:
               periodSeconds: 30
               successThreshold: 1
               timeoutSeconds: 1
-            resources: {}
+            resources:
+              limits:
+                cpu: ${CPU_LIMIT}
+                memory: ${MEMORY_LIMIT}
+              requests:
+                cpu: ${CPU_REQUEST}
+                memory: ${MEMORY_REQUEST}
+            volumeMounts:
+            - mountPath: /srv/qwc_service/config/default
+              name: config-json-files
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            items:
+            - key: cccConfig.json
+              path: cccConfig.json
+            - key: permissions.json
+              path: permissions.json
+            name: cccconfig-json
+          name: config-json-files
     test: false
     triggers: []

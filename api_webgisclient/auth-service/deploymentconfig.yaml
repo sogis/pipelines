@@ -126,10 +126,10 @@ objects:
         - configMap:
             items:
             - key: authConfig.json
-              path: authConfig.json
+              path: samlAuthConfig.json
             - key: permissions.json
               path: permissions.json
-            name: authconfig-json
+            name: samlauthconfig-json
           name: config-json-files
     test: false
     triggers: []

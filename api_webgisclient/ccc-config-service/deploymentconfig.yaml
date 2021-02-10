@@ -174,8 +174,12 @@ objects:
                 cpu: ${CPU_REQUEST}
                 memory: ${MEMORY_REQUEST}
             volumeMounts:
-            - mountPath: /srv/qwc_service/config/default
-              name: config-json-files
+            - mountPath: /srv/qwc_service/config/default/cccConfig.json
+              name: config-json-file
+              subPath: cccConfig.json
+            - mountPath: /srv/qwc_service/config/default/permission.json
+              name: permission-file
+              subPath: permission.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -186,9 +190,13 @@ objects:
             items:
             - key: cccConfig.json
               path: cccConfig.json
+            name: cccconfig-json
+          name: config-json-file
+        - configMap:
+            items:
             - key: permissions.json
               path: permissions.json
-            name: cccconfig-json
-          name: config-json-files
+            name: permission-json
+          name: permission-file
     test: false
     triggers: []

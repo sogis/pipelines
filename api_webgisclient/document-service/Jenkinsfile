@@ -90,7 +90,7 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs([:])
+                createConfigs namespace
                 }
             }
         stage ('Create ConfigMaps') {

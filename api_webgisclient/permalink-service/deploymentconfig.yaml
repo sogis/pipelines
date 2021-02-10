@@ -99,6 +99,12 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
+          - mountPath: /srv/qwc_service/config/default/permalinkConfig.json
+            name: config-json-file
+            subPath: permalinkConfig.json
+          - mountPath: /srv/qwc-service/config/default/permissions.json
+            name: permission-file
+            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -110,5 +116,17 @@ objects:
               path: .pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
+        - configMap:
+            items:
+            - key: permalinkConfig.json
+              path: permalinkConfig.json
+            name: permalinkconfig-json
+          name: config-json-file
+        - configMap:
+            items:
+            - key: permissions.json
+              path: permissions.json
+            name: permission-json
+          name: permission-file
     test: false
     triggers: []

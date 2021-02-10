@@ -139,7 +139,7 @@ objects:
             items:
             - key: agdiConfig.json
               path: agdiConfig.json
-            name: agdiconfig.json
+            name: agdiconfig-json
           name: config-json-file
         - configMap:
             items:

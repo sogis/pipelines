@@ -102,11 +102,10 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
-            subPath: permissions.json
-          - mountPath: /srv/qwc_service/config/default
+          - mountPath: /srv/qwc_service/config/default/dataConfig.json
             name: config-json-file
             subPath: dataConfig.json
-          - mountPath: /srv/qwc-service/config/default
+          - mountPath: /srv/qwc-service/config/default/permissions.json
             name: permission-file
             subPath: permissions.json
         dnsPolicy: ClusterFirst

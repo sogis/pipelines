@@ -106,12 +106,6 @@ objects:
               name: wsgi-service-config-claim
             - mountPath: /qgs-resources
               name: qgs-resources
-            - mountPath: /srv/qwc_service/config/default/dataproductConfig.json
-              name: config-json-file
-              subPath: dataproductConfig.json
-            - mountPath: /srv/qwc_service/config/default/permissions.json
-              name: permission-file
-              subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -126,16 +120,4 @@ objects:
           - name: qgs-resources
             persistentVolumeClaim:
               claimName: qgs-resources-claim
-          - configMap:
-            items:
-            - key: dataproductConfig.json
-              path: dataproductConfig.json
-            name: dataproductconfig-json
-          name: config-json-file
-          - configMap:
-            items:
-            - key: permissions.json
-              path: permissions.json
-            name: permission-json
-          name: permission-file
     triggers: []

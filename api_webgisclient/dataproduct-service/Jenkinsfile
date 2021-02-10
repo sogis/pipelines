@@ -33,6 +33,10 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
                )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'
+               )
         }
 
     stages {
@@ -44,6 +48,7 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     branch = params.branch
+                    build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       baseUrl = 'geo-t.so.ch'
@@ -97,10 +102,15 @@ pipeline {
                 createConfigs([:])
                 }
             }
-        stage ('Create ConfigMaps') {
+        stage ('Build new Image for dataproduct-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }
             steps {
-                withCredentials ( credentials ) {
-                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
+                withCredentials ( credentials ) { 
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
                     }
                 }
             }

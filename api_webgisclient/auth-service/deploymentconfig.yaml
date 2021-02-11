@@ -101,6 +101,12 @@ objects:
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/saml
             name: auth-service-config-claim
+          - mountPath: /srv/qwc_service/config/default/samlAuthConfig.json
+            name: config-json-file
+            subPath: samlAuthConfig.json
+          - mountPath: /srv/qwc_service/config/default/permissions.json
+            name: permission-file
+            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -113,7 +119,6 @@ objects:
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - configMap:
-            defaultMode: 420
             items:
             - key: settings.json
               path: settings.json
@@ -121,5 +126,17 @@ objects:
               path: advanced_settings.json
             name: auth-service-config
           name: auth-service-config-claim
+        - configMap:
+            items:
+            - key: samlAuthConfig.json
+              path: samlAuthConfig.json
+            name: samlauthconfig-json
+          name: config-json-file
+        - configMap:
+            items:
+            - key: permissions.json
+              path: permissions.json
+            name: permission-json
+          name: permission-file
     test: false
     triggers: []

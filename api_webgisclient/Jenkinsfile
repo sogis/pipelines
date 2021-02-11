@@ -49,7 +49,7 @@ pipeline {
             agent { label 'config-generator-agent' }
             steps {
                 script {
-                    createConfigs([:])
+                    createConfigs namespace
                     }
                 }
             } 

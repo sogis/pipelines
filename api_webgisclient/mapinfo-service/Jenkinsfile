@@ -33,10 +33,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'     
-               )
         }
 
     stages {
@@ -46,7 +42,6 @@ pipeline {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
                     vDeployImage = params.vDeployImage
-                    build = params.build
                     replicas = params.replicas
                     branch = params.branch
                     namespace = params.namespace
@@ -95,18 +90,13 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs([:])
+                createConfigs namespace
                 }
             }
-        stage ('Build new Image for mapinfo-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Create ConfigMaps') {
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
                     }
                 }
             }

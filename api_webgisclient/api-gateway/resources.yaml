@@ -46,6 +46,11 @@ objects:
 
         add_header 'Access-Control-Allow-Origin' '*';
 
+        location /nginx_status {
+            stub_status on;
+            access_log  on;
+        }
+
         location / {
             # If st is a coordinate and c exists set hc=1 and remove st
             if ($args ~ ^(.+&|)st(=[0-9%C,]+)(.*)(c=[0-9%C,]+)(&s=[0-9]+)$) {

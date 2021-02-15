@@ -46,6 +46,7 @@ pipeline {
                     branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
@@ -53,6 +54,7 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       environment = 'integration'
+                      sogisPicMirEnv = '-int'
                       baseUrl = 'geo-i.so.ch'
                       wmtsUrl = 'geo-wmts.so.ch'
                       matomoUrl = 'analytics-i.dev.so.ch'
@@ -60,6 +62,7 @@ pipeline {
                       }
                     else if ( namespace == 'gdi' ) {
                       environment = 'production'
+                      sogisPicMirEnv = '1'
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics.dev.so.ch'
@@ -67,6 +70,7 @@ pipeline {
                       }
                     else {
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
@@ -97,7 +101,7 @@ pipeline {
             }
         stage ('Deploy api-gateway in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${environment}"  
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${sogisPicMirEnv}"  
                 }
             }
         }

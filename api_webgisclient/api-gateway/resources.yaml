@@ -67,8 +67,8 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location ~ /map/([a-z]+) {
-            rewrite ^/map/([a-z]+)$ /map?t=$1 break;
+        location ~ /map/([a-z_]+) {
+            rewrite ^/map/([a-z_]+)$ /map?t=$1 break;
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
@@ -163,15 +163,15 @@ objects:
             proxy_pass http://mapinfo-service.${NAMESPACE}.svc;
         }
 
-        location /api/v1/plotinfo {
-            proxy_pass http://plotinfo-service.${NAMESPACE}.svc;
-        }
-
         location /api/oereb {
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
             proxy_pass http://oereb-web-service.agi-oereb-${ENVIRONMENT}.svc/;
+        }
+
+        location /api/v1/plotinfo {
+            proxy_pass http://plotinfo-service.${NAMESPACE}.svc;
         }
 
         location /api/v1/print {
@@ -270,7 +270,7 @@ objects:
         }
         
         location /api/cadastre/v1 {
-            proxy_pass http://cadastre-web-service.agi-apps-test.svc/;
+            proxy_pass http://cadastre-web-service.agi-apps-${ENVIRONMENT}.svc/;
         } 
 
         location /api/embed/v1 {

@@ -33,8 +33,8 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: nginx:mainline-alpine
-        noCache: false
+          name: twalter/openshift-nginx:mainline-alpine
+        noCache: true
       type: Docker
     resources:
       limits:

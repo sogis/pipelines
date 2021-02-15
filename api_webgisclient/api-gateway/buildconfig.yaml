@@ -33,7 +33,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: twalter/openshift-nginx:mainline-alpine
+          name: nginx:mainline-alpine
         noCache: false
       type: Docker
     resources:

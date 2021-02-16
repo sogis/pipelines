@@ -297,6 +297,7 @@ objects:
             proxy_pass http://${MATOMO_URL}/;
         }
 
+        error_log  /var/log/nginx/error.log warn;
         #error_page  404   /404.html;
         #location = /404.html {
         #    root   /usr/share/nginx/html;

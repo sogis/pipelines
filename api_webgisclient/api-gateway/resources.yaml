@@ -333,6 +333,8 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
+    annotations:
+      service.alpha.openshift.io/serving-cert-secret-name: api-gateway-cert
     labels:
       app: gdi
       service: api-gateway

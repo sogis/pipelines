@@ -357,7 +357,7 @@ objects:
       service: api-gateway
     name: api-gateway
   spec:
-    host: https://${BASEURL}
+    host: ${BASEURL}
     port:
       targetPort: 443-tcp
     tls:

@@ -140,7 +140,7 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
-      service: ogc-service
+      service: print-service
       app: gdi
     name: print-ogc-service
   spec:
@@ -160,7 +160,7 @@ objects:
     template:
       metadata:
         labels:
-          service: print-ogc-service
+          service: print-service
           app: gdi
       spec:
         containers:
@@ -187,7 +187,7 @@ objects:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
-          name: sogis-ogc-service
+          name: sogis-print-ogc-service
           ports:
             - containerPort: 9090
               protocol: TCP

@@ -107,6 +107,7 @@ pipeline {
         stage ('Deploy ogc-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
+                deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
                 }
             }
         }

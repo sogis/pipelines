@@ -68,6 +68,10 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /ows
+          - name: UWSGI_PROCESSES
+            value: "2"
+          - name: UWSGI_THREADS
+            value: "3"
           image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:

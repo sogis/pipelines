@@ -140,18 +140,3 @@ objects:
       targetPort: 9090
     selector:
       service: print-service
-- apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      service: print-ogc-service
-      app: gdi
-    name: print-ogc-service
-  spec:
-    ports:
-    - name: "80"
-      port: 80
-      protocol: TCP
-      targetPort: 9090
-    selector:
-      service: print-ogc-service

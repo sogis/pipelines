@@ -128,10 +128,6 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
-        up
-      kompose.version: 1.10.0 (8bb0907)
     labels:
       service: ogc-service
       app: gdi 
@@ -144,5 +140,19 @@ objects:
       targetPort: 9090
     selector:
       service: ogc-service
-    sessionAffinity: None
-    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: ogc-service
+      service: ogc-service-print
+      app: gdi 
+    name: ogc-service-print
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP 
+      targetPort: 9090
+    selector:
+      service: ogc-service-print

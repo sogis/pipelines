@@ -136,6 +136,7 @@ objects:
     generation: 1
     labels:
       service: qgis-server
+      service: qgis-server-featurinfo
       app: gdi
     name: qgis-server-featureinfo
   spec:
@@ -158,6 +159,7 @@ objects:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
           service: qgis-server
+          service: qgis-server-featureinfo
           app: gdi
       spec:
         containers:
@@ -240,6 +242,7 @@ objects:
     generation: 1
     labels:
       service: qgis-server
+      service: qgis-server-print
       app: gdi
     name: qgis-server-print
   spec:
@@ -262,6 +265,7 @@ objects:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
           service: qgis-server
+          service: qgis-server-print
           app: gdi
       spec:
         containers:

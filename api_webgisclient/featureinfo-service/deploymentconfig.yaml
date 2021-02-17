@@ -58,7 +58,7 @@ objects:
         containers:
         - env:
           - name: DEFAULT_QGIS_SERVER_URL
-            value: http://qgis-server.${NAMESPACE}.svc/ows/
+            value: http://qgis-server-featureinfo.${NAMESPACE}.svc/ows/
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER

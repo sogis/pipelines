@@ -131,12 +131,6 @@ objects:
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
-          - mountPath: /srv/qwc_service/config/default/ogcConfig.json
-            name: config-json-file
-            subPath: ogcConfig.json
-          - mountPath: /srv/qwc-service/config/default/permissions.json
-            name: permission-file
-            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -155,18 +149,6 @@ objects:
                 path: config.json
             name: config-json
           name: config-json-claim
-        - configMap:
-            items:
-            - key: ogcConfig.json
-              path: ogcConfig.json
-            name: ogcconfig-json
-          name: config-json-file
-        - configMap:
-            items:
-            - key: permissions.json
-              path: permissions.json
-            name: permission-json
-          name: permission-file
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim

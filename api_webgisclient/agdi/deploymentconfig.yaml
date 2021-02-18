@@ -157,7 +157,7 @@ objects:
             claimName: qwc-assets-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${VOLUMEENV}
+            claimName: datensogispicmir-claim${VOLUMEENV}
             readOnly: true
         - name: reports
           persistentVolumeClaim:

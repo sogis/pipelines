@@ -1,6 +1,6 @@
 def serviceName = 'landreg-service'
 def configFileName = 'landregConfig.json'
-def buildImage = "sourcepole/sogis-landreg-service"
+def baseImage = "sourcepole/sogis-landreg-service"
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.

@@ -107,7 +107,7 @@ pipeline {
             }
         stage ('Tag Image for agdi') {
             steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
+                createConfigMaps baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy agdi in Test env') {

@@ -49,21 +49,25 @@ pipeline {
                     build = params.build
                     if ( namespace == 'gdi-test' ) { 
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       environment = 'integration'
+                      sogisPicMirEnv = '-int'
                       replicas = '4'
                       resources = ['cpu_request': '500m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
                       environment = 'production'
-                      replicas = '12'
+                      sogisPicMirEnv = '1'
+                      replicas = '10'
                       resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2048Mi', 'memory_limit': '2048Mi']
                       }
                     else {
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
@@ -124,9 +128,9 @@ pipeline {
             }
         stage ('Deploy qgis-server') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${environment}"
-                deployImage "${serviceName}-featureinfo", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${environment}"
-                deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage "${serviceName}-featureinfo", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

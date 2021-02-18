@@ -1,5 +1,6 @@
 def serviceName = 'featureinfo-service'
 def configFileName = 'featureInfoConfig.json'
+def buildImage = "sourcepole/qwc-feature-info-service"
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -103,6 +104,11 @@ pipeline {
                 withCredentials ( credentials ) {
                     createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
                     }
+                }
+            }
+        stage ('Tag Image') {
+            steps {
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy featureinfo-service in Test env') {

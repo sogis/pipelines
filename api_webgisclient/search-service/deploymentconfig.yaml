@@ -112,7 +112,7 @@ objects:
           - mountPath: /srv/qwc_service/config/default/searchConfig.json
             name: config-json-file
             subPath: searchConfig.json
-          - mountPath: /srv/qwc-service/config/default/permissions.json
+          - mountPath: /srv/qwc_service/config/default/permissions.json
             name: permission-file
             subPath: permissions.json
         dnsPolicy: ClusterFirst

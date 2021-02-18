@@ -52,7 +52,7 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       baseUrl = 'geo-i.so.ch'
-                      resources = ['cpu_request': '500m', 'cpu_limit': '1000m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
+                      resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
                       }
                     else if ( namespace == 'gdi' ) {
                       baseUrl = 'geo.so.ch'

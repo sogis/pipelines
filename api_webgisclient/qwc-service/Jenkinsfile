@@ -116,11 +116,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image') {
-            steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
-                }
-            }
         stage ('Deploy qwc-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']

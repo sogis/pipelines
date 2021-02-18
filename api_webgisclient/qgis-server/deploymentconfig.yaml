@@ -125,7 +125,7 @@ objects:
             claimName: qgs-resources-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim${ENVIRONMENT}
     test: false
     triggers: []
 - apiVersion: v1
@@ -231,7 +231,7 @@ objects:
             claimName: qgs-resources-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim${ENVIRONMENT}
     test: false
     triggers: []
 - apiVersion: v1
@@ -337,6 +337,6 @@ objects:
             claimName: qgs-resources-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim${ENVIRONMENT}
     test: false
     triggers: []

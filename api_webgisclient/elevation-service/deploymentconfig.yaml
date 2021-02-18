@@ -109,7 +109,7 @@ objects:
         volumes:
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
         - configMap:
             items:

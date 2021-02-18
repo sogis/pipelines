@@ -48,18 +48,22 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       environment = 'integration'
+                      sogisPicMirEnv = '-int'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1500m', 'memory_request': '200Mi', 'memory_limit': '400Mi']
                       }
-                    else if ( namespace == 'gdi' ) { 
+                    else if ( namespace == 'gdi' ) {
+                      sogisPicMirEnv = '1' 
                       environment = 'production'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1500m', 'memory_request': '400Mi', 'memory_limit': '400Mi']
                       }
                     else {
                       environment = 'test'
+                      sogisPicMirEnv = '-test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {
@@ -105,14 +109,14 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image for agdi') {
+        stage ('Tag Image') {
             steps {
                 tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy agdi in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${environment} -p VOLUMEENV=${sogisPicMirEnv}"
                 }
             }
         }

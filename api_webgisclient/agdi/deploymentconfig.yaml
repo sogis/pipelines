@@ -9,6 +9,8 @@ parameters:
     name: NAMESPACE
   - description: Infrastructure Environment
     name: ENVIRONMENT
+  - description: Environment for sogispicmir pvc
+    name: VOLUMEENV
   - description: Image Stream Tag
     name: TAG
   - description: Number of Replicas
@@ -155,7 +157,7 @@ objects:
             claimName: qwc-assets-claim
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim-${VOLUMEENV}
             readOnly: true
         - name: reports
           persistentVolumeClaim:

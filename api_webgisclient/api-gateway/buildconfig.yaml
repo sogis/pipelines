@@ -34,7 +34,7 @@ objects:
         from:
           kind: DockerImage
           name: nginx:mainline-alpine
-        noCache: true
+        noCache: false
       type: Docker
     resources:
       limits:

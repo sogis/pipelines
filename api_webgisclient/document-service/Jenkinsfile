@@ -1,6 +1,5 @@
 def serviceName = 'document-service'
 def configFileName = 'documentConfig.json'
-def baseImage = "sourcepole/qwc-document-service"
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -34,6 +33,10 @@ pipeline {
                description: 'Bitte Namespace auswählen',
                name: 'namespace'
               )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'     
+               )
         }
 
     stages {
@@ -45,6 +48,7 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     branch = params.branch
+                    build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
@@ -91,19 +95,20 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs namespace
+                createConfigs([:])
                 }
             }
-        stage ('Create ConfigMaps') {
-            steps {
-                withCredentials ( credentials ) {
-                    createConfigMaps serviceName, namespace, configFileName, jobName, buildNumber
+
+        stage ('Build new Image for document-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
                     }
                 }
-            }
-        stage ('Tag Image') {
             steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
+                withCredentials ( credentials ) {
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    }
                 }
             }
         stage ('Deploy document-service in Test env') {

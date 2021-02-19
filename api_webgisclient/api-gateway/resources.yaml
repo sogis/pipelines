@@ -275,7 +275,7 @@ objects:
         }
         
         #location /api/cadastre/v1 {
-        #    proxy_pass http://cadastre-web-service.agi-apps-${ENVIRONMENT}.svc/;
+        #    proxy_pass http://cadastre-web-service.agi-apps-test.svc/;
         #} 
 
         location /api/embed/v1 {

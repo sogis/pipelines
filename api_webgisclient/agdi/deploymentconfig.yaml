@@ -120,12 +120,6 @@ objects:
             readOnly: true
           - mountPath: /jasper/reports
             name: reports
-          - mountPath: /srv/qwc_service/config/default/agdiConfig.json
-            name: config-json-file
-            subPath: agdiConfig.json
-          - mountPath: /srv/qwc_service/config/default/permissions.json
-            name: permission-file
-            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -137,18 +131,6 @@ objects:
               path: .pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
-        - configMap:
-            items:
-            - key: agdiConfig.json
-              path: agdiConfig.json
-            name: agdiconfig-json
-          name: config-json-file
-        - configMap:
-            items:
-            - key: permissions.json
-              path: permissions.json
-            name: permission-json
-          name: permission-file
         - name: qgs-resources
           persistentVolumeClaim:
             claimName: qgs-resources-claim

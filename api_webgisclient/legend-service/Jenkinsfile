@@ -1,6 +1,5 @@
 def serviceName = 'legend-service'
 def configFileName = 'legendConfig.json'
-def baseImage = "sourcepole/qwc-legend-service"
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -96,7 +95,7 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs namespace
+                createConfigs([:])
                 }
             }
         stage ('Build new Image for legend-service if necessary') {
@@ -109,11 +108,6 @@ pipeline {
                 withCredentials ( credentials ) {
                     buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
                     }
-                }
-            }
-        stage ('Tag Image') {
-            steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy legend-service in Test env') {

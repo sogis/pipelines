@@ -96,12 +96,6 @@ objects:
           - mountPath: /data
             name: datensogispicmir
             readOnly: true
-          - mountPath: /srv/qwc_service/config/default/elevationConfig.json
-            name: config-json-file
-            subPath: elevationConfig.json
-          - mountPath: /srv/qwc-service/config/default/permissions.json
-            name: permission-file
-            subPath: permissions.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -111,17 +105,5 @@ objects:
           persistentVolumeClaim:
             claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
-        - configMap:
-            items:
-            - key: elevationConfig.json
-              path: elevationConfig.json
-            name: elevationconfig-json
-          name: config-json-file
-        - configMap:
-            items:
-            - key: permissions.json
-              path: permissions.json
-            name: permission-json
-          name: permission-file
     test: false
     triggers: []

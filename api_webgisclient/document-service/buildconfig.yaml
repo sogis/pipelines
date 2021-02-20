@@ -30,8 +30,6 @@ objects:
       git:
         ref: master
         uri: https://github.com/sogis/qwc_services.git
-      sourceSecret:
-        name: deployso-at-gitlab
       type: Git
     strategy:
       dockerStrategy:

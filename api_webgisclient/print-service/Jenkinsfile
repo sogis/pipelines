@@ -60,13 +60,13 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       geo_db_server = env.GEO_DB_SERVER_INT
                       baseUrl = 'geo-i.so.ch'
-                      resources = ['cpu_request': '8m', 'cpu_limit': '16m', 'memory_request': '125Mi', 'memory_limit': '250Mi']
+                      resources = ['cpu_request': '80m', 'cpu_limit': '160m', 'memory_request': '125Mi', 'memory_limit': '250Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       baseUrl = 'geo.so.ch'
-                      resources = ['cpu_request': '16m', 'cpu_limit': '16m', 'memory_request': '250Mi', 'memory_limit': '250Mi']
+                      resources = ['cpu_request': '160m', 'cpu_limit': '160m', 'memory_request': '250Mi', 'memory_limit': '250Mi']
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'

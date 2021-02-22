@@ -65,7 +65,7 @@ objects:
           - name: LANDREG_PROJECT
             value: grundbuchplanauszug
           - name: LANDREG_PRINTINFO_TABLE
-            value: agi_av_nachfuehrung_pub.angaben_grundbuchplanauszug
+            value: agi_grundbuchplan_pub.grundbuchplan_grundbuchplanauszug
           - name: DEFAULT_LANDREG_LAYOUT
             value: A4-Hoch
           - name: CONFIG_PATH

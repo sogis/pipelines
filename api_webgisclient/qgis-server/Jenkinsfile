@@ -48,18 +48,24 @@ pipeline {
                     namespace = params.namespace
                     build = params.build
                     if ( namespace == 'gdi-test' ) { 
+                      db_server = env.DB_SERVER_TEST
+                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
+                      db_server = env.DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_INT
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
+                      db_server = env.DB_SERVER_PROD
+                      geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '1'
                       replicas = '10'
@@ -89,7 +95,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${env.DB_SERVER_TEST} -p GEO_DB_SERVER=${env.GEO_DB_SERVER_TEST} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
                     }
                 }
             }

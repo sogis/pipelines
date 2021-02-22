@@ -51,22 +51,22 @@ pipeline {
                     build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       db_server = env.DB_SERVER_TEST
+                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
-                      geo_db_server = env.GEO_DB_SERVER_INT
                       db_server = env.DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_INT
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       resources = ['cpu_request': '50m', 'cpu_limit': '1500m', 'memory_request': '200Mi', 'memory_limit': '400Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
-                      geo_db_server = env.GEO_DB_SERVER_PROD
                       db_server = env.DB_SERVER_PROD
+                      geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '1'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1500m', 'memory_request': '400Mi', 'memory_limit': '400Mi']

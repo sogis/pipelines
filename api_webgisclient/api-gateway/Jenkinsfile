@@ -45,6 +45,8 @@ pipeline {
                     replicas = params.replicas
                     branch = params.branch
                     if ( namespace == 'gdi-test' ) {
+                      db_server = env.DB_SERVER_TEST
+                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       baseUrl = 'geo-t.so.ch'
@@ -53,6 +55,8 @@ pipeline {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
+                      db_server = env.DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_INT
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       baseUrl = 'geo-i.so.ch'
@@ -61,6 +65,8 @@ pipeline {
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '80Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi' ) {
+                      db_server = env.DB_SERVER_PROD
+                      geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '1'
                       baseUrl = 'geo.so.ch'

@@ -138,6 +138,38 @@ objects:
                 }
             - name: ZOOMTO_DATA_SERVICE_URL
               value: 'http://data-service.${NAMESPACE}.svc'
+            - name: CCC_ZOOMTO_CONFIG
+              value: >-
+                {
+                   "PriorityLocator":[
+                      {
+                         "dataset":"ch.so.agi.av.grundstuecke.rechtskraeftig",
+                         "filter":[
+                            [
+                               "nbident",
+                               "=",
+                               "{grundbuch_nbident}"
+                            ],
+                            "and",
+                            [
+                               "nummer",
+                               "=",
+                               "{parzelle_nr}"
+                            ]
+                         ]
+                      },
+                      {
+                         "dataset":"ch.so.agi.gemeindegrenzen",
+                         "filter":[
+                            [
+                               "bfs_gemeindenummer",
+                               "=",
+                               "{bfs}"
+                            ]
+                         ]
+                      }
+                   ]
+                }
             - name: CONFIG_PATH
               value: "/srv/qwc_service/config"
             - name: SERVICE_MOUNTPOINT

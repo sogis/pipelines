@@ -58,7 +58,7 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }

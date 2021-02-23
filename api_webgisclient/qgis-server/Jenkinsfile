@@ -57,7 +57,7 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'

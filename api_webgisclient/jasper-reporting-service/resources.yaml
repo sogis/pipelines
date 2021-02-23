@@ -8,10 +8,8 @@ metadata:
 parameters:
   - description: DB Server Url
     name: DB_SERVER
-    value: geodb-t.rootso.org
   - description: Geo DB Server
     name: GEO_DB_SERVER
-    value: geodb-t.verw.rootso.org
   - description: Imdas DB Server
     name: IMDAS_DB_SERVER
     value:

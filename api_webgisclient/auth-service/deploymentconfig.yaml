@@ -11,6 +11,8 @@ parameters:
     name: TAG
   - description: Number of Replicas
     name: REPLICAS
+  - description: First level domain
+    name: BASEDOMAIN
   - description: cpu request
     name: CPU_REQUEST
   - description: cpu limit
@@ -61,7 +63,9 @@ objects:
           - name: ALLOW_BASIC_AUTH_USER
             value: "True"
           - name: CONFIG_PATH
-            value: "/srv/qwc_service/config"
+            value: /srv/qwc_service/config
+          - name: spnq
+            value: https://${BASEDOMAIN}/auth/metadata/
           image: docker-registry.default.svc:5000/${NAMESPACE}/auth-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:

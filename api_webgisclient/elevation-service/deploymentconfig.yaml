@@ -54,8 +54,6 @@ objects:
       spec:
         containers:
         - env:
-          - name: ELEVATION_DATASET
-            value: /data/daten_aktuell/agi/hoehenmodelle/lidar/2014/dtm/50cm/lidar_2014_dtm_50cm.vrt
           - name: CONFIG_PATH
             value: "/srv/qwc_service/config"
           image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:${TAG}

@@ -33,6 +33,9 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
+        buildArgs:
+        - name: CCC_SERVER_URL
+          value: 
         from:
           kind: DockerImage
           name: sourcepole/sogis-ccc-config:${BASETAG}

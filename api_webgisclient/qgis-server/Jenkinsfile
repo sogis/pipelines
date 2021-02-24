@@ -24,7 +24,7 @@ pipeline {
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )
-        string(description: 'Anzahl der Replicas',
+        string(description: 'Anzahl der Replicas GetMap QGIS Server',
                defaultValue: '1',
                name: 'replicas'
                )
@@ -52,7 +52,9 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '2'
+                      replicasMap = '2'
+                      replicasFeatureInfo = '1'
+                      replicasPrint = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -60,7 +62,9 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
-                      replicas = '2'
+                      replicasMap = '2'
+                      replicasFeatureInfo = '1'
+                      replicasMap = '1'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi' ) { 
@@ -68,13 +72,17 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '1'
-                      replicas = '10'
+                      replicasMap = '10'
+                      replicasFeatureInfo = '2'
+                      replicasPrint = '2'
                       resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2048Mi', 'memory_limit': '2048Mi']
                       }
                     else {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '2'
+                      replicasMap = '2'
+                      replicasFeatureInfo = '1'
+                      replicasPrint = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {
@@ -134,9 +142,9 @@ pipeline {
             }
         stage ('Deploy qgis-server') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
-                deployImage "${serviceName}-featureinfo", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
-                deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage serviceName, namespace, vDeployImage, repo, replicasMap, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage "${serviceName}-featureinfo", namespace, vDeployImage, repo, replicasFeatureInfo, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicasPrint, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

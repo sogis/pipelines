@@ -273,9 +273,9 @@ objects:
           - name: LOG_LEVEL
             value: "2"
           - name: QGIS_FCGI_MIN_PROCESSES
-            value: "1"
+            value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
-            value: "1"
+            value: "2"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
           livenessProbe:

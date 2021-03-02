@@ -30,17 +30,17 @@ objects:
         </workspaceVolume>
         <volumes>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www</mountPath>
+            <mountPath>/var/www/gdi-production</mountPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-production</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www</mountPath>
+            <mountPath>/var/www/gdi-integration</mountPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-integration</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www</mountPath>
+            <mountPath>/var/www/gdi-test</mountPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-test</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
@@ -84,34 +84,22 @@ objects:
                 secret:
                   defaultMode: 420
                   items:
-                    - key: pg_service.conf
-                      path: pg_service.conf-gdi-production
+                    - key: pg_service-gdi-production.conf
+                      path: pg_service-gdi-production.conf
                   secretName: config-generator-agent-pg-service-gdi-production
-        </yaml>
-        <yaml>
-          apiVersion: v1
-          kind: Pod
-          spec:
-            volumes:
               - name: pg-service-claim-integration
                 secret:
                   defaultMode: 420
                   items:
-                    - key: pg_service.conf
-                      path: pg_service.conf-gdi-integration
+                    - key: pg_service-gdi-integration.conf
+                      path: pg_service-gdi-integration.conf
                   secretName: config-generator-agent-pg-service-gdi-integration
-        </yaml>
-        <yaml>
-          apiVersion: v1
-          kind: Pod
-          spec:
-            volumes:
               - name: pg-service-claim-test
                 secret:
                   defaultMode: 420
                   items:
-                    - key: pg_service.conf
-                      path: pg_service.conf-gdi-test
+                    - key: pg_service-gdi-test.conf
+                      path: pg_service-gdi-test.conf
                   secretName: config-generator-agent-pg-service-gdi-test
         </yaml>
       </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>

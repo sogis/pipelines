@@ -60,6 +60,10 @@ objects:
         - env:
           - name: DEFAULT_QGIS_SERVER_URL
             value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: QGIS_SERVER_PRINT_URL
+            value: http://qgis-server-print.${NAMESPACE}.svc/ows/
+          - name: MAP_BASE_URL
+            value: https://${BASEURL} 
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
@@ -153,8 +157,12 @@ objects:
       spec:
         containers:
         - env:
-          #- name: DEFAULT_QGIS_SERVER_URL
-          #  value: http://qgis-server-print.${NAMESPACE}.svc/ows/
+          - name: DEFAULT_QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: QGIS_SERVER_PRINT_URL
+            value: http://qgis-server-print.${NAMESPACE}.svc/ows/
+          - name: MAP_BASE_URL
+            value: https://${BASEURL} 
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER

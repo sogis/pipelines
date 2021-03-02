@@ -31,19 +31,16 @@ objects:
         <volumes>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
             <mountPath>/var/www/pg_service-gdi-production.conf</mountPath>
-            <subPath>pg_service-gdi-production.conf</subPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-production</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
             <mountPath>/var/www/pg_service-gdi-integration.conf</mountPath>
-            <subPath>pg_service-gdi-integration.conf</subPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-integration</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
             <mountPath>/var/www/pg_service-gdi-test.conf</mountPath>
-            <subPath>pg_service-gdi-test.conf</subPath>
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-test</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>

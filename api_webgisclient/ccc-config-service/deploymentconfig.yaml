@@ -58,6 +58,8 @@ objects:
       spec:
         containers:
           - env:
+            - name: CCC_BASE_URL
+              value: wss://${BASEURL}
             - name: JWT_SECRET_KEY
               value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
             - name: ZOOMTO_DATA_SERVICE_URL

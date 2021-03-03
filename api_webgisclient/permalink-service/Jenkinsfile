@@ -101,7 +101,7 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs([:])
+                createConfigs namespace
                 }
             }
         stage ('Build new Image for permalink-service if necessary') {

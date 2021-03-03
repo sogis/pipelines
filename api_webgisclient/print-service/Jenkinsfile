@@ -105,7 +105,7 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
-                createConfigs([:])
+                createConfigs namespace
                 }
             }
         stage ('Build new Image for print-service if necessary') {

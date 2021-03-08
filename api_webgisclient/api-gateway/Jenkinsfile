@@ -68,11 +68,12 @@ pipeline {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
-                      sogisPicMirEnv = '1'
+                      sogisPicMirEnv = '-prod'
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics.dev.so.ch'
-                      resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
+                      // resources = ['cpu_request': '100m', 'cpu_limit': '200m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else {
                       environment = 'test'
@@ -80,7 +81,7 @@ pipeline {
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
-                      resources = ['cpu_request': '250', 'cpu_limit': '1500', 'memory_request': '200', 'memory_limit': '400']
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                    }
                 }

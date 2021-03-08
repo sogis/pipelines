@@ -71,11 +71,13 @@ pipeline {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
-                      sogisPicMirEnv = '1'
-                      replicasMap = '10'
+                      sogisPicMirEnv = '-prod'
+                      // replicasMap = '10'
+                      replicasMap = '2'
                       replicasFeatureInfo = '2'
                       replicasPrint = '2'
-                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2048Mi', 'memory_limit': '2048Mi']
+                      // resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2048Mi', 'memory_limit': '2048Mi']
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else {
                       environment = 'test'

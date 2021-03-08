@@ -62,7 +62,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       }
-                    else if ( namespace == 'gdi' ) {
+                    else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'

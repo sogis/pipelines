@@ -64,7 +64,7 @@ pipeline {
                       matomoUrl = 'analytics-i.dev.so.ch'
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '80Mi', 'memory_limit': '150Mi']
                       }
-                    else if ( namespace == 'gdi' ) {
+                    else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'

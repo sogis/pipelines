@@ -9,7 +9,7 @@ pipeline {
     options {
         // set a timeout of 15 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
-        disableConcurrentBuilds()
+        // disableConcurrentBuilds()
     }
     parameters {
         string(defaultValue: "gdi-test",

@@ -12,7 +12,7 @@ pipeline {
         // disableConcurrentBuilds()
     }
     parameters {
-        string(defaultValue: "gdi-test",
+        string(defaultValue: "gdi-integration",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
               )
@@ -201,7 +201,7 @@ pipeline {
         cleanup {
             sh """
                 echo $WORKSPACE
-                rm -rf $WORKSPACE
+                rm -rf $WORKSPACE*
             """
             }
         }

@@ -15,7 +15,7 @@ objects:
         <namespace></namespace>
         <privileged>false</privileged>
         <capOnlyOnAlivePods>false</capOnlyOnAlivePods>
-        <alwaysPullImage>true</alwaysPullImage>
+        <alwaysPullImage>false</alwaysPullImage>
         <instanceCap>4</instanceCap>
         <slaveConnectTimeout>100</slaveConnectTimeout>
         <idleMinutes>600</idleMinutes>

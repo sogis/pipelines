@@ -125,8 +125,6 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /srv/somap/qwc_service/templates
-            name: config-json-claim
           - mountPath: /var/www
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs

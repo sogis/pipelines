@@ -201,7 +201,7 @@ pipeline {
         cleanup {
             sh """
                 echo $WORKSPACE
-                rm -rf $WORKSPACE@ $WORKSPACE/*
+                rm -rf $WORKSPACE@script $WORKSPACE@tmp $WORKSPACE@libs $WORKSPACE/workspace/* $WORKSPACE/workspace/.git
             """
             }
         }

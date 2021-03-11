@@ -201,7 +201,7 @@ pipeline {
         cleanup {
             sh """
                 echo $WORKSPACE
-                rm -rf $WORKSPACE*
+                rm -rf $WORKSPACE@ $WORKSPACE/*
             """
             }
         }

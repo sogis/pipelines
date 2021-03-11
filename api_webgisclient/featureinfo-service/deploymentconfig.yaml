@@ -71,6 +71,8 @@ objects:
             value: /api/v1/featureinfo
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
+          - name: USE_PERMISSION_ATTRIBUTE_ORDER
+            value: "True"
           image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:

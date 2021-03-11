@@ -59,6 +59,13 @@ pipeline {
                     createConfigs namespace
                     }
                 }
+            post {
+                unsuccessful {
+                    sh """
+                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
+                    """
+                    }
+                }
             } 
         stage('get requirements') {
             steps {
@@ -187,6 +194,15 @@ pipeline {
                         }
                     }
                 } 
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                echo $WORKSPACE
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+            """
             }
         }
     }

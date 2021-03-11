@@ -142,13 +142,6 @@ objects:
               path: .pg_service.conf
             secretName: qwc-service-pg-config
           name: qwc-service-config-claim
-        - configMap:
-            defaultMode: 420
-            items:
-              - key: config.json
-                path: config.json
-            name: config-json
-          name: config-json-claim
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim

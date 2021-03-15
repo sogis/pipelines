@@ -201,7 +201,7 @@ pipeline {
         cleanup {
             sh """
                 echo $WORKSPACE
-                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@tmp $WORKSPACE/.git
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@tmp $WORKSPACE/*
             """
             }
         }

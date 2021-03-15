@@ -112,6 +112,13 @@ pipeline {
             steps {
                 createConfigs namespace
                 }
+            post {
+                unsuccessful {
+                    sh """
+                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
+                    """
+                    }
+                }
             }
         stage ('Build new Image for agdi if necessary') {
             when {

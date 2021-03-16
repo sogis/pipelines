@@ -201,8 +201,10 @@ pipeline {
         cleanup {
             sh """
                 echo $WORKSPACE
-                whoami
-                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@tmp
+                id -u
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script 
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs 
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@tmp
             """
             }
         }

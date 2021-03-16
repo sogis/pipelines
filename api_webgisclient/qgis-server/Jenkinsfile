@@ -120,6 +120,13 @@ pipeline {
             steps {
                 createConfigs namespace
                 }
+            post {
+                unsuccessful {
+                    sh """
+                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
+                    """
+                    }
+                }
             }
         stage ('Build new Image for qgis-server if necessary') {
             when {
@@ -148,6 +155,16 @@ pipeline {
                 deployImage "${serviceName}-featureinfo", namespace, vDeployImage, repo, replicasFeatureInfo, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 deployImage "${serviceName}-print", namespace, vDeployImage, repo, replicasPrint, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs
+                rm -rf $WORKSPACE/*
+            """
             }
         }
     }

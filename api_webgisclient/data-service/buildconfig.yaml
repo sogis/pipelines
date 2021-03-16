@@ -22,6 +22,8 @@ objects:
     name: data-service
   spec:
     failedBuildsHistoryLimit: 5
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 2
     output:
       to:
         kind: ImageStreamTag

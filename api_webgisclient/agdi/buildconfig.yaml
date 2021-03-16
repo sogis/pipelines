@@ -21,6 +21,8 @@ objects:
       app: gdi
     name: agdi
   spec:
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 2
     output:
       to:
         kind: ImageStreamTag

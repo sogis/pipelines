@@ -21,6 +21,8 @@ objects:
       app: gdi
     name: plotinfo-service
   spec:
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 2
     output:
       to:
         kind: ImageStreamTag

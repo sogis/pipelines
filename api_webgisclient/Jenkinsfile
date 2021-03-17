@@ -49,6 +49,18 @@ pipeline {
                     replicas = params.replicas
                     branch = params.branch
                     branch = params.branch
+                    if ( namespace == 'gdi-test' ) {
+                        solrEnv = 'test'
+                        }
+                    else if ( namespace == 'gdi-integration' ) {
+                        solrEnv = 'integration'
+                        }
+                    else if ( namespace == 'gdi-production' ) {
+                        solrEnv = 'production'
+                        }
+                    else {
+                        solrEnv = 'test'
+                        }
                     }
                 }
             }
@@ -70,7 +82,7 @@ pipeline {
         stage('update Solr Metadaten') {
             steps {
                 script {
-                    url = "http://indexupdater.solr-cloud-production.svc/queue?ds=foreground,background&dih=solr/gdi/dih_metadata"
+                    url = "http://indexupdater.solr-cloud-$solrEnv.svc/queue?ds=foreground,background&dih=solr/gdi/dih_metadata"
                     response = sh(script: "curl -i $url", returnStdout: true).trim()
                     echo response
                     }

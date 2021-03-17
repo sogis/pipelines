@@ -67,6 +67,15 @@ pipeline {
                     }
                 }
             } 
+        stage('update Solr Metadaten') {
+            steps {
+                script {
+                    url = "http://indexupdater.solr-cloud-production.svc/queue?ds=foreground,background&dih=solr/gdi/dih_metadata"
+                    response = sh(script: "curl -i $url", returnStdout: true).trim()
+                    echo response
+                    }
+                }
+            }
         stage('get requirements') {
             steps {
                 script {    

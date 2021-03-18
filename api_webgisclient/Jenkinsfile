@@ -24,9 +24,9 @@ pipeline {
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )
-        choice(choices: ['nein','ja'],
-               description: 'Rollout der gesamten Applikation?',
-               name: 'rolloutAll'
+        choice(choices: ['Datasets/Dataproducts','Permissions','Templates','Alles'],
+               description: 'Was soll ausgerollt werden?',
+               name: 'AuswahlRollout'
                )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
@@ -45,7 +45,7 @@ pipeline {
                 script {
                     build = params.build
                     namespace = params.namespace
-                    rolloutAll = params.rolloutAll
+                    AuswahlRollout = params.AuswahlRollout
                     replicas = params.replicas
                     branch = params.branch
                     branch = params.branch
@@ -112,7 +112,7 @@ pipeline {
             parallel {
                  stage ('Deploy agdi') {
                     when {
-                        expression { rolloutAll == 'ja' }
+                        expression { AuswahlRollout == 'Alles' }
                     }
                     steps {
                         build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-agdi-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true 
@@ -120,28 +120,40 @@ pipeline {
                      }
                  stage ('Deploy ccc-service') {
                     when {
-                        expression { rolloutAll == 'ja' }
+                        expression { AuswahlRollout == 'Alles' }
                     }
                     steps {
                         build job: 'ccc-config-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-ccc-config-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-ccc-config-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true
                         }
                     }
                  stage ('Deploy auth-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-auth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-auth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true
                         }
                     }
                  stage ('Deploy qwc-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'qwc-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-map-viewer-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-map-viewer-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy qgis-server') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'qgis-server', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-qgis-server-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-qgis-server-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy data-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'data-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-data-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-data-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true
                         }
@@ -152,64 +164,97 @@ pipeline {
                         }
                     }
                 stage ('Deploy document-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Templates' }
+                    }
                     steps {
                         build job: 'document-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-document-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-document-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy elevation-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'elevation-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-elevation-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-elevation-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy featureinfo-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'featureinfo-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-feature-info-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-feature-info-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     } 
                 stage ('Deploy jasper-reporting-service') {
                     when {
-                        expression { rolloutAll == 'ja' }
+                        expression { AuswahlRollout == 'Alles' }
                     }
                     steps {
                         build job: 'jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['jasper-reporting-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['jasper-reporting-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy landreg-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'landreg-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-landreg-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-landreg-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy legend-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'legend-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-legend-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-legend-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy mapinfo-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'mapinfo-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-mapinfo-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-mapinfo-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy ogc-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'ogc-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-ogc-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-ogc-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy permalink-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'permalink-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-permalink-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-permalink-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy plotinfo-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'plotinfo-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-plotinfo-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-plotinfo-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy print-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' }
+                    }
                     steps {
                         build job: 'print-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-print-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-print-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
                 stage ('Deploy search-service') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' or AuswahlRollout == 'Alles' or AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
                     steps {
                         build job: 'search-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-fulltext-search-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-fulltext-search-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }

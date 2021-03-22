@@ -73,7 +73,7 @@ objects:
           - name: QGIS_SERVER_URL
             value: /ows/
           - name: SEARCH_SERVICE_URL
-            value: /api/search/v2/fts/
+            value: /api/search/v2/
           - name: SEARCH_DATA_SERVICE_URL
             value: /api/data/v1/
           - name: JWT_SECRET_KEY

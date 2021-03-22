@@ -154,7 +154,7 @@ objects:
         }
 
         location /api/search/v2 {
-            proxy_pass http://search-service.${NAMESPACE}.svc;
+            proxy_pass http://search-service.${NAMESPACE}.svc/fts;
         }
 
         location /api/data/v1 {

@@ -154,6 +154,7 @@ objects:
         }
 
         location /api/search/v2 {
+            rewrite ^([^.]*[^/])$ $1/;
             proxy_pass http://search-service.${NAMESPACE}.svc/fts;
         }
 

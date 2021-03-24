@@ -140,7 +140,7 @@ objects:
       app: gdi
     name: qgis-server-featureinfo
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: qgis-server-featureinfo
     strategy:
@@ -246,7 +246,7 @@ objects:
       app: gdi
     name: qgis-server-print
   spec:
-    replicas: 2
+    replicas: ${{REPLICAS}}
     selector:
       service: qgis-server-print
     strategy:

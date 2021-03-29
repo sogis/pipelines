@@ -63,6 +63,26 @@ objects:
           ports:
           - containerPort: 8081
             protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
           resources:
             limits:
               cpu: ${CPU_LIMIT}

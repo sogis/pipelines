@@ -66,9 +66,9 @@ objects:
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: healthz
+              path: /nginx_status
               port: 8081
-              scheme: HTTP
+              scheme: HTTPS
             initialDelaySeconds: 1
             periodSeconds: 30
             successThreshold: 1
@@ -76,9 +76,9 @@ objects:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: ready
+              path: /nginx_status
               port: 8081
-              scheme: HTTP
+              scheme: HTTPS
             initialDelaySeconds: 1
             periodSeconds: 30
             successThreshold: 1

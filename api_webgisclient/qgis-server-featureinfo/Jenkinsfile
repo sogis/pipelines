@@ -99,46 +99,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Create configs') {
-            when {
-               beforeAgent true
-               expression {
-                   (params.configs != true)
-                   }
-               }
-            agent { label 'config-generator-agent' }
-            steps {
-                createConfigs namespace
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
-                    }
-                }
-            }
-        stage ('Build new Image for qgis-server-featureinfo if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
-            steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
-                    }
-                }
-            }
-        stage ( 'Tag Image in Openshift' ) { 
-            steps {
-                script {
-                    sh """ 
-                       oc tag -n $namespace --source=imagestreamtag qgis-server:$vDeployImage qgis-server:latest
-                    """
-                    }
-                }
-            }
         stage ('Deploy qgis-server-featureinfo') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"

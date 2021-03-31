@@ -35,59 +35,6 @@ parameters:
     value:
 objects:
 - apiVersion: v1
-  stringData:
-    pg_service.conf: |
-      [sogis_webmapping]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_PUB}
-      user=${USER_OGC_SERVER}
-      password=${PW_OGC_SERVER}
-      sslmode=require
-
-      [sogis_geodb]
-      host=${GEO_DB_SERVER}
-      port=5432
-      dbname=${DB_SOGIS}
-      user=mspublic
-      sslmode=disable
-
-      [sogis_edit]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_EDIT}
-      user=${USER_OGC_SERVER}
-      password=${PW_OGC_SERVER}
-      sslmode=require
-
-      [sogis_oereb]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_OEREB}
-      user=${USER_OGC_SERVER}
-      password=${PW_OGC_SERVER}
-      sslmode=require
-  kind: Secret
-  metadata:
-    labels:
-      app: gdi
-      service: qgis-server
-    name: qgis-server-pg-config
-    namespace: ${NAMESPACE}
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: qgis-server
-    labels:
-      app: gdi
-      service: qgis-server
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:latest
-      name: latest
-- apiVersion: v1
   kind: Service
   metadata:
     labels:

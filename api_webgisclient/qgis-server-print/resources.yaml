@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: ressources-qgis-server
+  name: ressources-qgis-server-print
   annotations:
     description: >-
-      "Creates necessary ressources for qgis-server"
+      "Creates necessary ressources for qgis-server-print"
 parameters:
   - description: DB Server Url
     name: DB_SERVER
@@ -92,8 +92,9 @@ objects:
   metadata:
     labels:
       service: qgis-server
+      service: qgis-server-print
       app: gdi
-    name: qgis-server
+    name: qgis-server-print
   spec:
     ports:
     - name: "80"
@@ -101,4 +102,4 @@ objects:
       protocol: TCP
       targetPort: 80
     selector:
-      service: qgis-server
+      service: qgis-server-print

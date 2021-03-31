@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: qgis-server
+  name: qgis-server-print
   annotations:
-    description: "Creates deploymentConfig for qgis-server"
+    description: "Creates deploymentConfig for qgis-server-print"
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
@@ -31,13 +31,13 @@ objects:
       openshift.io/generated-by: OpenShiftWebConsole
     generation: 1
     labels:
-      service: qgis-server
+      service: qgis-server-print
       app: gdi
-    name: qgis-server
+    name: qgis-server-print
   spec:
     replicas: ${{REPLICAS}}
     selector:
-      service: qgis-server
+      service: qgis-server-print
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -53,7 +53,7 @@ objects:
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
-          service: qgis-server
+          service: qgis-server-print
           app: gdi
       spec:
         containers:
@@ -61,9 +61,9 @@ objects:
           - name: LOG_LEVEL
             value: "2"
           - name: QGIS_FCGI_MIN_PROCESSES
-            value: "1"
+            value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
-            value: "1"
+            value: "2"
           image: docker-registry.default.svc:5000/${NAMESPACE}/qgis-server:${TAG}
           imagePullPolicy: Always
           livenessProbe:
@@ -76,7 +76,7 @@ objects:
             periodSeconds: 60
             successThreshold: 1
             timeoutSeconds: 8
-          name: sogis-qgis-server
+          name: sogis-qgis-server-print
           ports:
           - containerPort: 80
             protocol: TCP
@@ -92,7 +92,7 @@ objects:
             timeoutSeconds: 5
           resources:
             limits:
-              cpu: ${CPU_LIMIT}
+              cpu: '2'
               memory: ${MEMORY_LIMIT}
             requests:
               cpu: ${CPU_REQUEST}

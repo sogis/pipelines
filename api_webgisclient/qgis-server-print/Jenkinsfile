@@ -1,4 +1,4 @@
-def serviceName = 'qgis-server'
+def serviceName = 'qgis-server-print'
 def configFileName = 'somap.qgs'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -52,7 +52,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '2'
+                      replicas = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -60,7 +60,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
-                      replicas = '2'
+                      replicas = '1'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
@@ -68,13 +68,13 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
-                      replicas = '12'
+                      replicas = '2'
                       resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
                       }
                     else {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '2'
+                      replicas = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {

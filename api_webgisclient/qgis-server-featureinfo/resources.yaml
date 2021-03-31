@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: ressources-qgis-server
+  name: ressources-qgis-server-featureinfo
   annotations:
     description: >-
       "Creates necessary ressources for qgis-server"
@@ -92,8 +92,9 @@ objects:
   metadata:
     labels:
       service: qgis-server
+      service: qgis-server-featureinfo
       app: gdi
-    name: qgis-server
+    name: qgis-server-featureinfo
   spec:
     ports:
     - name: "80"
@@ -101,4 +102,4 @@ objects:
       protocol: TCP
       targetPort: 80
     selector:
-      service: qgis-server
+      service: qgis-server-featureinfo

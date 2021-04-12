@@ -1,8 +1,8 @@
 qwc-qgis-server:2.0.14:2.0.14
 jasper-reporting-service:31:2.0.18
-qwc-fulltext-search-service:v2.0.0:2.0.19
+qwc-fulltext-search-service:v2.0.1:2.0.20
 qwc-data-service:v2.0.1:2.0.21
-sogis-dataproduct-service:v2.0.1:2.0.21
+sogis-dataproduct-service:v2.0.3:2.0.23
 qwc-ogc-service:v2.0.1:2.0.23
 qwc-legend-service:v2.0.0:2.0.20
 qwc-feature-info-service:v2.0.4:2.0.24

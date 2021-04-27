@@ -267,7 +267,7 @@ objects:
         }
 
         location /models {
-            proxy_pass http://interlis-repository-service.agi-apps-${ENVIRONMENT}.svc/;
+            proxy_pass http://interlis-repository.agi-apps-${ENVIRONMENT}.svc/;
         }
 
         location /solr {

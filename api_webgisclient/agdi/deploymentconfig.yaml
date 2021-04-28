@@ -62,6 +62,8 @@ objects:
         - env:
           - name: JASPER_REPORTS_DIR
             value: /jasper/reports
+          - name: JASPER_SERVICE_URL
+            value: http://jasper-reporting-service.gdi-${ENVIRONMENT}.svc/reports
           - name: PROJECT_OUTPUT_DIR
             value: /qgs-resources
           - name: QWC_ASSETS_DIR

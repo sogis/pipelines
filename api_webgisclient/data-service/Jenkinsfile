@@ -101,7 +101,9 @@ pipeline {
             //   }
             //agent { label 'config-generator-agent' }
             steps {
-                createConfigs namespace, DbUserSogisService, PwdSogisService, dbserver, env.SIMI_DB
+                withCredentials ( credentials ) {
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, dbserver, env.SIMI_DB
+                    }
                 }
             //post {
             //    unsuccessful {

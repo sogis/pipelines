@@ -1,0 +1,12 @@
+{
+  "$schema": "https://github.com/qwc-services/sogis-agdi/raw/master/schemas/sogis-agdi.json",
+  "service": "agdi",
+  "config": {
+    "db_url": "postgresql:///?service=soconfig_services",
+    "project_output_dir": "/qgs-resources",
+    "jasper_reports_dir": "/jasper/reports",
+    "jasper_service_url": "http://jasper-reporting-service.gdi-test.svc/reports",
+    "config_generator_url": "http://username:token@jenkins-agi-apps-test.dev.so.ch/job/print-service/buildWithParameters?token=apiToken&vBaseImage=latest&vDeployImage=2.0.17&namespace=gdi-test",
+    "solr_update_url": "http://indexupdater.solr-cloud-test.svc/queue?ds=foreground,background&dih=solr/gdi/dih_metadata"
+  }
+}

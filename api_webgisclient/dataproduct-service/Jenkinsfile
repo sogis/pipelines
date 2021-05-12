@@ -105,6 +105,9 @@ pipeline {
                }
             agent { label 'config-generator-agent' }
             steps {
+                sh """
+                    scp agdi.$namespace.svc:/qgs-resources /
+                """
                 createConfigs namespace
                 }
             post {

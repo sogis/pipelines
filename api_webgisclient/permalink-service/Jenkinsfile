@@ -96,7 +96,7 @@ pipeline {
             agent { label 'maven' }
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, ${env.SIMI_DB}, configFileName, serviceName
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, "${env.SIMI_DB}", configFileName, serviceName
                     }
                 }
             }

@@ -20,7 +20,7 @@ pipeline {
                description: 'Anzahl der Replicas',
                name: 'replicas'
                )
-        string(defaultValue: "master",
+        string(defaultValue: "no-sso",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )

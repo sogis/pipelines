@@ -21,7 +21,7 @@ pipeline {
         string(description: 'Tag des generierten bzw. deployten Images',
                name: 'vDeployImage'
                )
-        string(defaultValue: "master",
+        string(defaultValue: "no-sso",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )

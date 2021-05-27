@@ -1,0 +1,23 @@
+{
+  "$schema": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json",
+
+  "wfs_layers": {"$trafo:list": "wfs_layers.sql"},
+
+  "wfs_metadata": {
+    "service_name": "ch.so.agi.wfs",
+    "service_title": "ch.so.agi.wfs",
+    "service_abstract": "WFS für Fachapplikationen. ZU BEACHTEN: Wird ohne Support angeboten und ca. 2024 abgelöst mit OGC-API Features",
+    "online_resource": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/",
+    "fees": "",
+    "access_constraints": "",
+    "bbox": {
+      "bounds": [
+        2590983.475,
+        1212806.1156,
+        2646267.025,
+        1262755.0094
+      ],
+      "srid": 2056
+    }
+  }
+}

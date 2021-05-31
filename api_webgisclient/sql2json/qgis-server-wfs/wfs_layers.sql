@@ -29,7 +29,11 @@ tbl_dsv as (
 	from 
 		simi.simiproduct_data_product p
 	join
-		simi.simidata_table_view dsv on p.id = dsv.id 
+		simi.simidata_data_set_view dsv on p.id = dsv.id 
+	join
+		simi.simidata_table_view tv on dsv.id = tv.id 
+	where 
+		dsv.raw_download is true 
 ),
 
 tbl_dsv_attr as (

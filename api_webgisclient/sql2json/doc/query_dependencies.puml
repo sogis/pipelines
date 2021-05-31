@@ -1,0 +1,30 @@
+@startuml
+
+package "QGIS Server" {
+    package "WFS" {
+        [wfs_layers.sql]
+    
+    }
+    
+    package "WMS" {
+        [root_layers.sql]
+        [wms.sql]
+        [wms_print.sql]
+        
+        [trafo_wms_layer_v]
+        
+        wms.sql --> trafo_wms_layer_v
+        wms_print.sql --> trafo_wms_layer_v
+    }
+    
+    [trafo_pg_tables_v]
+    [trafo_tableview_attributes_v]
+    
+    wfs_layers.sql --> trafo_pg_tables_v
+    wfs_layers.sql --> trafo_tableview_attributes_v
+    
+    trafo_wms_layer_v --> trafo_pg_tables_v
+    trafo_wms_layer_v --> trafo_tableview_attributes_v
+}
+
+@enduml

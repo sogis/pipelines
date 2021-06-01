@@ -33,7 +33,7 @@ root_pub_single_actors as (
 	join 
 		simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
 	left join 
-		simiproduct_external_map_layers eml on sa.id = eml.id 
+		simi.simiproduct_external_map_layers eml on sa.id = eml.id 
 	left join 
 		singleactors_in_group sig on sa.id = sig.single_actor_id
 	where 

@@ -1,90 +1,133 @@
-with
+WITH
 
-sl_perm as ( -- Permissions of a role on a single layer
-	select 
+sl_perm AS ( -- Permissions of a role on a single layer
+	SELECT 
 		role_id,
-		data_set_view_id as dp_id,
-		level_ as perm_level
-	from 
+		data_set_view_id AS dp_id,
+		level_ AS perm_level
+	FROM 
 		simi.simiiam_permission sp 		
 ),
 
-fl_perm as ( -- Aggregated permissions for a facadelayer. Derived from the contained singleactor permissions
-	select 
+fl_perm AS ( -- Aggregated permissions for a facadelayer. Derived FROM the contained singleactor permissions
+	SELECT 
 		role_id,
-		facade_layer_id as dp_id,
-		min(level_) as perm_level
-	from 
+		facade_layer_id AS dp_id,
+		min(level_) AS perm_level
+	FROM 
 		simi.simiproduct_properties_in_facade pif 
-	inner join 
-		simi.simiiam_permission sp on pif.data_set_view_id = sp.data_set_view_id
-	group by 
+	JOIN 
+		simi.simiiam_permission sp ON pif.data_set_view_id = sp.data_set_view_id
+	GROUP BY 
 		role_id, facade_layer_id 
 ),
 
-sa_perm as ( -- permissions for single actors
-	select role_id, dp_id, perm_level from sl_perm
-	union all 
-	select role_id, dp_id, perm_level from fl_perm
+sa_perm AS ( -- permissions for single actors
+	SELECT role_id, dp_id, perm_level FROM sl_perm
+	UNION ALL 
+	SELECT role_id, dp_id, perm_level FROM fl_perm
 ),
 
-lg_perm as ( -- permissions for layer groups
-	select
+lg_perm AS ( -- permissions for layer groups
+	SELECT
 		role_id,
-		lg.id as dp_id,
-		min(perm_level) as perm_level
-	from 
+		lg.id AS dp_id,
+		min(perm_level) AS perm_level
+	FROM 
 		simi.simiproduct_properties_in_list pil 
-	inner join
-		simi.simiproduct_layer_group lg on pil.product_list_id = lg.id -- choose only productlists of type layergroup
-	inner join 
-		sa_perm sa on pil.single_actor_id = sa.dp_id
-	group by 
+	JOIN
+		simi.simiproduct_layer_group lg ON pil.product_list_id = lg.id -- choose only productlists of type layergroup
+	JOIN 
+		sa_perm sa ON pil.single_actor_id = sa.dp_id
+	GROUP BY 
 		role_id, lg.id
 ),
 
-dp_perm as ( -- permissions for the dataproducts datasetview, facadelayer and layergroup
-	select role_id, dp_id, perm_level from sa_perm
-	union all 
-	select role_id, dp_id, perm_level from lg_perm
+dp_perm AS ( -- permissions for the dataproducts datasetview, facadelayer and layergroup
+	SELECT role_id, dp_id, perm_level FROM sa_perm
+	UNION ALL 
+	SELECT role_id, dp_id, perm_level FROM lg_perm
 ),
 
-perm_raw as ( -- lists all permissions for dataproducts in "human readable" form
-	select 
+dp_perm_raw AS ( -- lists all permissions for dataproducts in "human readable" form
+	SELECT 
 		role_id,
-		identifier as dp_ident,
-		case perm_level
-			when '2' -- $td change to 2_read_write
-				then true
-			else false
-		end as writeable
-	from 
+		identifier AS res_ident,
+		CASE perm_level
+			WHEN '2' -- $td change to 2_read_write
+				THEN true
+			ELSE false
+		END AS writeable
+	FROM 
 		dp_perm p
-	inner join 
-		simi.simiproduct_data_product dp on p.dp_id = dp.id
+	JOIN 
+		simi.simiproduct_data_product dp ON p.dp_id = dp.id
 ),
 
-perm_json as (
-	select 
+report AS (
+  SELECT 
+    id,
+    name AS rep_filename
+  FROM 
+    simi.simiextended_dependency 
+  WHERE 
+    dtype = 'simiExtended_Report'
+),
+
+rep_data_relations AS (
+  SELECT 
+    dependency_id,
+    data_set_view_id 
+  FROM 
+    simi.simiextended_relation 
+  WHERE 
+    relation_type = '2_data'
+),
+
+rep_perm_raw AS (
+  SELECT 
+    role_id,
+    rep_filename AS res_ident,
+    FALSE AS writeable
+  FROM 
+    report rep
+  JOIN 
+    rep_data_relations rel ON rep.id = rel.dependency_id 
+  JOIN 
+    simi.simiiam_permission perm ON rel.data_set_view_id = perm.data_set_view_id 
+  GROUP BY 
+    role_id,
+    rep_filename
+),
+
+allperm_raw AS (
+  SELECT role_id, res_ident, writeable FROM dp_perm_raw
+  UNION ALL 
+  SELECT role_id, res_ident, writeable FROM rep_perm_raw
+),
+
+perm_json AS (
+	SELECT 
 		role_id,
 		jsonb_agg(
-			jsonb_build_object('name', dp_ident, 'writable', writeable)
-		) as perm_json
-	from 
-		perm_raw
-	group by
+			jsonb_build_object('name', res_ident, 'writable', writeable)
+		) AS perm_json
+	FROM 
+		allperm_raw
+	GROUP BY
 		role_id	
 )
 
-select 
+SELECT 
 	jsonb_set( -- Inner jsonb_set(...) sets the perm_json array. Outer jsonb_set(...) sets the role name
 		jsonb_set('{"role": null, "permissions": { "all_services": null }}', '{permissions, all_services}', perm_json),
 		'{role}',
 		to_jsonb(name))
-	as js
-from 
+	AS js
+FROM 
 	perm_json p
-inner join 
-	simi.simiiam_role r on p.role_id = r.id 
+JOIN 
+	simi.simiiam_role r ON p.role_id = r.id 
 ;
+
 	

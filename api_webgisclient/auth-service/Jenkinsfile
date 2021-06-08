@@ -61,7 +61,7 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       baseUrl = 'geo-i.so.ch'
-                      idpUrl = 'idp-t.so.ch'
+                      idpUrl = 'idp.so.ch'
                       resources = ['cpu_request': '100m', 'cpu_limit': '250m', 'memory_request': '64Mi', 'memory_limit': '128Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {

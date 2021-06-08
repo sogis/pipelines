@@ -101,6 +101,9 @@ objects:
                     - key: pg_service-gdi-test.conf
                       path: pg_service-gdi-test.conf
                   secretName: config-generator-agent-pg-service-gdi-test
+              - name: qgs-resources
+                persistentVolumeClaim:
+                  claimName: qgs-resources-claim
         </yaml>
       </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
   kind: ConfigMap

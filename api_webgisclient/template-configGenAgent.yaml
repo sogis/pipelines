@@ -44,6 +44,10 @@ objects:
             <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
             <secretName>config-generator-agent-pg-service-gdi-test</secretName>
           </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
+          <org.csanchez.jenkins.plugins.kubernetes.volumes.PersistentVolumeClaim>
+            <mountPath>/qgs-resources</mountPath>
+            <claimName>qgs-resources-claim</claimName>
+          </org.csanchez.jenkins.plugins.kubernetes.volumes.PersistentVolumeClaim>
         </volumes>
         <containers>
           <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>

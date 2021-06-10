@@ -108,18 +108,6 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for auth-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
-            steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, "--build-arg SERVICE_PACKAGES='python3-dev libxmlsec1-dev' --build-arg SERVICE=auth/auth_saml"
-                    }
-                }
-            }
         stage ('Deploy auth-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p BASEDOMAIN=${baseUrl}"

@@ -105,6 +105,9 @@ objects:
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/saml
             name: auth-service-config-claim
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -124,5 +127,8 @@ objects:
               path: advanced_settings.json
             name: auth-service-config
           name: auth-service-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
     test: false
     triggers: []

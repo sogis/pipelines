@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: build-ccc-config-service
+  name: build-ccc-config
   annotations:
-    openshift.io/display-name: "Buildconfig for ccc-config-service"
+    openshift.io/display-name: "Buildconfig for ccc-config"
     description: >-
-      "Creates BuildConfig for ccc-config-service"
+      "Creates BuildConfig for ccc-config"
 parameters:
   - description: tag of base image
     name: BASETAG
@@ -17,18 +17,18 @@ objects:
   metadata:
     annotations:
     labels:
-      service: ccc-config-service
+      service: ccc-config
       app: gdi
-    name: ccc-config-service
+    name: ccc-config
   spec:
     successfulBuildsHistoryLimit: 1
     failedBuildsHistoryLimit: 2
     output:
       to:
         kind: ImageStreamTag
-        name: ccc-config-service:${DEPLOYTAG}
+        name: ccc-config:${DEPLOYTAG}
     source:
-      contextDir: ccc-config-service
+      contextDir: ccc-config
       git:
         ref: master
         uri: https://github.com/sogis/qwc_services.git

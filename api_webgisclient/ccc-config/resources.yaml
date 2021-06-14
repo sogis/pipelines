@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: ressources-ccc-config-service
+  name: ressources-ccc-config
   annotations:
     description: >-
-      "Creates necessary ressources for ccc-config-service"
+      "Creates necessary ressources for ccc-config"
 parameters:
   - description: Namespace
     name: NAMESPACE
@@ -12,15 +12,15 @@ objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: ccc-config-service
+    name: ccc-config
     labels:
       app: gdi
-      service: ccc-config-service
+      service: ccc-config
   spec:
     tags:
     - from:
         kind: DockerImage
-        name: docker-registry.default.svc:5000/${NAMESPACE}/ccc-config-service:latest
+        name: docker-registry.default.svc:5000/${NAMESPACE}/ccc-config:latest
       name: latest
 - apiVersion: v1
   kind: Service
@@ -30,9 +30,9 @@ objects:
         up
       kompose.version: 1.10.0 (8bb0907)
     labels:
-      service: ccc-config-service
+      service: ccc-config
       app: gdi
-    name: ccc-config-service
+    name: ccc-config
   spec:
     ports:
     - name: "80"
@@ -40,6 +40,6 @@ objects:
       protocol: TCP
       targetPort: 9090
     selector:
-      service: ccc-config-service
+      service: ccc-config
     sessionAffinity: None
     type: ClusterIP

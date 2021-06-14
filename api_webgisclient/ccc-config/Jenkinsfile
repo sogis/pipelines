@@ -103,6 +103,15 @@ pipeline {
                     }
                 }
             }
+        stage ( 'Tag Image in Openshift' ) {
+            steps {
+                script {
+                    sh """
+                       oc tag -n $namespace --source=imagestreamtag $serviceName:$vDeployImage $serviceName:latest
+                    """
+                    }
+                }
+            }
         stage ('Deploy ccc-config-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"

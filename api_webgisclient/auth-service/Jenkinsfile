@@ -1,6 +1,7 @@
 def serviceName = 'auth-service'
 def configFileName = 'samlAuthConfig.json'
 def schemaDirName = 'sogis-config-generator'
+def baseImage = 'sourcepole/sogis-auth-service'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -106,6 +107,11 @@ pipeline {
                 withCredentials ( credentials ) {
                     createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'saml-auth', 'qwc', schemaDirName
                     }
+                }
+            }
+        stage ('Tag Image') {
+            steps {
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy auth-service in Test env') {

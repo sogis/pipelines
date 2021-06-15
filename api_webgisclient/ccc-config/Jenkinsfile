@@ -1,5 +1,6 @@
 def serviceName = 'ccc-config'
 def configFileName = 'cccConfig.json'
+def baseImage = 'sourcepole/sogis-ccc-config'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -103,13 +104,9 @@ pipeline {
                     }
                 }
             }
-        stage ( 'Tag Image in Openshift' ) {
+        stage ('Tag Image') {
             steps {
-                script {
-                    sh """
-                       oc tag -n $namespace --source=imagestreamtag $serviceName:$vDeployImage $serviceName:latest
-                    """
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy ccc-config-service in Test env') {

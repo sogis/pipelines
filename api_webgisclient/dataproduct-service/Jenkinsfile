@@ -1,5 +1,6 @@
 def serviceName = 'dataproduct-service'
 def configFileName = 'dataproductConfig.json'
+def baseImage = 'sourcepole/sogis-dataproduct-service'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -115,16 +116,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for dataproduct-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Tag Image') {
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy dataproduct-service in Test env') {

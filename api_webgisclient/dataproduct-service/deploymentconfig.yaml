@@ -106,7 +106,7 @@ objects:
               name: wsgi-service-config-claim
             - mountPath: /qgs-resources
               name: qgs-resources
-            - mountPath:
+            - mountPath: /srv/qwc_service/config
               name: qgs-resources
               subPath: config
         dnsPolicy: ClusterFirst

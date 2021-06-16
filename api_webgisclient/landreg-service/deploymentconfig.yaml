@@ -124,7 +124,7 @@ objects:
           name: wsgi-service-config-claim
         - name: qgs-resources
           persistentVolumeClaim:
-            claimName: qgs-resources-claim
-            readOnly: true
+              claimName: qgs-resources-claim
+              readOnly: true
     test: false
     triggers: []

@@ -94,8 +94,8 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            withCredentials ( credentials ) {
-                steps {
+            steps {
+                withCredentials ( credentials ) {
                     createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'sogis'
                     }
                 }

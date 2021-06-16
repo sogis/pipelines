@@ -1,5 +1,6 @@
 def serviceName = 'landreg-service'
 def configFileName = 'landregConfig.json'
+def baseImage = 'sourcepole/sogis-landreg-service'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -93,34 +94,15 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            when {
-               beforeAgent true
-               expression {
-                   (params.configs != true)
-                   }
-               }
-            agent { label 'config-generator-agent' }
-            steps {
-                createConfigs namespace
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
+            withCredentials ( credentials ) {
+                steps {
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'sogis'
                     }
                 }
             }
-        stage ('Build new Image for landreg-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Tag Image') {
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy landreg-service in Test env') {

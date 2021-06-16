@@ -125,6 +125,6 @@ objects:
         - name: qgs-resources
           persistentVolumeClaim:
             claimName: qgs-resources-claim
-              readOnly: true
+            readOnly: true
     test: false
     triggers: []

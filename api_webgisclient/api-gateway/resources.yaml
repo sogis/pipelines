@@ -16,6 +16,8 @@ parameters:
     name: WMTS_URL
   - description: Matomo URL
     name: MATOMO_URL
+  - description: Url with no SES
+    name: NO_SES_URL
 objects:
 - apiVersion: v1
   data:
@@ -373,3 +375,25 @@ objects:
     wildcardPolicy: None
   status:
     ingress: null
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: gdi
+      service: api-gateway
+    annotations:
+      openshift.io/long-description: >-
+        "Route Necessary for Autologin check. Checks if user comes from intra- or internet. If user comes from intranet Single Sign On is used"
+    name: api-gateway-ohne-ses
+  spec:
+    host: ${NO_SES_URL}.dev.so.ch
+    port:
+      targetPort: 443-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: reencrypt
+    to:
+      kind: Service
+      name: api-gateway
+      weight: 100
+    wildcardPolicy: None

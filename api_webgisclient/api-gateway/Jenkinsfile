@@ -52,6 +52,7 @@ pipeline {
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      no_ses_url = 'geotest'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
@@ -62,6 +63,7 @@ pipeline {
                       baseUrl = 'geo-i.so.ch'
                       wmtsUrl = 'geo-wmts.so.ch'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      no_ses_url = 'geoint'
                       resources = ['cpu_request': '50m', 'cpu_limit': '500m', 'memory_request': '80Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
@@ -72,6 +74,7 @@ pipeline {
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics.dev.so.ch'
+                      no_ses_url = 'geoprod'
                       resources = ['cpu_request': '100m', 'cpu_limit': '1000m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
                       }
                     else {
@@ -80,6 +83,7 @@ pipeline {
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.dev.so.ch'
+                      no_ses_url = 'geotest'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                    }
@@ -87,7 +91,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl}"
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url}"
                 }
             }
         stage ('Build new Image for api-gateway if necessary') {

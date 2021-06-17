@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS simi.trafo_tableview_attributes_v;
+DROP VIEW IF EXISTS simi.trafo_wms_tableview_attribute_v;
 
-CREATE VIEW simi.trafo_tableview_attributes_v AS 
+CREATE VIEW simi.trafo_wms_tableview_attribute_v AS 
 
   WITH 
   

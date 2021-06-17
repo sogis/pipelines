@@ -1,21 +1,21 @@
-DROP VIEW IF EXISTS simi.trafo_qgs_layers_v;
+DROP VIEW IF EXISTS simi.trafo_wms_layer_v;
 
-CREATE VIEW simi.trafo_qgs_layers_v AS 
+CREATE VIEW simi.trafo_wms_layer_v AS 
 
+
+/*
+ * Gibt für den WMS die Ebenen mit ihren Detailinformationen aus.
+ * 
+ * Zwecks Debugging / Testing werden die Ebenentypen in der Spalte dtype konsequent typisiert:
+ * - tableview.[db_name]
+ * - rasterview
+ * - facadelayer
+ * - layergroup
+ * - backgroundmap
+ * 
+ * Die aktuell auszugebenden Typen sind in der dynamischen Tabelle dbtype_output festgelegt.
+ */
 WITH
-
-dp_common_props AS (
-  SELECT 
-    dp.id AS dp_id, 
-    identifier,
-    COALESCE(title, identifier) as title,
-    ps.id AS pub_scope_id,
-    pub_to_wms    
-  FROM 
-    simi.simiproduct_data_product dp 
-  INNER JOIN  
-    simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
-),
 
 productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
   SELECT  
@@ -24,7 +24,9 @@ productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
   FROM 
     simi.simiproduct_properties_in_list pil 
   JOIN 
-    dp_common_props pdp ON pil.single_actor_id = pdp.dp_id
+    simi.trafo_wms_dp_common_v pdp ON pil.single_actor_id = pdp.dp_id
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON pdp.dtype = otype.otype
   WHERE 
     pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- = status zu löschen
   GROUP BY 
@@ -34,6 +36,7 @@ productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
 productlist AS (
   SELECT 
     dp_id AS pl_id,
+    dtype,
     pub_to_wms,
     jsonb_build_object(
       'name', identifier,
@@ -42,14 +45,17 @@ productlist AS (
       'sublayers', ident_json
     ) AS layer_json
   FROM 
-    dp_common_props dp
+    simi.trafo_wms_dp_common_v dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
 ),
 
 layergroup AS (
   SELECT 
     FALSE AS print_only,
+    dtype,
     layer_json
   FROM 
     productlist pl
@@ -62,6 +68,7 @@ layergroup AS (
 background_map AS (
   SELECT 
     TRUE AS print_only,
+    dtype,
     layer_json
   FROM 
     productlist pl
@@ -78,7 +85,9 @@ facadelayer_children AS ( -- Alle Kinder, ausser die "zu löschenden"
   FROM 
     simi.simiproduct_properties_in_facade pif
   JOIN 
-    dp_common_props pdp ON pif.data_set_view_id = pdp.dp_id
+    simi.trafo_wms_dp_common_v pdp ON pif.data_set_view_id = pdp.dp_id
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON pdp.dtype = otype.otype
   WHERE 
     pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- zu löschen
   GROUP BY 
@@ -88,6 +97,7 @@ facadelayer_children AS ( -- Alle Kinder, ausser die "zu löschenden"
 facadelayer AS (
   SELECT 
     FALSE AS print_only,
+    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
@@ -97,9 +107,11 @@ facadelayer AS (
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    dp_common_props dp ON fl.id = dp.dp_id
+    simi.trafo_wms_dp_common_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
   WHERE 
     pub_to_wms IS TRUE 
 ),
@@ -137,6 +149,7 @@ dsv_qml_assetfiles AS (
 vector_layer AS (
   SELECT 
     FALSE AS print_only,
+    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -144,19 +157,21 @@ vector_layer AS (
       'title', title,
       'postgis_datasource', tbl_json,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
-      'qml_assets', assetfiles_json,
+      'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
       'attributes', attr_json      
     ) AS layer_json
   FROM
-    dp_common_props dp
+    simi.trafo_wms_dp_common_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_table_view tv ON dsv.id = tv.id
   JOIN 
-    simi.trafo_tableview_attributes_v tv_attr ON tv.id = tv_attr.table_view_id
+    simi.trafo_wms_tableview_attribute_v tv_attr ON tv.id = tv_attr.table_view_id
   JOIN 
-    simi.trafo_pg_tables_v tbl ON tv.postgres_table_id = tbl.table_id 
+    simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id 
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
   LEFT JOIN 
     dsv_qml_assetfiles files ON dsv.id = files.dsv_id
   WHERE 
@@ -166,6 +181,7 @@ vector_layer AS (
 raster_layer AS (
   SELECT 
     FALSE AS print_only,
+    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -175,19 +191,22 @@ raster_layer AS (
       'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
     ) AS layer_json
   FROM
-    dp_common_props dp
+    simi.trafo_wms_dp_common_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_raster_view rv ON dsv.id = rv.id
   JOIN 
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id    
+  JOIN
+    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
 ),
 
 ext_wms_layerbase AS (
   SELECT  
     identifier,
-    title,    
+    title,  
+    dtype,
     jsonb_build_object(
       'wms_url', url,
       'layers', dp.identifier,
@@ -195,7 +214,7 @@ ext_wms_layerbase AS (
       'srid', 2056
     ) AS wms_datasource_json
   FROM
-    dp_common_props dp
+    simi.trafo_wms_dp_common_v dp
   CROSS JOIN 
     simi.simiproduct_external_map_service es
   WHERE 
@@ -206,6 +225,7 @@ ext_wms_layerbase AS (
 ext_wms AS (
   SELECT 
     TRUE AS print_only,
+    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -220,7 +240,8 @@ ext_wms AS (
 ext_wmts_layerbase AS (
   SELECT  
     identifier,
-    title,    
+    title,   
+    dtype,
     jsonb_build_object(
       'wmts_capabilities_url', url,
       'layer', identifier,
@@ -230,7 +251,7 @@ ext_wmts_layerbase AS (
       'srid', 2056
     ) AS wmts_datasource_json
   FROM
-    dp_common_props dp
+    simi.trafo_wms_dp_common_v dp
   CROSS JOIN 
     simi.simiproduct_external_map_service es
   WHERE 
@@ -241,6 +262,7 @@ ext_wmts_layerbase AS (
 ext_wmts AS (
   SELECT 
     TRUE AS print_only,
+    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -250,19 +272,27 @@ ext_wmts AS (
     ) AS layer_json
   FROM
     ext_wmts_layerbase
+), 
+
+layer_union AS (
+  SELECT print_only, dtype, layer_json FROM layergroup
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM facadelayer
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM vector_layer
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM raster_layer
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM ext_wms
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM ext_wmts
+  UNION ALL 
+  SELECT print_only, dtype, layer_json FROM background_map
 )
 
-SELECT print_only, layer_json FROM layergroup
-UNION ALL 
-SELECT print_only, layer_json FROM facadelayer
-UNION ALL 
-SELECT print_only, layer_json FROM vector_layer
-UNION ALL 
-SELECT print_only, layer_json FROM raster_layer
-UNION ALL 
-SELECT print_only, layer_json FROM ext_wms
-UNION ALL 
-SELECT print_only, layer_json FROM ext_wmts
-UNION ALL 
-SELECT print_only, layer_json FROM background_map
+SELECT 
+  print_only, 
+  layer_json 
+FROM
+  layer_union
 ;

@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS simi.trafo_pg_tables_v;
+DROP VIEW IF EXISTS simi.trafo_wms_pg_table_v;
 
-CREATE VIEW simi.trafo_pg_tables_v AS 
+CREATE VIEW simi.trafo_wms_pg_table_v AS 
   SELECT 
     tbl.id AS  table_id,
     (geo_field_name IS NOT NULL) AS has_geometry,

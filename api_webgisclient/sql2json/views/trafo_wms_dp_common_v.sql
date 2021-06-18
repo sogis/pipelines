@@ -29,7 +29,7 @@ dp_common_props_tableview AS (
 
 SELECT 
   identifier,
-      CASE
+  CASE
     WHEN dtype = 'simiData_TableView' THEN concat('tableview.', db_name)
     WHEN dtype = 'simiData_RasterView' THEN 'rasterview'
     WHEN dtype = 'simiProduct_FacadeLayer' THEN 'facadelayer'

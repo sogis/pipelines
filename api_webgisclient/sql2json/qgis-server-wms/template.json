@@ -3,7 +3,7 @@
 
   "wms_top_layers": {"$trafo:list": "root_layer.sql"},
 
-  "layers": {"$trafo:list": "layer_composition.sql"},
+  "layers": {"$trafo:list": "layer.sql"},
 
   "selection_color_rgba": [
     255, 255, 0, 255

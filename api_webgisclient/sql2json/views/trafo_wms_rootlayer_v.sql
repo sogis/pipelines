@@ -13,8 +13,6 @@ lg_with_children AS (
     simi.simiproduct_properties_in_list p
   JOIN
     simi.trafo_wms_dp_common_v c ON p.single_actor_id = c.dp_id
-  JOIN
-    simi.trafo_wms_outtypes_v o ON c.dtype = o.otype 
   GROUP BY 
     p.product_list_id
   HAVING count(*) > 0
@@ -28,8 +26,6 @@ layer_group AS (
 		simi.simiproduct_layer_group lg 
 	JOIN
 		simi.trafo_wms_dp_common_v dp ON lg.id = dp.dp_id
-	JOIN
-    simi.trafo_wms_outtypes_v o ON dp.dtype = o.otype 
 	JOIN
 	  lg_with_children c ON lg.id = c.lg_id
   WHERE 
@@ -57,8 +53,6 @@ root_pub_single_actor AS (
 		simi.simiproduct_single_actor sa
 	JOIN
 		simi.trafo_wms_dp_common_v dp ON sa.id = dp.dp_id 
-	JOIN
-    simi.trafo_wms_outtypes_v o ON dp.dtype = o.otype 
 	LEFT JOIN 
 		simi.simiproduct_external_map_layers eml ON sa.id = eml.id 
 	LEFT JOIN 
@@ -78,8 +72,6 @@ fl_with_children AS (
     simi.simiproduct_properties_in_facade p
   JOIN
     simi.trafo_wms_dp_common_v c ON p.data_set_view_id = c.dp_id
-  JOIN
-    simi.trafo_wms_outtypes_v o ON c.dtype = o.otype 
   GROUP BY 
     p.facade_layer_id
   HAVING count(*) > 0

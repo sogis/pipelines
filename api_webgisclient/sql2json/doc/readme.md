@@ -17,6 +17,9 @@ von den SQL-Queries und damit von den Trafos zurückgegeben werden.
 Gibt die gängigen Attribute für ein Dataproduct sowie die Informationen
 zum Publikations-Status und zu Subtyp und Datenherkunft (dtype) zurück.
 
+Für Entwicklung, ... bei welcher nur Daten von der Pub-Db verfügbar sind, werden
+die Dataproducts via view **trafo_tmp_pubdb_dps_v** auf die Quelle Pub-Db eingeschränkt.
+
 ### trafo_wms_pg_table_v
 
 Erstellt das für qmlContent.json notwendige json-Fragment für

@@ -25,8 +25,6 @@ productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
     simi.simiproduct_properties_in_list pil 
   JOIN 
     simi.trafo_wms_dp_common_v pdp ON pil.single_actor_id = pdp.dp_id
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON pdp.dtype = otype.otype
   WHERE 
     pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- = status zu löschen
   GROUP BY 
@@ -36,7 +34,6 @@ productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
 productlist AS (
   SELECT 
     dp_id AS pl_id,
-    dtype,
     pub_to_wms,
     jsonb_build_object(
       'name', identifier,
@@ -48,14 +45,11 @@ productlist AS (
     simi.trafo_wms_dp_common_v dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
 ),
 
 layergroup AS (
   SELECT 
     FALSE AS print_only,
-    dtype,
     layer_json
   FROM 
     productlist pl
@@ -68,7 +62,6 @@ layergroup AS (
 background_map AS (
   SELECT 
     TRUE AS print_only,
-    dtype,
     layer_json
   FROM 
     productlist pl
@@ -86,8 +79,6 @@ facadelayer_children AS ( -- Alle Kinder, ausser die "zu löschenden"
     simi.simiproduct_properties_in_facade pif
   JOIN 
     simi.trafo_wms_dp_common_v pdp ON pif.data_set_view_id = pdp.dp_id
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON pdp.dtype = otype.otype
   WHERE 
     pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- zu löschen
   GROUP BY 
@@ -97,7 +88,6 @@ facadelayer_children AS ( -- Alle Kinder, ausser die "zu löschenden"
 facadelayer AS (
   SELECT 
     FALSE AS print_only,
-    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
@@ -110,8 +100,6 @@ facadelayer AS (
     simi.trafo_wms_dp_common_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
   WHERE 
     pub_to_wms IS TRUE 
 ),
@@ -149,7 +137,6 @@ dsv_qml_assetfiles AS (
 vector_layer AS (
   SELECT 
     FALSE AS print_only,
-    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -170,8 +157,6 @@ vector_layer AS (
     simi.trafo_wms_tableview_attribute_v tv_attr ON tv.id = tv_attr.table_view_id
   JOIN 
     simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id 
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
   LEFT JOIN 
     dsv_qml_assetfiles files ON dsv.id = files.dsv_id
   WHERE 
@@ -181,7 +166,6 @@ vector_layer AS (
 raster_layer AS (
   SELECT 
     FALSE AS print_only,
-    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -198,15 +182,12 @@ raster_layer AS (
     simi.simidata_raster_view rv ON dsv.id = rv.id
   JOIN 
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id    
-  JOIN
-    simi.trafo_wms_outtypes_v otype ON dp.dtype = otype.otype
 ),
 
 ext_wms_layerbase AS (
   SELECT  
     identifier,
     title,  
-    dtype,
     jsonb_build_object(
       'wms_url', url,
       'layers', dp.identifier,
@@ -225,7 +206,6 @@ ext_wms_layerbase AS (
 ext_wms AS (
   SELECT 
     TRUE AS print_only,
-    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -241,7 +221,6 @@ ext_wmts_layerbase AS (
   SELECT  
     identifier,
     title,   
-    dtype,
     jsonb_build_object(
       'wmts_capabilities_url', url,
       'layer', identifier,
@@ -262,7 +241,6 @@ ext_wmts_layerbase AS (
 ext_wmts AS (
   SELECT 
     TRUE AS print_only,
-    dtype,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
@@ -275,19 +253,19 @@ ext_wmts AS (
 ), 
 
 layer_union AS (
-  SELECT print_only, dtype, layer_json FROM layergroup
+  SELECT print_only, layer_json FROM layergroup
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM facadelayer
+  SELECT print_only, layer_json FROM facadelayer
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM vector_layer
+  SELECT print_only, layer_json FROM vector_layer
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM raster_layer
+  SELECT print_only, layer_json FROM raster_layer
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM ext_wms
+  SELECT print_only, layer_json FROM ext_wms
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM ext_wmts
+  SELECT print_only, layer_json FROM ext_wmts
   UNION ALL 
-  SELECT print_only, dtype, layer_json FROM background_map
+  SELECT print_only, layer_json FROM background_map
 )
 
 SELECT 

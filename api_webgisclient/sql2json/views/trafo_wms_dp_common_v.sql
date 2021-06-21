@@ -29,14 +29,6 @@ dp_common_props_tableview AS (
 
 SELECT 
   identifier,
-  CASE
-    WHEN dtype = 'simiData_TableView' THEN concat('tableview.', db_name)
-    WHEN dtype = 'simiData_RasterView' THEN 'rasterview'
-    WHEN dtype = 'simiProduct_FacadeLayer' THEN 'facadelayer'
-    WHEN dtype = 'simiProduct_LayerGroup' THEN 'layergroup'
-    WHEN dtype = 'simiProduct_Map' AND bgmap_id IS NOT NULL THEN 'backgroundmap'
-    ELSE concat('WARN:UNMAPPED:', dtype)
-  END AS dtype,
   COALESCE(title, identifier) as title,
   ps.id AS pub_scope_id,
   pub_to_wms,
@@ -45,6 +37,8 @@ FROM
   simi.simiproduct_data_product dp 
 JOIN  
   simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
+JOIN
+  simi.trafo_tmp_pubdb_dps_v pdb ON dp.id = pdb.dp_id
 LEFT JOIN
   dp_common_props_bgmap bg ON dp.id = bg.bgmap_id
 LEFT JOIN 

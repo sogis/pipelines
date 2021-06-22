@@ -99,9 +99,9 @@ pipeline {
             }
         stage ('Create configs') {
             steps {
-                createCredentials ( credentials ) {
-                     createConfigs namespace, dbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc'
-                     }
+                withCredentials ( credentials ) {
+                    createConfigs namespace, dbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc'
+                    }
                 }
             }
         stage ('Tag Image') {

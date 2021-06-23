@@ -129,6 +129,10 @@ objects:
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
+            readOnly: true
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -143,5 +147,9 @@ objects:
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim
+            readOnly: true
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
             readOnly: true
     triggers: []

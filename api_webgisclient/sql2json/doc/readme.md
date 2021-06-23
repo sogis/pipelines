@@ -7,15 +7,10 @@ Das folgende Diagramm dokumentiert die Abhängigkeiten.
 
 ## WMS Basis Views
 
-### trafo_wms_outtypes_v
-
-"Steuerungsview". Diese bestimmt, welche Dataproduct-Subtypen aus welchen Datenquellen
-von den SQL-Queries und damit von den Trafos zurückgegeben werden.
-
-### trafo_wms_dp_common_v
+### trafo_wms_dp_pubstate_v
 
 Gibt die gängigen Attribute für ein Dataproduct sowie die Informationen
-zum Publikations-Status und zu Subtyp und Datenherkunft (dtype) zurück.
+zum Publikations-Status bezüglich wms zurück.
 
 Für Entwicklung, ... bei welcher nur Daten von der Pub-Db verfügbar sind, werden
 die Dataproducts via view **trafo_tmp_pubdb_dps_v** auf die Quelle Pub-Db eingeschränkt.

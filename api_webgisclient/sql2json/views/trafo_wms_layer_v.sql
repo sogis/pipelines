@@ -4,37 +4,29 @@ CREATE VIEW simi.trafo_wms_layer_v AS
 
 
 /*
- * Gibt für den WMS die Ebenen mit ihren Detailinformationen aus.
+ * Gibt für den WMS die Dataproducts (DP) mit ihren jeweiligen Detailinformationen aus.
  * 
- * Zwecks Debugging / Testing werden die Ebenentypen in der Spalte dtype konsequent typisiert:
- * - tableview.[db_name]
- * - rasterview
- * - facadelayer
- * - layergroup
- * - backgroundmap
- * 
- * Die aktuell auszugebenden Typen sind in der dynamischen Tabelle dbtype_output festgelegt.
+ * Mittels Flag "print_only" wird unterschieden, ob das DP nur im Print-WMS erscheint. 
  */
 WITH
 
-productlist_children AS ( -- Alle Kinder, ausser die "zu löschenden"
+productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortiert nach pil.sort
   SELECT  
     pil.product_list_id, 
-    jsonb_agg(identifier) AS ident_json
+    jsonb_agg(identifier ORDER BY pil.sort) AS ident_json
   FROM 
     simi.simiproduct_properties_in_list pil 
   JOIN 
-    simi.trafo_wms_dp_common_v pdp ON pil.single_actor_id = pdp.dp_id
+    simi.trafo_wms_dp_pubstate_v dp ON pil.single_actor_id = dp.dp_id
   WHERE 
-    pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- = status zu löschen
+    dp.published IS TRUE 
   GROUP BY 
     product_list_id  
 ),
 
-productlist AS (
+productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_only = TRUE, Layergroup.print_only = FALSE 
   SELECT 
-    dp_id AS pl_id,
-    pub_to_wms,
+    (m.id IS NOT NULL) AS print_only, 
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
@@ -42,45 +34,25 @@ productlist AS (
       'sublayers', ident_json
     ) AS layer_json
   FROM 
-    simi.trafo_wms_dp_common_v dp
+    simi.trafo_wms_dp_pubstate_v dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
+  LEFT JOIN 
+    simi.simiproduct_map m ON dp.dp_id = m.id
+  WHERE
+    published IS TRUE 
 ),
 
-layergroup AS (
-  SELECT 
-    FALSE AS print_only,
-    layer_json
-  FROM 
-    productlist pl
-  JOIN 
-    simi.simiproduct_layer_group lg ON pl.pl_id = lg.id
-  WHERE 
-    pub_to_wms IS TRUE 
-),
-
-background_map AS (
-  SELECT 
-    TRUE AS print_only,
-    layer_json
-  FROM 
-    productlist pl
-  JOIN 
-    simi.simiproduct_map m ON pl.pl_id = m.id
-  WHERE 
-    background IS TRUE  -- $td prüfen, sobald dataproducts erstellt werden können
-),
-
-facadelayer_children AS ( -- Alle Kinder, ausser die "zu löschenden"
+facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines Facadelayer, sortiert nach pif.sort
   SELECT  
     pif.facade_layer_id,
-    jsonb_agg(identifier) AS ident_json
+    jsonb_agg(identifier ORDER BY pif.sort) AS ident_json
   FROM 
     simi.simiproduct_properties_in_facade pif
   JOIN 
-    simi.trafo_wms_dp_common_v pdp ON pif.data_set_view_id = pdp.dp_id
+    simi.trafo_wms_dp_pubstate_v dp ON pif.data_set_view_id = dp.dp_id
   WHERE 
-    pdp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- zu löschen
+    dp.published IS TRUE 
   GROUP BY 
     facade_layer_id  
 ),
@@ -97,11 +69,11 @@ facadelayer AS (
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    simi.trafo_wms_dp_common_v dp ON fl.id = dp.dp_id
+    simi.trafo_wms_dp_pubstate_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
   WHERE 
-    pub_to_wms IS TRUE 
+    dp.published IS TRUE 
 ),
 
 /*
@@ -143,24 +115,27 @@ vector_layer AS (
       'datatype', 'vector',
       'title', title,
       'postgis_datasource', tbl_json,
-      'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
+      --'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
+      'qml_base64', encode(convert_to('DUMMY', 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
       'attributes', attr_json      
     ) AS layer_json
   FROM
-    simi.trafo_wms_dp_common_v dp
+    simi.trafo_wms_dp_pubstate_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_table_view tv ON dsv.id = tv.id
   JOIN 
-    simi.trafo_wms_tableview_attribute_v tv_attr ON tv.id = tv_attr.table_view_id
+    simi.trafo_wms_tableview_attribute_v tv_attr ON tv.id = tv_attr.table_view_id --$td ATTRIBUTEin trafo_wms_tableview_attribute_v sortieren
   JOIN 
     simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id 
   LEFT JOIN 
     dsv_qml_assetfiles files ON dsv.id = files.dsv_id
   WHERE 
-    tbl.has_geometry IS TRUE 
+      tbl.has_geometry IS TRUE
+    AND 
+      dp.published IS TRUE 
 ),
 
 raster_layer AS (
@@ -175,13 +150,15 @@ raster_layer AS (
       'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
     ) AS layer_json
   FROM
-    simi.trafo_wms_dp_common_v dp
+    simi.trafo_wms_dp_pubstate_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_raster_view rv ON dsv.id = rv.id
   JOIN 
-    simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id    
+    simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id   
+  WHERE
+    dp.published IS TRUE 
 ),
 
 ext_wms_layerbase AS (
@@ -195,12 +172,15 @@ ext_wms_layerbase AS (
       'srid', 2056
     ) AS wms_datasource_json
   FROM
-    simi.trafo_wms_dp_common_v dp
+    simi.trafo_wms_dp_pubstate_v dp
   CROSS JOIN 
     simi.simiproduct_external_map_service es
   WHERE 
-    service_type = 'WMS'
-      AND identifier = 'ch.so.agi.gemeindegrenzen' --$td remove this CONDITION AND REPLACE CROSS JOIN WITH INNER JOIN 
+      service_type = 'WMS'
+    AND 
+      dp.published IS TRUE 
+    AND 
+      identifier = 'ch.so.agi.gemeindegrenzen' --$td remove this CONDITION AND REPLACE CROSS JOIN WITH INNER JOIN 
 ),
 
 ext_wms AS (
@@ -230,12 +210,15 @@ ext_wmts_layerbase AS (
       'srid', 2056
     ) AS wmts_datasource_json
   FROM
-    simi.trafo_wms_dp_common_v dp
+    simi.trafo_wms_dp_pubstate_v dp
   CROSS JOIN 
     simi.simiproduct_external_map_service es
   WHERE 
-    service_type = 'WMTS'
-      AND identifier = 'ch.so.agi.gemeindegrenzen' --$td remove this CONDITION AND REPLACE CROSS JOIN WITH INNER JOIN 
+      dp.published IS TRUE 
+    AND 
+      service_type = 'WMTS'
+    AND 
+      identifier = 'ch.so.agi.gemeindegrenzen' --$td remove this CONDITION AND REPLACE CROSS JOIN WITH INNER JOIN 
 ),
 
 ext_wmts AS (
@@ -250,10 +233,10 @@ ext_wmts AS (
     ) AS layer_json
   FROM
     ext_wmts_layerbase
-), 
+),
 
 layer_union AS (
-  SELECT print_only, layer_json FROM layergroup
+  SELECT print_only, layer_json FROM productlist
   UNION ALL 
   SELECT print_only, layer_json FROM facadelayer
   UNION ALL 
@@ -264,8 +247,6 @@ layer_union AS (
   SELECT print_only, layer_json FROM ext_wms
   UNION ALL 
   SELECT print_only, layer_json FROM ext_wmts
-  UNION ALL 
-  SELECT print_only, layer_json FROM background_map
 )
 
 SELECT 

@@ -7,6 +7,10 @@ CREATE VIEW simi.trafo_tmp_pubdb_dps_v AS
  * Enthält die ID aller DSV, Facadelayer, Layergroups, welche sich aus mindestens
  * einer pub-db Tabelle zusammensetzen.
  */
+
+-- facadelayer gebäudeadressen 4834b99e-8a1f-4d4c-8e9e-1c73198d6c40
+-- tableview rohrleitungen a4762af9-25c3-44f3-8b1d-4d2a167a8973
+-- tableview grundstücke rechtskräftig 1e7c5d4a-e23e-4566-aee2-07154fcf5fc2
 WITH 
 
 tableview AS (
@@ -20,8 +24,12 @@ tableview AS (
     simi.simidata_data_theme dt ON t.data_theme_id = dt.id
   JOIN
     simi.simidata_postgres_db db ON dt.postgres_db_id = db.id
+  JOIN
+    simi.simiproduct_properties_in_facade pf ON v.id = pf.data_set_view_id 
   WHERE 
     db.db_name = 'DB Pub'
+  AND
+    pf.facade_layer_id = '4834b99e-8a1f-4d4c-8e9e-1c73198d6c40'
 ),
 
 facadelayer AS (
@@ -31,6 +39,8 @@ facadelayer AS (
     simi.simiproduct_properties_in_facade p
   JOIN
     tableview v ON p.data_set_view_id = v.tv_id
+  WHERE 
+    facade_layer_id = '4834b99e-8a1f-4d4c-8e9e-1c73198d6c40'
   GROUP BY
     facade_layer_id
 ),
@@ -48,6 +58,8 @@ productlist AS (
     simi.simiproduct_properties_in_list p
   JOIN
     singleactor s ON p.single_actor_id = s.sa_id
+  WHERE 
+    p.single_actor_id = '4834b99e-8a1f-4d4c-8e9e-1c73198d6c40'
   GROUP BY
     p.product_list_id 
 )

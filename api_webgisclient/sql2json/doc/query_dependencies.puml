@@ -15,23 +15,20 @@ package "QGIS Server" {
         [trafo_wms_layer_v]
         [trafo_wms_pg_table_v]
         [trafo_wms_tableview_attribute_v]
-        [trafo_wms_dp_common_v]
-        [trafo_wms_outtypes_v]
+        [trafo_wms_dp_pubstate_v]
         [trafo_wms_rootlayer_v]
         
         root_layer.sql --> trafo_wms_rootlayer_v
         root_layer_print.sql --> trafo_wms_rootlayer_v
         
-        trafo_wms_rootlayer_v --> trafo_wms_dp_common_v
-        trafo_wms_rootlayer_v --> trafo_wms_outtypes_v
+        trafo_wms_rootlayer_v --> trafo_wms_dp_pubstate_v
         
         layer.sql --> trafo_wms_layer_v
         layer_print.sql --> trafo_wms_layer_v
         
         trafo_wms_layer_v --> trafo_wms_pg_table_v
         trafo_wms_layer_v --> trafo_wms_tableview_attribute_v
-        trafo_wms_layer_v --> trafo_wms_dp_common_v
-        trafo_wms_layer_v --> trafo_wms_outtypes_v
+        trafo_wms_layer_v --> trafo_wms_dp_pubstate_v
     }
 }
 

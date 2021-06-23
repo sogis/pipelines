@@ -101,7 +101,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'qwc-map-viewer.json', 'map-viewer', 'qwc'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'map-viewer', 'qwc'
                     }
                 }
             }

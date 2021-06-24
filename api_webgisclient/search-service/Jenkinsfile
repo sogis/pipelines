@@ -102,7 +102,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc', 'qwc-fulltext-search-service'
                     }
                 }
             }

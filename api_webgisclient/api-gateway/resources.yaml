@@ -38,7 +38,7 @@ objects:
       
           log_format  main  '[$time_local] $http_hsp_client_addr "$http_x_forwarded_for" - $status "$request" - '
                             '$body_bytes_sent "$http_user_agent $remote_user'
-                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time"';
+                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" $upstream_cache_status $upstream_addr';
       
           access_log  /var/log/nginx/access.log  main;
       

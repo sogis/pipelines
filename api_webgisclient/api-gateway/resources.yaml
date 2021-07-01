@@ -31,7 +31,6 @@ objects:
         proxy_redirect     off;
         proxy_set_header   Host              $http_host;
         proxy_set_header   X-Real-IP         $remote_addr;
-        #proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header   X-Forwarded-For   $http_hsp_client_addr;
         proxy_set_header   X-Forwarded-Proto $scheme;
         proxy_connect_timeout       1200;
@@ -193,7 +192,7 @@ objects:
         }
 
         location /api/v1/ccc {
-            proxy_pass http://ccc-config-service.${NAMESPACE}.svc/api/v1/ccc;
+            proxy_pass http://ccc-config.${NAMESPACE}.svc/api/v1/ccc;
         }
 
         location /api/v1/document {

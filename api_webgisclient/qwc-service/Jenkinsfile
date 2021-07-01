@@ -67,8 +67,8 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       analyticsUrl = 'geo.so.ch'
                       resources = ['cpu_request': '160m', 'cpu_limit': '320m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
-                      currentBuild.result = 'ABORTED'
-                      error('No rollout in Production possible at the moment. Please use https://jenkins-agi-apps-integration.dev.so.ch')
+                      // currentBuild.result = 'ABORTED'
+                      // error('No rollout in Production possible at the moment. Please use https://jenkins-agi-apps-integration.dev.so.ch')
                       }
                     else {
                       analyticsUrl = 'geo-i.so.ch'

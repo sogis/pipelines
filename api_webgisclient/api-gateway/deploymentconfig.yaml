@@ -94,6 +94,9 @@ objects:
           volumeMounts:
           - mountPath: /etc/nginx/conf.d
             name: nginx-config-claim
+          - mountPath: /etc/nginx/nginx.conf
+            name: nginx-config-base-claim
+            subPath: nginx.conf
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/nginx/certs
@@ -110,6 +113,12 @@ objects:
               path: nginx.conf
             name: nginx-config
           name: nginx-config-claim
+        - configMap:
+            items:
+            - key: nginx_base_os.conf
+              path: nginx.conf
+            name: nginx-base-config
+          name: nginx-config-base-claim
         - name: nginx-cert-volume
           secret:
             defaultMode: 420

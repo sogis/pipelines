@@ -1,8 +1,11 @@
-with
+/*
+Query zum Json-Export der als WFS zu publizierenden Klassen der GDI.
+*/
+WITH
 
-pgtable_json as (
-	select 
-		tbl.id as table_id,
+pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
+	SELECT 
+		tbl.id AS table_id,
 		jsonb_build_object(
 			'dbconnection', db_service_url,
 			'schema', schema_name,
@@ -11,65 +14,65 @@ pgtable_json as (
 			'geometry_field', geo_field_name,
 			'geometry_type', geo_type,
 			'srid', geo_epsg_code
-		) as tbl_json
-	from 
+		) AS tbl_json
+	FROM 
 		simi.simidata_postgres_table tbl 
-	join 
-		simi.simidata_data_theme dt on tbl.data_theme_id = dt.id 
-	join 
-		simi.simidata_postgres_db db on dt.postgres_db_id = db.id 
+	JOIN 
+		simi.simidata_data_theme dt ON tbl.data_theme_id = dt.id 
+	JOIN 
+		simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
 ),
 
-tbl_dsv as (
-	select 
-		dsv.id as dsv_id,
+tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
+	SELECT 
+		dsv.id AS dsv_id,
 		identifier,
-		coalesce(title, identifier) as title,
+		coalesce(title, identifier) AS title,
 		postgres_table_id
-	from 
+	FROM 
 		simi.simiproduct_data_product p
-	join
-		simi.simidata_data_set_view dsv on p.id = dsv.id 
-	join
-		simi.simidata_table_view tv on dsv.id = tv.id 
-	where 
+	JOIN
+		simi.simidata_data_set_view dsv ON p.id = dsv.id 
+	JOIN
+		simi.simidata_table_view tv ON dsv.id = tv.id 
+	WHERE 
 		dsv.raw_download is true 
 ),
 
-tbl_dsv_attr as (
-	select 
+tbl_dsv_attr AS ( -- Informationen zu den Attributen einer Tableview
+	SELECT 
 		vf.table_view_id,
 		jsonb_build_object(
 			'name', "name",
 			'alias', coalesce(alias, name)
-		) as attr_json
-	from 
+		) AS attr_json
+	FROM 
 		simi.simidata_view_field vf
-	join
-		simi.simidata_table_field tf on vf.table_field_id = tf.id 
+	JOIN
+		simi.simidata_table_field tf ON vf.table_field_id = tf.id 
 ),
 
-tbl_dsv_attr_grouped as (
-	select 	
+tbl_dsv_attr_grouped AS ( -- Attribut-Array einer Tableview
+	SELECT 	
 		table_view_id,
-		jsonb_agg(attr_json) as attr_json
-	from 
+		jsonb_agg(attr_json) AS attr_json
+	FROM 
 		tbl_dsv_attr
-	group by
+	GROUP BY
 		table_view_id
 )
 
-select
+SELECT
 	jsonb_build_object(
 		'name', identifier,
 		'title', title,
 		'postgis_datasource', tbl_json,
 		'attributes', attr_json
-	) as json_obj
-from 
+	) AS json_obj
+FROM 
 	tbl_dsv dsv
-join
-	pgtable_json tbl on dsv.postgres_table_id = tbl.table_id
-join 
-	tbl_dsv_attr_grouped attr on dsv.dsv_id = attr.table_view_id
+JOIN
+	pgtable_json tbl ON dsv.postgres_table_id = tbl.table_id
+JOIN 
+	tbl_dsv_attr_grouped attr ON dsv.dsv_id = attr.table_view_id
 

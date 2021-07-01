@@ -1,7 +1,6 @@
 DROP VIEW IF EXISTS simi.trafo_wms_layer_v;
 
-CREATE VIEW simi.trafo_wms_layer_v AS 
-
+CREATE VIEW simi.trafo_wms_layer_v AS
 
 /*
  * Gibt für den WMS die Dataproducts (DP) mit ihren jeweiligen Detailinformationen aus.
@@ -115,8 +114,7 @@ vector_layer AS (
       'datatype', 'vector',
       'title', title,
       'postgis_datasource', tbl_json,
-      --'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
-      'qml_base64', encode(convert_to('DUMMY', 'UTF8'), 'base64'),
+      'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
       'attributes', attr_json      
     ) AS layer_json

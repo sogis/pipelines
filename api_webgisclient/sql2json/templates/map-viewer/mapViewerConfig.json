@@ -219,7 +219,9 @@
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400
-                }
+                },
+                "bboxDependentLegend": "theme",
+                "scaleDependentLegend": "theme"
               }
             },
             {
@@ -464,7 +466,9 @@
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400
-                }
+                },
+                "bboxDependentLegend": "theme",
+                "scaleDependentLegend": "theme"
               },
               "mapClickAction": "identify"
             },
@@ -616,6 +620,12 @@
               }
             },
             {
+              "name": "Autologin",
+              "cfg": {
+                "autologinUrl": "https://geoprod.dev.so.ch/map/assets/img/logo.png"
+              }
+            },
+            {
               "name": "LoginUser"
             }
           ]
@@ -665,6 +675,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.massnahmen_1g",
                     "title": "Massnahmen 1. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 1. Generation wurden 2007 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2011-2014 vorgesehen.\r\n<br><br>\r\nEs sind die Massnahmen der Agglomerationen Solothurn, AareLand und Basel im Kanton Solothurn gemäss den Leistungsvereinbarungen zw. Bund und Trägerschaft dargestellt.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -681,6 +692,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.umsetzungsstand_1g",
                     "title": "Umsetzungsstand 1. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 1. Generation wurden Ende 2007 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2011-2014 vorgesehen. Der Umsetzungsstand zeigt den Stand der Realisierung auf. Spätester Baubeginn für Massnahmen der 1. Generation ist 2027.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -697,6 +709,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.massnahmen_2g",
                     "title": "Massnahmen 2. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 2. Generation wurden Ende 2012 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2015-2018 vorgesehen.\r\n<br><br>\r\nEs sind die Massnahmen der Agglomerationen Solothurn, AareLand und Basel im Kanton Solothurn gemäss den Leistungsvereinbarungen zw. Bund und Trägerschaft dargestellt.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -713,6 +726,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.umsetzungsstand_2g",
                     "title": "Umsetzungsstand 2. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 2. Generation wurden Ende 2012 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2015-2018 vorgesehen. Der Umsetzungsstand zeigt den Stand der Realisierung auf. Spätester Baubeginn für Massnahmen der 2. Generation ist 2027.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -729,6 +743,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.massnahmen_3g",
                     "title": "Massnahmen 3. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 3. Generation wurden Ende 2016 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2019-2022 vorgesehen.\r\n<br><br>\r\nEs sind die Massnahmen der Agglomerationen Solothurn, AareLand und Basel im Kanton Solothurn gemäss den Leistungsvereinbarungen zw. Bund und Trägerschaft dargestellt.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -745,6 +760,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.umsetzungsstand_3g",
                     "title": "Umsetzungsstand 3. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 3. Generation wurden Ende 2016 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2019-2022 vorgesehen. Der Umsetzungsstand zeigt den Stand der Realisierung auf. Spätester Baubeginn für Massnahmen der 3. Generation ist 2025.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -761,6 +777,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.massnahmen_4g",
                     "title": "Massnahmen 4. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 4. Generation wurden Mitte 2021 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2024-2027 vorgesehen. \r\n<br><br>\r\nEs sind die Massnahmen der Agglomerationen Solothurn, AareLand, Grenchen und Basel im Kanton Solothurn dargestellt.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -777,6 +794,7 @@
                   {
                     "name": "ch.so.arp.agglomerationsprogramme.umsetzungsstand_4g",
                     "title": "Umsetzungsstand 4. Generation (Agglomerationsprogramme)",
+                    "abstract": "Die Massnahmen der 4. Generation wurden Mitte 2021 beim Bund eingereicht und die Umsetzung ist im Zeitraum 2024-2027 vorgesehen. Der Umsetzungsstand zeigt den Stand der Realisierung auf. Spätester Baubeginn für Massnahmen der 4. Generation ist 2028.",
                     "visibility": false,
                     "queryable": true,
                     "opacity": 204,
@@ -1813,47 +1831,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -3377,47 +3354,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -4955,47 +4891,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -6879,47 +6774,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -8523,47 +8377,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -10262,47 +10075,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -11861,47 +11633,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -13509,47 +13240,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -15028,47 +14718,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -16698,47 +16347,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -17175,8 +16783,9 @@
                 ]
               },
               {
-                "name": "ch.so.agi.av.grundstuecke.rechtskraeftig",
-                "title": "Grundstücke",
+                "name": "ch.so.agi.av.grundstuecke",
+                "title": "Grundstücke (amtliche Vermessung)",
+                "abstract": "Die Kartenebene Grundstücke enthält die rechtsgültigen und projektierten Liegenschaften sowie der selbständigen und dauernden Rechte (SDR) wie z.B. Baurecht und Bergwerke. <br>\r\n\r\nDie projektierten und rechtsgültigen Grundstücke sind die Grundlage für die Führung des Grundbuches und dokumentieren das Eigentum an Grund und Boden. <br>\r\nDie Grundstücke werden mit Grenzzeichen (<a href=\"https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/amtliche-vermessung/grenzzeichen/\">Bolzen oder Stein </a>) und damit verbundenen Grundstücksgrenzen aus Geraden und Kreisbogen bestimmt. Die Grundstücksnummer ist pro Grundbuchkreis eindeutig.  Die Eidgenössische Grundstücksidentifikation (E-GRID) ist eine eindeutige Nummer über die ganze Schweiz für Grundstücke.",
                 "visibility": false,
                 "queryable": true,
                 "opacity": 255,
@@ -17188,10 +16797,7 @@
                     2650000,
                     1270000
                   ]
-                },
-                "searchterms": [
-                  "ch.so.agi.av.grundstuecke.rechtskraeftig"
-                ]
+                }
               },
               {
                 "name": "ch.so.afu.altlasten.standorte",
@@ -17251,7 +16857,7 @@
               "ch.so.afu.gewaesserschutz.bereiche",
               "ch.so.afu.gewaesserschutz.zonen_areale",
               "ch.so.afu.altlasten.standorte",
-              "ch.so.agi.av.grundstuecke.rechtskraeftig",
+              "ch.so.agi.av.grundstuecke",
               "ch.so.agi.gemeindegrenzen",
               "ch.so.afu.fliessgewaesser.netz"
             ],
@@ -18245,47 +17851,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -19737,47 +19302,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -21318,47 +20842,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -21862,106 +21345,113 @@
                 }
               },
               {
-                "name": "ch.so.afu.gefahrenkartierung.gk_absenkung_einsturz",
-                "title": "Gefahrenkarte Absenkung / Einsturz (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.gk_hangmure",
-                "title": "Gefahrenkarte Hangmure (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.gk_rutsch_kont_sackung",
-                "title": "Gefahrenkarte kontinuierliche Rutschung (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.gk_rutsch_spontan",
-                "title": "Gefahrenkarte spontane Rutschung (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.gk_sturz",
-                "title": "Gefahrenkarte Sturz (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.gk_wasser",
-                "title": "Gefahrenkarte Wasser (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
+                "name": "ch.so.afu.gefahrenkartierung.prozessgefahren",
+                "title": "Naturgefahren - Prozessgefahrenkarte",
+                "sublayers": [
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_absenkung_einsturz",
+                    "title": "Gefahrenkarte Absenkung / Einsturz (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_hangmure",
+                    "title": "Gefahrenkarte Hangmure (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_sturz",
+                    "title": "Gefahrenkarte Sturz (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_wasser",
+                    "title": "Gefahrenkarte Wasser (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_rutsch_spontan",
+                    "title": "Gefahrenkarte spontane Rutschung (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.gk_rutsch_kont_sackung",
+                    "title": "Gefahrenkarte kontinuierliche Rutschung (Naturgefahren)",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  }
+                ],
+                "expanded": true
               },
               {
                 "name": "ch.so.afu.gefahrenkartierung.intensitaet_synoptisch",
@@ -22056,71 +21546,78 @@
                 "expanded": true
               },
               {
-                "name": "ch.so.afu.gefahrenkartierung.ueberflutung_0_bis_30",
-                "title": "Ueberflutung 0 - 30 Jahre (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.ueberflutung_30_bis_100",
-                "title": "Ueberflutung 30 - 100 Jahre (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
-              },
-              {
-                "name": "ch.so.afu.gefahrenkartierung.ueberflutung_100_bis_300",
-                "title": "Ueberflutung 100 - 300 Jahre (Naturgefahren)",
-                "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
-                "visibility": false,
-                "queryable": true,
-                "opacity": 255,
-                "bbox": {
-                  "crs": "EPSG:2056",
-                  "bounds": [
-                    2590000,
-                    1210000,
-                    2650000,
-                    1270000
-                  ]
-                }
+                "name": "ch.so.afu.gefahrenkartierung.ueberflutungshoehen",
+                "title": "Naturgefahren - Ueberflutungshöhen",
+                "sublayers": [
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.ueberflutungskarte_0_bis_30",
+                    "title": "Naturgefahren - Ueberflutungskarte 0 - 30 Jahre",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.ueberflutungskarte_30_bis_100",
+                    "title": "Naturgefahren - Ueberflutungskarte 30 - 100 Jahre",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  },
+                  {
+                    "name": "ch.so.afu.gefahrenkartierung.ueberflutungskarte_100_bis_300",
+                    "title": "Naturgefahren - Ueberflutungskarte 100 - 300 Jahre",
+                    "abstract": "Naturgefahrenkarten sind nicht zu verwechseln mit Gefahrenhinweiskarten. Naturgefahrenkarten sind im Massstab von 1:5‘000 erstellt und zeigen damit eine detaillierte Übersicht der Gefährdungssituation. \r\n<br><br>\r\nDie Naturgefahrenkarten decken in den meisten Gemeinden das Siedlungsgebiet ab, in einigen wenigen das gesamte Gemeindegebiet. Sie enthalten im Gegensatz zu Gefahrenhinweiskarten detaillierte Angaben über Ursachen, Ablauf, räumliche Ausdehnung, Intensität und Eintretenswahrscheinlichkeit zu gravitativen Naturgefahren, welche auf ein bestimmtes Gebiet einwirken. Berücksichtigt werden Ereignisse mit einer Wiederkehrperiode bis zu 300 Jahren. \r\n<br><br>\r\nDargestellt werden die Prozesse (Naturgefahren):<br>\r\n• Wasser (Überschwemmung / Übersarung)<br>\r\n• Sturz (Steinschlag/Blockschlag)<br>\r\n• Rutsch (kontinuierliche und spontane Rutschungen)<br>\r\n• Absenkung/ Einsturz<br>\r\n• Hangmuren\r\n<br><br>\r\nNicht dargestellt werden bei den Wassergefahren Überflutungen infolge Hangwasser, Kanalisationsrückstau und Störfällen von Wasserkraftwerksanlagen. \r\n<br><br>\r\nDie Naturgefahrenkarten sind behördenverbindlich und dienen unter anderem als Beurteilungsgrundlage bei Nutzungsplanungen oder im Baubewilligungsverfahren. Nach der Umsetzung der Naturgefahrenkarten in der kommunalen Ortsplanung ist diese auch eigentümerverbindlich. \r\n<br><br>\r\nWeitere Informationen können den technischen Berichten der einzelnen kommunalen Naturgefahrenkarten entnommen werden. Der Link zu den Berichten wird im Info-Fenster durch Anklicken der jeweiligen Gemeinde angezeigt.\r\n<br><br>\r\n<a href=\"https://geo.so.ch/docs/ch.so.afu.naturgefahren\\B_Lesehilfe_Gefahrenkarte_PLANAT_120309.pdf\" target=\"_blank\">Lesehilfe Gefahrenkarte</a>\r\n<br><br>\r\nWeitere Auskünfte sind bei der Kant. Koordinationsstelle Naturgefahren (Tel. 032 627 24 47) oder unter <a href=\"https://afu.so.ch/naturgefahren\" target=\"_blank\">www.afu.so.ch/naturgefahren</a> erhältlich. ",
+                    "visibility": false,
+                    "queryable": true,
+                    "opacity": 255,
+                    "bbox": {
+                      "crs": "EPSG:2056",
+                      "bounds": [
+                        2590000,
+                        1210000,
+                        2650000,
+                        1270000
+                      ]
+                    }
+                  }
+                ],
+                "expanded": true
               }
             ],
             "expanded": true,
             "drawingOrder": [
-              "ch.so.afu.gefahrenkartierung.ueberflutung_100_bis_300",
-              "ch.so.afu.gefahrenkartierung.ueberflutung_30_bis_100",
-              "ch.so.afu.gefahrenkartierung.ueberflutung_0_bis_30",
+              "ch.so.afu.gefahrenkartierung.ueberflutungskarte_100_bis_300",
+              "ch.so.afu.gefahrenkartierung.ueberflutungskarte_30_bis_100",
+              "ch.so.afu.gefahrenkartierung.ueberflutungskarte_0_bis_30",
               "ch.so.afu.gefahrenkartierung.ik_synoptisch_ohne_jaehrlichkeit",
               "ch.so.afu.gefahrenkartierung.ik_synoptisch_groesser_300",
               "ch.so.afu.gefahrenkartierung.ik_synoptisch_100_bis_300",
               "ch.so.afu.gefahrenkartierung.ik_synoptisch_30_bis_100",
               "ch.so.afu.gefahrenkartierung.ik_synoptisch_0_bis_30",
+              "ch.so.afu.gefahrenkartierung.gk_rutsch_kont_sackung",
+              "ch.so.afu.gefahrenkartierung.gk_rutsch_spontan",
               "ch.so.afu.gefahrenkartierung.gk_wasser",
               "ch.so.afu.gefahrenkartierung.gk_sturz",
-              "ch.so.afu.gefahrenkartierung.gk_rutsch_spontan",
-              "ch.so.afu.gefahrenkartierung.gk_rutsch_kont_sackung",
               "ch.so.afu.gefahrenkartierung.gk_hangmure",
               "ch.so.afu.gefahrenkartierung.gk_absenkung_einsturz",
               "ch.so.afu.gefahrenkartierung.synoptische_gefahrenkarte",
@@ -23120,47 +22617,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -24743,47 +24199,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -26234,47 +25649,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -27731,47 +27105,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -29205,47 +28538,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -30633,47 +29925,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -32105,47 +31356,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -33575,47 +32785,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -35080,47 +34249,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -36592,47 +35720,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -38417,47 +37504,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -40046,47 +39092,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -41649,47 +40654,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -43213,47 +42177,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -44661,47 +43584,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
@@ -46472,47 +45354,6 @@
                 ],
                 "geomType": "Point"
               },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
-              },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",
                 "layerName": "Wald - Waldpflege Erfassung",
@@ -48060,47 +46901,6 @@
                   }
                 ],
                 "geomType": "Point"
-              },
-              "ch.so.arp.nutzungszonen.servicetest": {
-                "editDataset": "ch.so.arp.nutzungszonen.servicetest",
-                "layerName": "nutzungszonen.data",
-                "fields": [
-                  {
-                    "id": "zcode_text",
-                    "name": "zcode_text",
-                    "type": "text"
-                  },
-                  {
-                    "id": "gem_bfs",
-                    "name": "gem_bfs",
-                    "type": "number",
-                    "constraints": {
-                      "min": -2147483648,
-                      "max": 2147483647
-                    }
-                  },
-                  {
-                    "id": "exact",
-                    "name": "exact",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "bearbeiter",
-                    "name": "bearbeiter",
-                    "type": "text"
-                  },
-                  {
-                    "id": "verifiziert",
-                    "name": "verifiziert",
-                    "type": "boolean"
-                  },
-                  {
-                    "id": "datum",
-                    "name": "datum",
-                    "type": "date"
-                  }
-                ],
-                "geomType": "Polygon"
               },
               "ch.so.awjf.waldpflege_erfassung": {
                 "editDataset": "ch.so.awjf.waldpflege_erfassung",

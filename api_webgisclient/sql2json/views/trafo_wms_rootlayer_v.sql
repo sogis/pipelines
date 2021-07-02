@@ -1,8 +1,6 @@
-/*
 DROP VIEW IF EXISTS simi.trafo_wms_rootlayer_v;
 
 CREATE VIEW simi.trafo_wms_rootlayer_v AS 
-*/
 
 WITH
 

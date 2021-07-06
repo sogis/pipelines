@@ -24,4 +24,5 @@ JOIN
 JOIN
   dsv_attributes a ON dsv.id = a.table_view_id
 WHERE
-  dsv.raw_download IS TRUE 
+  dsv.raw_download IS TRUE
+and identifier like 'test.%'

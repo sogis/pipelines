@@ -25,8 +25,8 @@ dp_published AS ( -- Alle Dataproducts, welche nicht zum löschen markiert sind
     simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
   WHERE
       ps.id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschen
-    AND 
-      identifier LIKE 'test.%'
+/*    AND 
+      identifier LIKE 'test.%'*/
 ),
 
 wms_published_map AS ( -- Background-Map-Kinder sind Teil des WMS, unabhängig vom pub_to_wms flag

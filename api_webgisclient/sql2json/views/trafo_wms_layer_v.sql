@@ -6,6 +6,8 @@ CREATE VIEW simi.trafo_wms_layer_v AS
  * Gibt für den WMS die Dataproducts (DP) mit ihren jeweiligen Detailinformationen aus.
  * 
  * Mittels Flag "print_only" wird unterschieden, ob das DP nur im Print-WMS erscheint. 
+ * 
+ * $td: simi.trafo_wms_tableview_v einbinden, und Abhängigkeit auf simi.trafo_wms_tableview_v entfernen
  */
 WITH
 
@@ -108,7 +110,7 @@ dsv_qml_assetfiles AS (
 vector_layer AS (
   SELECT 
     FALSE AS print_only,
-    jsonb_build_object(
+    jsonb_strip_nulls(jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'vector',
@@ -116,24 +118,16 @@ vector_layer AS (
       'postgis_datasource', tbl_json,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
-      'attributes', attr_json      
-    ) AS layer_json
+      'attributes', attr_name_alias_js      
+    )) AS layer_json
   FROM
-    simi.trafo_wms_dp_pubstate_v dp
-  JOIN 
-    simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
-  JOIN 
-    simi.simidata_table_view tv ON dsv.id = tv.id
-  JOIN 
-    simi.trafo_wms_tableview_attribute_v tv_attr ON tv.id = tv_attr.table_view_id --$td ATTRIBUTEin trafo_wms_tableview_attribute_v sortieren
+    simi.trafo_wms_tableview_v tv
+  JOIN
+    simi.simidata_data_set_view dsv ON tv.tv_id = dsv.id 
   JOIN 
     simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id 
   LEFT JOIN 
-    dsv_qml_assetfiles files ON dsv.id = files.dsv_id
-  WHERE 
-      tbl.has_geometry IS TRUE
-    AND 
-      dp.published IS TRUE 
+    dsv_qml_assetfiles files ON tv.tv_id = files.dsv_id
 ),
 
 raster_layer AS (

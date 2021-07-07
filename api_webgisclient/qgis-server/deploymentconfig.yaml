@@ -105,6 +105,9 @@ objects:
           - mountPath: /data/print
             name: qgs-resources
             subPath: print
+          - mountPath: /data/uploads
+            name: qgs-resources
+            subPath: uploads
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/postgresql-common

@@ -118,5 +118,5 @@ objects:
           name: wsgi-service-config-claim
         - name: qgs-resources
           persistentVolumeClaim:
-            name: qgs-resources-claim
+            claimName: qgs-resources-claim
     triggers: []

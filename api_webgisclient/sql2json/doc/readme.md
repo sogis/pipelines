@@ -3,59 +3,8 @@
 Die von den sql2json ausgelösten queries verwenden teilweise gemeinsame SQL Views. Die Views wiederum sind untereinander abhängig.
 Das folgende Diagramm dokumentiert die Abhängigkeiten.
 
-![query_dependencies](query_dependencies.png)
+## Abhängigkeit der Views für WMS und Print
 
-## WMS Basis Views
+![wms_view_dependencies](view_dependencies.png)
 
-### trafo_wms_dp_pubstate_v
-
-Gibt die gängigen Attribute für ein Dataproduct sowie die Informationen
-zum Publikations-Status bezüglich wms zurück.
-
-Für Entwicklung, ... bei welcher nur Daten von der Pub-Db verfügbar sind, werden
-die Dataproducts via view **trafo_tmp_pubdb_dps_v** auf die Quelle Pub-Db eingeschränkt.
-
-### trafo_wms_pg_table_v
-
-Erstellt das für qmlContent.json notwendige json-Fragment für
-alle Postgres-Tabellen.
-
-@Martin: 
-Diese wrid im Moment nur von trafo_wms_layer_v konsumiert.  
-Wenn das nach deinem Gegenlesen so bleibt, dann werde ich die View auflösen.
-
-Todo: Evtl. einpflegen in trafo_wms_layer_v
-
-### trafo_wms_tableview_attribute_v
-
-Erstellt das für qmlContent.json notwendige json-Fragment aller 
-Attribute einer TableView.
-
-@Martin: 
-Diese wrid im Moment nur von trafo_wms_layer_v konsumiert.  
-Wenn das nach deinem Gegenlesen so bleibt, dann werde ich die View auflösen.
-
-Todo: Evtl. einpflegen in trafo_wms_layer_v
-
-## WMS Views zwecks Filtering für "normalen" und print WMS
-
-Der Print-WMS umfasst nur wenige Ebenen mehr wie der API-WMS. Um eine massive
-SQL-Code Verdoppelung zu vermeiden, decken die folgend beschriebenen Views den
-Ebenenumfang für den Print-WMS ab.  
-Für den API-WMS wird mittels Attribut "print_only" gefiltert.
-
-### trafo_wms_rootlayer_v
-
-Gibt alle Ebenen zurück, welche im WMS auf der obersten Ebene "root" erscheinen.   
-ZU BEACHTEN: In einer oder mehreren Layergruppen enthaltene SingleActor erscheinen 
-nicht auf der obersten Ebene. Dies erfolgt durch ein Filter in der View, unabhängig
-von der Einstellung im SIMI.
-
-### trafo_wms_layer_v
-
-Gibt die für den WMS notwendigen Eigenschaften einer Ebene aus.
-
-
-
-
-
+Die Views sind in jeweiligen *.sql dokumentiert (Ablage in Ordner ../views)

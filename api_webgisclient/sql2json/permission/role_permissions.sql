@@ -266,8 +266,6 @@ dp_perm AS ( -- lists all permissions for dataproducts in "human readable" form
 		dp_perm_union p
 	JOIN 
 		simi.simiproduct_data_product dp ON p.dp_id = dp.id		
-/*	WHERE --$td remove
-	 dp.identifier LIKE 'test.perm.%'*/
 ),
 
 dep_dsv_count_total AS (

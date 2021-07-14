@@ -38,25 +38,21 @@ tv_attributes AS (
 
 SELECT 
   dp.identifier,
-  dp.title,
+  dp.title_ident,
   dp.root_published,
   a.attr_name_js,
   a.attr_name_alias_js,
   tv.id AS tv_id,
   tv.postgres_table_id
 FROM
-  simi.trafo_wms_dp_pubstate_v dp
+  simi.trafo_wms_published_dp_v dp
 JOIN 
   simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
 JOIN 
   simi.simidata_table_view tv ON dsv.id = tv.id
 JOIN 
-  simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id
+  simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id
 LEFT JOIN
   tv_attributes a ON tv.id = a.tv_id
-WHERE 
-    tbl.has_geometry IS TRUE
-  AND
-    published IS TRUE 
 
       

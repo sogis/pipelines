@@ -1,28 +1,18 @@
-WITH
-
-dsv_attributes AS (
-  SELECT
-    jsonb_agg(tf.name) AS attr,
-    vf.table_view_id 
-  FROM
-    simi.simidata_view_field vf
-  JOIN
-    simi.simidata_table_field tf ON vf.table_field_id = tf.id 
-  GROUP BY 
-    vf.table_view_id
-)
-
 SELECT 
   jsonb_build_object(
     'name', identifier,
-    'attributes', attr
+    'attributes', attr_names_json
   ) AS obj
 FROM
-  simi.simidata_data_set_view dsv
+  simi.simidata_table_view tv
+JOIN 
+  simi.simidata_data_set_view dsv ON tv.id = dsv.id
 JOIN
-  simi.simiproduct_data_product dp ON dsv.id = dp.id
+  simi.simiproduct_data_product dp ON tv.id = dp.id
 JOIN
-  dsv_attributes a ON dsv.id = a.table_view_id
+  simi.trafo_wms_geotable_v t ON tv.postgres_table_id = t.table_id 
+JOIN
+  simi.trafo_tableview_attr_geo_append_v a ON dsv.id = a.tv_id
 WHERE
   dsv.raw_download IS TRUE
-and identifier like 'test.%'
+

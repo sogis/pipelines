@@ -3,45 +3,47 @@ WITH
 
 tableview AS (
   SELECT 
+    identifier,
+    root_published,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
-      'title', title,
-      'attributes', attr_name_js,
+      'title', title_ident,
+      'attributes', a.attr_names_json, 
       'queryable', TRUE 
     ) AS layer_json,
-    tv_id, 
-    root_published
+    dp.dp_id AS tv_id
   FROM 
-    simi.trafo_wms_tableview_v
+    simi.trafo_wms_published_dp_v dp
+  JOIN
+    simi.trafo_tableview_attr_geo_append_v a ON dp.dp_id = a.tv_id
 ),
 
 rasterview AS (
   SELECT 
+    identifier,
+    root_published,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
-      'title', title,
+      'title', title_ident,
       'queryable', TRUE 
     ) AS layer_json,
-    rv.id AS rv_id,
-    root_published
+    rv.id AS rv_id
   FROM
-    simi.trafo_wms_dp_pubstate_v dp
+    simi.trafo_wms_published_dp_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_raster_view rv ON dsv.id = rv.id
   JOIN 
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id   
-  WHERE
-    dp.published IS TRUE 
 ), 
 
 datasetview AS (
-  SELECT rv_id AS dsv_id, root_published, layer_json FROM rasterview
+  SELECT identifier, root_published, layer_json, rv_id AS dsv_id FROM rasterview
   UNION ALL 
-  SELECT tv_id AS dsv_id, root_published, layer_json FROM tableview
+  SELECT identifier, root_published, layer_json, tv_id AS dsv_id FROM tableview
 ),
 
 facadelayer_children AS (
@@ -58,23 +60,22 @@ facadelayer_children AS (
 
 facadelayer AS (
   SELECT
+    identifier,
+    dp.root_published,
     jsonb_build_object(
       'name', identifier,
-      'title', title,
+      'title', title_ident,
       'type', 'layergroup',
       'hide_sublayers', TRUE,
       'layers', child_layers
     ) AS layer_json,
-    fl.id AS fl_id,
-    dp.root_published 
+    fl.id AS fl_id
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    simi.trafo_wms_dp_pubstate_v dp ON fl.id = dp.dp_id
+    simi.trafo_wms_published_dp_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children c ON fl.id = c.fl_id
-  WHERE 
-    dp.published IS TRUE 
 ),
 
 single_actor AS (
@@ -97,34 +98,41 @@ prodlist_children AS (
 
 prodlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_only = TRUE, Layergroup.print_only = FALSE 
   SELECT 
+    identifier,
+    dp.root_published, 
     jsonb_build_object(
       'name', identifier,
       'type', 'layergroup',
-      'title', title,
+      'title', title_ident,
       'layers', child_layers
     ) AS layer_json,
-    dp.root_published, 
     (m.id IS NOT NULL) AS print_only
   FROM 
     simi.simiproduct_product_list p
   JOIN
-    simi.trafo_wms_dp_pubstate_v dp ON p.id = dp.dp_id
+    simi.trafo_wms_published_dp_v dp ON p.id = dp.dp_id
   JOIN
     prodlist_children c ON p.id = c.pl_id    
   LEFT JOIN 
     simi.simiproduct_map m ON dp.dp_id = m.id
-  WHERE
-    published IS TRUE
 ),
 
 all_layers AS (
-  SELECT layer_json FROM datasetview WHERE root_published IS TRUE 
+  SELECT identifier, root_published, layer_json FROM datasetview
   UNION ALL 
-  SELECT layer_json FROM facadelayer WHERE root_published IS TRUE 
+  SELECT identifier, root_published, layer_json FROM facadelayer 
   UNION ALL 
-  SELECT layer_json FROM prodlist WHERE root_published IS TRUE 
+  SELECT identifier, root_published, layer_json FROM prodlist 
 )
 
-SELECT * FROM all_layers
+SELECT
+  layer_json
+FROM 
+  all_layers
+WHERE 
+  root_published IS TRUE 
+and identifier like 'ch.so.agi.av.amtliche_vermessung%'
+ORDER BY
+  identifier
 
 

@@ -1,24 +1,12 @@
 with
 
-tab_layer_attributes as (	
-	select 
-		table_view_id as dsv_id,
-		jsonb_agg(tf."name") as attr_names
-	from 
-		simi.simidata_view_field vf 
-	inner join
-		simi.simidata_table_field tf on vf.table_field_id = tf.id 
-	group by 
-		table_view_id 
-),
-
 tab_layer as ( 
 	select 
-		jsonb_build_object('name', identifier, 'attributes', attr_names) as js
+		jsonb_build_object('name', identifier, 'attributes', attr_names_json) as js
 	from 
 		simi.simiproduct_data_product dp
-	inner join
-		tab_layer_attributes a on dp.id = a.dsv_id
+	inner JOIN
+	  simi.trafo_tableview_attr_geo_append_v a ON dp.id = a.tv_id
 ),
 
 facade_sublayers as ( 

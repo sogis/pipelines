@@ -1,6 +1,6 @@
 SET search_path to simi;
-drop view trafo_data_service_layer_structur_v;
-create view trafo_data_service_layer_structur_v
+DROP VIEW IF EXISTS trafo_data_service_layer_structur_v;
+CREATE VIEW trafo_data_service_layer_structur_v
 as 
 with first_sublevel as (
 SELECT 

@@ -7,8 +7,8 @@ CREATE VIEW simi.trafo_wms_published_dp_v AS
  * Beziehungen der Datenprodukte zu Facadelayern und Produktlisten ab, welche
  * Datenprodukte im WMS publiziert sind.
  * 
- * published: Kommen auf irgendeiner Hierarchiestufe des WMS vor.
  * root_published: Erscheinen auf der Root-Ebene des WMS.
+ * print_or_ext: Externe Ebenen oder Druck-Zusammenstellungen. Kommen nur im Print-WMS vor.
  */
 WITH 
 
@@ -24,7 +24,7 @@ dp_published AS ( -- Alle Dataproducts, welche nicht zum löschen markiert sind
   JOIN  
     simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
   WHERE
-      ps.id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschen
+    ps.id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschende
 /*    AND 
       identifier LIKE 'test.%'*/
 ),
@@ -52,9 +52,9 @@ wms_published_lg AS ( -- Layergruppen-Kinder sind Teil des WMS
 ),
 
 publ_pl AS ( -- WMS-publizierte Produktlisten
-  SELECT dp_id AS pl_id, identifier, title_ident FROM wms_published_map
+  SELECT dp_id AS pl_id, identifier, TRUE AS print_or_ext, title_ident FROM wms_published_map
   UNION ALL 
-  SELECT dp_id AS pl_id, identifier, title_ident FROM wms_published_lg
+  SELECT dp_id AS pl_id, identifier, FALSE AS print_or_ext, title_ident FROM wms_published_lg
 ),
 
 publ_pl_children AS ( -- Kind-IDs von publizierten Produklisten
@@ -105,6 +105,7 @@ sa_wms_state AS ( -- Gibt aus, ob ein SingleActor für WMS publiziert ist
     sa.identifier,
     ((COALESCE(fl_count, 0) + pl_count) > 0) OR root_published AS published,
     root_published,  
+    FALSE AS print_or_ext,
     sa.title_ident,
     sa_id AS dp_id
   FROM 
@@ -118,6 +119,7 @@ pl_wms_state AS (
     identifier,
     TRUE AS published,
     TRUE AS root_published,
+    print_or_ext,
     title_ident,
     pl_id AS dp_id
   FROM
@@ -125,23 +127,10 @@ pl_wms_state AS (
 ),
 
 union_all AS (
-  SELECT identifier, published, root_published, title_ident, dp_id FROM pl_wms_state
+  SELECT identifier, published, root_published, print_or_ext, title_ident, dp_id FROM pl_wms_state
   UNION ALL
-  SELECT identifier, published, root_published, title_ident, dp_id FROM sa_wms_state
+  SELECT identifier, published, root_published, print_or_ext, title_ident, dp_id FROM sa_wms_state
 )
-
-
-SELECT 
-  identifier, 
-  root_published,
-  title_ident,
-  dp_id   
-FROM
-  union_all
-WHERE 
-  published IS TRUE 
-;
-
 
 /* Debug ...
 SELECT 
@@ -156,3 +145,15 @@ ORDER BY
   identifier
 ;
 */
+
+SELECT 
+  identifier, 
+  root_published,
+  print_or_ext,
+  title_ident,
+  dp_id   
+FROM
+  union_all
+WHERE 
+  published IS TRUE 
+;

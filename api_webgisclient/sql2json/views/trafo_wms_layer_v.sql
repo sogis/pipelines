@@ -24,7 +24,7 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
 productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_or_ext = TRUE, Layergroup.print_or_ext = FALSE 
   SELECT 
     identifier,
-    (m.id IS NOT NULL) AS print_or_ext, 
+    print_or_ext, 
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
@@ -54,7 +54,7 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
 facadelayer AS (
   SELECT 
     identifier,
-    FALSE AS print_or_ext,
+    print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
@@ -126,7 +126,7 @@ vector_layer AS (
 raster_layer AS (
   SELECT 
     identifier,
-    FALSE AS print_or_ext,
+    print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',

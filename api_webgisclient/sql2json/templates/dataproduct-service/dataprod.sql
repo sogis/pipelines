@@ -10,7 +10,8 @@ constant_fields AS (
     'DUMMY - Wird gesetzt, sobald das dataprod image base64 kann. bjsvwjek' AS const_description,
     TRUE AS const_queryable,
     255 AS const_opacity,
-    'Fuu bar bjsvwjek' AS const_crs
+    'Fuu bar bjsvwjek' AS const_crs,
+    'ch.so.wms' AS const_root_name
   FROM
     generate_series(1,1)
 ),
@@ -58,6 +59,7 @@ rasterview_ds_props AS (
 
 dsv AS (
   SELECT 
+    dp.identifier,
     jsonb_strip_nulls(
       jsonb_build_object(
         'identifier', dp.identifier,
@@ -75,9 +77,7 @@ dsv AS (
         'keywords', const_keywords_arr,
         'contacts', const_contacts_arr
       )
-    ) AS layer_json,  
-    root_published,
-    dsv.id AS dsv_id
+    ) AS layer_json 
   FROM
     simi.simi.simidata_data_set_view dsv
   JOIN
@@ -92,6 +92,8 @@ dsv AS (
     rasterview_ds_props r ON dsv.id = r.rv_id
   CROSS JOIN
     constant_fields
+  WHERE
+    t.tv_id IS NOT NULL OR r.rv_id IS NOT NULL  
 ),
 
 facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines Facadelayer, sortiert nach pif.sort
@@ -114,7 +116,6 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
 facadelayer AS (
   SELECT 
     dp.identifier,
-    root_published,
     jsonb_build_object(
       'identifier', dp.identifier,
       'display', title_ident,
@@ -198,8 +199,9 @@ root_layer AS (
 
 root AS (
   SELECT 
+    const_root_name AS identifier,
     jsonb_build_object(
-      'identifier', 'ch.so.wms',
+      'identifier', const_root_name,
       'display', 'ch.so.wms',
       'type', 'layergroup',
       'description', 'Auf root nicht zutreffend - bjsvwjek',
@@ -215,18 +217,17 @@ root AS (
 ),
 
 union_all AS (
-  SELECT layer_json FROM root
+  SELECT identifier, layer_json FROM root
   UNION ALL 
-  SELECT layer_json FROM dsv
+  SELECT identifier, layer_json FROM dsv
   UNION ALL 
-  SELECT layer_json FROM facadelayer  
+  SELECT identifier, layer_json FROM facadelayer  
   UNION ALL 
-  SELECT layer_json FROM productlist  
+  SELECT identifier, layer_json FROM productlist  
 )
 
 SELECT
-  *
+  layer_json
 FROM
   union_all
-  
   

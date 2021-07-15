@@ -1,0 +1,74 @@
+{
+	"folders": {},
+	"connections": {
+		"postgres-jdbc-17a193063cf-46e6308c1cbdff58": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "SIMI - DEV",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "simi",
+				"url": "jdbc:postgresql://localhost:5432/simi",
+				"type": "dev",
+				"properties": {
+					"connectTimeout": "20",
+					"loginTimeout": "20"
+				},
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-use-prepared-statements-db@": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-17a2e01fb9c-4313532e6f5d4df0": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "Pub - DEV",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5433",
+				"database": "pub",
+				"url": "jdbc:postgresql://localhost:5433/pub",
+				"type": "dev",
+				"properties": {
+					"connectTimeout": "20",
+					"loginTimeout": "20"
+				},
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"show-database-statistics": "false"
+				},
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

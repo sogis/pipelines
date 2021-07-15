@@ -1,8 +1,0 @@
-{
-  "$schema": "https://github.com/qwc-services/qwc-data-service/raw/master/schemas/qwc-data-service.json",
-  "service": "data",
-  "config": {},
-  "resources": {
-    "datasets": {"$trafo:list": "dataConfig_layer.sql"}
-  }
-}

@@ -1,0 +1,16 @@
+{
+  "schema": "https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json",
+  "users": {"$trafo:list": "users.sql"},
+  "groups": {"$trafo:list": "groups.sql"},
+  "roles": {"$trafo:list": "role_permissions.sql"},
+  "wms_name": "wms",
+  "wfs_name": "wfs_wfs",
+  "dataproducts": {"$trafo:list": "dataprod_properties.sql"},
+  "common_resources": [
+    "1_hintergrundkarte_sw",
+    "hintergrundkarte_sw",
+    "A4 hoch",
+    "foreground",
+    "background"
+  ]
+}

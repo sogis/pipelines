@@ -102,7 +102,7 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
-          - mountPath: /srv/qwc_services/config
+          - mountPath: /srv/qwc_service/config
             name: qgs-resources
             subPath: config
         dnsPolicy: ClusterFirst
@@ -118,5 +118,5 @@ objects:
           name: wsgi-service-config-claim
         - name: qgs-resources
           persistentVolumeClaim:
-            name: qgs-resources-claim
+            claimName: qgs-resources-claim
     triggers: []

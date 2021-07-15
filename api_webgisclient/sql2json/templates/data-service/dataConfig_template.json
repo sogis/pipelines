@@ -3,6 +3,6 @@
   "service": "data",
   "config": {},
   "resources": {
-    "datasets": {"$trafo:list": "dataConfig_layer_v2.sql"}
+    "datasets": {"$trafo:list": "dataConfig_layer.sql"}
   }
 }

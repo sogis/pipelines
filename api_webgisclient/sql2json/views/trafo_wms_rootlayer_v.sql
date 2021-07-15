@@ -51,3 +51,5 @@ ORDER BY
 	identifier
 ;
 
+GRANT SELECT ON TABLE simi.trafo_wms_rootlayer_v TO simi_write;
+

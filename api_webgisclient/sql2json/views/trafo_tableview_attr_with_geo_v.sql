@@ -65,6 +65,8 @@ GROUP BY
   tv_id
 ;
 
+GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO simi_write;
+
 
 
 

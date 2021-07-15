@@ -54,5 +54,8 @@ JOIN
   simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id
 LEFT JOIN
   tv_attributes a ON tv.id = a.tv_id
+;
+
+GRANT SELECT ON TABLE simi.trafo_wms_tableview_v TO simi_write;
 
       

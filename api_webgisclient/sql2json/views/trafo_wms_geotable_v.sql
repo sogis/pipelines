@@ -28,3 +28,5 @@ CREATE VIEW simi.trafo_wms_geotable_v AS
     AND
       geo_epsg_code IS NOT NULL
 ;
+
+GRANT SELECT ON TABLE simi.trafo_wms_geotable_v TO simi_write;

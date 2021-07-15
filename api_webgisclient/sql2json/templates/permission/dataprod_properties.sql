@@ -1,61 +1,61 @@
-with
+WITH
 
-tab_layer as ( 
-	select 
-		jsonb_build_object('name', identifier, 'attributes', attr_names_json) as js
-	from 
+tab_layer AS ( 
+	SELECT 
+		jsonb_build_object('name', identifier, 'attributes', attr_names_json) AS js
+	FROM 
 		simi.simiproduct_data_product dp
 	inner JOIN
-	  simi.trafo_tableview_attr_geo_append_v a ON dp.id = a.tv_id
+	  simi.trafo_tableview_attr_with_geo_v a ON dp.id = a.tv_id
 ),
 
-facade_sublayers as ( 
-	select 
+facade_sublayers AS ( 
+	SELECT 
 		facade_layer_id,
-		jsonb_agg(dsv.identifier) as sublayer_names
-	from 
+		jsonb_agg(dsv.identifier) AS sublayer_names
+	FROM 
 		simi.simiproduct_properties_in_facade pif 
-	inner join 
-		simi.simiproduct_data_product dsv on pif.data_set_view_id = dsv.id 
-	group by 
+	JOIN 
+		simi.simiproduct_data_product dsv ON pif.data_set_view_id = dsv.id 
+	GROUP BY 
 		facade_layer_id 
 ),
 
-facade_layer as ( 
-	select 
-		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) as js
-	from 
+facade_layer AS ( 
+	SELECT 
+		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) AS js
+	FROM 
 		simi.simiproduct_data_product dp
-	inner join
-		facade_sublayers s on dp.id = s.facade_layer_id
+	JOIN
+		facade_sublayers s ON dp.id = s.facade_layer_id
 ),
 
-productlist_sublayers as ( 
-	select 
+productlist_sublayers AS ( 
+	SELECT 
 		product_list_id,
-		jsonb_agg(sa.identifier) as sublayer_names
-	from 
+		jsonb_agg(sa.identifier) AS sublayer_names
+	FROM 
 		simi.simiproduct_properties_in_list pil 
-	inner join 
-		simi.simiproduct_data_product sa on pil.single_actor_id = sa.id 
-	group by 
+	JOIN 
+		simi.simiproduct_data_product sa ON pil.single_actor_id = sa.id 
+	GROUP BY 
 		product_list_id 
 ),
 
-layergroup as ( 
-	select 
-		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) as js
-	from 
+layergroup AS ( 
+	SELECT 
+		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) AS js
+	FROM 
 		simi.simiproduct_data_product dp
-	inner join
-		productlist_sublayers s on dp.id = s.product_list_id
-	inner join 
-		simi.simiproduct_layer_group l on dp.id = l.id -- only layergroups - no maps
+	JOIN
+		productlist_sublayers s ON dp.id = s.product_list_id
+	JOIN 
+		simi.simiproduct_layer_group l ON dp.id = l.id -- only layergroups - no maps
 )
 
-select js from tab_layer
-union all
-select js from facade_layer
-union all
-select js from layergroup
+SELECT js FROM tab_layer
+UNION ALL
+SELECT js FROM facade_layer
+UNION ALL
+SELECT js FROM layergroup
 ;

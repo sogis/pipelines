@@ -1,7 +1,7 @@
 
-DROP VIEW IF EXISTS simi.trafo_tableview_attr_geo_append_v;
+DROP VIEW IF EXISTS simi.trafo_tableview_attr_with_geo_v;
 
-CREATE VIEW simi.trafo_tableview_attr_geo_append_v AS 
+CREATE VIEW simi.trafo_tableview_attr_with_geo_v AS 
 
 /* Gibt die Attribute (Spalten) einer Tableview inkl. Geometrie-Platzhalterspalte zurück.
  * 

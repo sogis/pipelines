@@ -148,6 +148,7 @@ ORDER BY
 
 SELECT 
   identifier, 
+  published,
   root_published,
   print_or_ext,
   title_ident,

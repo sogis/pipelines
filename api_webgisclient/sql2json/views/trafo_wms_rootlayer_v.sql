@@ -43,7 +43,8 @@ merged AS (
 )
 
 SELECT
-	*
+	identifier,
+	print_or_ext
 FROM 
 	merged
 ORDER BY

@@ -105,7 +105,7 @@ pipeline {
                 withCredentials ( credentials ) {
                     createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'wms-qgs-content', 'sogis'
                     createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.qgs', 'wfs-qgs-content', 'sogis'
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.qgs', 'wms-qgs-content', 'sogis'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.qgs', 'wms-print', 'sogis', 'sogis-wms-qgs-content'
                     }
                 }
             }

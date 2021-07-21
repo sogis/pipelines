@@ -1,7 +1,10 @@
---todo: "dp_published from dp_base" 
+
+
+DROP VIEW IF EXISTS simi.solr_layer_base_v
+
+CREATE VIEW simi.solr_layer_base_v AS 
 
 WITH
-
 
 dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProducts
   SELECT 
@@ -40,8 +43,6 @@ dp_published AS ( -- Alle Dataproducts, welche für sich stehend (Eigene Zeile) 
       pub_to_wgc IS TRUE
     AND 
       pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschen
-    AND 
-      identifier LIKE 'test.%'
 ),
 
 prodlist_children AS ( -- Alle Kinder von Produktlisten, welche nicht als zu löschen markiert sind

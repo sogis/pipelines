@@ -1,3 +1,18 @@
+/* 
+ * Generiert die Kartenobjekte für den Web GIS Client.
+ * Neben der Standardkarte ("id": "default") sind auch vom AGI gepflegte Karten enthalten, 
+ * die zum Beispiel im Zusammenhang mit externen Fachapplikationen zum Einsatz kommen.
+ * 
+ * Das Query ist komplex, da aufgrund der Internas von qwc2 sehr viele für alle Karten geltende Konfigurationen 
+ * mittels "CROSS JOIN" allen Karten zugewiesen werden müssen.
+ * 
+ * Im CTE "constant_fields" sind viele der für alle Karten geltenden Eigenschaften definiert. Diese können/müssen 
+ * direkt in "constant_fields" für alle Karten angepasst werden.
+ * Die immer verfügbaren Suchebenen sind in "const_search_providers" als Konstante definiert.
+ * 
+ * Mittels "||"-Operator werden die kartenübergreifenden und die kartenspezifischen Eigenschaften in das jeweilige
+ * output Json-Objekt vereinigt.
+ * */
 WITH
 
 constant_fields AS (
@@ -137,7 +152,7 @@ write_dsv AS (
   SELECT
     data_set_view_id AS dsv_id
   FROM
-    simi.simi.simiiam_permission 
+    simi.simiiam_permission 
   GROUP BY
     data_set_view_id
   HAVING 
@@ -151,19 +166,23 @@ edit_layers AS (
       jsonb_build_object(
         'editDataset', identifier,
         'layerName', title,
-        'fields', attr_arr
+        'fields', attr_arr,
+        'geomType', initcap(t.geo_type) 
       )
     ) AS edit_keyval
-    --$td geom type
-  FROM 
-    published_dp dp
+  FROM
+    simi.simi.simidata_table_view tv
+  JOIN
+    published_dp dp ON tv.id = dp.dp_id
   JOIN
     write_dsv w ON dp.dp_id = w.dsv_id
   JOIN
     tv_attribute_arr a ON dp.dp_id = a.tv_id
+  JOIN
+    simi.simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
 ),
 
-const_keyvals AS (
+allmaps_keyvals AS (
   SELECT
     jsonb_build_object(
       'wms_name', const_wms_name,
@@ -187,7 +206,7 @@ const_keyvals AS (
       'infoFormats', const_info_formats,
       'thumbnail', const_thumbnail,
       'externalLayers', const_external_layers
-    ) AS const_keyvals
+    ) AS keyvals
   FROM 
     constant_fields cf   
   CROSS JOIN
@@ -196,7 +215,7 @@ const_keyvals AS (
 
 default_map AS (
   SELECT
-    const_keyvals || jsonb_build_object(
+    keyvals || jsonb_build_object(
       'id', 'default',
       'name', 'default',
       'title', 'Standardkarte',
@@ -204,7 +223,7 @@ default_map AS (
       'drawingOrder', jsonb_build_array()
     ) AS map_obj
   FROM
-    const_keyvals
+    allmaps_keyvals
 ),
 
 foreground_map AS (
@@ -215,7 +234,7 @@ foreground_map AS (
       'title', title,
       'sublayers', sa_props_json,
       'drawingOrder', sa_json
-    ) || const_keyvals AS map_obj
+    ) || keyvals AS map_obj
   FROM
     simi.simi.simiproduct_map m
   JOIN 
@@ -225,7 +244,7 @@ foreground_map AS (
   JOIN
     prodlist_sa_list sal ON dp.dp_id = sal.pl_id
   CROSS JOIN
-    const_keyvals c
+    allmaps_keyvals c
   WHERE
     m.background IS FALSE 
 )

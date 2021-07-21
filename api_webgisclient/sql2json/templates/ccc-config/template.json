@@ -1,0 +1,18 @@
+{
+  "$schema": "https://github.com/qwc-services/sogis-ccc-config/raw/master/schemas/sogis-ccc-config.json",
+  "service": "ccc",
+  "config": {
+    "clients": {"$trafo:list": "ccc_client.sql"},
+    "zoomto_data_service_url": "http://data-service.gdi-test.svc",
+    "zoomto_full_extent": [
+      2590983.475,
+      1212806.115,
+      2646267.025,
+      1262755.009
+    ],
+    "zoomto_config": {
+      "locatorType": "PriorityLocator",
+      "filters": {"$trafo:list": "zoomto_filter.sql"}
+    }
+  }
+}

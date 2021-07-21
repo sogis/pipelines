@@ -127,14 +127,14 @@ raster_layer AS (
   SELECT 
     identifier,
     print_or_ext,
-    jsonb_build_object(
+    jsonb_strip_nulls(jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'raster',
       'title', title_ident,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
-    ) AS layer_json
+    )) AS layer_json
   FROM
     simi.trafo_wms_published_dp_v dp
   JOIN 

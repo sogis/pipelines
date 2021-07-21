@@ -9,7 +9,7 @@ tv_with_geom AS (
   JOIN
     simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id
   JOIN
-    simi.trafo_tableview_attr_geo_append_v a ON tv.id = a.tv_id
+    simi.trafo_tableview_attr_with_geo_v a ON tv.id = a.tv_id
 ),
 
 dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur eine custom info zurückgegeben wird

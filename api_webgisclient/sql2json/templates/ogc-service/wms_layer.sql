@@ -16,7 +16,7 @@ tableview AS (
   FROM 
     simi.trafo_wms_published_dp_v dp
   JOIN
-    simi.trafo_tableview_attr_geo_append_v a ON dp.dp_id = a.tv_id
+    simi.trafo_tableview_attr_with_geo_v a ON dp.dp_id = a.tv_id
 ),
 
 rasterview AS (

@@ -12,7 +12,7 @@ JOIN
 JOIN
   simi.trafo_wms_geotable_v t ON tv.postgres_table_id = t.table_id 
 JOIN
-  simi.trafo_tableview_attr_geo_append_v a ON dsv.id = a.tv_id
+  simi.trafo_tableview_attr_with_geo_v a ON dsv.id = a.tv_id
 WHERE
   dsv.raw_download IS TRUE
 

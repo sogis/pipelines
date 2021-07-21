@@ -1,6 +1,6 @@
 SET search_path to simi;
-drop view trafo_data_service_layer_fields_v;
-CREATE OR REPLACE VIEW trafo_data_service_layer_fields_v
+DROP VIEW IF EXISTS trafo_data_service_layer_fields_v;
+CREATE VIEW trafo_data_service_layer_fields_v
 AS 
 SELECT 
     data_product.id,

@@ -117,7 +117,7 @@ pipeline {
                     pwd
                     chmod -R ug+x json2qgs
                     ls -la json2qgs
-                    python json2qgs/json2qgs.py 
+                    python3 json2qgs/json2qgs.py 
                 """
                 }
             post {

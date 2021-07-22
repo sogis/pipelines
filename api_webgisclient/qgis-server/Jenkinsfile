@@ -112,7 +112,7 @@ pipeline {
         stage ('Create qgs files') {
             agent { label 'json2qgs-agent' }
             steps {
-            
+                print "hallo" 
                 }
             post {
                 unsuccesful {

@@ -122,7 +122,7 @@ pipeline {
             post {
                 unsuccessful {
                     sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
+                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/json2qgs $env.WORKSPACE/config
                     """
                     }
                 }

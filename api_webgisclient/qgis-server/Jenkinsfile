@@ -112,7 +112,11 @@ pipeline {
         stage ('Create qgs files') {
             agent { label 'json2qgs-agent' }
             steps {
-                print "hallo" 
+                sh """
+                    git clone https://github.com/simi-so/json2qgs
+                    ls -la
+                    ./json2qgs/json2qgs.py 
+                """
                 }
             post {
                 unsuccessful {

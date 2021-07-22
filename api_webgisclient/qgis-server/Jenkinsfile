@@ -114,6 +114,7 @@ pipeline {
             steps {
                 sh """
                     git clone https://github.com/simi-so/json2qgs
+                    pwd
                     chmod -R ug+x json2qgs
                     ls -la json2qgs
                     ./json2qgs/json2qgs.py 
@@ -122,7 +123,7 @@ pipeline {
             post {
                 unsuccessful {
                     sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/json2qgs $env.WORKSPACE/config
+                        rm -rf /srv/qwc_service/json2qgs /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/json2qgs $env.WORKSPACE/config
                     """
                     }
                 }

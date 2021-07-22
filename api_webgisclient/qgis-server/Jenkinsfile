@@ -119,7 +119,7 @@ pipeline {
                         wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/'
                         pwd
                         chmod -R ug+x json2qgs
-                        ls -la json2qgs
+                        ls -la
                         python3 json2qgs/json2qgs.py somap.json wms ./config 2 --qgsName somap
                         python3 json2qgs/json2qgs.py somap_print.json wms ./config 2 --qgsName somap_print
                         python3 json2qgs/json2qgs.py somap_wfs.json wms ./config 2 --qgsName somap_wfs                                 

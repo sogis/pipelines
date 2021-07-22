@@ -1,5 +1,5 @@
 def serviceName = 'qgis-server'
-def configFileName = 'somap.qgs'
+def configFileName = 'somap.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -113,17 +113,22 @@ pipeline {
             agent { label 'json2qgs-agent' }
             steps {
                 sh """
+                    mkdir config
                     git clone https://github.com/simi-so/json2qgs
+                    wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/'
                     pwd
                     chmod -R ug+x json2qgs
                     ls -la json2qgs
-                    python3 json2qgs/json2qgs.py 
+                    python3 json2qgs/json2qgs.py somap.json wms ./config 2 --qgsName somap
+                    python3 json2qgs/json2qgs.py somap_print.json wms ./config 2 --qgsName somap_print
+                    python3 json2qgs/json2qgs.py somap_wfs.json wms ./config 2 --qgsName somap_wfs                                 
                 """
+                archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                 }
             post {
                 unsuccessful {
                     sh """
-                        rm -rf /srv/qwc_service/json2qgs /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/json2qgs $env.WORKSPACE/config
+                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config
                     """
                     }
                 }

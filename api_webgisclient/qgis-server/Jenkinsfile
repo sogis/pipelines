@@ -115,7 +115,7 @@ pipeline {
                 print "hallo" 
                 }
             post {
-                unsuccesful {
+                unsuccessful {
                     sh """
                         rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
                     """

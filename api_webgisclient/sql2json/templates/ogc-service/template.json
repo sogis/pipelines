@@ -18,6 +18,9 @@
           "name": "somap",
           "layers": {"$trafo:list": "wms_layer.sql"}
         },
+        "print_templates": [
+          "A4 Landscape"
+        ],
         "internal_print_layers": {"$trafo:list": "print_layer.sql"}
       }
     ],

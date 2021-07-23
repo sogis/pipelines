@@ -25,11 +25,11 @@
     "fees": "",
     "access_constraints": "",
 
-    "root_name": "ch.so.qwc_print",
-    "root_title": "ch.so.qwc_print",
+    "root_name": "somap",
+    "root_title": "somap",
 
     "crs_list": [
-      "EPSG:2056"
+      "EPSG:2056, EPSG:4326, EPSG:3857"
     ],
   
     "bbox": {

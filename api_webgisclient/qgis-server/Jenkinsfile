@@ -120,9 +120,9 @@ pipeline {
                         pwd
                         chmod -R ug+x json2qgs
                         ls -la qgs
-                        python3 json2qgs/json2qgs.py qgs/somap.json wms ./config 2 --qgsName somap
-                        python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config 2 --qgsName somap_print
-                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config 2 --qgsName somap_wfs                                 
+                        python3 json2qgs/json2qgs.py qgs/somap.json wms ./config 2 --qgsName somap --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
                     """
                     archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }

@@ -127,12 +127,7 @@ pipeline {
                     }
                 }
             post {
-                unsuccessful {
-                    sh """
-                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
-                    """
-                    }
-                successful {
+                always {
                     sh """
                         rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
                     """

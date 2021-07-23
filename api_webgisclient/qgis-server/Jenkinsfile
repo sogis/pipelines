@@ -132,6 +132,11 @@ pipeline {
                         rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
                     """
                     }
+                successful {
+                    sh """
+                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
+                    """
+                    }
                 }
             }
         stage ('Build new Image for qgis-server if necessary') {

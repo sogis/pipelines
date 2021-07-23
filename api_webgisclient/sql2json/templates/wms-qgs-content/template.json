@@ -16,7 +16,7 @@
     "keywords": [
       "wms"
     ],
-    "online_resource": "$$MAP_BASE_URL$$/api/wms",
+    "online_resource": "https://geo-t.so.ch/api/wms",
     "contact_person": "",
     "contact_organization": "",
     "contact_position": "",

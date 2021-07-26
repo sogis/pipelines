@@ -90,7 +90,7 @@ pipeline {
         stage ('Deploy permissions') {
             steps {
                     sh """
-                        for i in \$(oc get dc -o name -n $namespace);do oc rollout latest \$i;done
+                        for i in \$(oc get dc -o name -n $namespace);do oc rollout latest \$i -n $namespace;done
                     """
                 }
             }

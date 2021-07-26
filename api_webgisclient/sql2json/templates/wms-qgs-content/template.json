@@ -16,7 +16,7 @@
     "keywords": [
       "wms"
     ],
-    "online_resource": "https://www.google.ch",
+    "online_resource": "https://geo-t.so.ch/api/wms",
     "contact_person": "",
     "contact_organization": "",
     "contact_position": "",
@@ -25,11 +25,11 @@
     "fees": "",
     "access_constraints": "",
 
-    "root_name": "ch.so.wms",
-    "root_title": "ch.so.wms",
+    "root_name": "somap",
+    "root_title": "somap",
 
     "crs_list": [
-      "EPSG:2056"
+      "EPSG:2056, EPSG:4326, EPSG:3857"
     ],
   
     "bbox": {

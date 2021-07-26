@@ -1,5 +1,5 @@
 def serviceName = 'qgis-server'
-def configFileName = 'somap.qgs'
+def configFileName = 'somap.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -104,8 +104,34 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'wms-qgs-content', 'sogis', 'json2qgs'
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.qgs', 'wfs-qgs-content', 'sogis', 'json2qgs'
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.qgs', 'wms-print', 'sogis', 'json2qgs'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', 'wfs-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', 'print-qgs-content', 'sogis', 'json2qgs'
+                    }
+                }
+            }
+        stage ('Create qgs files') {
+            agent { label 'json2qgs-agent' }
+            steps {
+                withCredentials ( credentials ) {
+                    sh """
+                        if [ ! -d "config/default" ]; then
+                          mkdir -p config/default
+                        fi
+                        git clone https://github.com/simi-so/json2qgs
+                        wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
+                        chmod -R ug+x json2qgs
+                        python3 json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
+                    """
+                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    }
+                }
+            post {
+                always {
+                    sh """
+                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
+                    """
                     }
                 }
             }
@@ -117,7 +143,7 @@ pipeline {
                 }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", 'somap.qgs', jobName, buildNumber, ""
                     }
                 }
             }

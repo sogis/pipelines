@@ -4,8 +4,8 @@
   "layers": {"$trafo:list": "wfs_layer.sql"},
 
   "wfs_metadata": {
-    "service_name": "ch.so.wfs",
-    "service_title": "ch.so.wfs",
+    "service_name": "somap",
+    "service_title": "somap",
     "service_abstract": "WFS für Fachapplikationen. ZU BEACHTEN: Wird ohne Support angeboten und ca. 2024 abgelöst mit OGC-API Features",
     "keywords": [
       "ch.so.wfs"

@@ -131,7 +131,6 @@ FROM
   all_layers
 WHERE 
   root_published IS TRUE 
-and identifier like 'ch.so.agi.av.amtliche_vermessung%'
 ORDER BY
   identifier
 

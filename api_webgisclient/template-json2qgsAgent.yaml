@@ -11,7 +11,7 @@ objects:
     template: |-
       <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
         <inheritFrom></inheritFrom>
-        <name>config-generator-agent</name>
+        <name>json2qgs-agent</name>
         <namespace></namespace>
         <privileged>false</privileged>
         <capOnlyOnAlivePods>false</capOnlyOnAlivePods>
@@ -20,7 +20,7 @@ objects:
         <slaveConnectTimeout>100</slaveConnectTimeout>
         <idleMinutes>600</idleMinutes>
         <activeDeadlineSeconds>0</activeDeadlineSeconds>
-        <label>config-generator-agent</label>
+        <label>json2qgs-agent</label>
         <serviceAccount>jenkins</serviceAccount>
         <nodeSelector></nodeSelector>
         <nodeUsageMode>NORMAL</nodeUsageMode>
@@ -48,7 +48,7 @@ objects:
         <containers>
           <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
             <name>jnlp</name>
-            <image>docker-registry.default.svc:5000/${PROJECTNAME}/config-generator-agent:${IMAGE_TAG_AGENT}</image>
+            <image>docker-registry.default.svc:5000/${PROJECTNAME}/json2qgs-agent:${IMAGE_TAG_AGENT}</image>
             <privileged>false</privileged>
             <alwaysPullImage>true</alwaysPullImage>
             <workingDir>/tmp</workingDir>
@@ -109,11 +109,11 @@ objects:
       role: jenkins-slave
       app: jenkins-persistent
       pipeline: wgc
-    name: config-generator-agent
+    name: json2qgs-agent
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: config-generator-agent
+    name: json2qgs-agent
     labels:
       app: jenkins-persistent
       pipeline: wgc
@@ -121,7 +121,7 @@ objects:
     tags:
     - from:
         kind: DockerImage
-        name: sogis/config-generator-agent
+        name: sogis/json2qgs-agent
       name: latest
 parameters:
 - description: Name of the project

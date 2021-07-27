@@ -5,7 +5,9 @@ DROP VIEW IF EXISTS simi.trafo_wms_geotable_v;
  */
 CREATE VIEW simi.trafo_wms_geotable_v AS 
 
-WITH pgconf_name_db_map AS (
+WITH 
+
+pgconf_name_db_map AS (
   SELECT 
     * 
   FROM (

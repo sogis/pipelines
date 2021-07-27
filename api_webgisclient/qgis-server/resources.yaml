@@ -37,7 +37,7 @@ objects:
 - apiVersion: v1
   stringData:
     pg_service.conf: |
-      [sogis_webmapping]
+      [sogis_pub]
       host=${DB_SERVER}
       port=5432
       dbname=${DB_PUB}

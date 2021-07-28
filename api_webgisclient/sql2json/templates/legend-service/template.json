@@ -2,14 +2,14 @@
   "$schema": "https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json",
   "service": "legend",
   "config": {
-    "default_qgis_server_url": "http://qgs/ows/"
+    "default_qgis_server_url": "http://qgis-server.gdi-test.svc/ows/"
   },
   "resources": {
     "wms_services": [
       {
-        "name": "wms",
+        "name": "somap",
         "root_layer": {
-          "name": "ch.so.wms",
+          "name": "somap",
           "type": "layergroup",
           "layers": {"$trafo:list": "legend.sql"}
         }

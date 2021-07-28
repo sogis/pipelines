@@ -38,7 +38,7 @@ dp_published AS ( -- Alle Dataproducts, welche für sich stehend (Eigene Zeile) 
   JOIN  
     simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
   WHERE
-      pub_to_wgc IS TRUE
+      (pub_to_wgc IS TRUE OR ps.pub_to_wms IS TRUE)
     AND 
       pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschen
 ),
@@ -94,16 +94,17 @@ amt_lookup AS (
   AS t (amt_ident, amt_name)
 )
 
+
 SELECT 
-  json_build_array(dp_typ, identifier) AS id,
+  json_build_array(dp_typ, identifier::TEXT)::text AS id,
   title AS display,
-  json_arr AS dset_children,
+  json_arr::text AS dset_children,
   dprod_has_info AS dset_info,
   concat_ws(', ', title, synonyms) AS search_1_stem,
   concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
   concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
   CASE bg_map
-    WHEN FALSE THEN 'foregrond'
+    WHEN FALSE THEN 'foreground'
     ELSE 'background'
   END AS facet
 FROM 
@@ -112,4 +113,10 @@ LEFT JOIN
   prodlist_children_agg c ON dp.dp_id = c.pl_id
 LEFT JOIN
   amt_lookup a ON dp.amt_ident = a.amt_ident
+
+
+GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;
+GRANT SELECT ON TABLE simi.solr_layer_base_v TO simi_write, sogis_service
+;
+

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-ogc-service/v2/schemas/qwc-ogc-service.json",
+  "service": "ogc",
+  "config": {
+    "default_qgis_server_url": "http://qgs/ows/"
+  },
+  "resources": {
+    "wms_services": [
+      {
+        "name": "wms",
+        "online_resources": {
+          "service": "http://localhost:5013/ogc/wms",
+          "feature_info": "http://localhost:5015/wms_fi/wms",
+          "legend": "http://localhost:5016/wms_legend/wms"
+        },
+        "root_layer": {
+          "name": "ch.so.wms",
+          "layers": {"$trafo:list": "wms_layer.sql"}
+        },
+        "print_url": "http://qgs/ows/qwc_print",
+        "print_templates": [
+          "A4 Landscape"
+        ],
+        "internal_print_layers": {"$trafo:list": "print_layer.sql"}
+      }
+    ],
+    "wfs_services": [{
+      "name": "wfs_wfs",
+      "online_resource": "http://localhost:5013/ogc/wfs_wfs",
+      "layers": {"$trafo:list": "wfs_layer.sql"}
+    }]
+  }
+}

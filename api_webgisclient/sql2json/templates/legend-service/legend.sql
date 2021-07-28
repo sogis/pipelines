@@ -37,7 +37,7 @@ dsv AS (
 
 facade_children AS (
   SELECT 
-    jsonb_agg(dp_json) AS facade_children_arr,
+    jsonb_agg(dp_json ORDER BY sort) AS facade_children_arr,
     pif.facade_layer_id AS fl_id
   FROM
     simi.simiproduct_properties_in_facade pif
@@ -76,7 +76,7 @@ singleactor AS (
 
 prodlist_children AS (
   SELECT 
-    jsonb_agg(dp_json) AS prodlist_children_arr,
+    jsonb_agg(dp_json ORDER BY sort) AS prodlist_children_arr,
     pil.product_list_id AS pl_id
   FROM
     simi.simiproduct_properties_in_list pil

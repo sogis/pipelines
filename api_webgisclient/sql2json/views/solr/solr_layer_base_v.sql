@@ -38,7 +38,7 @@ dp_published AS ( -- Alle Dataproducts, welche für sich stehend (Eigene Zeile) 
   JOIN  
     simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
   WHERE
-      (pub_to_wgc IS TRUE OR ps.pub_to_wms IS TRUE)
+      pub_to_wgc IS TRUE
     AND 
       pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' --zu löschen
 ),

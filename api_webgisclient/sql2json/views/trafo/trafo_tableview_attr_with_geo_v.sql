@@ -19,7 +19,7 @@ tableview_nongeo_attr AS (
       jsonb_build_object(
         'name', name,
         'alias', alias,
-        'format', wms_fi_format      
+        'format_base64', encode(convert_to(wms_fi_format, 'UTF8'), 'base64')
       )
     ) AS attr_3props_obj,
     vf.sort 

@@ -58,9 +58,9 @@ custom_info_json AS (
       jsonb_build_object(
         'type', info_type,
         'db_url', sql_service_name,
-        'sql', sql_query,
+        'sql_base64', encode(convert_to(sql_query, 'UTF8'), 'base64'),
         'module', py_module_name,
-        'template', display_template
+        'template_base64', encode(convert_to(display_template, 'UTF8'), 'base64')
       )
     ) AS info_json,
     data_set_view_id

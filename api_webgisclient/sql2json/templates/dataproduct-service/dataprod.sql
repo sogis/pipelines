@@ -11,7 +11,7 @@ constant_fields AS (
     TRUE AS const_queryable,
     255 AS const_opacity,
     'Fuu bar bjsvwjek' AS const_crs,
-    'ch.so.wms' AS const_root_name
+    'somap' AS const_root_name
   FROM
     generate_series(1,1)
 ),
@@ -190,7 +190,12 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
 
 root_layer AS (
   SELECT
-    jsonb_agg(identifier) AS root_layer_json
+    jsonb_agg(  
+      jsonb_build_object(
+        'identifier', identifier,
+        'visibility', TRUE 
+      ) 
+    ) AS root_layer_json
   FROM
     simi.trafo_wms_published_dp_v
   WHERE
@@ -202,10 +207,10 @@ root AS (
     const_root_name AS identifier,
     jsonb_build_object(
       'identifier', const_root_name,
-      'display', 'ch.so.wms',
+      'display', const_root_name,
       'type', 'layergroup',
       'description', 'Auf root nicht zutreffend - bjsvwjek',
-      'layers', root_layer_json,
+      'sublayers', root_layer_json,
       'synonyms', const_synonyms_arr,
       'keywords', const_keywords_arr,
       'contacts', const_contacts_arr     
@@ -218,7 +223,7 @@ root AS (
 
 union_all AS (
   SELECT identifier, layer_json FROM root
-  UNION ALL 
+  UNION ALL
   SELECT identifier, layer_json FROM dsv
   UNION ALL 
   SELECT identifier, layer_json FROM facadelayer  

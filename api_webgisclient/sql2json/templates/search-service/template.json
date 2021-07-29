@@ -4,7 +4,7 @@
   "config": {
     "solr_service_url": "http://solr-headless.solr-cloud-test:8983/solr/gdi/select",
     "search_result_limit": 25,
-    "geodb_url": "postgresql:///?service=soconfig_services"
+    "geodb_url": "postgresql:///?service=soconfig_servic"
   },
   "resources": {
     "facets": {"$trafo:list": "facets.sql"}

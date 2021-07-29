@@ -64,14 +64,6 @@ pipeline {
                       replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
-                    if (params.containsKey("configs")) {
-                        buildNumber = params.buildNumber
-                        jobName = params.jobName
-                        }
-                    else {
-                        buildNumber = BUILD_NUMBER
-                        jobName = JOB_NAME
-                        }
                     credentials = [ 
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
@@ -88,6 +80,11 @@ pipeline {
                 }
             }
         stage ('Deploy permissions') {
+            when {
+                expression {
+                    (params.deploy != true)
+                    }
+                }
             steps {
                     sh """
                         for i in \$(oc get dc -o name -n $namespace);do oc rollout latest \$i -n $namespace;done

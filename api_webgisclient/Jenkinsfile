@@ -64,21 +64,6 @@ pipeline {
                     }
                 }
             }
-        stage('create configs') {
-            agent { label 'config-generator-agent' }
-            steps {
-                script {
-                    createConfigs namespace
-                    }
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
-                    }
-                }
-            } 
         stage('update Solr Metadaten') {
             steps {
                 script {

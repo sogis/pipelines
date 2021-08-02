@@ -16,7 +16,7 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
   FROM 
     simi.simiproduct_properties_in_list pil 
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON pil.single_actor_id = dp.dp_id
+    simi.trafo_published_dp_v dp ON pil.single_actor_id = dp.dp_id
   GROUP BY 
     product_list_id  
 ),
@@ -32,7 +32,7 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
       'sublayers', ident_json
     ) AS layer_json
   FROM 
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
   LEFT JOIN 
@@ -46,7 +46,7 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
   FROM 
     simi.simiproduct_properties_in_facade pif
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON pif.data_set_view_id = dp.dp_id
+    simi.trafo_published_dp_v dp ON pif.data_set_view_id = dp.dp_id
   GROUP BY 
     facade_layer_id  
 ),
@@ -64,7 +64,7 @@ facadelayer AS (
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON fl.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
 ),
@@ -136,7 +136,7 @@ raster_layer AS (
       'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
     )) AS layer_json
   FROM
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
@@ -158,7 +158,7 @@ ext_wms_layerbase AS (
       'featureCount', 300
     ) AS wms_datasource_json
   FROM
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN 
     simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
   JOIN
@@ -195,7 +195,7 @@ ext_wmts_layerbase AS (
       'srid', 2056
     ) AS wmts_datasource_json
   FROM
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN 
     simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
   JOIN

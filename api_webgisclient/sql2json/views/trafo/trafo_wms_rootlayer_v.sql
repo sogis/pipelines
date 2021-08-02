@@ -17,7 +17,7 @@ productlist AS (
 	FROM 
 		simi.simiproduct_product_list pl
 	JOIN
-		simi.trafo_wms_published_dp_v dp ON pl.id = dp.dp_id
+		simi.trafo_published_dp_v dp ON pl.id = dp.dp_id
 	WHERE 
 	 dp.root_published IS TRUE 
 ),
@@ -29,7 +29,7 @@ single_actor AS ( --$td auf andere VIEW überragen
   FROM 
   	simi.simiproduct_single_actor sa
   JOIN
-  	simi.trafo_wms_published_dp_v dp ON sa.id = dp.dp_id 
+  	simi.trafo_published_dp_v dp ON sa.id = dp.dp_id 
   LEFT JOIN 
   	simi.simiproduct_external_map_layers eml ON sa.id = eml.id 
   WHERE

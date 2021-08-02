@@ -13,7 +13,7 @@ sa_base AS ( -- Basis-CTE für Datasetview und Facadelayer
   FROM
     simi.simiproduct_single_actor sa
   JOIN
-    simi.trafo_wms_published_dp_v dp ON sa.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON sa.id = dp.dp_id
   LEFT JOIN 
     simi.simiproduct_facade_layer fl ON sa.id = fl.id
 ),
@@ -98,7 +98,7 @@ layergroup AS (
   FROM
     simi.simi.simiproduct_layer_group lg
   JOIN
-    simi.trafo_wms_published_dp_v dp ON lg.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON lg.id = dp.dp_id
   JOIN
     prodlist_children pc ON lg.id = pc.pl_id
 ),

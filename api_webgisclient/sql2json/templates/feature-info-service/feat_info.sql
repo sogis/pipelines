@@ -96,7 +96,7 @@ dsv AS (
   FROM
     simi.simidata_data_set_view dsv
   JOIN
-    simi.trafo_wms_published_dp_v dp ON dsv.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON dsv.id = dp.dp_id
   LEFT JOIN
     tv_with_geom tg ON dsv.id = tg.tv_id
   LEFT JOIN
@@ -130,7 +130,7 @@ facade AS (
   FROM
     simi.simiproduct_facade_layer fl
   JOIN
-    simi.trafo_wms_published_dp_v dp ON fl.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON fl.id = dp.dp_id
   JOIN
     facade_dsv fd ON fl.id = fd.fl_id
 ),
@@ -165,7 +165,7 @@ layergroup AS (
   FROM
     simi.simiproduct_layer_group lg
   JOIN
-    simi.trafo_wms_published_dp_v dp ON lg.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON lg.id = dp.dp_id
   JOIN
     prodlist_sa sa ON lg.id = sa.pl_id
 ),

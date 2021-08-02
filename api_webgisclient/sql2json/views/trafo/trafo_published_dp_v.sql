@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS simi.trafo_wms_published_dp_v;
+DROP VIEW IF EXISTS simi.trafo_published_dp_v;
 
-CREATE VIEW simi.trafo_wms_published_dp_v AS
+CREATE VIEW simi.trafo_published_dp_v AS
 
 /*
  * Leitet aufgrund des Pub-Scope (simiproduct_data_product_pub_scope) und der 
@@ -148,7 +148,6 @@ ORDER BY
 
 SELECT 
   identifier, 
-  published,
   root_published,
   print_or_ext,
   title_ident,
@@ -159,4 +158,4 @@ WHERE
   published IS TRUE 
 ;
 
-GRANT SELECT ON TABLE simi.trafo_wms_published_dp_v TO simi_write;
+GRANT SELECT ON TABLE simi.trafo_published_dp_v TO simi_write;

@@ -45,7 +45,7 @@ SELECT
   tv.id AS tv_id,
   tv.postgres_table_id
 FROM
-  simi.trafo_wms_published_dp_v dp
+  simi.trafo_published_dp_v dp
 JOIN 
   simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
 JOIN 

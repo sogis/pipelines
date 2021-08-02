@@ -7,13 +7,25 @@ constant_fields AS (
     jsonb_build_array() AS const_keywords_arr,
     CAST('[{"organisation":{"id":-99,"name":"dummy contact org"}}]' AS jsonb) AS const_contacts_arr,
     '$$WMS_SERVICE_URL$$' AS const_wms_service_url,
-    'DUMMY - Wird gesetzt, sobald das dataprod image base64 kann. bjsvwjek' AS const_description,
     TRUE AS const_queryable,
     255 AS const_opacity,
     'Fuu bar bjsvwjek' AS const_crs,
     'somap' AS const_root_name
   FROM
     generate_series(1,1)
+),
+
+dprod AS (
+  SELECT 
+    pub.identifier,
+    title_ident,
+    root_published,
+    encode(convert_to(COALESCE(description, 'Keine Beschreibung. Wird nach Schemakorrektur auf NULL gesetzt - bjsvwjek'), 'UTF8'), 'base64') AS desc_b64, --$td: COALESCE entfernen nachdem SCHEMA bug behoben ist https://github.com/simi-so/json2qgs/issues/30
+    dp_id
+  FROM
+    simi.trafo_published_dp_v pub
+  JOIN
+    simi.simiproduct_data_product dp ON pub.dp_id = dp.id
 ),
 
 tv_pgtable_props AS ( 
@@ -52,9 +64,9 @@ rasterview_ds_props AS (
     ) AS raster_ds,
     rv.id AS rv_id
   FROM
-    simi.simi.simidata_raster_view rv
+    simi.simidata_raster_view rv
   JOIN
-    simi.simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id
+    simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id
 ),
 
 dsv AS (
@@ -63,9 +75,9 @@ dsv AS (
     jsonb_strip_nulls(
       jsonb_build_object(
         'identifier', dp.identifier,
-        'display', COALESCE(dp.title, dp.identifier),
-        'description', const_description, --COALESCE(description, 'dummy description'),
-        'qml', 'dummy',--encode(convert_to(COALESCE(style_desktop, style_server), 'UTF8'), 'base64'),
+        'display', title_ident,
+        'description_base64', desc_b64,
+        'qml_base64', encode(convert_to(COALESCE(style_desktop, style_server), 'UTF8'), 'base64'),
         'opacity', (255 - transparency),
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'datatype', COALESCE(vectype, 'raster'), -- Falls raster ergibt der LEFT JOIN auf pg_table für vectype null
@@ -79,13 +91,11 @@ dsv AS (
       )
     ) AS layer_json 
   FROM
-    simi.simi.simidata_data_set_view dsv
+    simi.simidata_data_set_view dsv
   JOIN
-    simi.simi.simiproduct_single_actor sa ON dsv.id = sa.id
+    simi.simiproduct_single_actor sa ON dsv.id = sa.id
   JOIN
-    simi.simi.simiproduct_data_product dp ON dsv.id = dp.id
-  JOIN
-    simi.trafo_wms_published_dp_v dps ON dsv.id = dps.dp_id 
+    dprod dp ON dsv.id = dp.dp_id
   LEFT JOIN
     tv_pgtable_props t ON dsv.id = t.tv_id
   LEFT JOIN
@@ -108,7 +118,7 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
   FROM 
     simi.simiproduct_properties_in_facade pif
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON pif.data_set_view_id = dp.dp_id
+    dprod dp ON pif.data_set_view_id = dp.dp_id
   GROUP BY 
     facade_layer_id  
 ),
@@ -116,32 +126,32 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
 facadelayer AS (
   SELECT 
     dp.identifier,
-    jsonb_build_object(
-      'identifier', dp.identifier,
-      'display', title_ident,
-      'type', 'facadelayer',
-      'synonyms', const_synonyms_arr,
-      'keywords', const_keywords_arr,
-      'contacts', const_contacts_arr,
-      'description', const_description,
-      'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
-      'opacity', (255 - transparency),
-      'queryable', const_queryable,
-      'crs', const_crs,
-      'sublayers', sublayer_json
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'identifier', dp.identifier,
+        'display', title_ident,
+        'type', 'facadelayer',
+        'synonyms', const_synonyms_arr,
+        'keywords', const_keywords_arr,
+        'contacts', const_contacts_arr,
+        'description_base64', desc_b64,
+        'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
+        'opacity', (255 - transparency),
+        'queryable', const_queryable,
+        'crs', const_crs,
+        'sublayers', sublayer_json
+      )
     ) AS layer_json
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN
     simi.simiproduct_single_actor sa ON fl.id = sa.id 
-  JOIN 
-    simi.trafo_wms_published_dp_v pdp ON fl.id = pdp.dp_id
   JOIN
-    simi.simiproduct_data_product dp ON fl.id = dp.id
+    dprod dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON fl.id = dsv.facade_layer_id
   LEFT JOIN
-    simi.simi.simiproduct_properties_in_list pil ON fl.id = pil.single_actor_id --Relation to parent decides 
+    simi.simiproduct_properties_in_list pil ON fl.id = pil.single_actor_id --Relation to parent decides 
   CROSS JOIN
     constant_fields
 ),
@@ -158,7 +168,7 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
   FROM 
     simi.simiproduct_properties_in_list pil 
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON pil.single_actor_id = dp.dp_id
+    dprod dp ON pil.single_actor_id = dp.dp_id
   GROUP BY 
     product_list_id  
 ),
@@ -166,22 +176,24 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
 productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_or_ext = TRUE, Layergroup.print_or_ext = FALSE 
   SELECT 
     identifier, 
-    jsonb_build_object(
-      'identifier', identifier,
-      'type', 'layergroup',
-      'display', title_ident,
-      'synonyms', const_synonyms_arr,
-      'keywords', const_keywords_arr,
-      'contacts', const_contacts_arr,
-      'description', const_description,
-      'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
-      'opacity', const_opacity,
-      'queryable', const_queryable,
-      'crs', const_crs,      
-      'sublayers', sublayer_json
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'identifier', identifier,
+        'type', 'layergroup',
+        'display', title_ident,
+        'synonyms', const_synonyms_arr,
+        'keywords', const_keywords_arr,
+        'contacts', const_contacts_arr,
+        'description', desc_b64,
+        'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
+        'opacity', const_opacity,
+        'queryable', const_queryable,
+        'crs', const_crs,      
+        'sublayers', sublayer_json
+      )
     ) AS layer_json
   FROM 
-    simi.trafo_wms_published_dp_v dp
+    dprod dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
   CROSS JOIN
@@ -197,7 +209,7 @@ root_layer AS (
       ) 
     ) AS root_layer_json
   FROM
-    simi.trafo_wms_published_dp_v
+    dprod
   WHERE
     root_published IS TRUE   
 ),
@@ -231,8 +243,8 @@ union_all AS (
   SELECT identifier, layer_json FROM productlist  
 )
 
+
 SELECT
   layer_json
 FROM
-  union_all
-  
+  union_all  

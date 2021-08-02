@@ -14,7 +14,7 @@ tableview AS (
     ) AS layer_json,
     dp.dp_id AS tv_id
   FROM 
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN
     simi.trafo_tableview_attr_with_geo_v a ON dp.dp_id = a.tv_id
 ),
@@ -31,7 +31,7 @@ rasterview AS (
     ) AS layer_json,
     rv.id AS rv_id
   FROM
-    simi.trafo_wms_published_dp_v dp
+    simi.trafo_published_dp_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
@@ -73,7 +73,7 @@ facadelayer AS (
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    simi.trafo_wms_published_dp_v dp ON fl.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children c ON fl.id = c.fl_id
 ),
@@ -110,7 +110,7 @@ prodlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern.
   FROM 
     simi.simiproduct_product_list p
   JOIN
-    simi.trafo_wms_published_dp_v dp ON p.id = dp.dp_id
+    simi.trafo_published_dp_v dp ON p.id = dp.dp_id
   JOIN
     prodlist_children c ON p.id = c.pl_id    
   LEFT JOIN 

@@ -52,7 +52,7 @@ objects:
 - apiVersion: v1
   stringData:
     pg_service.conf: |
-      [sogis_services]
+      [sogis_pub]
       host=${DB_SERVER}
       port=5432
       dbname=${DB_PUB}
@@ -60,7 +60,7 @@ objects:
       password=${PW_SOGIS_SERVICE}
       sslmode=require
 
-      [sogis_services_write]
+      [sogis_pub_write]
       host=${DB_SERVER}
       port=5432
       dbname=${DB_PUB}

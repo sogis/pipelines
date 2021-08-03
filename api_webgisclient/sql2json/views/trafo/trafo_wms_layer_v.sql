@@ -103,7 +103,8 @@ vector_layer AS (
   SELECT 
     identifier,
     FALSE AS print_or_ext,
-    jsonb_strip_nulls(jsonb_build_object(
+    jsonb_strip_nulls(
+      jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'vector',
@@ -112,7 +113,8 @@ vector_layer AS (
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
       'attributes', attr_name_alias_js      
-    )) AS layer_json
+      )
+    ) AS layer_json
   FROM
     simi.trafo_wms_tableview_v tv
   JOIN

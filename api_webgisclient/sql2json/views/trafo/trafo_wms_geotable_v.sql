@@ -8,7 +8,7 @@ CREATE VIEW simi.trafo_wms_geotable_v AS
 SELECT 
   tbl.id AS  table_id,
   jsonb_build_object(
-    'dbconnection', concat('service=', split_part(db.db_service_url, 'service=', 2)),
+    'dbconnection', concat('service=', db.db_service_url),
     'schema', schema_name,
     'table', table_name,
     'unique_key', id_field_name,

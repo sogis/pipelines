@@ -9,7 +9,14 @@
   "common_resources": [
     "1_hintergrundkarte_sw",
     "hintergrundkarte_sw",
+    "2_hintergrundkarte_farbig",
+    "hintergrundkarte_farbig",
+    "3_hintergrundkarte_ortho",
+    "hintergrundkarte_ortho",
     "A4 hoch",
+    "A4 quer",
+    "A3 hoch",
+    "A3 quer",
     "foreground",
     "background"
   ]

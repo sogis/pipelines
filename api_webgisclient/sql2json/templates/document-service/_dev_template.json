@@ -1,0 +1,11 @@
+{
+  "$schema": "https://github.com/qwc-services/qwc-document-service/raw/master/schemas/qwc-document-service.json",
+  "service": "document",
+  "config": {
+    "jasper_service_url": "http://jasper-reporting-service.gdi-test.svc/reports",
+    "jasper_timeout": 1200
+  },
+  "resources": {
+    "document_templates": {"$trafo:list": "report.sql"}
+  }
+}

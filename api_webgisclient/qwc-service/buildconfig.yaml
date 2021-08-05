@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: build-qwc-service
+  annotations:
+    openshift.io/display-name: "Buildconfig for qwc-service"
+    description: >-
+      "Creates BuildConfig for qwc-service"
+parameters:
+  - description: tag of base image
+    name: BASETAG
+  - description: tag of deploy image
+    name: DEPLOYTAG
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      service: qwc-service
+      app: gdi
+    name: qwc-service
+  spec:
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 2
+    output:
+      to:
+        kind: ImageStreamTag
+        name: qwc-service:${DEPLOYTAG}
+    source:
+      contextDir: qwc-service
+      git:
+        ref: master
+        uri: https://github.com/sogis/qwc_services.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: sourcepole/sogis-map-viewer:${BASETAG}
+        noCache: true
+        env:
+          - name: "BUILD_LOGLEVEL"
+            value: "5"
+      type: Docker
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "4096Mi"
+      requests:
+        cpu: "250m"
+        memory: "1024Mi"

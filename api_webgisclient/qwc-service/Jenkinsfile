@@ -105,9 +105,16 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image') {
+        stage ('Build new Image for qwc-service if necessary') {
+            when {
+                expression {
+                    (build == 'ja')
+                    }
+                }
             steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
+                withCredentials ( credentials ) {
+                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    }
                 }
             }
         stage ('Deploy qwc-service in Test env') {

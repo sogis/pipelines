@@ -113,7 +113,7 @@ LEFT JOIN
   prodlist_children_agg c ON dp.dp_id = c.pl_id
 LEFT JOIN
   amt_lookup a ON dp.amt_ident = a.amt_ident
-
+;
 
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;

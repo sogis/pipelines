@@ -17,7 +17,7 @@ psql -h dbhost -c 'set role adminrole;' -f sql2json/views/trafo/trafo_wms_rootla
 **Solr Views**
 
 ```
-psql -h dbhost -c 'set role adminrole;' -f sql2json/views/solr/solr_layer_background_v.sql  simi
 psql -h dbhost -c 'set role adminrole;' -f sql2json/views/solr/solr_layer_base_v.sql simi
+psql -h dbhost -c 'set role adminrole;' -f sql2json/views/solr/solr_layer_background_v.sql  simi
 psql -h dbhost -c 'set role adminrole;' -f sql2json/views/solr/solr_layer_foreground_v.sql  simi
 ```

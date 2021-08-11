@@ -71,8 +71,8 @@ tbl_fields AS (
     jsonb_strip_nulls(
       jsonb_build_object(
         'name', "name",
-        'data_type', COALESCE(srv_type, 'text')
-        --'constraints', ('{"maxlength": ' || str_length || ' }')::jsonb $td wieder aktivieren wenn str_length=-5 geklärt / gelöst ist
+        'data_type', COALESCE(srv_type, 'text'),
+        'constraints', ('{"maxlength": ' || str_length || ' }')::jsonb
       )
     ) AS field_obj,
     CASE 
@@ -108,7 +108,7 @@ tableview AS (
   SELECT 
     jsonb_strip_nulls(
       jsonb_build_object(
-        'name', identifier,
+        'name', dp.identifier,
         'db_url', pg_service_url,
         'schema', schema_name,
         'table_name', table_name,
@@ -117,8 +117,8 @@ tableview AS (
         'fields', COALESCE(fields_arr, '[]'::jsonb) --$td remove AFTER SCHEMA update
       )
     ) AS tv_obj,
-    (search_type != '1_no_search' AND search_facet IS NOT NULL) AS has_search_enabled,
     dsv.raw_download,
+    (dp_pub.dp_id IS NOT NULL) AS wms_published,
     COALESCE(type_missing_count, 0) AS type_missing_count,
     COALESCE(type_defaulted_count, 0) AS type_defaulted_count
   FROM
@@ -126,9 +126,11 @@ tableview AS (
   JOIN
     simi.simidata_data_set_view dsv ON tv.id = dsv.id
   JOIN
-    simi.trafo_published_dp_v dp ON tv.id = dp.dp_id
+    simi.simi.simiproduct_data_product dp ON tv.id = dp.id
   JOIN
     tbl ON tv.postgres_table_id = tbl.tbl_id
+  LEFT JOIN
+    simi.trafo_published_dp_v dp_pub ON tv.id = dp_pub.dp_id
   LEFT JOIN
     tableview_fields tf ON tv.id = tf.table_view_id
 )
@@ -138,7 +140,7 @@ SELECT
 FROM 
   tableview
 WHERE
-    (has_search_enabled OR raw_download) -- Neben raw_download=TRUE auch für Ebenen aktivieren, welche eine Suche konfiguriert haben
+    (wms_published OR raw_download) -- Neben raw_download=TRUE auch für Ebenen aktivieren, welche wms-publiziert sind, um die Abhängigkeit der WGC-URL-Schnittstelle auf den Dataservice zu "befriedigen"
   AND
     type_missing_count = 0 -- Ebenen mit fehlenden Attributtyp-Informationen bewusst ausschliessen, damit Fehler schneller gefunden wird
 

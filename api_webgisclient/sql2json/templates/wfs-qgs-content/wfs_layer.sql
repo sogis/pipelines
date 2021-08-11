@@ -21,8 +21,12 @@ pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
 		simi.simidata_data_theme dt ON tbl.data_theme_id = dt.id 
 	JOIN 
 		simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
-	WHERE
-		geo_field_name IS NOT NULL
+  WHERE
+      geo_field_name IS NOT NULL
+    AND
+      geo_type IS NOT NULL
+    AND
+      geo_epsg_code IS NOT NULL		
 ),
 
 tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table

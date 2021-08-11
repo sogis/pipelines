@@ -69,24 +69,17 @@ facadelayer AS (
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
 ),
 
-/*
-dsv_qml_assets AS (
+dsv_qml_assetfile AS (
   SELECT 
     dataset_set_view_id AS dsv_id,
-    filename,
-    encode(file_content, 'base64') AS data_base64
+    jsonb_build_object(
+      'path', file_name,
+      'base64', encode(file_content, 'base64')
+    ) AS file_json
   FROM
     simi.simidata_styleasset     
   WHERE 
     is_for_server IS TRUE  
-),
-*/ 
-dsv_qml_assetfile AS (  
-  SELECT 
-    'af15e983-4752-4111-adf0-69fc8f68b4b5'::uuid AS dsv_id,
-    row_to_json(row('fuu/bar.svg','base64-dummy')) AS file_json
-  FROM
-    generate_series(1, 2) --$td REPLACE WITH REAL assets 
 ),
 
 dsv_qml_assetfiles AS (

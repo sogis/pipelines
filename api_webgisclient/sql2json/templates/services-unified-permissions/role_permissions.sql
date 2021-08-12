@@ -74,7 +74,7 @@ lg_dsv AS (
     simi.simi.simiproduct_layer_group lg ON pil.product_list_id = lg.id  
 ),
 
-dep_dsv AS ( -- Reports und Feature-Info Konfigurationen, mit Datenbeziehung auf DSV
+rep_dsv AS ( -- Reports mit Datenbeziehung auf DSV
   SELECT
     r.dependency_id AS res_id,
     r.data_set_view_id AS dsv_id
@@ -83,7 +83,8 @@ dep_dsv AS ( -- Reports und Feature-Info Konfigurationen, mit Datenbeziehung auf
   JOIN
     simi.simi.simiextended_dependency d ON r.dependency_id = d.id
   WHERE
-      d.dtype IN ('simiExtended_Report', 'simiExtended_FeatureInfo')
+      --d.dtype IN ('simiExtended_Report', 'simiExtended_FeatureInfo')
+      d.dtype = 'simiExtended_Report'
     AND
       r.relation_type = '2_data'
 ),
@@ -94,8 +95,8 @@ resgroups_union AS (
   SELECT res_id, dsv_id FROM fl_dsv
   UNION ALL 
   SELECT res_id, dsv_id FROM lg_dsv--pl_dsv
-  --UNION ALL 
-  --SELECT res_id, dsv_id FROM dep_dsv
+  UNION ALL 
+  SELECT res_id, dsv_id FROM rep_dsv--dep_dsv
 ),
 
 res_dsv_total_count AS (

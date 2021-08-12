@@ -51,6 +51,7 @@ sa_dsv AS (
   SELECT res_id, dsv_id FROM fl_dsv
 ),
 
+/* -- Gibt auch die Karten zurück, was falsch ist
 pl_dsv AS (
   SELECT 
     pil.product_list_id AS res_id,
@@ -59,6 +60,18 @@ pl_dsv AS (
     simi.simiproduct_properties_in_list pil
   JOIN
     sa_dsv sa ON pil.single_actor_id = sa.res_id
+),
+*/
+lg_dsv AS (
+  SELECT 
+    pil.product_list_id AS res_id,
+    dsv_id
+  FROM 
+    simi.simiproduct_properties_in_list pil
+  JOIN
+    sa_dsv sa ON pil.single_actor_id = sa.res_id
+  JOIN  
+    simi.simi.simiproduct_layer_group lg ON pil.product_list_id = lg.id  
 ),
 
 dep_dsv AS ( -- Reports und Feature-Info Konfigurationen, mit Datenbeziehung auf DSV
@@ -80,9 +93,9 @@ resgroups_union AS (
   UNION ALL 
   SELECT res_id, dsv_id FROM fl_dsv
   UNION ALL 
-  SELECT res_id, dsv_id FROM pl_dsv
-  UNION ALL 
-  SELECT res_id, dsv_id FROM dep_dsv
+  SELECT res_id, dsv_id FROM lg_dsv--pl_dsv
+  --UNION ALL 
+  --SELECT res_id, dsv_id FROM dep_dsv
 ),
 
 res_dsv_total_count AS (

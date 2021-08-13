@@ -28,6 +28,8 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
     simi.simiproduct_data_product dp 
   LEFT JOIN
     simi.simiproduct_map m ON dp.id = m.id
+  WHERE
+    NOT (dtype = 'simiProduct_Map' AND m.background IS FALSE) -- EXCLUDE forground maps
 ),
 
 dp_published AS ( -- Alle Dataproducts, welche für sich stehend (Eigene Zeile) im solr INDEX vorkommen
@@ -92,31 +94,36 @@ amt_lookup AS (
       ('alw', 'Amt für Landwirtschaft')
   ) 
   AS t (amt_ident, amt_name)
+),
+
+solr_record AS (
+  SELECT 
+    json_build_array(dp_typ, identifier::TEXT)::text AS id,
+    title AS display,
+    json_arr::text AS dset_children,
+    dprod_has_info AS dset_info,
+    concat_ws(', ', title, synonyms) AS search_1_stem,
+    concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
+    concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
+    CASE bg_map
+      WHEN FALSE THEN 'foreground'
+      ELSE 'background'
+    END AS facet
+  FROM 
+    dp_published dp
+  LEFT JOIN
+    prodlist_children_agg c ON dp.dp_id = c.pl_id
+  LEFT JOIN
+    amt_lookup a ON dp.amt_ident = a.amt_ident
 )
 
-
 SELECT 
-  json_build_array(dp_typ, identifier::TEXT)::text AS id,
-  title AS display,
-  json_arr::text AS dset_children,
-  dprod_has_info AS dset_info,
-  concat_ws(', ', title, synonyms) AS search_1_stem,
-  concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
-  concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
-  CASE bg_map
-    WHEN FALSE THEN 'foreground'
-    ELSE 'background'
-  END AS facet
-FROM 
-  dp_published dp
-LEFT JOIN
-  prodlist_children_agg c ON dp.dp_id = c.pl_id
-LEFT JOIN
-  amt_lookup a ON dp.amt_ident = a.amt_ident
+  * 
+FROM
+  solr_record
 ;
 
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;
 GRANT SELECT ON TABLE simi.solr_layer_base_v TO simi_write, sogis_service
 ;
-

@@ -95,8 +95,8 @@ resgroups_union AS (
   SELECT res_id, dsv_id FROM fl_dsv
   UNION ALL 
   SELECT res_id, dsv_id FROM lg_dsv--pl_dsv
-  --UNION ALL 
-  --SELECT res_id, dsv_id FROM rep_dsv--dep_dsv
+  UNION ALL 
+  SELECT res_id, dsv_id FROM rep_dsv--dep_dsv
 ),
 
 res_dsv_total_count AS (

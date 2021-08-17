@@ -189,7 +189,7 @@ res_other_perm_counts AS (
  * 3 P
  * --> Gruppe wird für A berechtigt. 
  */
-role_perm_raw AS (
+role_perm_dsv_group_raw AS (
   SELECT
     COALESCE(o.res_id, p.res_id) AS resource_id,
     COALESCE(o.role_name, p.role_name) AS role_name,
@@ -201,12 +201,29 @@ role_perm_raw AS (
     res_other_perm_counts o
   FULL OUTER JOIN    
     res_public_perm_counts p ON o.res_id = p.res_id
+),
+
+role_perm_dsv_group AS (
+  SELECT 
+    * 
+  FROM
+    role_perm_dsv_group_raw
+  WHERE
+    (count_other_role + count_public_role) >= dsv_count_per_res
+),
+
+role_perm_ext AS (
+  SELECT 
+    id AS resource_id,
+    'public' AS role_name,
+    '1_read' AS perm_level
+  FROM
+    simi.simiproduct_external_map_layers
 )
 
-SELECT 
-  resource_id,
-  role_name,
-  perm_level
-FROM
-  role_perm_raw
+SELECT resource_id, role_name, perm_level FROM role_perm_dsv_group
+UNION ALL 
+SELECT resource_id, role_name, perm_level FROM role_perm_ext
 ;
+
+GRANT SELECT ON TABLE simi.trafo_resource_role_v TO simi_write;

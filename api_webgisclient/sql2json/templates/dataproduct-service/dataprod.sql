@@ -69,6 +69,56 @@ rasterview_ds_props AS (
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id
 ),
 
+ext_wms_layer_part AS (
+  SELECT
+    jsonb_build_object(
+      'name', concat('wms:', s.url, '#/', l.identifier_list),
+      'type', 'wms',
+      'url', url,
+      'params', jsonb_build_object('LAYERS', l.identifier_list)
+    ) AS ext_layer_obj,
+    jsonb_build_object(
+      'service_url', url,
+      'name', l.identifier_list
+    ) AS wms_layer_obj,
+    jsonb_build_array('text/plain') AS info_formats,
+    l.id AS layer_id
+  FROM
+    simi.simiproduct_external_map_layers l
+  JOIN
+    simi.simi.simiproduct_external_map_service s ON l.service_id = s.id
+),
+
+ext_wms_layer AS (
+  SELECT
+    dp.identifier,
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'identifier', dp.identifier,
+        'display', title_ident,
+        'description_base64', desc_b64,
+        'opacity', (255 - transparency),
+        'datatype', 'raster',
+        'external_layer', ext_layer_obj,
+        'wms_datasource', wms_layer_obj,
+        'infoFormats', info_formats,
+        'type', 'datasetview',
+        'queryable', const_queryable, 
+        'synonyms', const_synonyms_arr,
+        'keywords', const_keywords_arr,
+        'contacts', const_contacts_arr
+      )
+    ) AS layer_json 
+  FROM
+    ext_wms_layer_part l
+  JOIN
+    simi.simiproduct_single_actor sa ON l.layer_id = sa.id
+  JOIN
+    dprod dp ON l.layer_id = dp.dp_id
+  CROSS JOIN
+    constant_fields
+),
+
 dsv AS (
   SELECT 
     dp.identifier,
@@ -238,11 +288,12 @@ union_all AS (
   UNION ALL
   SELECT identifier, layer_json FROM dsv
   UNION ALL 
+  SELECT identifier, layer_json FROM ext_wms_layer
+  UNION ALL 
   SELECT identifier, layer_json FROM facadelayer  
   UNION ALL 
   SELECT identifier, layer_json FROM productlist  
 )
-
 
 SELECT
   layer_json

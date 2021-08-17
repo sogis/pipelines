@@ -10,7 +10,7 @@ qwc-mapinfo-service:v2.0.0:2.0.18
 sogis-plotinfo-service:v2.0.0:2.0.19
 qwc-permalink-service:v2.0.0:2.0.18
 qwc-elevation-service:v2.0.0:2.0.18
-qwc-document-service:v2.0.0:2.0.20
+qwc-document-service:v2.0.3:2.0.21
 qwc-print-service:v2.0.2:2.0.21
 sogis-landreg-service:v2.0.0:2.0.18
 sogis-ccc-config:v2.0.1:2.0.21

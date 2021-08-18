@@ -41,29 +41,29 @@ attr_typemap AS (
     * 
   FROM (
     VALUES 
-      ('bool', 'boolean', NULL),
-      ('cardinal_number', 'integer', NULL),
-      ('char', 'character', NULL),
-      ('character_data', 'text', NULL),
-      ('date', 'date', NULL),
-      ('float4', 'real', '{"pattern": "[0-9]+([\\.,][0-9]+)?"}'::jsonb),
-      ('float8', 'double precision', '{"pattern": "[0-9]+([\\.,][0-9]+)?"}'::jsonb),
-      ('int2', 'smallint', NULL),
-      ('int4', 'integer', NULL),
-      ('int8', 'bigint', NULL),
-      ('json', 'json', NULL),
-      ('jsonb', 'jsonb', NULL),
-      ('numeric', 'numeric', '{"numeric_precision": 20, "numeric_scale": 20}'::jsonb), -- PRECISION, SCALE auf 20,20 gesetzt, da SIMI diese Info nicht führt
-      ('oid', 'bigint', NULL),
-      ('text', 'text', NULL),
-      ('time', 'time', NULL),
-      ('timestamp', 'timestamp without time zone', NULL),
-      ('timestamptz', 'timestamp with time zone', NULL),
-      ('uuid', 'uuid', NULL),
-      ('varchar', 'character varying', '{"maxlength": "err-not-set"}'::jsonb), -- Wert wird IN folgendem Query gesetzt
-      ('yes_or_no', 'boolean', NULL)
+      ('bool', 'boolean'),
+      ('cardinal_number', 'integer'),
+      ('char', 'character'),
+      ('character_data', 'text'),
+      ('date', 'date'),
+      ('float4', 'real'),
+      ('float8', 'double precision'),
+      ('int2', 'smallint'),
+      ('int4', 'integer'),
+      ('int8', 'bigint'),
+      ('json', 'json'),
+      ('jsonb', 'jsonb'),
+      ('numeric', 'numeric'),
+      ('oid', 'bigint'),
+      ('text', 'text'),
+      ('time', 'time'),
+      ('timestamp', 'timestamp without time zone'),
+      ('timestamptz', 'timestamp with time zone'),
+      ('uuid', 'uuid'),
+      ('varchar', 'character varying'),
+      ('yes_or_no', 'boolean')
   ) 
-  AS t (pg_cat_type, ds_type, ds_constr_obj)
+  AS t (pg_cat_type, srv_type)
 ),
 
 tbl_fields AS (
@@ -71,8 +71,8 @@ tbl_fields AS (
     jsonb_strip_nulls(
       jsonb_build_object(
         'name', "name",
-        'data_type', COALESCE(ds_type, 'text'),
-        'constraints', COALESCE(jsonb_set(ds_constr_obj, '{maxlength}', to_jsonb(str_length), false), ds_constr_obj) --jsonb_set() gibt NULL zurück, falls maxlength nicht gefunden wird
+        'data_type', COALESCE(srv_type, 'text'),
+        'constraints', ('{"maxlength": ' || str_length || ' }')::jsonb
       )
     ) AS field_obj,
     CASE 
@@ -80,7 +80,7 @@ tbl_fields AS (
       ELSE 0
     END AS type_missing_count,
     CASE 
-      WHEN ds_type IS NULL THEN 1
+      WHEN srv_type IS NULL THEN 1
       ELSE 0
     END AS type_defaulted_count,   
     id AS tf_id
@@ -106,7 +106,6 @@ tableview_fields AS (
 
 tableview AS (
   SELECT 
-    dp.identifier,
     jsonb_strip_nulls(
       jsonb_build_object(
         'name', dp.identifier,
@@ -136,7 +135,6 @@ tableview AS (
     tableview_fields tf ON tv.id = tf.table_view_id
 )
 
-
 SELECT
   tv_obj
 FROM 
@@ -145,5 +143,3 @@ WHERE
     (wms_published OR raw_download) -- Neben raw_download=TRUE auch für Ebenen aktivieren, welche wms-publiziert sind, um die Abhängigkeit der WGC-URL-Schnittstelle auf den Dataservice zu "befriedigen"
   AND
     type_missing_count = 0 -- Ebenen mit fehlenden Attributtyp-Informationen bewusst ausschliessen, damit Fehler schneller gefunden wird
-  AND
-    tv_obj::varchar LIKE '%maxl%'

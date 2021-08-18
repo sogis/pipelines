@@ -74,7 +74,7 @@ prodlist_sa_properties AS (
         'queryable', TRUE,
         'opacity', 255 - transparency,
         'bbox', const_bbox      
-      )
+      ) ORDER BY sort
     ) AS sa_props_json
   FROM
     simi.simiproduct_single_actor sa
@@ -89,7 +89,7 @@ prodlist_sa_properties AS (
 prodlist_sa_list AS (
   SELECT
     pl_id,
-    jsonb_agg(identifier ORDER BY sort) AS sa_json
+    jsonb_agg(identifier ORDER BY sort) AS sa_ident_json
   FROM
     published_dp_in_prodlist 
   GROUP BY
@@ -233,7 +233,7 @@ foreground_map AS (
       'name', identifier,
       'title', title,
       'sublayers', sa_props_json,
-      'drawingOrder', sa_json
+      'drawingOrder', sa_ident_json
     ) || keyvals AS map_obj
   FROM
     simi.simi.simiproduct_map m

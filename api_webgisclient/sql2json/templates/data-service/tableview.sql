@@ -42,19 +42,19 @@ attr_typemap AS (
   FROM (
     VALUES 
       ('bool', 'boolean', NULL),
-      ('cardinal_number', 'integer', NULL),
+      ('cardinal_number', 'integer', '{"min": -2147483648, "max": 2147483647}'::jsonb),
       ('char', 'character', NULL),
       ('character_data', 'text', NULL),
       ('date', 'date', NULL),
       ('float4', 'real', '{"pattern": "[0-9]+([\\.,][0-9]+)?"}'::jsonb),
       ('float8', 'double precision', '{"pattern": "[0-9]+([\\.,][0-9]+)?"}'::jsonb),
-      ('int2', 'smallint', NULL),
-      ('int4', 'integer', NULL),
+      ('int2', 'smallint', '{"min": -32768, "max": 32767}'::jsonb),
+      ('int4', 'integer', '{"min": -2147483648, "max": 2147483647}'::jsonb),
       ('int8', 'bigint', NULL),
       ('json', 'json', NULL),
       ('jsonb', 'jsonb', NULL),
-      ('numeric', 'numeric', '{"numeric_precision": 20, "numeric_scale": 20}'::jsonb), -- PRECISION, SCALE auf 20,20 gesetzt, da SIMI diese Info nicht führt
-      ('oid', 'bigint', NULL),
+      ('numeric', 'numeric', '{"numeric_precision": 40, "numeric_scale": 20}'::jsonb), -- PRECISION, SCALE auf 40,20 gesetzt, da SIMI diese Info nicht führt
+      ('oid', 'bigint', '{"min": -9007199254740991, "max": 9007199254740991}'::jsonb),
       ('text', 'text', NULL),
       ('time', 'time', NULL),
       ('timestamp', 'timestamp without time zone', NULL),

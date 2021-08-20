@@ -112,7 +112,7 @@ tableview AS (
       jsonb_build_object(
         'name', dp.identifier,
         'db_url', pg_service_url_read,
-        'db_write_url', pg_service_url_,
+        'db_write_url', pg_service_url_write,
         'schema', schema_name,
         'table_name', table_name,
         'primary_key', id_field_name,
@@ -137,7 +137,6 @@ tableview AS (
   LEFT JOIN
     tableview_fields tf ON tv.id = tf.table_view_id
 )
-
 
 SELECT
   tv_obj

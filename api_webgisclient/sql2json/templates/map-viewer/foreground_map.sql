@@ -102,10 +102,10 @@ fieldtype_with_special_formtype AS (
   FROM (
     VALUES 
       ('date', 'date'), 
-      ('bool', 'checkbox'), 
+      ('bool', 'boolean'), 
       ('int8', 'number'),
       ('int4', 'number'),
-      ('int2', 'number')
+      ('int2', 'number')    
   ) 
   AS t (fieldtype, formtype)
 ),
@@ -116,11 +116,12 @@ tv_attribute AS (
     "name" AS attr_name,
     COALESCE(alias, "name") AS attr_alias,
     sort AS attr_sort,
-    COALESCE(formtype, 'text') AS type_wgc,
+    COALESCE(formtype, 'text') AS type_wgc
+    /*,
     CASE 
       WHEN tf.str_length IS NOT NULL AND tf.str_length > 0 THEN jsonb_build_object('maxlength', tf.str_length)
       ELSE NULL
-    END AS length_constraint
+    END AS length_constraint*/
   FROM  
     simi.simidata_view_field vf
   JOIN 
@@ -137,10 +138,10 @@ tv_attribute_arr AS (
         jsonb_build_object(
           'id', attr_name,
           'name', attr_alias,
-          'type', type_wgc,
-          'constraints', length_constraint
+          'type', type_wgc
+          --'constraints', length_constraint
         )
-      )
+      ) ORDER BY attr_sort
     ) AS attr_arr
   FROM 
     tv_attribute

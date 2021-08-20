@@ -23,7 +23,8 @@ tbl AS (
     schema_name,
     table_name,
     id_field_name,
-    'postgresql:///?service=' || db.db_service_url AS pg_service_url,
+    concat('postgresql:///?service=', db.db_service_url) AS pg_service_url_read,
+    concat('postgresql:///?service=', db.db_service_url, '_write') AS pg_service_url_write,
     geo_props_obj,
     tbl_id
   FROM
@@ -110,7 +111,8 @@ tableview AS (
     jsonb_strip_nulls(
       jsonb_build_object(
         'name', dp.identifier,
-        'db_url', pg_service_url,
+        'db_url', pg_service_url_read,
+        'db_write_url', pg_service_url_,
         'schema', schema_name,
         'table_name', table_name,
         'primary_key', id_field_name,

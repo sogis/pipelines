@@ -119,6 +119,42 @@ ext_wms_layer AS (
     constant_fields
 ),
 
+tv_objsearch AS ( -- Solr facet ident von tableviews mit aktivierter Objektsuche (--> falls layer geladen ist)
+  SELECT    
+    COALESCE(tv.search_facet, dp.identifier) AS solr_facet_ident,
+    tv.id AS sa_id
+  FROM
+    simi.simidata_table_view tv
+  JOIN
+    simi.simiproduct_data_product dp ON tv.id = dp.id  
+  WHERE
+    tv.search_type = '2_if_loaded'
+),
+
+fl_objsearch AS (
+  SELECT
+    solr_facet_ident,
+    pif.facade_layer_id AS sa_id
+  FROM
+    simi.simiproduct_properties_in_facade pif
+  JOIN
+    tv_objsearch tv ON pif.data_set_view_id = tv.sa_id 
+),
+
+sa_objsearch AS (
+  SELECT
+    jsonb_agg(solr_facet_ident) AS solr_facet_ident_arr,
+    sa_id
+  FROM 
+    (
+      SELECT solr_facet_ident, sa_id FROM fl_objsearch
+      UNION ALL 
+      SELECT solr_facet_ident, sa_id FROM tv_objsearch
+    ) uni 
+  GROUP BY 
+    sa_id
+),
+
 dsv AS (
   SELECT 
     dp.identifier,
@@ -134,6 +170,7 @@ dsv AS (
         'postgis_datasource', tbl_json,
         'raster_datasource', raster_ds,
         'type', 'datasetview',
+        'searchterms', solr_facet_ident_arr,
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,
@@ -150,6 +187,8 @@ dsv AS (
     tv_pgtable_props t ON dsv.id = t.tv_id
   LEFT JOIN
     rasterview_ds_props r ON dsv.id = r.rv_id
+  LEFT JOIN
+    sa_objsearch os ON dsv.id = os.sa_id 
   CROSS JOIN
     constant_fields
   WHERE
@@ -169,6 +208,8 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
     simi.simiproduct_properties_in_facade pif
   JOIN 
     dprod dp ON pif.data_set_view_id = dp.dp_id
+  LEFT JOIN
+    tv_objsearch s ON dp.dp_id = s.sa_id
   GROUP BY 
     facade_layer_id  
 ),
@@ -189,7 +230,8 @@ facadelayer AS (
         'opacity', (255 - transparency),
         'queryable', const_queryable,
         'crs', const_crs,
-        'sublayers', sublayer_json
+        'sublayers', sublayer_json,
+        'searchterms', solr_facet_ident_arr
       )
     ) AS layer_json
   FROM 
@@ -202,6 +244,8 @@ facadelayer AS (
     facadelayer_children dsv ON fl.id = dsv.facade_layer_id
   LEFT JOIN
     simi.simiproduct_properties_in_list pil ON fl.id = pil.single_actor_id --Relation to parent decides 
+  LEFT JOIN
+    sa_objsearch os ON fl.id = os.sa_id 
   CROSS JOIN
     constant_fields
 ),
@@ -299,3 +343,5 @@ SELECT
   layer_json
 FROM
   union_all  
+WHERE
+  identifier LIKE '%geotope%'

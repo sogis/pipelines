@@ -342,6 +342,4 @@ union_all AS (
 SELECT
   layer_json
 FROM
-  union_all  
-WHERE
-  identifier LIKE '%geotope%'
+  union_all

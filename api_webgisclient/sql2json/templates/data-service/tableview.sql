@@ -145,6 +145,3 @@ WHERE
     (wms_published OR raw_download) -- Neben raw_download=TRUE auch für Ebenen aktivieren, welche wms-publiziert sind, um die Abhängigkeit der WGC-URL-Schnittstelle auf den Dataservice zu "befriedigen"
   AND
     type_missing_count = 0 -- Ebenen mit fehlenden Attributtyp-Informationen bewusst ausschliessen, damit Fehler schneller gefunden wird
-  AND
-    tv_obj::varchar LIKE '%maxl%' AND tv_obj::varchar LIKE '%integ%' and tv_obj::varchar LIKE '%doub%'
-  

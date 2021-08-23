@@ -278,7 +278,7 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,
         'contacts', const_contacts_arr,
-        'description', desc_b64,
+        'description_base64', desc_b64,
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'opacity', const_opacity,
         'queryable', const_queryable,
@@ -315,7 +315,7 @@ root AS (
       'identifier', const_root_name,
       'display', const_root_name,
       'type', 'layergroup',
-      'description', 'Auf root nicht zutreffend - bjsvwjek',
+      'description_base64', encode(convert_to('Auf root nicht zutreffend - bjsvwjek', 'UTF8'), 'base64')
       'sublayers', root_layer_json,
       'synonyms', const_synonyms_arr,
       'keywords', const_keywords_arr,

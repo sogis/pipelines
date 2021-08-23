@@ -1,7 +1,7 @@
 SELECT
   jsonb_build_object(
-    'template', "name",
-    'report_filename', concat("name", '/master')
+    'template', split_part("name", '.', 1),
+    'report_filename', concat(split_part("name", '.', 1), '/master')
   ) AS obj
 FROM
   simi.simiextended_dependency 

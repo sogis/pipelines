@@ -3,7 +3,7 @@ WITH
 res_ident AS (
   SELECT identifier AS res_ident, id FROM simi.simiproduct_data_product 
   UNION ALL
-  SELECT "name" AS res_ident, id FROM simi.simi.simiextended_dependency 
+  SELECT split_part("name", '.', 1) AS res_ident, id FROM simi.simi.simiextended_dependency -- split_part(..) zur entfernung des format-suffix im namen (.xlsx in av_gb_uebersicht.xlsx)
 ),
 
 role_perm AS (

@@ -15,8 +15,8 @@ tv_with_geom AS (
 dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur eine custom info zurückgegeben wird
   SELECT 
     data_set_view_id,
-    d.dtype AS dependency_type,
-    (max(dependency_id::varchar))::uuid AS dependency_id
+    dependency_id,
+    d.dtype AS dependency_type
   FROM
     simi.simiextended_relation r
   JOIN
@@ -25,7 +25,35 @@ dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur 
     r.relation_type = '1_display'
   GROUP BY
     data_set_view_id,
+    dependency_id,
     d.dtype
+  LIMIT 1
+),
+
+db_dependency_unique AS ( -- Aus Datenabhängigkeiten folgende db_service_url für SQL-Abfragen. LIMIT 1 stellt sicher, dass auch bei Fehlerfassungen nur ein Record resultiert
+  SELECT 
+    dependency_id,
+    db_service_url
+  FROM
+    simi.simiextended_relation r
+  JOIN
+    simi.simiextended_dependency d ON r.dependency_id = d.id
+  JOIN
+    simi.simi.simidata_table_view tv ON r.data_set_view_id = tv.id 
+  JOIN
+    simi.simi.simidata_postgres_table t ON tv.postgres_table_id = t.id 
+  JOIN 
+    simi.simi.simidata_data_theme dt ON t.data_theme_id = dt.id
+  JOIN 
+    simi.simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
+  WHERE 
+      r.relation_type = '2_data'
+    AND
+      d.dtype = 'simiExtended_FeatureInfo'
+  GROUP BY 
+    dependency_id,
+    db_service_url
+  LIMIT 1
 ),
 
 custom_info AS (
@@ -39,7 +67,7 @@ custom_info AS (
       ELSE 'wms'
     END AS info_type,
     CASE
-      WHEN sql_query IS NOT NULL THEN 'dummy service name'
+      WHEN sql_query IS NOT NULL THEN COALESCE('postgresql:///?service=' || db_service_url, 'err-no-db-url')
       ELSE NULL
     END AS sql_service_name,
     data_set_view_id
@@ -47,10 +75,11 @@ custom_info AS (
     simi.simiextended_dependency d
   JOIN
     dsv_dependency_unique dd ON d.id = dd.dependency_id
+  LEFT JOIN
+    db_dependency_unique db ON d.id = db.dependency_id
   WHERE
     dependency_type = 'simiExtended_FeatureInfo'
 ),
-
 
 custom_info_json AS (
   SELECT
@@ -184,3 +213,4 @@ FROM
   dataprod_union
 WHERE
   root_published IS TRUE 
+

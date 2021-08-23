@@ -640,7 +640,7 @@
         "defaultTheme": "default",
         "backgroundLayers": [
           {
-            "name": "hintergrundkarte_sw",
+            "name": "wgc_hintergrundkarte_sw",
             "title": "Karte SW",
             "type": "wmts",
             "url": "https://geo.so.ch/api/wmts/1.0.0/ch.so.agi.hintergrundkarte_sw/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png",
@@ -673,7 +673,7 @@
             ]
           },
           {
-            "name": "hintergrundkarte_farbig",
+            "name": "wgc_hintergrundkarte_farbig",
             "title": "Karte farbig",
             "type": "wmts",
             "url": "https://geo.so.ch/api/wmts/1.0.0/ch.so.agi.hintergrundkarte_farbig/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png",
@@ -706,7 +706,7 @@
             ]
           },
           {
-            "name": "hintergrundkarte_ortho",
+            "name": "wgc_hintergrundkarte_ortho",
             "title": "Luftbild",
             "type": "wmts",
             "url": "https://geo.so.ch/api/wmts/1.0.0/ch.so.agi.hintergrundkarte_ortho/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png",

@@ -7,7 +7,11 @@
   "wfs_name": "somap",
   "dataproducts": {"$trafo:list": "dataprod_properties.sql"},
   "common_resources": [
+    "wgc_hintergrundkarte_sw",
+    "wgc_hintergrundkarte_farbig",
+    "wgc_hintergrundkarte_ortho",
     "ch.so.agi.hintergrundkarte_sw",
+    "ch.so.agi.hintergrundkarte_farbig",
     "ch.so.agi.hintergrundkarte_ortho",
     "A4 hoch",
     "A4 quer",

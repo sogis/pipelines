@@ -315,7 +315,7 @@ root AS (
       'identifier', const_root_name,
       'display', const_root_name,
       'type', 'layergroup',
-      'description_base64', encode(convert_to('Auf root nicht zutreffend - bjsvwjek', 'UTF8'), 'base64')
+      'description_base64', encode(convert_to('Auf root nicht zutreffend - bjsvwjek', 'UTF8'), 'base64'),
       'sublayers', root_layer_json,
       'synonyms', const_synonyms_arr,
       'keywords', const_keywords_arr,

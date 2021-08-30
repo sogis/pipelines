@@ -99,7 +99,7 @@ objects:
           volumeMounts:
           - mountPath: /var/www
             name: wsgi-service-config-claim
-          - mountPath: /srv/qwc-services/config
+          - mountPath: /srv/qwc_service/config
             name: qgs-resources
             subPath: config
             readOnly: true

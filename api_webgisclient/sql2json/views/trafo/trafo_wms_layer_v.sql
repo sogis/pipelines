@@ -128,7 +128,7 @@ raster_layer AS (
       'datatype', 'raster',
       'title', title_ident,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
-      'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
+      'raster_datasource', jsonb_build_object('datasource', concat_ws('/', '/geodata/geodata', "path"), 'srid', 2056) 
     )) AS layer_json
   FROM
     simi.trafo_published_dp_v dp

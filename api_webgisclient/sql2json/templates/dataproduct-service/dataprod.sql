@@ -59,7 +59,7 @@ tv_pgtable_props AS (
 rasterview_ds_props AS (
   SELECT 
     jsonb_build_object(
-      'datasource', "path",
+      'datasource', concat_ws('/', '/geodata/geodata', "path"),
       'srid', 2056
     ) AS raster_ds,
     rv.id AS rv_id

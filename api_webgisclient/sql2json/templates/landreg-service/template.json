@@ -2,7 +2,7 @@
   "$schema": "https://github.com/qwc-services/sogis-landreg-service/raw/master/schemas/sogis-landreg-service.json",
   "service": "landreg",
   "config": {
-    "db_url": "postgresql:///?service=sogis_services",
+    "db_url": "postgresql:///?service=sogis_pub",
     "qgis_server_url": "http://qgis-server.gdi-test.svc/ows/",
     "landreg_project": "grundbuchplanauszug",
     "landreg_print_layers": "mopublic_einzelobjekt_flaeche_unterirdisch,mopublic_bodenbedeckung,mopublic_ortsname.pos,grundbuchplan_bodenbedeckungsymbol,mopublic_bodenbedeckung_proj,mopublic_einzelobjekt_flaeche,mopublic_einzelobjekt_linie,mopublic_einzelobjekt_punkt,mopublic_rohrleitung,mopublic_strassenname_pos,mopublic_gebaeudeadresse.pos,mopublic_flurname.pos,mopublic_ortsname.pos,mopublic_gelaendename,mopublic_grundstueck_proj.geometrie,mopublic_grundstueck.geometrie,mopublic_grundstueck_proj.geometrie_liegenschaft,grundbuchplan_liegenschaft,grundbuchplan_grundstueckpos.hilfslinie,mopublic_grundstueck_proj.pos,grundbuchplan_grundstueckpos.pos,mopublic_gemeindegrenze,mopublic_gemeindegrenze_proj,grundbuchplan_grenzpunkt,mopublic_hoheitsgrenzpunkt.geometrie,mopublic_fixpunkt.geometrie,baulinie",

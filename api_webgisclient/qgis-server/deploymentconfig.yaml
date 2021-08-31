@@ -99,12 +99,6 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /data/symbols
-            name: qgs-resources
-            subPath: symbols
-          - mountPath: /data/print
-            name: qgs-resources
-            subPath: print
           - mountPath: /data/config
             name: qgs-resources
             subPath: config

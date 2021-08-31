@@ -1,5 +1,6 @@
 def serviceName = 'qgis-server'
 def configFileName = 'somap.json'
+def baseImage = 'sogis/qgis-server'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -121,7 +122,7 @@ pipeline {
                     script {
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
                         sh """
-                           oc rsync -n ${namespace} config/ $PODNAME:/data
+                           oc rsync -n ${namespace} config/default $PODNAME:/data
                         """
                         }
                     archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
@@ -135,25 +136,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Build new Image for qgis-server if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
-            steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", 'somap.qgs', jobName, buildNumber, ""
-                    }
-                }
-            }
         stage ( 'Tag Image in Openshift' ) { 
             steps {
-                script {
-                    sh """ 
-                       oc tag -n $namespace --source=imagestreamtag qgis-server:$vDeployImage qgis-server:latest
-                    """
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy qgis-server') {

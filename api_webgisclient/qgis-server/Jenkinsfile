@@ -122,7 +122,7 @@ pipeline {
                     script {
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
                         sh """
-                           oc rsync -n ${namespace} config/default $PODNAME:/data
+                           oc rsync -n ${namespace} config/default/ $PODNAME:/data
                         """
                         }
                     archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true

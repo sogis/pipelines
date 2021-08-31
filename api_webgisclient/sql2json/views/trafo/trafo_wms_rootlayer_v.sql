@@ -13,7 +13,7 @@ WITH
 productlist AS (
 	SELECT 
 		identifier,
-		false AS print_or_ext
+		print_or_ext
 	FROM 
 		simi.simiproduct_product_list pl
 	JOIN

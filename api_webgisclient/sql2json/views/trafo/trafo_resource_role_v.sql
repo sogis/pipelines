@@ -57,8 +57,8 @@ sa_dsv AS (
   SELECT res_id, dsv_id FROM fl_dsv
 ),
 
-/* -- Gibt auch die Karten zurück, was falsch ist
-pl_dsv AS (
+ 
+pl_dsv AS ( -- Layergruppen und Hintergrundkarten
   SELECT 
     pil.product_list_id AS res_id,
     dsv_id
@@ -66,18 +66,12 @@ pl_dsv AS (
     simi.simiproduct_properties_in_list pil
   JOIN
     sa_dsv sa ON pil.single_actor_id = sa.res_id
-),
-*/
-lg_dsv AS (
-  SELECT 
-    pil.product_list_id AS res_id,
-    dsv_id
-  FROM 
-    simi.simiproduct_properties_in_list pil
-  JOIN
-    sa_dsv sa ON pil.single_actor_id = sa.res_id
-  JOIN  
-    simi.simi.simiproduct_layer_group lg ON pil.product_list_id = lg.id  
+  LEFT JOIN 
+    simi.simi.simiproduct_map m ON pil.product_list_id = m.id 
+  WHERE
+      m.id IS NULL 
+    OR 
+      m.background IS TRUE 
 ),
 
 rep_dsv AS ( -- Reports mit Datenbeziehung auf DSV
@@ -89,7 +83,6 @@ rep_dsv AS ( -- Reports mit Datenbeziehung auf DSV
   JOIN
     simi.simi.simiextended_dependency d ON r.dependency_id = d.id
   WHERE
-      --d.dtype IN ('simiExtended_Report', 'simiExtended_FeatureInfo')
       d.dtype = 'simiExtended_Report'
     AND
       r.relation_type = '2_data'
@@ -100,7 +93,7 @@ resgroups_union AS (
   UNION ALL 
   SELECT res_id, dsv_id FROM fl_dsv
   UNION ALL 
-  SELECT res_id, dsv_id FROM lg_dsv--pl_dsv
+  SELECT res_id, dsv_id FROM pl_dsv
   UNION ALL 
   SELECT res_id, dsv_id FROM rep_dsv--dep_dsv
 ),

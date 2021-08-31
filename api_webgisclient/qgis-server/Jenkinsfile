@@ -118,10 +118,12 @@ pipeline {
                         python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
                         python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
                     """
-                    PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
-                    sh """
-                       oc rsync -n ${namespace} config/ $PODNAME:/data
-                    """
+                    script {
+                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
+                        sh """
+                           oc rsync -n ${namespace} config/ $PODNAME:/data
+                        """
+                        }
                     archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }
                 }

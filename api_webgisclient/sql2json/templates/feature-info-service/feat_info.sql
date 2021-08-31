@@ -12,6 +12,7 @@ tv_with_geom AS (
     simi.trafo_tableview_attr_with_geo_v a ON tv.id = a.tv_id
 ),
 
+/*
 dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur eine custom info zur체ckgegeben wird
   SELECT 
     data_set_view_id,
@@ -29,9 +30,26 @@ dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur 
     d.dtype
   LIMIT 1
 ),
+*/
 
-db_dependency_unique AS ( -- Aus Datenabh채ngigkeiten folgende db_service_url f체r SQL-Abfragen. LIMIT 1 stellt sicher, dass auch bei Fehlerfassungen nur ein Record resultiert
+dsv_dependency_unique AS ( -- Gitn auch bei Fehlkonfigurationen pro Abh채ngigkeits- (Featinfo, Report, ...) maximal eine anzuzeigende Abh채ngigkeit zur체ck
   SELECT 
+    data_set_view_id,
+    d.dtype AS dependency_type,
+    (max(dependency_id::varchar))::uuid AS dependency_id
+  FROM
+    simi.simiextended_relation r
+  JOIN
+    simi.simiextended_dependency d ON r.dependency_id = d.id
+  WHERE
+    r.relation_type = '1_display'
+  GROUP BY
+    data_set_view_id,
+    d.dtype
+),
+
+report_datasources AS (
+    SELECT 
     dependency_id,
     db_service_url
   FROM
@@ -53,7 +71,17 @@ db_dependency_unique AS ( -- Aus Datenabh채ngigkeiten folgende db_service_url f�
   GROUP BY 
     dependency_id,
     db_service_url
-  LIMIT 1
+),
+
+report_with_unique_datasource AS ( -- Aus Datenabh채ngigkeiten folgende db_service_url f체r Report mit SQL-Abfragen. HAVING count(*) = 1 stellt sicher, dass nur eindeutige ausgegeben werden
+  SELECT 
+    dependency_id,
+    max(db_service_url) AS db_service_url
+  FROM
+    report_datasources
+  GROUP BY
+    dependency_id
+  HAVING count(*) = 1
 ),
 
 custom_info AS (
@@ -76,7 +104,7 @@ custom_info AS (
   JOIN
     dsv_dependency_unique dd ON d.id = dd.dependency_id
   LEFT JOIN
-    db_dependency_unique db ON d.id = db.dependency_id
+    report_with_unique_datasource ds ON d.id = ds.dependency_id
   WHERE
     dependency_type = 'simiExtended_FeatureInfo'
 ),
@@ -212,5 +240,5 @@ SELECT
 FROM
   dataprod_union
 WHERE
-  root_published IS TRUE 
+  root_published IS TRUE
 

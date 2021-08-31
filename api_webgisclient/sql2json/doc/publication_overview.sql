@@ -12,13 +12,12 @@ dp AS (
       WHEN dtype = 'simiData_RasterView' THEN 'View (R)'
       WHEN dtype = 'simiData_TableView' THEN 'View (T)'
       WHEN dtype = 'simiProduct_FacadeLayer' THEN 'Fassade'
+      WHEN dtype = 'simiProduct_Map' THEN 'Karte'
       ELSE 'ERROR - UNMAPPED TYPE'
     END AS res_type,
     id
   FROM
     simi.simi.simiproduct_data_product 
-  WHERE
-    dtype != 'simiProduct_Map'
 ),
 
 report AS (

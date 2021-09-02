@@ -4,6 +4,7 @@
   "config": {
     "clients": {"$trafo:list": "ccc_client.sql"},
     "zoomto_data_service_url": "http://data-service.gdi-test.svc",
+    "zoomto_min_scale": 1000,
     "zoomto_full_extent": [
       2590983.475,
       1212806.115,

@@ -1,55 +1,44 @@
 
 WITH 
 
-tableview AS (
-  SELECT 
-    identifier,
-    root_published,
-    jsonb_build_object(
-      'name', identifier,
-      'type', 'layer',
-      'title', title_ident,
-      'attributes', a.attr_names_json, 
-      'queryable', TRUE 
-    ) AS layer_json,
-    dp.dp_id AS tv_id
-  FROM 
-    simi.trafo_published_dp_v dp
-  JOIN
-    simi.trafo_tableview_attr_with_geo_v a ON dp.dp_id = a.tv_id
-),
-
-rasterview AS (
-  SELECT 
-    identifier,
-    root_published,
-    jsonb_build_object(
-      'name', identifier,
-      'type', 'layer',
-      'title', title_ident,
-      'queryable', TRUE 
-    ) AS layer_json,
-    rv.id AS rv_id
-  FROM
-    simi.trafo_published_dp_v dp
-  JOIN 
-    simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
-  JOIN 
-    simi.simidata_raster_view rv ON dsv.id = rv.id
-  JOIN 
-    simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id   
-), 
-
 datasetview AS (
-  SELECT identifier, root_published, layer_json, rv_id AS dsv_id FROM rasterview
-  UNION ALL 
-  SELECT identifier, root_published, layer_json, tv_id AS dsv_id FROM tableview
+  SELECT 
+    identifier,
+    root_published,
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'name', identifier,
+        'type', 'layer',
+        'title', title_ident,
+        'attributes', a.attr_names_json, 
+        'queryable', TRUE 
+      ) 
+    ) AS layer_json,
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'name', identifier,
+        'type', 'layer',
+        'title', title_ident,
+        'attributes', a.attr_names_json, 
+        'queryable', TRUE, 
+        'opacity', (100 - transparency)
+      ) 
+    ) AS layer_in_fl_json, --Hack: Kinder der Facadelayer haben in ogcservice transparenz
+    dsv.id AS dsv_id
+  FROM 
+    simi.simidata_data_set_view dsv
+  JOIN 
+    simi.trafo_published_dp_v dp ON dsv.id = dp.dp_id   
+  JOIN
+    simi.simi.simiproduct_single_actor sa ON dsv.id = sa.id
+  LEFT JOIN
+    simi.trafo_tableview_attr_with_geo_v a ON dp.dp_id = a.tv_id -- Bei rastern ist attr_names_json aufgrund des LEFT JOIN NULL --> ATTRIBUTES werden für raster nicht ausgegeben
 ),
 
 facadelayer_children AS (
   SELECT
     p.facade_layer_id AS fl_id,
-    jsonb_agg(layer_json ORDER BY p.sort) AS child_layers
+    jsonb_agg(layer_in_fl_json ORDER BY p.sort) AS child_layers
   FROM
     simi.simiproduct_properties_in_facade p
   JOIN
@@ -130,8 +119,9 @@ SELECT
 FROM 
   all_layers
 WHERE 
-  root_published IS TRUE 
+  root_published IS TRUE
 ORDER BY
   identifier
+
 
 

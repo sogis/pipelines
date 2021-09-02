@@ -72,7 +72,7 @@ prodlist_sa_properties AS (
         'abstract', const_description,
         'visibility', visible,
         'queryable', TRUE,
-        'opacity', 255 - transparency,
+        'opacity', round(255 - (transparency::real/100*255))
         'bbox', const_bbox      
       ) ORDER BY sort
     ) AS sa_props_json

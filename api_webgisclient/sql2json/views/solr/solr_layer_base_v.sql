@@ -7,7 +7,6 @@ WITH
 dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProducts
   SELECT 
     identifier,    
-    (m.id IS NOT NULL AND m.background IS TRUE) AS bg_map, -- Hintergrundkarte?
     COALESCE(title, identifier) as title,
     CASE dp.dtype
       WHEN 'simiData_TableView' THEN 'datasetview'
@@ -105,9 +104,9 @@ solr_record AS (
     concat_ws(', ', title, synonyms) AS search_1_stem,
     concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
     concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
-    CASE bg_map
-      WHEN FALSE THEN 'foreground'
-      ELSE 'background'
+    CASE
+      WHEN identifier IN ('ch.so.agi.hintergrundkarte_sw','ch.so.agi.hintergrundkarte_farbig','ch.so.agi.hintergrundkarte_ortho') THEN 'background'
+      ELSE 'foreground'
     END AS facet
   FROM 
     dp_published dp
@@ -120,7 +119,7 @@ solr_record AS (
 SELECT 
   * 
 FROM
-  solr_record
+  solr_record 
 ;
 
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin

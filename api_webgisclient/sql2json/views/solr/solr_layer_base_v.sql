@@ -119,10 +119,8 @@ solr_record AS (
 SELECT 
   * 
 FROM
-  solr_record
-WHERE 
+  solr_record 
 ;
-
 
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;

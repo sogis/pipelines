@@ -229,7 +229,7 @@ facadelayer AS (
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'opacity', round(255 - (transparency::real/100*255)),
         'queryable', const_queryable,
-        'crs', const_crs,
+        --'crs', const_crs,
         'sublayers', sublayer_json,
         'searchterms', solr_facet_ident_arr
       )
@@ -294,7 +294,7 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'opacity', const_opacity,
         'queryable', const_queryable,
-        'crs', const_crs,      
+        ---'crs', const_crs,      
         'sublayers', sublayer_json
       )
     ) AS layer_json

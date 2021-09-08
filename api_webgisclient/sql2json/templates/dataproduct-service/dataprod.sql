@@ -267,13 +267,25 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
     product_list_id  
 ),
 
+bglayer_overrides AS ( -- Uebersteuerung der Eigenschaften der Background-Layer
+    SELECT 
+      * 
+    FROM (
+      VALUES 
+        ('ch.so.agi.hintergrundkarte_farbig', 'facadelayer', 'background'), 
+        ('ch.so.agi.hintergrundkarte_sw', 'facadelayer', 'background'), 
+        ('ch.so.agi.hintergrundkarte_ortho', 'facadelayer', 'background')
+    ) 
+    AS t (bg_ident, bg_layertype, bg_facet)
+),
+
 productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_or_ext = TRUE, Layergroup.print_or_ext = FALSE 
   SELECT 
     identifier, 
     jsonb_strip_nulls(
       jsonb_build_object(
         'identifier', identifier,
-        'type', 'layergroup',
+        'type', COALESCE(bg_layertype, 'layergroup'),
         'display', title_ident,
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,
@@ -290,6 +302,8 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
     dprod dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
+  LEFT JOIN 
+    bglayer_overrides bg ON dp.identifier = bg.bg_ident
   CROSS JOIN
     constant_fields
 ),

@@ -54,8 +54,6 @@ pipeline {
                         }
                     else if ( namespace == 'gdi-integration' ) {
                         solrEnv = 'integration'
-                        currentBuild.result = 'ABORTED'
-                        error('No rollout in Integration possible at the moment. Please use https://jenkins-agi-apps-production.dev.so.ch')
                         }
                     else if ( namespace == 'gdi-production' ) {
                         solrEnv = 'production'

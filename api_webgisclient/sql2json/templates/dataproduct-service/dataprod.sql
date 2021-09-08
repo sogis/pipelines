@@ -9,7 +9,7 @@ constant_fields AS (
     '$$WMS_SERVICE_URL$$' AS const_wms_service_url,
     TRUE AS const_queryable,
     255 AS const_opacity,
-    'Fuu bar bjsvwjek' AS const_crs,
+    'EPSG:2056' AS const_crs,
     'somap' AS const_root_name
   FROM
     generate_series(1,1)

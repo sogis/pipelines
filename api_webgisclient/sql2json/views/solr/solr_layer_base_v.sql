@@ -1,7 +1,7 @@
 
-DROP VIEW IF EXISTS simi.solr_layer_base_v;
+--DROP VIEW IF EXISTS simi.solr_layer_base_v;
 
-CREATE VIEW simi.solr_layer_base_v AS
+--CREATE VIEW simi.solr_layer_base_v AS
  
 
 WITH
@@ -11,11 +11,11 @@ bglayer_overrides AS ( -- Uebersteuerung der Eigenschaften der Background-Layer
       * 
     FROM (
       VALUES 
-        ('ch.so.agi.hintergrundkarte_farbig', 'facadelayer', 'background'), 
-        ('ch.so.agi.hintergrundkarte_sw', 'facadelayer', 'background'), 
-        ('ch.so.agi.hintergrundkarte_ortho', 'facadelayer', 'background')
+        ('ch.so.agi.hintergrundkarte_farbig', 'background'), 
+        ('ch.so.agi.hintergrundkarte_sw', 'background'), 
+        ('ch.so.agi.hintergrundkarte_ortho', 'background')
     ) 
-    AS t (bg_ident, bg_layertype, bg_facet)
+    AS t (bg_ident, bg_facet)
 ),
 
 dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProducts
@@ -29,7 +29,7 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
       WHEN 'simiData_RasterView' THEN 'datasetview'
       ELSE 'ERR:UnknownType'
     END AS dp_typ,    
-    'foreground' AS facet,
+    COALESCE(bg.bg_facet, 'foreground') AS facet,
     (description IS NOT NULL) AS dprod_has_info, -- Metainformationen vorhanden?
     description,
     keywords,
@@ -41,35 +41,17 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
     simi.simiproduct_data_product dp 
   LEFT JOIN
     simi.simiproduct_map m ON dp.id = m.id
+  LEFT JOIN 
+    bglayer_overrides bg ON dp.identifier = bg.bg_ident
   WHERE
     m.id IS NULL -- EXCLUDE maps
 ),
-
-dp_bgkorr AS ( -- dp mit overrides für die Background-Layer
-  SELECT
-    identifier,    
-    title,
-    COALESCE(bg_layertype, dp_typ) AS dp_typ, 
-    COALESCE(bg_facet, facet) AS facet,
-    dprod_has_info,
-    description,
-    keywords,
-    synonyms,
-    amt_ident,
-    dp_id,
-    pub_scope_id 
-  FROM
-    dp_base dp
-  LEFT JOIN
-    bglayer_overrides bg ON dp.identifier = bg.bg_ident
-),
-
 
 dp_published AS ( -- Alle Dataproducts, welche für sich stehend (Eigene Zeile) im solr INDEX vorkommen
   SELECT 
     dp.*
   FROM 
-    dp_bgkorr dp
+    dp_base dp
   JOIN  
     simi.simiproduct_data_product_pub_scope ps on dp.pub_scope_id = ps.id 
   WHERE
@@ -95,7 +77,7 @@ prodlist_children AS ( -- Alle Kinder von Produktlisten, welche nicht als zu lö
   FROM
     simi.simiproduct_properties_in_list pil
   JOIN
-    dp_bgkorr dp ON pil.single_actor_id = dp.dp_id
+    dp_base dp ON pil.single_actor_id = dp.dp_id
   WHERE 
     dp.pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' -- Zu löschende entfernen
 ),
@@ -168,8 +150,8 @@ SELECT
 FROM
   solr_record 
 ;
-
+/*
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;
 GRANT SELECT ON TABLE simi.solr_layer_base_v TO simi_write, sogis_service
-;
+;*/

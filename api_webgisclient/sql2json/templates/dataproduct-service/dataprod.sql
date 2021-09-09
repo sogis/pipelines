@@ -9,7 +9,6 @@ constant_fields AS (
     '$$WMS_SERVICE_URL$$' AS const_wms_service_url,
     TRUE AS const_queryable,
     255 AS const_opacity,
-    'EPSG:2056' AS const_crs,
     'somap' AS const_root_name
   FROM
     generate_series(1,1)
@@ -229,7 +228,6 @@ facadelayer AS (
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'opacity', round(255 - (transparency::real/100*255)),
         'queryable', const_queryable,
-        --'crs', const_crs,
         'sublayers', sublayer_json,
         'searchterms', solr_facet_ident_arr
       )
@@ -267,25 +265,13 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
     product_list_id  
 ),
 
-bglayer_overrides AS ( -- Uebersteuerung der Eigenschaften der Background-Layer
-    SELECT 
-      * 
-    FROM (
-      VALUES 
-        ('ch.so.agi.hintergrundkarte_farbig', 'facadelayer', 'background'), 
-        ('ch.so.agi.hintergrundkarte_sw', 'facadelayer', 'background'), 
-        ('ch.so.agi.hintergrundkarte_ortho', 'facadelayer', 'background')
-    ) 
-    AS t (bg_ident, bg_layertype, bg_facet)
-),
-
 productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_or_ext = TRUE, Layergroup.print_or_ext = FALSE 
   SELECT 
     identifier, 
     jsonb_strip_nulls(
       jsonb_build_object(
         'identifier', identifier,
-        'type', COALESCE(bg_layertype, 'layergroup'),
+        'type', 'layergroup',
         'display', title_ident,
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,
@@ -293,8 +279,7 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
         'description_base64', desc_b64,
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'opacity', const_opacity,
-        'queryable', const_queryable,
-        ---'crs', const_crs,      
+        'queryable', const_queryable,   
         'sublayers', sublayer_json
       )
     ) AS layer_json
@@ -302,8 +287,6 @@ productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kinde
     dprod dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
-  LEFT JOIN 
-    bglayer_overrides bg ON dp.identifier = bg.bg_ident
   CROSS JOIN
     constant_fields
 ),

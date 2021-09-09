@@ -154,6 +154,31 @@ sa_objsearch AS (
     sa_id
 ),
 
+dsv_qml_assetfile AS (
+  SELECT 
+    dataset_set_view_id AS dsv_id,
+    jsonb_build_object(
+      'path', file_name,
+      'base64', encode(file_content, 'base64')
+    ) AS file_json
+  FROM
+    simi.simidata_styleasset s  
+  JOIN
+    simi.simidata_data_set_view dsv ON s.dataset_set_view_id = dsv.id
+  WHERE 
+    is_for_server = (dsv.style_desktop IS NULL) -- Falls kein desktop qml existiert (style_desktop), sind die assets für das SERVER qml
+),
+
+dsv_qml_assetfiles AS (
+  SELECT 
+    dsv_id,
+    jsonb_agg(file_json) AS assetfiles_json
+  FROM 
+    dsv_qml_assetfile
+  GROUP BY 
+    dsv_id
+),
+
 dsv AS (
   SELECT 
     dp.identifier,
@@ -163,6 +188,7 @@ dsv AS (
         'display', title_ident,
         'description_base64', desc_b64,
         'qml_base64', encode(convert_to(COALESCE(style_desktop, style_server), 'UTF8'), 'base64'),
+        'qml_assets', assetfiles_json,
         'opacity', round(255 - (transparency::real/100*255)),
         'wms_datasource', jsonb_build_object('name', dp.identifier, 'service_url', const_wms_service_url),
         'datatype', COALESCE(vectype, 'raster'), -- Falls raster ergibt der LEFT JOIN auf pg_table für vectype null
@@ -188,6 +214,8 @@ dsv AS (
     rasterview_ds_props r ON dsv.id = r.rv_id
   LEFT JOIN
     sa_objsearch os ON dsv.id = os.sa_id 
+  LEFT JOIN 
+    dsv_qml_assetfiles a ON dsv.id = a.dsv_id
   CROSS JOIN
     constant_fields
   WHERE

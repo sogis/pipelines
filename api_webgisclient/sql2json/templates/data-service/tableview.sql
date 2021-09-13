@@ -5,7 +5,8 @@ geo_tbl AS ( --Tables mit vollständig ausgefüllten Infos zur Geometrie-Spalte
     jsonb_build_object(
       'geometry_column', geo_field_name,
       'geometry_type', geo_type,
-      'srid', geo_epsg_code
+      'srid', geo_epsg_code,
+      'allow_null', TRUE
     ) AS geo_props_obj,
     id AS tbl_id
   FROM

@@ -116,7 +116,7 @@ pipeline {
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}"
                 }
             }
         }

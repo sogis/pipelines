@@ -18,14 +18,14 @@ oc policy add-role-to-user edit system:serviceaccount:agi-apps-test:jenkins -n g
 
 Now the the jenkins service account of the project *agi-apps-test* has edit access to the three gdi environments test,int and prod
 
-### Install Config Generator Agent
-To run the pipeline you need a config-generator-agent in jenkins. Run the following commands to make the config-generator-agent available in jenkins.
+### Install Json2qgs Agent
+To run the pipeline you need a json2qgs-agent in jenkins. Run the following commands to make the json2qgs-agent available in jenkins.
 Use name of the project where jenkins is running for *projectname* and the tag of the config generator agent image for *tag*
 ```
 oc project agi-apps-test
-oc process -f template-configGenAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
+oc process -f template-json2qgsAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
 ```
-The config-generator-agent pod requires a secret named config-generator-agent-pg-service. The secret definition is saved in H:\BJSVW\Agi\GDI\Betrieb\Openshift\Pipelines\secret-config-generator-agent-pg-service.yaml
+The json2qgs-agent pod requires a secret named config-generator-agent-pg-service. The secret definition is saved in H:\BJSVW\Agi\GDI\Betrieb\Openshift\Pipelines\secret-config-generator-agent-pg-service.yaml
 Create the secret
 ```
 oc project agi-apps-test
@@ -78,6 +78,6 @@ To start a build of the  *WebGISClient* Job as anonymous user from outside the J
 ### Number of Build Processors
 For an efficient use of the pipeline the *Anzahl der Build-Prozessoren* has to be increased to 20 => https://jenkins-agi-apps-test.dev.so.ch/configure
 
-### Install and use of the Config Generator Agent
+### Install and use of the Json2qgs Agent
 
-=> https://github.com/sogis/config-generator-jenkins-agent/blob/main/README.md
+=> https://github.com/sogis/json2qgs-agent/blob/main/README.md

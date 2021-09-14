@@ -94,6 +94,10 @@ objects:
           - mountPath: /data
             name: datensogispicmir
             readOnly: true
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
+            readOnly: true
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -103,5 +107,9 @@ objects:
           persistentVolumeClaim:
             claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
+        - name: qgs-resources
+          persistentVolumeClaim:
+              claimName: qgs-resources-claim
+              readOnly: true
     test: false
     triggers: []

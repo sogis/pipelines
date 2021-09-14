@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json",
+  "service": "feature-info",
+  "config": {
+    "default_qgis_server_url": "http://qgis-server.gdi-test.svc/ows"
+  },
+  "resources": {
+    "wms_services": [
+      {
+        "name": "somap",
+        "root_layer": {
+          "name": "somap",
+          "layers": {"$trafo:list": "feat_info.sql"}
+        }
+      }
+    ]
+  }
+}

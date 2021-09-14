@@ -1,0 +1,8 @@
+{
+  "$schema": "https://github.com/qwc-services/sogis-dataproduct-service/raw/master/schemas/sogis-dataproduct-service.json",
+  "service": "dataproduct",
+  "config": {},
+  "resources": {
+    "dataproducts": {"$trafo:list": "dataprod.sql"}
+  }
+}

@@ -234,7 +234,7 @@ objects:
         }
 
         location /api/v1/ccc {
-            proxy_pass http://ccc-config-service.${NAMESPACE}.svc/api/v1/ccc;
+            proxy_pass http://ccc-config.${NAMESPACE}.svc/api/v1/ccc;
         }
 
         location /api/v1/document {

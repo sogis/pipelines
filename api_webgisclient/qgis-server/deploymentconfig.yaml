@@ -99,15 +99,8 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /data/symbols
+          - mountPath: /data
             name: qgs-resources
-            subPath: symbols
-          - mountPath: /data/print
-            name: qgs-resources
-            subPath: print
-          - mountPath: /data/uploads
-            name: qgs-resources
-            subPath: uploads
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/postgresql-common

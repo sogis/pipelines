@@ -1,0 +1,128 @@
+def serviceName = 'ccc-config'
+def configFileName = 'cccConfig.json'
+def baseImage = 'sourcepole/sogis-ccc-config'
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+
+pipeline {
+    agent { label 'master' } 
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 10, unit: 'MINUTES')
+        }
+    parameters {
+        string(defaultValue: "latest",
+               description: 'Basis Image Version',
+               name: 'vBaseImage'
+               )
+        string(description: 'Tag des generierten bzw. deployten Images',
+               name: 'vDeployImage'
+               )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
+        string(description: 'Anzahl der Replicas',
+               defaultValue: '1',
+               name: 'replicas'
+               )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        choice(choices: ['ja','nein'],
+               description: 'Soll das Image gebaut werden?',
+               name: 'build'     
+               )
+        }
+
+    stages {
+        stage ('Ask for Version') {
+            steps {
+                script {
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    vBaseImage = params.vBaseImage
+                    vDeployImage = params.vDeployImage
+                    replicas = params.replicas
+                    branch = params.branch
+                    build = params.build
+                    namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) { 
+                      db_server = env.DB_SERVER_TEST
+                      geo_db_server = env.GEO_DB_SERVER_TEST
+                      baseUrl = 'geo-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    else if ( namespace == 'gdi-integration' ) { 
+                      db_server = env.DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_TEST
+                      baseUrl = 'geo-i.so.ch'
+                      resources = ['cpu_request': '20m', 'cpu_limit': '50m', 'memory_request': '20Mi', 'memory_limit': '40Mi']
+                      }
+                    else if ( namespace == 'gdi-production' ) { 
+                      db_server = env.DB_SERVER_PROD
+                      geo_db_server = env.GEO_DB_SERVER_PROD
+                      baseUrl = 'geo.so.ch'
+                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '40Mi', 'memory_limit': '80Mi']
+                      }
+                    else {
+                      baseUrl = 'geo-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    if (params.containsKey("configs")) {
+                        buildNumber = params.buildNumber
+                        jobName = params.jobName
+                        }
+                    else {
+                        buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
+                        }
+                    credentials = [ 
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service-write' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
+                        usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
+                        ]
+                    }
+                }
+            }
+        stage ('Configure Ressources') {
+            steps {
+                withCredentials ( credentials ) {
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p NAMESPACE=${namespace}"
+                    }
+                }
+            }
+        stage ('Create configs') {
+            steps {
+                withCredentials ( credentials ) {
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'sogis'
+                    }
+                }
+            }
+        stage ('Tag Image') {
+            steps {
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
+                }
+            }
+        stage ('Deploy ccc-config-service in Test env') {
+            steps {
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
+                }
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs
+                rm -rf $WORKSPACE/*
+            """
+            }
+        }
+    }

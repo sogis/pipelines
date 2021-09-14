@@ -1,0 +1,21 @@
+@startuml
+
+package "Abhängigkeiten der Views für WMS und Print" {
+
+    [trafo_wms_layer_v]
+    [trafo_wms_geotable_v]
+    [trafo_published_dp_v]
+    [trafo_wms_rootlayer_v]
+    [trafo_wms_tableview_v]
+    
+    trafo_wms_rootlayer_v --> trafo_published_dp_v
+    trafo_wms_tableview_v --> trafo_published_dp_v
+    
+    trafo_wms_tableview_v --> trafo_wms_geotable_v
+
+    trafo_wms_layer_v --> trafo_wms_geotable_v
+    trafo_wms_layer_v --> trafo_published_dp_v
+    trafo_wms_layer_v --> trafo_wms_tableview_v
+}
+
+@enduml

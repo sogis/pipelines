@@ -20,6 +20,8 @@ parameters:
     name: MEMORY_REQUEST
   - description: Memory Limit
     name: MEMORY_LIMIT
+  - description: WMTS Base Url
+    name: WMTS_URL
 labels:
   application: gdi
 objects:
@@ -76,6 +78,8 @@ objects:
             value: /api/search/v2/
           - name: SEARCH_DATA_SERVICE_URL
             value: /api/data/v1/
+          - name: WMTS_URL
+            value: ${WMTS_URL}
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
@@ -129,6 +133,10 @@ objects:
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
+            readOnly: true
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -143,5 +151,9 @@ objects:
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim
+            readOnly: true
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
             readOnly: true
     triggers: []

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://github.com/qwc-services/sogis-config-generator/raw/master/schemas/qwc-saml-auth.json",
+  "service": "saml-auth",
+  "config": {
+    "saml_path": "/srv/qwc_service/saml",
+    "saml_slo": true,
+    "group_attr": "department_qualified",
+    "spnq": "https://geo-t.so.ch/auth/metadata/",
+    "name_id": "",
+    "ip_network": "10.36.0.0/16"
+  }
+}

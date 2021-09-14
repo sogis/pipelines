@@ -64,21 +64,6 @@ pipeline {
                     }
                 }
             }
-        stage('create configs') {
-            agent { label 'config-generator-agent' }
-            steps {
-                script {
-                    createConfigs namespace
-                    }
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
-                    }
-                }
-            } 
         stage('update Solr Metadaten') {
             steps {
                 script {
@@ -106,6 +91,14 @@ pipeline {
                             }
                         }
                     }
+                }
+            }
+        stage('Update permissions') {
+            when {
+                expression { AuswahlRollout == 'Permissions' || AuswahlRollout == 'Alles' || AuswahlRollout == 'Datasets/Dataproducts' }
+                }
+            steps {
+                build job: 'permission', parameters: [ string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'deploy', value: true), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true
                 }
             }
         stage('Deploy Services') {

@@ -1,0 +1,20 @@
+{
+  "schema": "https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json",
+  "users": {"$trafo:list": "users.sql"},
+  "groups": {"$trafo:list": "groups.sql"},
+  "roles": {"$trafo:list": "role_permissions.sql"},
+  "wms_name": "somap",
+  "wfs_name": "somap",
+  "dataproducts": {"$trafo:list": "dataprod_properties.sql"},
+  "common_resources": [
+    "wgc_hintergrundkarte_sw",
+    "wgc_hintergrundkarte_farbig",
+    "wgc_hintergrundkarte_ortho",
+    "A4 hoch",
+    "A4 quer",
+    "A3 hoch",
+    "A3 quer",
+    "foreground",
+    "background"
+  ] 
+}

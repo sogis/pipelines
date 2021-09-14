@@ -1,5 +1,6 @@
 def serviceName = 'qgis-server'
-def configFileName = 'somap.qgs'
+def configFileName = 'somap.json'
+def baseImage = 'sogis/qgis-server'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -77,17 +78,12 @@ pipeline {
                       replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
-                    if (params.containsKey("configs")) {
-                        buildNumber = params.buildNumber
-                        jobName = params.jobName
-                        }
-                    else {
-                        buildNumber = BUILD_NUMBER
-                        jobName = JOB_NAME
-                        }
+                    buildNumber = BUILD_NUMBER
+                    jobName = JOB_NAME
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server', usernameVariable: 'DbUserOgcServer', passwordVariable: 'PwdOgcServer'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                              , usernameVariable: 'apiUser'        , passwordVariable: 'PwdApiUser')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
+                        usernamePassword(credentialsId: 'jenkinsApi'                                 , usernameVariable: 'apiUser'           , passwordVariable: 'PwdApiUser')
                         ]
                     }
                 }
@@ -100,43 +96,49 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            when {
-               beforeAgent true
-               expression {
-                   (params.configs != true)
-                   }
-               }
-            agent { label 'config-generator-agent' }
             steps {
-                createConfigs namespace
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
+                withCredentials ( credentials ) {
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'wms-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', 'wfs-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', 'print-qgs-content', 'sogis', 'json2qgs'
                     }
                 }
             }
-        stage ('Build new Image for qgis-server if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Create qgs files') {
+            agent { label 'json2qgs-agent' }
             steps {
                 withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
+                    sh """
+                        if [ ! -d "config/default" ]; then
+                          mkdir -p config/default
+                        fi
+                        git clone --depth 1 --branch v1.0.0 https://github.com/simi-so/json2qgs
+                        wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
+                        chmod -R ug+x json2qgs
+                        python3 json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
+                    """
+                    script {
+                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
+                        sh """
+                           oc rsync -n ${namespace} config/default/ $PODNAME:/data
+                        """
+                        }
+                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    }
+                }
+            post {
+                always {
+                    sh """
+                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
+                    """
                     }
                 }
             }
         stage ( 'Tag Image in Openshift' ) { 
             steps {
-                script {
-                    sh """ 
-                       oc tag -n $namespace --source=imagestreamtag qgis-server:$vDeployImage qgis-server:latest
-                    """
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy qgis-server') {

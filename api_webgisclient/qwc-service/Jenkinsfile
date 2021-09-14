@@ -1,5 +1,6 @@
 def serviceName = 'qwc-service'
 def configFileName = 'mapViewerConfig.json'
+def baseImage = 'sourcepole/sogis-map-viewer'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -54,22 +55,26 @@ pipeline {
                       db_server = env.DB_SERVER_TEST
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       analyticsUrl = 'geo-i.so.ch'
+                      wmtsUrl = 'https://geo-t.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       analyticsUrl = 'geo-i.so.ch'
+                      wmtsUrl = 'https://geo.so.ch'
                       resources = ['cpu_request': '80m', 'cpu_limit': '160m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       analyticsUrl = 'geo.so.ch'
+                      wmtsUrl = 'https://geo.so.ch'
                       resources = ['cpu_request': '160m', 'cpu_limit': '320m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
                       analyticsUrl = 'geo-i.so.ch'
+                      wmtsUrl = 'https://geo-t.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     if (params.containsKey("configs")) {
@@ -98,39 +103,20 @@ pipeline {
                 }
             }
         stage ('Create configs') {
-            when {
-               beforeAgent true
-               expression {
-                   (params.configs != true)
-                   }
-               }
-            agent { label 'config-generator-agent' }
             steps {
-                createConfigs namespace
-                }
-            post {
-                unsuccessful {
-                    sh """
-                        rm -rf /srv/qwc_service/config /srv/qwc_service/legends $env.WORKSPACE/legends $env.WORKSPACE/config
-                    """
+                withCredentials ( credentials ) {
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'map-viewer', 'qwc'
                     }
                 }
             }
-        stage ('Build new Image for qwc-service if necessary') {
-            when {
-                expression {
-                    (build == 'ja')
-                    }
-                }
+        stage ('Tag Image') {
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, ""
-                    }
+                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
                 }
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}"
                 }
             }
         }

@@ -2,7 +2,7 @@
   "$schema": "https://github.com/qwc-services/qwc-permalink-service/raw/master/schemas/qwc-permalink-service.json",
   "service": "permalink",
   "config": {
-    "db_url": "postgresql:///?service=soconfig_services",
-    "permalinks_table": "public.permalinks"
+    "db_url": "postgresql:///?service=sogis_edit_write",
+    "permalinks_table": "agi_webgisclient.permalinks"
   }
 }

@@ -103,14 +103,6 @@ pipeline {
             }
         stage('Deploy Services') {
             parallel {
-                 stage ('Deploy agdi') {
-                    when {
-                        expression { AuswahlRollout == 'Alles' }
-                    }
-                    steps {
-                        build job: 'agdi', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-agdi-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-agdi-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'build', value: "${build}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true 
-                        }
-                     }
                  stage ('Deploy ccc-service') {
                     when {
                         expression { AuswahlRollout == 'Alles' }

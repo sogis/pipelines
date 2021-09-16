@@ -35,7 +35,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: nginx:mainline-alpine
+          name: nginxinc/nginx-unprivileged:mainline-alpine
         noCache: false
       type: Docker
     resources:

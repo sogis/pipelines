@@ -57,7 +57,7 @@ objects:
           app: gdi
       spec:
         containers:
-        - image: docker-registry.default.svc:5000/${NAMESPACE}/api-gateway:${TAG}
+        - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/api-gateway:${TAG}
           imagePullPolicy: Always
           name: sogis-api-gateway
           ports:

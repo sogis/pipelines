@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   app: jenkins-persistent
@@ -52,7 +52,7 @@ objects:
         <containers>
           <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
             <name>jnlp</name>
-            <image>docker-registry.default.svc:5000/${PROJECTNAME}/json2qgs-agent:${IMAGE_TAG_AGENT}</image>
+            <image>image-registry.openshift-image-registry.svc:5000/${PROJECTNAME}/json2qgs-agent:${IMAGE_TAG_AGENT}</image>
             <privileged>false</privileged>
             <alwaysPullImage>true</alwaysPullImage>
             <workingDir>/tmp</workingDir>

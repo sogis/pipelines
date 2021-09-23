@@ -68,7 +68,7 @@ objects:
             value: https://${BASEURL}/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
-          image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

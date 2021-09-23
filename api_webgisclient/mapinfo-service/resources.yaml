@@ -122,7 +122,7 @@ objects:
     tags:
     - from:
         kind: DockerImage
-        name: docker-registry.default.svc:5000/${NAMESPACE}/mapinfo-service:latest
+        name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/mapinfo-service:latest
       name: latest
 - apiVersion: v1
   kind: Service

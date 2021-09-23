@@ -62,7 +62,7 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/permalink
-          image: docker-registry.default.svc:5000/${NAMESPACE}/permalink-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/permalink-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

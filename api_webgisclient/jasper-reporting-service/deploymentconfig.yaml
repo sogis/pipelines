@@ -62,7 +62,7 @@ objects:
                   fieldPath: metadata.namespace
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
-          image: docker-registry.default.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

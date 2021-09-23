@@ -69,7 +69,7 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/document
-          image: docker-registry.default.svc:5000/${NAMESPACE}/document-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/document-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

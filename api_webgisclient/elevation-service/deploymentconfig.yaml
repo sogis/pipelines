@@ -56,7 +56,7 @@ objects:
         - env:
           - name: CONFIG_PATH
             value: "/srv/qwc_service/config"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/elevation-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

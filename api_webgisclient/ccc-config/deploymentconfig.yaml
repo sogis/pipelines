@@ -69,7 +69,7 @@ objects:
             - name: SERVICE_MOUNTPOINT
               value: "/api/v1/ccc"
             image: >-
-              docker-registry.default.svc:5000/${NAMESPACE}/ccc-config:${TAG}
+              image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/ccc-config:${TAG}
             imagePullPolicy: Always
             livenessProbe:
               failureThreshold: 3

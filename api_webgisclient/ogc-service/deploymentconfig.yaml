@@ -76,7 +76,7 @@ objects:
             value: /ows
           - name: UWSGI_EXTRA
             value: --thunder-lock --stats 127.0.0.1:1717  --disable-logging --reload-on-rss 128
-          image: docker-registry.default.svc:5000/${NAMESPACE}/ogc-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/ogc-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

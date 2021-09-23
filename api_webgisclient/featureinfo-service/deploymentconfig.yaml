@@ -73,7 +73,7 @@ objects:
             value: /srv/qwc_service/config
           - name: USE_PERMISSION_ATTRIBUTE_ORDER
             value: "True"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

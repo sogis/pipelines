@@ -107,6 +107,7 @@ objects:
             name: qgis-server-config-claim
         dnsPolicy: ClusterFirst
         restartPolicy: Always
+        serviceAccountName: qgis-server
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:

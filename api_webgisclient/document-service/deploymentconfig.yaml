@@ -69,7 +69,7 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/document
-          image: sourcepolei/qwc-document-service:${TAG}
+          image: sourcepole/qwc-document-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3

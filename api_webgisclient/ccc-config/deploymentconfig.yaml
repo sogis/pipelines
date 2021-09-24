@@ -68,9 +68,8 @@ objects:
               value: "/srv/qwc_service/config"
             - name: SERVICE_MOUNTPOINT
               value: "/api/v1/ccc"
-            image: >-
-              image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/ccc-config:${TAG}
-            imagePullPolicy: Always
+            image: sourcepole/sogis-ccc-config:${TAG}
+            imagePullPolicy: IfNotPresent
             livenessProbe:
               failureThreshold: 3
               httpGet:

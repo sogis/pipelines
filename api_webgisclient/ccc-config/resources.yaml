@@ -10,19 +10,6 @@ parameters:
     name: NAMESPACE
 objects:
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: ccc-config
-    labels:
-      app: gdi
-      service: ccc-config
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/ccc-config:latest
-      name: latest
-- apiVersion: v1
   kind: Service
   metadata:
     annotations:

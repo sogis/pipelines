@@ -92,8 +92,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/plotinfo
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/plotinfo-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-plotinfo-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

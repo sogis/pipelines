@@ -70,8 +70,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/search/v2
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/search-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/qwc-fulltext-search-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

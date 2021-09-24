@@ -67,7 +67,7 @@ objects:
           - name: spnq
             value: https://${BASEDOMAIN}/auth/metadata/
           image: sourcepole/sogis-auth-service:${TAG}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

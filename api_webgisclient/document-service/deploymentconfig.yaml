@@ -69,8 +69,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/document
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/document-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepolei/qwc-document-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

@@ -92,19 +92,6 @@ objects:
       service: qwc-service
       app: gdi
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: qwc-service
-    labels:
-      service: qwc-service
-      app: gdi
-  spec:
-    tags:
-      - name: latest
-        from:
-          kind: DockerImage
-          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/qwc-service:latest'
-- apiVersion: v1
   kind: Service
   metadata:
     annotations:

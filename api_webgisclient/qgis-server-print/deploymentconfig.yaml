@@ -64,8 +64,8 @@ objects:
             value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
             value: "2"
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/qgis-server:${TAG}
-          imagePullPolicy: Always
+          image: sogis/qgis-server:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

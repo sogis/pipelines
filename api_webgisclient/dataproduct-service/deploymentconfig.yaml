@@ -68,8 +68,8 @@ objects:
             value: https://${BASEURL}/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-dataproduct-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

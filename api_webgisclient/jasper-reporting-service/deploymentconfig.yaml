@@ -62,8 +62,8 @@ objects:
                   fieldPath: metadata.namespace
             - name: JASPER_REPORTING_SERVICE
               value: 0.5.1
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/jasper-reporting-service:${TAG}
-          imagePullPolicy: Always
+          image: sogis/jasper-reporting-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

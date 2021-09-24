@@ -72,8 +72,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/landreg
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/landreg-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-landreg-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

@@ -76,8 +76,8 @@ objects:
             value: /ows
           - name: UWSGI_EXTRA
             value: --thunder-lock --stats 127.0.0.1:1717  --disable-logging --reload-on-rss 128
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/ogc-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/qwc-ogc-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

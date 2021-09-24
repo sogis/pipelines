@@ -113,19 +113,6 @@ objects:
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: data-service
-    labels:
-      app: gdi
-      service: data-service
-  spec:
-    tags:
-      - name: latest
-        from:
-          kind: DockerImage
-          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/data-service:latest'
-- apiVersion: v1
   kind: Service
   metadata:
     annotations:

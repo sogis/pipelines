@@ -62,8 +62,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/permalink
-          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/permalink-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/qwc-permalink-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:

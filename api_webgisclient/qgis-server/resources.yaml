@@ -75,19 +75,6 @@ objects:
     name: qgis-server-pg-config
     namespace: ${NAMESPACE}
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: qgis-server
-    labels:
-      app: gdi
-      service: qgis-server
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/qgis-server:latest
-      name: latest
-- apiVersion: v1
   kind: Service
   metadata:
     labels:

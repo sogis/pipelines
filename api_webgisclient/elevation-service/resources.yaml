@@ -11,19 +11,6 @@ parameters:
     value: gdi-devel
 objects:
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: elevation-service
-    labels:
-      app: gdi
-      service: elevation-service
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/elevation-service:latest
-      name: latest
-- apiVersion: v1
   kind: Service
   metadata:
     annotations:

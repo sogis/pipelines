@@ -145,7 +145,7 @@ ext_wms_layerbase AS (
     identifier,
     title_ident,  
     jsonb_build_object(
-      'wms_url', url,
+      'wms_url', concat(url, '/'), -- TRAILING slash für qgis server notwendig
       'layers', el.identifier_list,
       'format', 'image/png',
       'srid', 2056,

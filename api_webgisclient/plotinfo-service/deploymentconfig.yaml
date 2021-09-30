@@ -140,7 +140,7 @@ objects:
         - secret:
             items:
               - key: pg_service.conf
-                path: .pg_service.conf
+                path: pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - name: qgs-resources

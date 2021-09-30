@@ -22,7 +22,7 @@ productlist AS (
 	 dp.root_published IS TRUE 
 ),
 
-single_actor AS ( --$td auf andere VIEW überragen
+single_actor AS (
   SELECT 
   	identifier,
   	(eml.id IS NOT NULL) AS print_or_ext 

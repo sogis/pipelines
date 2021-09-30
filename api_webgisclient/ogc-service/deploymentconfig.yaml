@@ -111,7 +111,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/www
+          - mountPath: /usr/etc/postgresql
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
@@ -125,7 +125,7 @@ objects:
         - secret:
             items:
             - key: pg_service.conf
-              path: .pg_service.conf
+              path: pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - name: qgs-resources

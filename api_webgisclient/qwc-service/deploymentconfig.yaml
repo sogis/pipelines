@@ -129,7 +129,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/www
+          - mountPath: /usr/etc/postgresql
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
@@ -145,7 +145,7 @@ objects:
         - secret:
             items:
             - key: pg_service.conf
-              path: .pg_service.conf
+              path: pg_service.conf
             secretName: qwc-service-pg-config
           name: qwc-service-config-claim
         - name: qwc-assets

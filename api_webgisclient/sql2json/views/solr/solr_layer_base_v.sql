@@ -115,12 +115,16 @@ amt_lookup AS (
   FROM (
     VALUES 
       ('agi', 'Amt für Geoinformation AGI'), 
-      ('afu', 'Amt für Umwelt AFU'), 
+      ('afu', 'Amt für Umwelt AfU'), 
       ('ada', 'Amt für Denkmalschutz und Archäologie ADA'), 
       ('avt', 'Amt für Verkehr und Tiefbau AVT'), 
       ('arp', 'Amt für Raumplanung ARP'),
       ('awjf', 'Amt für Wald, Jagd und Fischerei AWJF'),
-      ('alw', 'Amt für Landwirtschaft ALW')
+      ('alw', 'Amt für Landwirtschaft ALW'),
+      ('amb', 'Amt für Militär und Bevölkerungsschutz AMB'),
+      ('ksta', 'Steueramt KSTA'),
+      ('awa', 'Amt für Wirtschaft und Arbeit AWA'),
+      ('sgv', 'Solothurnische Gebäudeversicherung SGV')
   ) 
   AS t (amt_ident, amt_name)
 ),

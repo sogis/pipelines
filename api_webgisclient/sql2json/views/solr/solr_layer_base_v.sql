@@ -114,12 +114,13 @@ amt_lookup AS (
     * 
   FROM (
     VALUES 
-      ('agi', 'Amt für Geoinformation'), 
-      ('ada', 'Amt für Denkmalschutz und Archäologie'), 
-      ('avt', 'Amt für Verkehr und Tiefbau'), 
-      ('arp', 'Amt für Raumplanung'),
-      ('awjf', 'Amt für Wald, Jagd und Fischerei'),
-      ('alw', 'Amt für Landwirtschaft')
+      ('agi', 'Amt für Geoinformation AGI'), 
+      ('afu', 'Amt für Umwelt AFU'), 
+      ('ada', 'Amt für Denkmalschutz und Archäologie ADA'), 
+      ('avt', 'Amt für Verkehr und Tiefbau AVT'), 
+      ('arp', 'Amt für Raumplanung ARP'),
+      ('awjf', 'Amt für Wald, Jagd und Fischerei AWJF'),
+      ('alw', 'Amt für Landwirtschaft ALW')
   ) 
   AS t (amt_ident, amt_name)
 ),

@@ -19,8 +19,7 @@ dprod AS (
     pub.identifier,
     title_ident,
     root_published,
-    encode(convert_to(COALESCE(description, 'Keine Beschreibung. Wird nach Schemakorrektur auf NULL gesetzt - bjsvwjek'), 'UTF8'), 'base64') AS desc_b64, --$td: COALESCE entfernen nachdem SCHEMA bug behoben ist https://github.com/simi-so/json2qgs/issues/30
-    dp_id
+    encode(convert_to(COALESCE(description, '-'), 'UTF8'), 'base64') AS desc_b64, -- COALESCE(...), weil das Schema fälschlicherweise immer Beschreibung verlangt    dp_id
   FROM
     simi.trafo_published_dp_v pub
   JOIN

@@ -112,7 +112,7 @@ pipeline {
                         chmod -R ug+x json2qgs
                         python3 json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir json2qgs/qgs
                         python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
-                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wms ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
+                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
                     """
                     script {
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()

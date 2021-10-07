@@ -7,7 +7,7 @@ pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
 	SELECT 
 		tbl.id AS table_id,
 		jsonb_build_object(
-			'dbconnection', db_service_url,
+ 			'dbconnection', concat('service=', db.db_service_url),			
 			'schema', schema_name,
 			'table', table_name,
 			'unique_key', id_field_name,

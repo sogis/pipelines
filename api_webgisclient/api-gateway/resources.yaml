@@ -119,13 +119,6 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location ~ /map {
-            if ($args ~ ^l(=[a-z_]+)(.*)bl=(hintergrundkarte_[a-z]*)(.*)$) {
-                return 301 "$uri?l$1$2bl=wgc_$3$4";
-            }
-            proxy_pass http://qwc-service.${NAMESPACE}.svc;
-        }
-        
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
             set $url1 $1; 
             set $url2 $2;

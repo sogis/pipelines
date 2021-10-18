@@ -125,7 +125,7 @@ objects:
             secretName: api-gateway-cert
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim-${ENVIRONMENT}
+            claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
     test: false
     triggers: []

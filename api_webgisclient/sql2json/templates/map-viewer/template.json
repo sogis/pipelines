@@ -622,7 +622,7 @@
             {
               "name": "Autologin",
               "cfg": {
-                "autologinUrl": "https://geoprod.dev.so.ch/map/assets/img/logo.png"
+                "autologinUrl": "https://geoprod.apps.ocp.so.ch/map/assets/img/logo.png"
               }
             },
             {

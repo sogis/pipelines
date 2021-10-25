@@ -19,7 +19,7 @@ dprod AS (
     pub.identifier,
     title_ident,
     root_published,
-    encode(convert_to(COALESCE(description, '-'), 'UTF8'), 'base64') AS desc_b64, -- COALESCE(...), weil das Schema fälschlicherweise immer Beschreibung verlangt    dp_id
+    encode(convert_to(COALESCE(description, '-'), 'UTF8'), 'base64') AS desc_b64, -- COALESCE(...), weil das Schema fälschlicherweise immer Beschreibung verlangt
     dp_id
   FROM
     simi.trafo_published_dp_v pub

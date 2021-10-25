@@ -145,9 +145,9 @@ ext_wms_layerbase AS (
     identifier,
     title_ident,  
     jsonb_build_object(
-      'wms_url', url,
+      'wms_url', concat(url, '/'), -- TRAILING slash für qgis server notwendig
       'layers', el.identifier_list,
-      'format', 'image/jpeg',
+      'format', 'image/png',
       'srid', 2056,
       'styles', '',
       'featureCount', 300
@@ -185,7 +185,7 @@ ext_wmts_layerbase AS (
       'wmts_capabilities_url', url,
       'layer', el.identifier_list,
       'style', el.identifier_list,
-      'format', 'image/jpeg',
+      'format', 'image/png',
       'tile_matrix_set', '2056_27',
       'srid', 2056
     ) AS wmts_datasource_json

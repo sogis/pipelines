@@ -23,7 +23,7 @@ datasetview AS (
         'queryable', TRUE, 
         'opacity', (100 - transparency)
       ) 
-    ) AS layer_in_fl_json, --Hack: Kinder der Facadelayer haben in ogcservice transparenz
+    ) AS layer_in_fl_json, -- Die hier konfigurierte Transparenz der FL-Kinder wird vom ogc-service mit der für den FL übergebenen Transparenz verrechnet. Bsp mit Prozent: FL in OGC Request 50%, Kind in Konf 80% -> Resultierend für Kind in QGS-Server-Request 40%
     dsv.id AS dsv_id
   FROM 
     simi.simidata_data_set_view dsv

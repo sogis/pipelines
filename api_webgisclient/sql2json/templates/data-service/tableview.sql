@@ -118,7 +118,7 @@ tableview AS (
         'table_name', table_name,
         'primary_key', id_field_name,
         'geometry', geo_props_obj,
-        'fields', COALESCE(fields_arr, '[]'::jsonb) --$td remove AFTER SCHEMA update
+        'fields', COALESCE(fields_arr, '[]'::jsonb) -- COALESCE(...) weil das Schema fälschlicherweise immer fields verlangt
       )
     ) AS tv_obj,
     dsv.raw_download,

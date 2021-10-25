@@ -73,10 +73,10 @@ To start a build of the  *WebGISClient* Job as anonymous user from outside the J
 * Name the token *WebGISClientToken* and click generate. Save the token in H:\BJSVW\Agi\KeePass\GDI_Passwort.kdbx
 * Go to *WebGISClient/Konfigurieren/Build Triggers* and activate *Builds von ausserhalb starten*.
 * In *Authentifizerungstoken* add *WebGISClientToken*.
-* Now you could start the build with https://jenkins-agi-apps-test.dev.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
+* Now you could start the build with https://jenkins-agi-apps-test.apps.ocp.so.ch/job/WebGISClient/buildWithParameters?token=tokenName&build=ja&namespace=gdi-test&replicas=1&rolloutAll=nein
 
 ### Number of Build Processors
-For an efficient use of the pipeline the *Anzahl der Build-Prozessoren* has to be increased to 20 => https://jenkins-agi-apps-test.dev.so.ch/configure
+For an efficient use of the pipeline the *Anzahl der Build-Prozessoren* has to be increased to 20 => https://jenkins-agi-apps-test.apps.ocp.so.ch/configure
 
 ### Install and use of the Json2qgs Agent
 

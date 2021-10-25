@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: legend-service
@@ -68,8 +68,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/legend
-          image: docker-registry.default.svc:5000/${NAMESPACE}/legend-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/qwc-legend-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -103,7 +103,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/www
+          - mountPath: /usr/etc/postgresql
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
@@ -118,7 +118,7 @@ objects:
             defaultMode: 420
             items:
             - key: pg_service.conf
-              path: .pg_service.conf
+              path: pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - name: qgs-resources

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: featureinfo-service
@@ -73,7 +73,7 @@ objects:
             value: /srv/qwc_service/config
           - name: USE_PERMISSION_ATTRIBUTE_ORDER
             value: "True"
-          image: docker-registry.default.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
+          image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -108,7 +108,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/www
+          - mountPath: /usr/etc/postgresql
             name: wsgi-service-config-claim
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
@@ -122,7 +122,7 @@ objects:
         - secret:
             items:
             - key: pg_service.conf
-              path: .pg_service.conf
+              path: pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - name: qgs-resources

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: dataproduct-service
@@ -68,8 +68,8 @@ objects:
             value: https://${BASEURL}/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
-          image: docker-registry.default.svc:5000/${NAMESPACE}/dataproduct-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-dataproduct-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -102,7 +102,7 @@ objects:
               cpu: ${CPU_REQUEST}
               memory: ${MEMORY_REQUEST}
           volumeMounts:
-            - mountPath: /var/www
+            - mountPath: /usr/etc/postgresql
               name: wsgi-service-config-claim
             - mountPath: /qgs-resources
               name: qgs-resources
@@ -117,7 +117,7 @@ objects:
           - secret:
               items:
               - key: pg_service.conf
-                path: .pg_service.conf
+                path: pg_service.conf
               secretName: wsgi-service-pg-config
             name: wsgi-service-config-claim
           - name: qgs-resources

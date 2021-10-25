@@ -1,6 +1,5 @@
 def serviceName = 'ogc-service'
 def configFileName = 'ogcConfig.json'
-def baseImage = 'sourcepole/qwc-ogc-service'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -18,9 +17,6 @@ pipeline {
         string(defaultValue: "latest",
                description: 'Basis Image Version',
                name: 'vBaseImage'
-               )
-        string(description: 'Tag des generierten bzw. deployten Images',
-               name: 'vDeployImage'
                )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
@@ -46,7 +42,6 @@ pipeline {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
-                    vDeployImage = params.vDeployImage
                     branch = params.branch
                     build = params.build
                     namespace = params.namespace
@@ -107,14 +102,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image') {
-            steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
-                }
-            }
         stage ('Deploy ogc-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl}"
                 }
             }
         }

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ccc-config
@@ -68,9 +68,8 @@ objects:
               value: "/srv/qwc_service/config"
             - name: SERVICE_MOUNTPOINT
               value: "/api/v1/ccc"
-            image: >-
-              docker-registry.default.svc:5000/${NAMESPACE}/ccc-config:${TAG}
-            imagePullPolicy: Always
+            image: sourcepole/sogis-ccc-config:${TAG}
+            imagePullPolicy: IfNotPresent
             livenessProbe:
               failureThreshold: 3
               httpGet:

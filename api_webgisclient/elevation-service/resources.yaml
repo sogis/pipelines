@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ressources-elevation-service
@@ -10,19 +10,6 @@ parameters:
     name: NAMESPACE
     value: gdi-devel
 objects:
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: elevation-service
-    labels:
-      app: gdi
-      service: elevation-service
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: docker-registry.default.svc:5000/${NAMESPACE}/elevation-service:latest
-      name: latest
 - apiVersion: v1
   kind: Service
   metadata:

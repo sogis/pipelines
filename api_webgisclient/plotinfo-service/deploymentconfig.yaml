@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: plotinfo-service
@@ -66,6 +66,8 @@ objects:
             value: https://${BASEURL}/api/oereb/extract/reduced/pdf/geometry/{egrid}
           - name: BASIC_INFO_SQL
             value: "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE ST_Intersects( g.geometrie, ST_Buffer( ST_SetSRID(ST_Point(:x, :y), :srid),  :buffer ) )"
+          - name: BASIC_INFO_BY_EGRID_SQL
+            value: "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE g.egrid = :egrid"
           - name: DETAILED_INFO_SQL
             value: "SELECT g.flaechenmass, CASE WHEN g.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, gb.aname as grundbuch,gb.amtschreiberei || E'\r\n' || gb.amt || E'\r\n'  || gb.strasse || ' ' || gb.hausnummer || E'\r\n' || gb.plz || ' ' || gb.ortschaft AS grundbuchamt, nf.firma || E'\r\n' || nf.firma_zusatz || E'\r\n'  || nf.strasse || ' ' || nf.hausnummer || E'\r\n' || nf.plz || ' ' || nf.ortschaft AS nfgeometer   FROM agi_mopublic_pub.mopublic_grundstueck g   JOIN (SELECT nbident,aname,amtschreiberei,amt,strasse,CASE WHEN hausnummer is NULL THEN '' ELSE hausnummer END AS hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis) gb ON g.nbident = gb.nbident   JOIN (SELECT bfsnr,firma,CASE WHEN firma_zusatz is NULL THEN '' ELSE firma_zusatz END AS firma_zusatz,strasse,hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.nachfuehrngskrise_gemeinde) nf ON g.bfs_nr = nf.bfsnr WHERE g.egrid = :egrid LIMIT 1;"
           - name: GBDBS_SERVICE_URL
@@ -92,8 +94,8 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/plotinfo
-          image: docker-registry.default.svc:5000/${NAMESPACE}/plotinfo-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-plotinfo-service:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -126,7 +128,7 @@ objects:
               cpu: ${CPU_REQUEST}
               memory: ${MEMORY_REQUEST}
           volumeMounts:
-            - mountPath: /var/www
+            - mountPath: /usr/etc/postgresql
               name: wsgi-service-config-claim
             - mountPath: /srv/qwc_service/config
               name: qgs-resources
@@ -140,7 +142,7 @@ objects:
         - secret:
             items:
               - key: pg_service.conf
-                path: .pg_service.conf
+                path: pg_service.conf
             secretName: wsgi-service-pg-config
           name: wsgi-service-config-claim
         - name: qgs-resources

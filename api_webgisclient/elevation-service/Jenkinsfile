@@ -1,6 +1,5 @@
 def serviceName = 'elevation-service'
 def configFileName = 'elevationConfig.json'
-def baseImage = 'sourcepole/qwc-elevation-service'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -19,9 +18,6 @@ pipeline {
                description: 'Basis Image Version',
                name: 'vBaseImage'
                )
-        string(description: 'Tag des generierten bzw. des deployten Images',
-               name: 'vDeployImage'
-              )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
@@ -46,7 +42,6 @@ pipeline {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
-                    vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     branch = params.branch
                     build = params.build
@@ -104,14 +99,9 @@ pipeline {
                     }
                 }
             }
-        stage ('Tag Image') {
-            steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
-                }
-            }
         stage ('Deploy elevation-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

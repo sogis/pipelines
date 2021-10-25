@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: build-api-gateway
@@ -28,14 +28,14 @@ objects:
     source:
       contextDir: api-gateway
       git:
-        ref: master
+        ref: openshift4
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: nginx:mainline-alpine
+          name: nginxinc/nginx-unprivileged:mainline-alpine
         noCache: false
       type: Docker
     resources:

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: qwc-service
@@ -94,8 +94,8 @@ objects:
             value: /map
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
-          image: docker-registry.default.svc:5000/${NAMESPACE}/qwc-service:${TAG}
-          imagePullPolicy: Always
+          image: sourcepole/sogis-map-viewer:${TAG}
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -129,7 +129,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/www
+          - mountPath: /usr/etc/postgresql
             name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img/custommapthumbs
             name: qwc-assets
@@ -145,7 +145,7 @@ objects:
         - secret:
             items:
             - key: pg_service.conf
-              path: .pg_service.conf
+              path: pg_service.conf
             secretName: qwc-service-pg-config
           name: qwc-service-config-claim
         - name: qwc-assets

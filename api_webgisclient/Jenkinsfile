@@ -48,7 +48,6 @@ pipeline {
                     AuswahlRollout = params.AuswahlRollout
                     replicas = params.replicas
                     branch = params.branch
-                    branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                         solrEnv = 'test'
                         }
@@ -67,7 +66,7 @@ pipeline {
         stage('update Solr Metadaten') {
             steps {
                 script {
-                    url = "http://indexupdater-${solrEnv}.dev.so.ch/queue?ds=foreground,background"
+                    url = "http://indexupdater-${solrEnv}.apps.ocp.so.ch/queue?ds=foreground,background"
                     response = sh(script: "curl -X POST \"$url\" -d \"dih=solr/gdi/dih_metadata\"", returnStdout: true).trim()
                     echo response
                     }

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: ressources-document-service
@@ -112,19 +112,6 @@ objects:
       app: gdi
     name: wsgi-service-pg-config
     namespace: ${NAMESPACE}
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: document-service
-    labels:
-      app: gdi
-      service: document-service
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: docker-registry.default.svc:5000/${NAMESPACE}/document-service:latest
-      name: latest
 - apiVersion: v1
   kind: Service
   metadata:

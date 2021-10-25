@@ -1,6 +1,5 @@
 def serviceName = 'qgis-server'
 def configFileName = 'somap.json'
-def baseImage = 'sogis/qgis-server'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -17,9 +16,6 @@ pipeline {
     parameters {
         string(description: 'Image Version',
                name: 'vBaseImage'
-               )
-        string(description: 'Tag des generierten bzw. deployten Images',
-               name: 'vDeployImage'
                )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
@@ -45,7 +41,6 @@ pipeline {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
-                    vDeployImage = params.vDeployImage
                     namespace = params.namespace
                     build = params.build
                     if ( namespace == 'gdi-test' ) { 
@@ -120,7 +115,7 @@ pipeline {
                         python3 json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
                     """
                     script {
-                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print"', returnStdout: true]).trim()
+                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                         sh """
                            oc rsync -n ${namespace} config/default/ $PODNAME:/data
                         """
@@ -136,14 +131,9 @@ pipeline {
                     }
                 }
             }
-        stage ( 'Tag Image in Openshift' ) { 
-            steps {
-                tagImage baseImage, serviceName, vBaseImage, vDeployImage, namespace
-                }
-            }
         stage ('Deploy qgis-server') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

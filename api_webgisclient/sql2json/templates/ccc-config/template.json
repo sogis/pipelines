@@ -11,6 +11,12 @@
       2646267.025,
       1262755.009
     ],
+    "zoomto_canton_extent": [
+      2590983.475,
+      1212806.115,
+      2646267.025,
+      1262755.009
+    ],
     "zoomto_config": {
       "locatorType": "PriorityLocator",
       "filters": {"$trafo:list": "zoomto_filter.sql"}

@@ -65,7 +65,7 @@ pipeline {
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '2'
-                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
+                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '4096Mi']
                       }
                     else {
                       environment = 'test'

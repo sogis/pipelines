@@ -61,7 +61,7 @@ pipeline {
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       baseUrl = 'geo-i.so.ch'
-                      wmtsUrl = 'geo-wmts.so.ch'
+                      wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics-i.apps.ocp.so.ch'
                       no_ses_url = 'geoint'
                       resources = ['cpu_request': '50m', 'cpu_limit': '500m', 'memory_request': '80Mi', 'memory_limit': '150Mi']

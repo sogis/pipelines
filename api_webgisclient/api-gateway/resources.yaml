@@ -328,7 +328,7 @@ objects:
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/analytics';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://${MATOMO_URL}/;
+            proxy_pass https://${MATOMO_URL}/;
         }
 
         #error_page  404   /404.html;

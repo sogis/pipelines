@@ -119,6 +119,13 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
+        location ~ /simi {
+            if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) {
+                return 403;
+            }
+            proxy_pass http://simi.${NAMESPACE}.svc
+        }
+
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
             set $url1 $1; 
             set $url2 $2;

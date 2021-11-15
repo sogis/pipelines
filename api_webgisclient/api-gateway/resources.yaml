@@ -119,7 +119,7 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location ~ /simi {
+        location /simi {
             if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) {
                 return 403;
             }

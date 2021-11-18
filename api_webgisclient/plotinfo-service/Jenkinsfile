@@ -30,10 +30,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'     
-               )
         }
 
     stages {
@@ -44,7 +40,6 @@ pipeline {
                     vBaseImage = params.vBaseImage
                     replicas = params.replicas
                     branch = params.branch
-                    build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST

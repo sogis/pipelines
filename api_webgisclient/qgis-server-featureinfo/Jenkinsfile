@@ -29,10 +29,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'    
-               )
         }
 
     stages {
@@ -42,7 +38,6 @@ pipeline {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
                     vBaseImage = params.vBaseImage
                     namespace = params.namespace
-                    build = params.build
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
                       geo_db_server = env.GEO_DB_SERVER_TEST

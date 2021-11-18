@@ -49,7 +49,6 @@ pipeline {
                     vDeployImage = params.vDeployImage
                     replicas = params.replicas
                     branch = params.branch
-                    build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
@@ -77,10 +76,12 @@ pipeline {
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
+                        build = 'ja'
                         }
                     else {
                         buildNumber = BUILD_NUMBER
                         jobName = JOB_NAME
+                        build = params.build
                         }
                     credentials = [ 
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),

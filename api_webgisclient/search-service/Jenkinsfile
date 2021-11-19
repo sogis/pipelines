@@ -51,13 +51,13 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
-                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
+                      resources = ['cpu_request': '100m', 'cpu_limit': '200m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
-                      resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
+                      resources = ['cpu_request': '200m', 'cpu_limit': '200m', 'memory_request': '256Mi', 'memory_limit': '256Mi']
                       }
                     else {
                       environment = 'test'

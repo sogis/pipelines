@@ -68,19 +68,21 @@ rasterview_ds_props AS (
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id
 ),
 
-ext_wms_layer_part AS (
+ext_wms_layer_base AS (
   SELECT
-    jsonb_build_object(
-      'name', concat('wms:', s.url, '#/', l.identifier_list),
-      'type', 'wms',
-      'url', url,
-      'params', jsonb_build_object('LAYERS', l.identifier_list)
-    ) AS ext_layer_obj,
-    jsonb_build_object(
-      'service_url', url,
-      'name', l.identifier_list
-    ) AS wms_layer_obj,
-    jsonb_build_array('text/plain') AS info_formats,
+    concat('wms:', s.url, '#/', l.identifier_list) AS extlayer_name,
+    'wms' AS extlayer_type,
+    url AS extlayer_url,
+    jsonb_build_object('LAYERS', l.identifier_list) AS extlayer_params,
+    CASE 
+      WHEN strpos(url, 'geodienste.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
+      WHEN strpos(url, 'geo.admin.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
+      ELSE jsonb_build_array('text/plain')
+    END AS extlayer_infoformats,
+    
+    url AS wmslayer_url,
+    l.identifier_list AS wmslayer_name,
+    
     l.id AS layer_id
   FROM
     simi.simiproduct_external_map_layers l
@@ -97,10 +99,18 @@ ext_wms_layer AS (
         'display', title_ident,
         'description_base64', desc_b64,
         'opacity', round(255 - (transparency::real/100*255)),
-        'datatype', 'raster',
-        'external_layer', ext_layer_obj,
-        'wms_datasource', wms_layer_obj,
-        'infoFormats', info_formats,
+        'datatype', 'raster',       
+        'external_layer', jsonb_build_object(
+          'name', extlayer_name, 
+          'type', extlayer_type, 
+          'url', extlayer_url, 
+          'params', extlayer_params, 
+          'infoFormats', extlayer_infoformats
+        ),
+        'wms_datasource', jsonb_build_object(
+          'service_url', wmslayer_url, 
+          'name', wmslayer_name
+        ),      
         'type', 'datasetview',
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
@@ -109,7 +119,7 @@ ext_wms_layer AS (
       )
     ) AS layer_json 
   FROM
-    ext_wms_layer_part l
+    ext_wms_layer_base l
   JOIN
     simi.simiproduct_single_actor sa ON l.layer_id = sa.id
   JOIN
@@ -364,7 +374,11 @@ union_all AS (
   SELECT identifier, layer_json FROM productlist  
 )
 
+/*
 SELECT
   layer_json
 FROM
   union_all
+  */
+
+SELECT * FROM ext_wms_layer

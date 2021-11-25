@@ -374,11 +374,7 @@ union_all AS (
   SELECT identifier, layer_json FROM productlist  
 )
 
-/*
 SELECT
   layer_json
 FROM
   union_all
-  */
-
-SELECT * FROM ext_wms_layer

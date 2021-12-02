@@ -101,7 +101,6 @@ objects:
           volumeMounts:
           - mountPath: /srv/jasper-reporting-service/reports
             name: reports
-            readOnly: true
           - mountPath: /srv/jasper-reporting-service/config
             name: jasper-config-claim
             readOnly: true

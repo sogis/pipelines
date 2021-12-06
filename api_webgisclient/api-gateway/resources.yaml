@@ -396,6 +396,8 @@ objects:
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
+    annotations:
+      haproxy.router.openshift.io/timeout: 120s
     labels:
       app: gdi
       service: api-gateway
@@ -417,6 +419,8 @@ objects:
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
+    annotations:
+      haproxy.router.openshift.io/timeout: 1200s
     labels:
       app: gdi
       service: api-gateway

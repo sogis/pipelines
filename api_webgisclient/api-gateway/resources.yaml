@@ -419,12 +419,11 @@ objects:
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
-    annotations:
-      haproxy.router.openshift.io/timeout: 1200s
     labels:
       app: gdi
       service: api-gateway
     annotations:
+      haproxy.router.openshift.io/timeout: 1200s
       openshift.io/long-description: >-
         "Route Necessary for Autologin check. Checks if user comes from intra- or internet. If user comes from intranet Single Sign On is used"
     name: api-gateway-ohne-ses

@@ -109,25 +109,15 @@ objects:
 
       spring.datasource2.validation-timeout=2000
 
-      # Datasource configDB
-
-      spring.datasource3.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_CONFIG}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
-
-      spring.datasource3.username=${USER_SOGIS_SERVICE}
-
-      spring.datasource3.password=${PW_SOGIS_SERVICE}
-
-      spring.datasource3.driver-class-name=org.postgresql.Driver
-
       # Datasource Edit DB
 
-      spring.datasource4.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource3.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource4.username=${USER_REPORT_SERVER}
+      spring.datasource3.username=${USER_REPORT_SERVER}
 
-      spring.datasource4.password=${PW_REPORT_SERVER}
+      spring.datasource3.password=${PW_REPORT_SERVER}
 
-      spring.datasource4.driver-class-name=org.postgresql.Driver
+      spring.datasource3.driver-class-name=org.postgresql.Driver
 
       # Custom Parameters
  

@@ -38,11 +38,12 @@ objects:
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
       
-          log_format  main  '[$time_local] $http_hsp_client_addr "$http_x_forwarded_for" - $status "$request" - '
-                            '$body_bytes_sent "$http_user_agent $remote_user'
-                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" $upstream_cache_status $upstream_addr';
-      
-          access_log  /var/log/nginx/access.log  main;
+          log_format  json  '{"@timestamp": "$time_local", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
+                            '"request": "$request", "body_bytes_sent": "$body_bytes_sent", "http_user_agent": "$http_user_agent", "remote_user": "$remote_user", '
+                            '"request_time": "$request_time", "upstream_connect_time": "$upstream_connect_time", "upstream_header_time": "$upstream_header_time", '
+                            '"upstream_response_time": "$upstream_response_time","upstream_addr": "$upstream_addr"}';
+
+          access_log  /var/log/nginx/access.log  json;
       
           sendfile        on;
           #tcp_nopush     on;
@@ -117,6 +118,14 @@ objects:
         location ~ /map/([a-z_]+) {
             rewrite ^/map/([a-z_]+)$ /map?t=$1 break;
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
+        }
+
+        location /simi {
+            if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) {
+                return 403;
+            }
+            proxy_pass http://simi.${NAMESPACE}.svc/app/;
+            proxy_set_header Host       $proxy_host;
         }
 
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
@@ -388,6 +397,8 @@ objects:
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
+    annotations:
+      haproxy.router.openshift.io/timeout: 120s
     labels:
       app: gdi
       service: api-gateway
@@ -413,6 +424,7 @@ objects:
       app: gdi
       service: api-gateway
     annotations:
+      haproxy.router.openshift.io/timeout: 1200s
       openshift.io/long-description: >-
         "Route Necessary for Autologin check. Checks if user comes from intra- or internet. If user comes from intranet Single Sign On is used"
     name: api-gateway-ohne-ses

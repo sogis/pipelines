@@ -30,10 +30,6 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
-        choice(choices: ['ja','nein'],
-               description: 'Soll das Image gebaut werden?',
-               name: 'build'     
-               )
         }
 
     stages {
@@ -44,7 +40,6 @@ pipeline {
                     vBaseImage = params.vBaseImage
                     replicas = params.replicas
                     branch = params.branch
-                    build = params.build
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
@@ -56,13 +51,13 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
-                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
+                      resources = ['cpu_request': '100m', 'cpu_limit': '200m', 'memory_request': '128Mi', 'memory_limit': '256Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
-                      resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
+                      resources = ['cpu_request': '200m', 'cpu_limit': '200m', 'memory_request': '256Mi', 'memory_limit': '256Mi']
                       }
                     else {
                       environment = 'test'
@@ -88,7 +83,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_CONFIG=${env.CONFIG_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
                     println apiUser
                     println PwdApiUser
                     }

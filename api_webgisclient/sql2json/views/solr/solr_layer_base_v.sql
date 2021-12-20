@@ -1,7 +1,6 @@
 DROP VIEW IF EXISTS simi.solr_layer_base_v;
 
 CREATE VIEW simi.solr_layer_base_v AS
- 
 
 WITH
 
@@ -22,12 +21,9 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
     identifier,    
     COALESCE(title, identifier) as title,
     CASE dp.dtype
-      WHEN 'simiData_TableView' THEN 'datasetview'
-      WHEN 'simiProduct_FacadeLayer' THEN 'facadelayer'
       WHEN 'simiProduct_LayerGroup' THEN 'layergroup'
-      WHEN 'simiData_RasterView' THEN 'datasetview'
-      ELSE 'ERR:UnknownType'
-    END AS dp_typ,    
+      ELSE 'singleactor'
+    END AS dp_typ,   
     COALESCE(bg.bg_facet, 'foreground') AS facet,
     (description IS NOT NULL) AS dprod_has_info, -- Metainformationen vorhanden?
     description,

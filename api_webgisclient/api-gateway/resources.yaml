@@ -188,10 +188,34 @@ objects:
         }
 
         location /wfs {
+            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
+            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
+            set $temp_cache 0;
+            if ($args ~* getfeature ) {
+              set $temp_cache 1;
+            }
+            if ($args !~* MAXFEATURES) {
+              set $temp_cache 1$temp_cache;
+            }
+            if ($temp_cache = 11) {
+              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 
         location /api/wfs {
+            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
+            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
+            set $temp_cache 0;
+            if ($args ~* getfeature ) {
+              set $temp_cache 1;
+            }
+            if ($args !~* MAXFEATURES) {
+              set $temp_cache 1$temp_cache;
+            }
+            if ($temp_cache = 11) {
+              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 

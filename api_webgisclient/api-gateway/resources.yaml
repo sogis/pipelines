@@ -38,11 +38,12 @@ objects:
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
       
-          log_format  main  '[$time_local] $http_hsp_client_addr "$http_x_forwarded_for" - $status "$request" - '
-                            '$body_bytes_sent "$http_user_agent $remote_user'
-                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" $upstream_cache_status $upstream_addr';
-      
-          access_log  /var/log/nginx/access.log  main;
+          log_format  json  '{"@timestamp": "$time_local", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
+                            '"request": "$request", "body_bytes_sent": "$body_bytes_sent", "http_user_agent": "$http_user_agent", "remote_user": "$remote_user", '
+                            '"request_time": "$request_time", "upstream_connect_time": "$upstream_connect_time", "upstream_header_time": "$upstream_header_time", '
+                            '"upstream_response_time": "$upstream_response_time","upstream_addr": "$upstream_addr"}';
+
+          access_log  /var/log/nginx/access.log  json;
       
           sendfile        on;
           #tcp_nopush     on;
@@ -119,12 +120,23 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location /simi {
+        location /simi/ {
             if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) {
                 return 403;
             }
+            proxy_set_header Host               $host;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_set_header X-Forwarded-Proto  $scheme;
+
+            # Required to send real client IP to application server
+            proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+            proxy_set_header X-Real-IP          $remote_addr;
             proxy_pass http://simi.${NAMESPACE}.svc/app/;
-            proxy_set_header Host       $proxy_host;
+
+            # Required for folder redirect
+            proxy_cookie_path       /app /;
+            proxy_set_header Cookie $http_cookie;
+            proxy_redirect http://simi.${NAMESPACE}.svc/app/ http://simi.${NAMESPACE}.svc/;
         }
 
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
@@ -188,34 +200,10 @@ objects:
         }
 
         location /wfs {
-            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
-            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
-            set $temp_cache 0;
-            if ($args ~* getfeature ) {
-              set $temp_cache 1;
-            }
-            if ($args !~* MAXFEATURES) {
-              set $temp_cache 1$temp_cache;
-            }
-            if ($temp_cache = 11) {
-              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
-            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 
         location /api/wfs {
-            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
-            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
-            set $temp_cache 0;
-            if ($args ~* getfeature ) {
-              set $temp_cache 1;
-            }
-            if ($args !~* MAXFEATURES) {
-              set $temp_cache 1$temp_cache;
-            }
-            if ($temp_cache = 11) {
-              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
-            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 

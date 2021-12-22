@@ -79,7 +79,7 @@ ext_wms_layer_base AS (
       WHEN strpos(url, 'geo.admin.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
       ELSE jsonb_build_array('text/plain')
     END AS extlayer_infoformats,
-    jsonb_build_array(l.identifier_list) as extlayer_querylayers,
+    jsonb_build_array() as extlayer_querylayers,
     
     url AS wmslayer_url,
     l.identifier_list AS wmslayer_name,

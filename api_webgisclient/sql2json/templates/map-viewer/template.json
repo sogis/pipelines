@@ -855,9 +855,7 @@
             "infoFormats": [
               "text/plain"
             ],
-            "queryLayers": [
-              "ch.bafu.gefaehrdungskarte-oberflaechenabfluss"
-            ],
+            "queryLayers": [],
             "abstract": "Erosionsrisikokarte des Ackerlandes der Schweiz im 2x2-Meter-Raster auf der Basis von SwissALTI3D und kantonalen Flächendaten zum Ackerland. Für die sieben Kantone BS, GE, JU, LU, OW, TI und ZH liegen noch keine Flächendaten zum Ackerland vor, hier wurde die Ackerfläche aus Satellitenbildern (FCover300m) ermittelt. Die Karte zeigt den langjährigen mittleren potentiellen Bodenabtrag in Tonnen pro Hektare und Jahr, berechnet auf der Basis von Schwarzbrache (Erosion, die theoretisch eintreten könnte, wenn der Boden dauernd nackt wäre). Grüne Farbtöne bedeuten ein geringes, gelbe ein mittleres und rote ein hohes Erosionsrisiko. Die im Modell berechneten Werte sind durchwegs viel höher als in der Realität (ca. um den Faktor 10), weil die Bodenbearbeitung und -bewirtschaftung (C-Faktor) ausgeklammert wurden und als Konstante mit dem Wert 1 in die Berechnung eingeflossen sind. Die Berechnung des Erosionsrisikos mit Multiple-Flow-Algorithmen erlaubt die Struktur des Geländes detailgenau darzustellen - z. B. den Verlauf von Geländemulden oder von steilen Querhängen - und damit z. B. auch das Risiko von Talwegerosion zu erkennen. Dies ist in der Fliesswegkarte (siehe Fliesswegkarte) detailliert dargestellt. Die räumliche Berechnungsgrundlage bilden Feldblöcke (siehe Feldblockkarte)."
           }
         ]

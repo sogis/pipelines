@@ -38,11 +38,13 @@ objects:
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
       
-          log_format  main  '[$time_local] $http_hsp_client_addr "$http_x_forwarded_for" - $status "$request" - '
-                            '$body_bytes_sent "$http_user_agent $remote_user'
-                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" $upstream_cache_status $upstream_addr';
+          log_format  json  '{"time": "$time_local", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
+                            '"request_method": "$request_method", "server_protocol": "$server_protocol", "uri": "$uri", "args": "$args", "request": "$request", '
+                            '"body_bytes_sent": "$body_bytes_sent", "http_user_agent": "$http_user_agent", "remote_user": "$remote_user", '
+                            '"request_time": "$request_time", "upstream_connect_time": "$upstream_connect_time", "upstream_header_time": "$upstream_header_time", '
+                            '"upstream_response_time": "$upstream_response_time","upstream_addr": "$upstream_addr" }';
 
-          access_log  /var/log/nginx/access.log  main;
+          access_log  /var/log/nginx/access.log  json;
       
           sendfile        on;
           #tcp_nopush     on;

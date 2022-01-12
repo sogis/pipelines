@@ -1,7 +1,6 @@
+DROP VIEW IF EXISTS simi.solr_layer_base_v;
 
---DROP VIEW IF EXISTS simi.solr_layer_base_v;
-
---CREATE VIEW simi.solr_layer_base_v AS
+CREATE VIEW simi.solr_layer_base_v AS
  
 
 WITH
@@ -155,8 +154,8 @@ SELECT
 FROM
   solr_record 
 ;
-/*
+
 GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
 ;
 GRANT SELECT ON TABLE simi.solr_layer_base_v TO simi_write, sogis_service
-;*/
+;

@@ -11,8 +11,13 @@
       "ch.so.wfs"
     ],
     "online_resource": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/",
-    "fees": "",
-    "access_constraints": "",
+    "contact_person": "Mitarbeiter des AGI",
+    "contact_organization": "Amt für Geoinformation",
+    "contact_position": "Amt für Geoinformation",
+    "contact_phone": "++41(0)32 627 75 92",
+    "contact_mail": "agi@bd.so.ch",
+    "fees": "none",
+    "access_constraints": "none",
     "bbox": {
       "bounds": [
         2570000,

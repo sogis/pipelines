@@ -2,7 +2,7 @@ WITH
 
 tv_with_geom AS (
   SELECT 
-    attr_3props_json,
+    attr_props_json,
     tv_id
   FROM
     simi.simidata_table_view tv 
@@ -12,27 +12,7 @@ tv_with_geom AS (
     simi.trafo_tableview_attr_with_geo_v a ON tv.id = a.tv_id
 ),
 
-/*
-dsv_dependency_unique AS ( -- Stellt sicher, dass bei Fehlerfassung pro dsv nur eine custom info zurückgegeben wird
-  SELECT 
-    data_set_view_id,
-    dependency_id,
-    d.dtype AS dependency_type
-  FROM
-    simi.simiextended_relation r
-  JOIN
-    simi.simiextended_dependency d ON r.dependency_id = d.id
-  WHERE
-    r.relation_type = '1_display'
-  GROUP BY
-    data_set_view_id,
-    dependency_id,
-    d.dtype
-  LIMIT 1
-),
-*/
-
-dsv_dependency_unique AS ( -- Gitn auch bei Fehlkonfigurationen pro Abhängigkeits- (Featinfo, Report, ...) maximal eine anzuzeigende Abhängigkeit zurück
+dsv_dependency_unique AS ( -- Gibt auch bei Fehlkonfigurationen pro Abhängigkeits- (Featinfo, Report, ...) maximal eine anzuzeigende Abhängigkeit zurück
   SELECT 
     data_set_view_id,
     d.dtype AS dependency_type,
@@ -143,7 +123,7 @@ dsv AS (
       jsonb_build_object(
         'name', identifier,
         'title', title_ident,
-        'attributes', attr_3props_json,
+        'attributes', attr_props_json,
         'info_template', info_json,
         'feature_report', rep_name
       )

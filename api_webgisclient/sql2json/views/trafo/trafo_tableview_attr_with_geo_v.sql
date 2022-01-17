@@ -67,6 +67,8 @@ GROUP BY
 ;
 
 GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO simi_write;
+GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO simi_read;
+GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO sogis_service;
 
 
 

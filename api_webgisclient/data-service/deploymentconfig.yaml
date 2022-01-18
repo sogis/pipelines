@@ -36,6 +36,7 @@ objects:
     name: data-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: data-service
     strategy:

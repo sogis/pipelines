@@ -36,6 +36,7 @@ objects:
     name: ccc-config
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: ccc-config
     strategy:

@@ -35,6 +35,7 @@ objects:
     name: jasper-reporting-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: jasper-reporting-service
     strategy:

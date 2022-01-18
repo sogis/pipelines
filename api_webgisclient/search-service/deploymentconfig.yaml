@@ -38,6 +38,7 @@ objects:
     name: search-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: search-service
     strategy:

@@ -36,6 +36,7 @@ objects:
     name: dataproduct-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: dataproduct-service
     strategy:

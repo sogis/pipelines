@@ -36,6 +36,7 @@ objects:
     name: qgis-server
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: qgis-server
     strategy:

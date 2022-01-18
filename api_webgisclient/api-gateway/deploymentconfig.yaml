@@ -38,6 +38,7 @@ objects:
     name: api-gateway
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: api-gateway
     strategy:

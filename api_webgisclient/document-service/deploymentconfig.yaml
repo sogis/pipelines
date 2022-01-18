@@ -36,6 +36,7 @@ objects:
     name: document-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: document-service
     strategy:

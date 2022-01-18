@@ -38,6 +38,7 @@ objects:
     name: auth-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: auth-service
     strategy:

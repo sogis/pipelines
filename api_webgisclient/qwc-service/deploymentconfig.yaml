@@ -34,6 +34,7 @@ objects:
     name: qwc-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: qwc-service
     strategy:

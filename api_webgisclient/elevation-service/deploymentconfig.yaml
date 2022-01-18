@@ -34,6 +34,7 @@ objects:
     name: elevation-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: elevation-service
     strategy:

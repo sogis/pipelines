@@ -38,6 +38,7 @@ objects:
     name: ogc-service
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: ogc-service
     strategy:

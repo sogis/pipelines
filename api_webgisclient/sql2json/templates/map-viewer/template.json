@@ -649,8 +649,6 @@
             "thumbnail": "img/custommapthumbs/e53e11fc-0a48-49e3-941b-9350c9eaebad.png",
             "projection": "EPSG:2056",
             "resolutions": [
-              4000,
-              2000,
               1000,
               500,
               250,
@@ -682,8 +680,6 @@
             "thumbnail": "img/custommapthumbs/e40c2c96-4271-4ee2-a208-d451c71c394c.png",
             "projection": "EPSG:2056",
             "resolutions": [
-              4000,
-              2000,
               1000,
               500,
               250,
@@ -715,8 +711,6 @@
             "thumbnail": "img/custommapthumbs/f6042185-4102-4f33-a223-47ad0c6c72e8.png",
             "projection": "EPSG:2056",
             "resolutions": [
-              4000,
-              2000,
               1000,
               500,
               250,

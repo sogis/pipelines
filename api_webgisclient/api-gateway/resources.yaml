@@ -332,7 +332,7 @@ objects:
         }
         
         location /av_datenabgabe/ {
-            set $pass_url http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
+            set $pass_url http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc.cluster.local;
             proxy_pass $pass_url;
         }
 

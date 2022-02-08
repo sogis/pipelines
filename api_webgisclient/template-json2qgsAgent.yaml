@@ -29,21 +29,6 @@ objects:
           <memory>false</memory>
         </workspaceVolume>
         <volumes>
-          <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www/gdi-production</mountPath>
-            <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
-            <secretName>config-generator-agent-pg-service-gdi-production</secretName>
-          </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-          <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www/gdi-integration</mountPath>
-            <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
-            <secretName>config-generator-agent-pg-service-gdi-integration</secretName>
-          </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-          <org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
-            <mountPath>/var/www/gdi-test</mountPath>
-            <!-- Attention: Before creating this ConfigMap, please adapt the persistent volume claim name below so it points to the right PVC -->
-            <secretName>config-generator-agent-pg-service-gdi-test</secretName>
-          </org.csanchez.jenkins.plugins.kubernetes.volumes.SecretVolume>
           <org.csanchez.jenkins.plugins.kubernetes.volumes.PersistentVolumeClaim>
             <mountPath>/qgs-resources</mountPath>
             <claimName>qgs-resources-claim</claimName>

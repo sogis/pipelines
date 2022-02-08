@@ -90,6 +90,8 @@ objects:
 
         add_header 'Access-Control-Allow-Origin' '*';
 
+        resolver dns-default.openshift-dns.svc.cluster.local
+
         location /nginx_status {
             stub_status on;
             access_log  on;
@@ -330,7 +332,8 @@ objects:
         }
         
         location /av_datenabgabe/ {
-            proxy_pass http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
+            set $pass_url http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
+            proxy_pass $pass_url;
         }
 
         location /avgbs2mtab {

@@ -64,33 +64,6 @@ objects:
         <annotations/>
         <imagePullSecrets/>
         <nodeProperties/>
-        <yaml>
-          apiVersion: v1
-          kind: Pod
-          spec:
-            volumes:
-              - name: pg-service-claim-production
-                secret:
-                  defaultMode: 420
-                  items:
-                    - key: pg_service-gdi-production.conf
-                      path: pg_service-gdi-production.conf
-                  secretName: config-generator-agent-pg-service-gdi-production
-              - name: pg-service-claim-integration
-                secret:
-                  defaultMode: 420
-                  items:
-                    - key: pg_service-gdi-integration.conf
-                      path: pg_service-gdi-integration.conf
-                  secretName: config-generator-agent-pg-service-gdi-integration
-              - name: pg-service-claim-test
-                secret:
-                  defaultMode: 420
-                  items:
-                    - key: pg_service-gdi-test.conf
-                      path: pg_service-gdi-test.conf
-                  secretName: config-generator-agent-pg-service-gdi-test
-        </yaml>
       </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
   kind: ConfigMap
   metadata:

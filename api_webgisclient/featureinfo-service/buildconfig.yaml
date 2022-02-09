@@ -30,7 +30,7 @@ objects:
     source:
       contextDir: featureinfo-service
       git:
-        ref: master
+        ref: locale
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
@@ -38,7 +38,7 @@ objects:
         from:
           kind: DockerImage
           name: sourcepole/qwc-feature-info-service:${BASETAG}
-        noCache: false
+        noCache: true
       type: Docker
     resources:
       limits:

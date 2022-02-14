@@ -102,7 +102,7 @@ pipeline {
                         if [ ! -d "config/default" ]; then
                           mkdir -p config/default
                         fi
-                        git clone --depth 1 --branch v1.0.1 https://github.com/simi-so/json2qgs
+                        git clone --depth 1 --branch v1.0.2 https://github.com/simi-so/json2qgs
                         wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
                         chmod -R ug+x json2qgs
                         python3 json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir json2qgs/qgs

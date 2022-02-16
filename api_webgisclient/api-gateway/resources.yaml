@@ -18,6 +18,8 @@ parameters:
     name: MATOMO_URL
   - description: Url with no SES
     name: NO_SES_URL
+  - description: Basic Auth User Password in base64 encoding
+    name: BASICAUTH
 objects:
 - apiVersion: v1
   data:
@@ -199,7 +201,7 @@ objects:
 
         location /api/wmsauth {
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_set_header Authorization "Basic d21zYXV0aDpwYXNzd29yZAo=";
+            proxy_set_header Authorization "${BASICAUTH}";
         }
 
         location /wfs {

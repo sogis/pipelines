@@ -44,6 +44,7 @@ pipeline {
                     namespace = params.namespace
                     replicas = params.replicas
                     branch = params.branch
+                    basicAuth = env.BASICAUTH_BASE64
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
                       geo_db_server = env.GEO_DB_SERVER_TEST
@@ -91,7 +92,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url}"
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url} -p BASICAUTH=${basicAuth}"
                 }
             }
         stage ('Build new Image for api-gateway if necessary') {

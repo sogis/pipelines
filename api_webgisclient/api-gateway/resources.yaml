@@ -18,6 +18,8 @@ parameters:
     name: MATOMO_URL
   - description: Url with no SES
     name: NO_SES_URL
+  - description: Basic Auth User Password in base64 encoding
+    name: BASICAUTH
 objects:
 - apiVersion: v1
   data:
@@ -50,9 +52,6 @@ objects:
           #tcp_nopush     on;
       
           keepalive_timeout  65;
-
-          proxy_cache_path /cache levels=1:2 keys_zone=my_cache:30m max_size=5g
-                 inactive=30m use_temp_path=off;
 
           #gzip on;
 
@@ -92,6 +91,8 @@ objects:
         client_max_body_size 50M;
 
         add_header 'Access-Control-Allow-Origin' '*';
+
+        resolver dns-default.openshift-dns.svc.cluster.local;
 
         location /nginx_status {
             stub_status on;
@@ -189,26 +190,18 @@ objects:
 
         location /ows {
             proxy_pass http://ogc-service.${NAMESPACE}.svc;
-            proxy_cache my_cache;
-            proxy_cache_valid 200 30m;
         }
 
         location /wms {
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_cache my_cache;
-            proxy_cache_valid 200 30m;
         }
         location /api/wms {
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_cache my_cache;
-            proxy_cache_valid 200 30m;
         }
 
         location /api/wmsauth {
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_set_header Authorization "Basic d21zYXV0aDpwYXNzd29yZAo=";
-            proxy_cache my_cache;
-            proxy_cache_valid 200 30m;
+            proxy_set_header Authorization "${BASICAUTH}";
         }
 
         location /wfs {
@@ -308,8 +301,6 @@ objects:
         location /api/wmts/ {
             proxy_pass http://${WMTS_URL}/mapcache/wmts/;
             proxy_set_header Host       $proxy_host;
-            proxy_cache my_cache;
-            proxy_cache_valid 200 30m;
         }
 
         location /wms/oereb {
@@ -343,7 +334,8 @@ objects:
         }
         
         location /av_datenabgabe/ {
-            proxy_pass http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
+            set $pass_url http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc.cluster.local;
+            proxy_pass $pass_url;
         }
 
         location /avgbs2mtab {

@@ -206,7 +206,7 @@ objects:
 
         location /api/wmsauth {
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_set_header Authorization "${BASICAUTH}";
+            proxy_set_header Authorization "Basic ${BASICAUTH}";
             proxy_cache my_cache;
             proxy_cache_valid 200 30m;
         }

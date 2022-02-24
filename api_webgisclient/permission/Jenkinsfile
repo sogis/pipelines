@@ -32,7 +32,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST

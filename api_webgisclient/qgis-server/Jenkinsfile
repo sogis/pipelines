@@ -95,7 +95,7 @@ pipeline {
                 }
             }
         stage ('Create qgs files') {
-            agent { label 'json2qgs-agent' }
+            agent { docker { image 'python:3.10.1-alpine' } }
             steps {
                 withCredentials ( credentials ) {
                     sh """

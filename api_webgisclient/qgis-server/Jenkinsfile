@@ -104,7 +104,6 @@ pipeline {
                               mkdir -p config/default
                             fi
                             wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
-                            chmod -R ug+x json2qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
@@ -122,7 +121,7 @@ pipeline {
             post {
                 always {
                     sh """
-                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
+                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
                     """
                     }
                 }

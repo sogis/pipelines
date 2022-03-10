@@ -95,7 +95,29 @@ pipeline {
                 }
             }
         stage ('Create qgs files') {
-            agent { label 'json2qgs-agent' }
+            agent { 
+              kubernetes {
+                label 'json2qgs-agent'
+                defaultContainer 'jnlp'
+                yaml """
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    labels:
+                      jenkins: slave
+                      jenkins/label: json2qgs-agent
+                      tty: false
+                  spec:
+                    containers:
+                    - name: jnlp
+                      image: 'quay.io/openshift/origin-jenkins-agent-base:4.7'
+                    - name: json2qgs
+                      image: pfeimich/json2qgs:latest
+                      tty: false
+                  """
+                  }
+                }
+             }
             steps {
                 withCredentials ( credentials ) {
                     container('json2qgs') {

@@ -116,7 +116,6 @@ pipeline {
                       tty: false
                   """
                   }
-                }
              }
             steps {
                 withCredentials ( credentials ) {

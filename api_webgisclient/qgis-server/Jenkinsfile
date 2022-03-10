@@ -100,16 +100,18 @@ pipeline {
                 label 'json2qgs-agent'
                 defaultContainer 'jnlp'
                 yaml """
-                  apiVersion: "v1"
-                  kind: "Pod"
+                  apiVersion: v1
+                  kind: Pod
                   metadata:
                     labels:
-                      jenkins: "slave"
-                      jenkins/label: "json2qgs-agent"
-                    name: "json2qgs-agent"
+                      jenkins: slave
+                      jenkins/label: json2qgs-agent
+                    name: json2qgs-agent
                   spec:
                     containers:
-                    - image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
+                    - args:
+                      - "********"
+                      image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
                       imagePullPolicy: "Always"
                       name: "jnlp"
                       resources:
@@ -128,7 +130,11 @@ pipeline {
                         name: "workspace-volume"
                         readOnly: false
                       workingDir: "/tmp"
-                    - image: "pfeimich/json2qgs:latest"
+                    - args:
+                      - "24h"
+                      command:
+                      - "sleep"
+                      image: "pfeimich/json2qgs:latest"
                       imagePullPolicy: "Always"
                       name: "json2qgs"
                       resources:

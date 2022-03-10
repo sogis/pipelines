@@ -99,6 +99,7 @@ pipeline {
               kubernetes {
                 label 'json2qgs-agent'
                 defaultContainer 'jnlp'
+                idleMinutes '600'
                 yaml """
                   apiVersion: v1
                   kind: Pod

@@ -1,4 +1,4 @@
-def serviceName = 'services-unified-permissions'
+def serviceName = 'permission'
 def configFileName = 'permissions.json'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
@@ -75,7 +75,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc', 'qwc-services-core'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'services-unified-permissions', 'qwc', 'qwc-services-core'
                     }
                 }
             }

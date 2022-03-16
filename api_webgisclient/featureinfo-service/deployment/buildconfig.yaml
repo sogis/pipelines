@@ -39,6 +39,8 @@ objects:
           kind: DockerImage
           name: sourcepole/qwc-feature-info-service:${BASETAG}
         noCache: true
+        pullSecret:
+          name: sogis-pull-secret
       type: Docker
     resources:
       limits:

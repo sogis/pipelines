@@ -44,7 +44,7 @@ objects:
       resources: {}
       rollingParams:
         intervalSeconds: 1
-        maxSurge: 0
+        maxSurge: 10%
         maxUnavailable: 10%
         timeoutSeconds: 600
         updatePeriodSeconds: 1

@@ -135,7 +135,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      image: "pfeimich/json2qgs:latest"
+                      image: "pfeimich/json2qgs:v1.0.8"
                       imagePullPolicy: "Always"
                       name: "json2qgs"
                       resources:

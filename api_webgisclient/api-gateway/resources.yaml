@@ -313,11 +313,11 @@ objects:
         }
 
         location /wms/oereb {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc;
         }
       
         location /wms/oereb-symbols {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc;
         }
         
         location /gb2av {

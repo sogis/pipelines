@@ -97,7 +97,7 @@ pipeline {
         stage ('Create qgs files') {
             agent { 
               kubernetes {
-                label 'json2qgs-agent'
+                inheritFrom 'json2qgs-agent'
                 defaultContainer 'jnlp'
                 idleMinutes '600'
                 yaml """
@@ -113,7 +113,7 @@ pipeline {
                     - args:
                       - "********"
                       image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
-                      imagePullPolicy: "Always"
+                      imagePullPolicy: "IfNotPresent"
                       name: "jnlp"
                       resources:
                         limits:
@@ -136,7 +136,7 @@ pipeline {
                       command:
                       - "sleep"
                       image: "sogis/json2qgs:v1.0.3"
-                      imagePullPolicy: "Always"
+                      imagePullPolicy: "IfNotPresent"
                       name: "json2qgs"
                       resources:
                         limits:

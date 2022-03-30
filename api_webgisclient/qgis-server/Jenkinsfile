@@ -97,7 +97,7 @@ pipeline {
         stage ('Create qgs files') {
             agent { 
               kubernetes {
-                inheritFrom 'json2qgs-agent'
+                label 'json2qgs-agent'
                 defaultContainer 'jnlp'
                 idleMinutes '600'
                 yaml """
@@ -135,7 +135,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      envVars:
+                      env:
                       - name: "LC_ALL"
                         value: "C.UTF-8" 
                       image: "sogis/json2qgs:v1.0.6"

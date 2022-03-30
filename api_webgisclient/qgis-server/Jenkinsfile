@@ -135,6 +135,9 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
+                      envVars:
+                      - name: "LC_ALL"
+                        value: "C.UTF-8" 
                       image: "sogis/json2qgs:v1.0.6"
                       imagePullPolicy: "IfNotPresent"
                       name: "json2qgs"

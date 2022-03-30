@@ -90,7 +90,7 @@ objects:
                 key: SECRET_KEY
                 name: recaptcha-plotinfo
           - name: HIDE_OWNER_ADDRESSES
-            value: "True"
+            value: "False"
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT

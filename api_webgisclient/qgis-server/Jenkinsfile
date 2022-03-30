@@ -115,6 +115,9 @@ pipeline {
                       image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
                       imagePullPolicy: "IfNotPresent"
                       name: "jnlp"
+                      env:
+                      - name: "LC_ALL"
+                        value: "C.UTF-8"
                       resources:
                         limits:
                           memory: "2Gi"

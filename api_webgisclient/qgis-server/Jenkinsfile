@@ -135,7 +135,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      image: "sogis/json2qgs:v1.0.3"
+                      image: "sogis/json2qgs:v1.0.4"
                       imagePullPolicy: "IfNotPresent"
                       name: "json2qgs"
                       resources:

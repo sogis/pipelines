@@ -28,7 +28,7 @@ objects:
     source:
       contextDir: api-gateway
       git:
-        ref: master
+        ref: amplify
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:

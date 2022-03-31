@@ -19,12 +19,7 @@ oc policy add-role-to-user edit system:serviceaccount:agi-apps-test:jenkins -n g
 Now the the jenkins service account of the project *agi-apps-test* has edit access to the three gdi environments test,int and prod
 
 ### Install Json2qgs Agent
-To run the pipeline you need a json2qgs-agent in jenkins. Run the following commands to make the json2qgs-agent available in jenkins.
-Use name of the project where jenkins is running for *projectname* and the tag of the config generator agent image for *tag*
-```
-oc project agi-apps-test
-oc process -f template-json2qgsAgent.yaml -p PROJECTNAME=projectname -p IMAGE_TAG_AGENT=tag | oc apply -f-
-```
+The definition of the json2qgs Agent is now implemented in the Jenkinsfile of the `qgis-server` Pipeline. It's not longer needed to create the template as a ConfigMap
 The json2qgs-agent pod requires a secret named config-generator-agent-pg-service. The secret definition is saved in H:\BJSVW\Agi\GDI\Betrieb\Openshift\Pipelines\secret-config-generator-agent-pg-service.yaml
 Create the secret
 ```

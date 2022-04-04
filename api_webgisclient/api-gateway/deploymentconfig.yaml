@@ -35,7 +35,7 @@ objects:
     labels:
       service: api-gateway
       app: gdi
-    name: api-gateway-test
+    name: api-gateway
   spec:
     replicas: ${{REPLICAS}}
     revisionHistoryLimit: 1
@@ -106,7 +106,9 @@ objects:
             name: cache-volume
         dnsPolicy: ClusterFirst
         restartPolicy: Always
-        securityContext: {}
+        serviceAccountName: qgis-server
+        securityContext:
+          runAsUser: 101
         terminationGracePeriodSeconds: 30
         volumes:
         - configMap:

@@ -288,7 +288,7 @@ objects:
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://oereb-web-service.agi-oereb-${ENVIRONMENT}.svc/;
+            proxy_pass http://oereb-web-service.agi-oerebv2-${ENVIRONMENT}.svc/;
         }
 
         location /api/v1/plotinfo {
@@ -331,13 +331,9 @@ objects:
         }
 
         location /wms/oereb {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc; 
         }
       
-        location /wms/oereb-symbols {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
-        }
-        
         location /gb2av {
             proxy_pass http://gb2av.agi-apps-${ENVIRONMENT}.svc/;
         }

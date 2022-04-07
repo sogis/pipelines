@@ -106,9 +106,7 @@ objects:
             name: cache-volume
         dnsPolicy: ClusterFirst
         restartPolicy: Always
-        serviceAccountName: qgis-server
-        securityContext:
-          runAsUser: 101
+        securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
         - configMap:

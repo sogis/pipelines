@@ -106,7 +106,6 @@ pipeline {
                     sh """   
                        oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n $namespace -f- 
                        oc start-build $serviceName -n $namespace --wait
-                       oc process -f $repo/buildconfig.yaml -p DEPLOYTAG=$vDeployImage | oc apply -n $namespace -f- 
                        oc start-build filebeat -n $namespace --wait
                     """
                     }

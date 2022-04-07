@@ -441,6 +441,19 @@ objects:
           kind: DockerImage
           name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/api-gateway:latest'
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: filebeat
+    labels:
+      app: gdi
+      service: filebeat
+  spec:
+    tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:latest'
+- apiVersion: v1
   kind: Service
   metadata:
     annotations:

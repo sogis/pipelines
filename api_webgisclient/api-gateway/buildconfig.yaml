@@ -47,3 +47,40 @@ objects:
       requests:
         cpu: "250m"
         memory: "1024Mi"
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      service: filebeat
+      app: gdi
+    name: filebeat
+  spec:
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 2
+    output:
+      to:
+        kind: ImageStreamTag
+        name: filebeat:${DEPLOYTAG}
+    source:
+      contextDir: filebeat
+      git:
+        ref: amplify
+        uri: https://github.com/sogis/qwc_services.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: debian:11-slim
+        noCache: false
+        pullSecret:
+          name: sogis-pull-secret
+      type: Docker
+    resources:
+      limits:
+        cpu: "1000m"
+        memory: "4096Mi"
+      requests:
+        cpu: "250m"
+        memory: "1024Mi"

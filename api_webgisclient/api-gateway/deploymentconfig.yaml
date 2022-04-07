@@ -104,6 +104,23 @@ objects:
             name: nginx-cert-volume
           - mountPath: /cache
             name: cache-volume
+        - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:${TAG}
+          imagePullPolicy: Always
+          name: sogis-filebeat
+          ports:
+          - containerPort: 8082
+            protocol: TCP
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /cache
+            name: cache-volume
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}

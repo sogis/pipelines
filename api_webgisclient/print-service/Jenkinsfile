@@ -90,7 +90,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, dbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, serviceName, 'qwc'
+                    createConfigs namespace, branch, dbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, serviceName, 'qwc'
                     }
                 }
             }

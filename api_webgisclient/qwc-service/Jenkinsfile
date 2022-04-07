@@ -93,7 +93,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'map-viewer', 'qwc', 'qwc-map-viewer'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'map-viewer', 'qwc', 'qwc-map-viewer'
                     }
                 }
             }

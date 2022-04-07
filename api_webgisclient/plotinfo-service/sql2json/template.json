@@ -2,7 +2,6 @@
   "$schema": "https://github.com/qwc-services/sogis-plotinfo-service/raw/master/schemas/sogis-plotinfo-service.json",
   "service": "plotinfo",
   "config": {
-    "key": "oereb2",
     "db_url": "postgresql:///?service=sogis_pub",
     "basic_info_sql": "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE ST_Intersects( g.geometrie, ST_Buffer( ST_SetSRID(ST_Point(:x, :y), :srid),  :buffer ) )",
     "basic_info_fields": [

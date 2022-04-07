@@ -102,8 +102,8 @@ objects:
             name: datensogispicmir
           - mountPath: /etc/nginx/certs
             name: nginx-cert-volume
-          - mountPath: /cache
-            name: cache-volume
+          - mountPath: /var/log/nginx
+            name: log-volume
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:${TAG}
           imagePullPolicy: Always
           name: sogis-filebeat
@@ -119,8 +119,8 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /cache
-            name: cache-volume
+          - mountPath: /var/log/nginx
+            name: log-volume
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -148,6 +148,8 @@ objects:
             claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
         - name: cache-volume
+          emptyDir: {}
+        - name: log-volume
           emptyDir: {}
     test: false
     triggers: []

@@ -104,6 +104,8 @@ objects:
             name: nginx-cert-volume
           - mountPath: /var/log/nginx
             name: log-volume
+          - mountPath: /cache
+            name: cache-volume
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:${TAG}
           imagePullPolicy: Always
           name: sogis-filebeat

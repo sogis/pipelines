@@ -36,7 +36,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     vBaseImage = params.vBaseImage
                     replicas = params.replicas
                     branch = params.branch
@@ -86,7 +86,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'qwc'
+                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, serviceName, 'qwc'
                     }
                 }
             }

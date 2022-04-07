@@ -196,15 +196,33 @@ objects:
         }
 
         location /wms {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
         location /api/wms {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_cache my_cache;
             proxy_cache_valid 200 30m;
         }
 
         location /api/wmsauth {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_set_header Authorization "Basic ${BASICAUTH}";
             proxy_cache my_cache;
@@ -389,7 +407,10 @@ objects:
         #location = /404.html {
         #    root   /usr/share/nginx/html;
         #}
-
+        error_page 410    /epsg.html;
+        location = /epsg.html {
+            root   /usr/share/nginx/html; 
+        }
         # redirect server error pages to the static page /50x.html
         #
         #error_page   500 502 503 504  /maintenance.html;

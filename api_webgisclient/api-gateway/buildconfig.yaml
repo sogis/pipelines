@@ -37,6 +37,8 @@ objects:
           kind: DockerImage
           name: nginxinc/nginx-unprivileged:mainline-alpine
         noCache: false
+        pullSecret:
+          name: sogis-pull-secret
       type: Docker
     resources:
       limits:

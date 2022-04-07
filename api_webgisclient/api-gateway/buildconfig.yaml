@@ -72,7 +72,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: debian:11-slim
+          name: debian:11
         noCache: false
         pullSecret:
           name: sogis-pull-secret

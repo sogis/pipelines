@@ -123,6 +123,14 @@ objects:
           volumeMounts:
           - mountPath: /var/log/nginx
             name: log-volume
+        - image: kicm/logrotate:latest
+          imagePullPolicy: IfNotPresent
+          name: logrotate
+          volumeMounts:
+          - name: logrotate-conf
+              mountPath: /etc/logrotate.d
+          - name: log-volume
+            mountPath: /var/log/nginx
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -141,6 +149,11 @@ objects:
               path: nginx.conf
             name: nginx-base-config
           name: nginx-config-base-claim
+        - configMap:
+            items:
+            - key: my_logs.conf
+              path: my_logs.conf
+            name: logrotate-config
         - name: nginx-cert-volume
           secret:
             defaultMode: 420

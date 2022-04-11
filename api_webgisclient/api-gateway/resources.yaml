@@ -427,6 +427,26 @@ objects:
       service: api-gateway
       app: gdi
 - apiVersion: v1
+  data:
+    my_logs.conf: |
+       /var/log/nginx/*.log {
+           daily
+           missingok
+           rotate 1
+           compress
+           delaycompress
+           dateformat -%Y%md_%H%M%S
+           notifempty
+           copytruncate
+           su
+       }
+  kind: ConfigMap
+  metadata:
+    name: logrotate-config
+    labels:
+      service: api-gateway
+      app: gdi
+- apiVersion: v1
   kind: ImageStream
   metadata:
     name: api-gateway

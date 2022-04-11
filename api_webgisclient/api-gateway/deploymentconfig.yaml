@@ -152,6 +152,7 @@ objects:
         - name: cache-volume
           emptyDir: {}
         - name: log-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: test
     test: false
     triggers: []

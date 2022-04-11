@@ -127,7 +127,7 @@ objects:
           imagePullPolicy: IfNotPresent
           name: logrotate
           volumeMounts:
-          - name: logrotate-conf
+          - name: logrotate-config
             mountPath: /etc/logrotate.d
           - name: log-volume
             mountPath: /var/log/nginx

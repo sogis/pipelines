@@ -154,6 +154,7 @@ objects:
             - key: my_logs.conf
               path: my_logs.conf
             name: logrotate-config
+          name: logrotate-config
         - name: nginx-cert-volume
           secret:
             defaultMode: 420

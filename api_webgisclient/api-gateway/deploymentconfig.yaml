@@ -153,6 +153,6 @@ objects:
           emptyDir: {}
         - name: log-volume
           persistentVolumeClaim:
-            claimName: test
+            claimName: reports-claim
     test: false
     triggers: []

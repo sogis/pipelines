@@ -141,7 +141,7 @@ objects:
           image: busybox:1.35
           command:
           - "chmod"
-          - "R"
+          - "-R"
           - "775"
           - "/var/log/nginx"
           volumeMounts:

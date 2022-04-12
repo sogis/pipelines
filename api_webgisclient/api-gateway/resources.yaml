@@ -427,24 +427,6 @@ objects:
       service: api-gateway
       app: gdi
 - apiVersion: v1
-  data:
-    my_logs.conf: |
-       /var/log/nginx/*.log {
-           daily
-           missingok
-           rotate 1
-           dateformat -%Y%m%d-%s
-           notifempty
-           copytruncate
-           create 0644 nginx nginx
-       }
-  kind: ConfigMap
-  metadata:
-    name: logrotate-config
-    labels:
-      service: api-gateway
-      app: gdi
-- apiVersion: v1
   kind: ImageStream
   metadata:
     name: api-gateway

@@ -125,19 +125,17 @@ objects:
             name: log-volume
         - image: blacklabelops/logrotate:1.3
           imagePullPolicy: IfNotPresent
-          securityContext:
-            privileged: true
           name: logrotate
           env:
           - name: LOGROTATE_INTERVAL
             value: "hourly"
-          - name: LOGROTATE_OLDDIR
-            value: "/logs"
+          - name: LOGS_DIRECTORIES
+            value: "/var/log/nginx"
           volumeMounts:
           - name: logrotate-config
             mountPath: /etc/logrotate.d
           - name: log-volume
-            mountPath: /logs
+            mountPath: /var/log/nginx
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}

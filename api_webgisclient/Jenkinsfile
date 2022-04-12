@@ -45,6 +45,10 @@ pipeline {
                     branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                         solrEnv = 'test'
+                        if ( branch != 'oerebv2' ) {
+                            currentBuild.result = 'ABORTED'
+                            error('Rollout in Testumgebung derzeit nur mit Branch oerebv2 möglich')
+                            }
                         }
                     else if ( namespace == 'gdi-integration' ) {
                         solrEnv = 'integration'

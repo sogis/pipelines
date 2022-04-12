@@ -123,14 +123,21 @@ objects:
           volumeMounts:
           - mountPath: /var/log/nginx
             name: log-volume
-        - image: kicm/logrotate:latest
+        - image: blacklabelops/logrotate:1.3
           imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
           name: logrotate
+          env:
+          - name: LOGROTATE_INTERVAL
+            value: "hourly"
+          - name: LOGROTATE_OLDDIR
+            value: "/logs"
           volumeMounts:
           - name: logrotate-config
             mountPath: /etc/logrotate.d
           - name: log-volume
-            mountPath: /var/log/nginx
+            mountPath: /logs
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}

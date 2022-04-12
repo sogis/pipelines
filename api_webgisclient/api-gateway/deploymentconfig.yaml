@@ -144,11 +144,19 @@ objects:
           - "-R"
           - "775"
           - "/var/log/nginx"
+          - "chown"
+          - "-R"
+          - "101"
+          - "/var/log/nginx"
           volumeMounts:
           - name: log-volume
             mountPath: /var/log/nginx       
         dnsPolicy: ClusterFirst
         restartPolicy: Always
+        securityContext:
+          runAsUser: 101
+          runAsGroup: 101
+          fsGroup: 101
         terminationGracePeriodSeconds: 30
         volumes:
         - configMap:

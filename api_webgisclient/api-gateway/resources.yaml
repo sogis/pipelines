@@ -433,12 +433,10 @@ objects:
            daily
            missingok
            rotate 1
-           compress
-           delaycompress
-           dateformat -%Y%md_%H%M%S
+           dateformat -%Y%m%d-%s
            notifempty
            copytruncate
-           su
+           create 0644 nginx nginx
        }
   kind: ConfigMap
   metadata:

@@ -45,6 +45,8 @@ pipeline {
                     branch = params.branch
                     if ( namespace == 'gdi-test' ) {
                         solrEnv = 'test'
+                        currentBuild.result = 'ABORTED'
+                        error('Kein Rollout in Testumgebung im Moment möglich. Bitte https://jenkins-agi-apps-test.apps.ocp.so.ch benutzen')
                         }
                     else if ( namespace == 'gdi-integration' ) {
                         solrEnv = 'integration'

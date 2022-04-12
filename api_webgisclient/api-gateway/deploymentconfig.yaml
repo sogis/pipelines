@@ -140,10 +140,10 @@ objects:
         - name: change-log-permissions
           image: busybox:1.35
           command:
-          - chmod
-          - R
-          - 775
-          - /var/log/nginx
+          - "chmod"
+          - "R"
+          - "775"
+          - "/var/log/nginx"
           volumeMounts:
           - name: log-volume
             mountPath: /var/log/nginx       

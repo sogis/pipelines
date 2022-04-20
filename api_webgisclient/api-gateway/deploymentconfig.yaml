@@ -144,7 +144,7 @@ objects:
           command:
           - 'sh'
           - '-c'
-          - 'chmod -R 775 /var/log/nginx && chown -R 101 /var/log/nginx'
+          - 'chmod -R 775 /var/log/nginx-hard && chown -R 101 /var/log/nginx-hard'
           volumeMounts:
           - name: log-volume
             mountPath: /var/log/nginx-hard       

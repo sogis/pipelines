@@ -102,7 +102,7 @@ objects:
             name: datensogispicmir
           - mountPath: /etc/nginx/certs
             name: nginx-cert-volume
-          - mountPath: /var/log/nginx-hard
+          - mountPath: /var/log/nginx
             name: log-volume
           - mountPath: /cache
             name: cache-volume
@@ -121,7 +121,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/log/nginx-hard
+          - mountPath: /var/log/nginx
             name: log-volume
         - image: blacklabelops/logrotate:1.3
           imagePullPolicy: IfNotPresent
@@ -130,24 +130,24 @@ objects:
           - name: LOGROTATE_INTERVAL
             value: "hourly"
           - name: LOGS_DIRECTORIES
-            value: "/var/log/nginx-hard"
+            value: "/var/log/nginx"
           - name: LOGROTATE_COPIES
             value: "1"
           volumeMounts:
           - name: logrotate-config
             mountPath: /etc/logrotate.d
           - name: log-volume
-            mountPath: /var/log/nginx-hard
+            mountPath: /var/log/nginx
         initContainers:
         - name: change-log-permissions
           image: busybox:1.35
           command:
           - 'sh'
           - '-c'
-          - 'chmod -R 775 /var/log/nginx-hard && chown -R 101 /var/log/nginx-hard'
+          - 'chmod -R 775 /var/log/nginx && chown -R 101 /var/log/nginx'
           volumeMounts:
           - name: log-volume
-            mountPath: /var/log/nginx-hard       
+            mountPath: /var/log/nginx       
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}

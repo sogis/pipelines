@@ -130,7 +130,7 @@ objects:
           - name: LOGROTATE_INTERVAL
             value: "hourly"
           - name: LOGS_DIRECTORIES
-            value: "/var/log/nginx"
+            value: "/var/log/nginx-hard"
           - name: LOGROTATE_COPIES
             value: "1"
           volumeMounts:

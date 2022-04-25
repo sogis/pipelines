@@ -109,6 +109,12 @@ objects:
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:${TAG}
           imagePullPolicy: Always
           name: sogis-filebeat
+          env:
+          - name: LOGSTASH_HOST
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-logitio
+                key: logstash_host
           ports:
           - containerPort: 8082
             protocol: TCP

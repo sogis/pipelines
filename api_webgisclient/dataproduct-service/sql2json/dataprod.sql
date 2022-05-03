@@ -110,7 +110,7 @@ ext_wms_layer AS (
           'service_url', wmslayer_url, 
           'name', wmslayer_name
         ),      
-        'type', 'datasetview',
+        'type', 'extwms',
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,

@@ -157,6 +157,7 @@ objects:
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
+        serviceAccountName: qgis-server
         terminationGracePeriodSeconds: 30
         volumes:
         - configMap:

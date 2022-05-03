@@ -275,7 +275,7 @@
                     "urlKey": "cadastre_egrid"
                   },
                   {
-                    "key": "oereb",
+                    "key": "oereb2",
                     "titleMsgId": "oereb.title",
                     "failMsgId": "oereb.failed",
                     "query": "/oereb/xml/$egrid$",
@@ -569,7 +569,7 @@
                     "urlKey": "cadastre_egrid"
                   },
                   {
-                    "key": "oereb",
+                    "key": "oereb2",
                     "titleMsgId": "oereb.title",
                     "failMsgId": "oereb.failed",
                     "query": "/oereb/xml/$egrid$",

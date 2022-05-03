@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.trafo_wms_layer_v;
+DROP VIEW IF EXISTS simi.trafo_wms_layer_v CASCADE;
 
 CREATE VIEW simi.trafo_wms_layer_v AS
 
@@ -155,11 +155,9 @@ ext_wms_layerbase AS (
   FROM
     simi.trafo_published_dp_v dp
   JOIN 
-    simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
+    simi.simiproduct_external_wms_layers el ON dp.dp_id = el.id
   JOIN
-    simi.simiproduct_external_map_service es ON el.service_id = es.id
-  WHERE 
-    service_type = 'WMS'
+    simi.simiproduct_external_wms_service es ON el.service_id = es.id
 ),
 
 ext_wms AS (
@@ -177,43 +175,6 @@ ext_wms AS (
     ext_wms_layerbase
 ),
 
-ext_wmts_layerbase AS (
-  SELECT  
-    identifier,
-    title_ident,   
-    jsonb_build_object(
-      'wmts_capabilities_url', url,
-      'layer', el.identifier_list,
-      'style', el.identifier_list,
-      'format', 'image/png',
-      'tile_matrix_set', '2056_27',
-      'srid', 2056
-    ) AS wmts_datasource_json
-  FROM
-    simi.trafo_published_dp_v dp
-  JOIN 
-    simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
-  JOIN
-    simi.simiproduct_external_map_service es ON el.service_id = es.id
-  WHERE 
-    service_type = 'WMTS'
-),
-
-ext_wmts AS (
-  SELECT 
-    identifier,
-    TRUE AS print_or_ext,
-    jsonb_build_object(
-      'name', identifier,
-      'type', 'layer',
-      'datatype', 'wmts',
-      'title', title_ident,
-      'wmts_datasource', wmts_datasource_json
-    ) AS layer_json
-  FROM
-    ext_wmts_layerbase
-),
-
 layer_union AS (
   SELECT identifier, print_or_ext, layer_json FROM productlist
   UNION ALL 
@@ -224,8 +185,6 @@ layer_union AS (
   SELECT identifier, print_or_ext, layer_json FROM raster_layer
   UNION ALL 
   SELECT identifier, print_or_ext, layer_json FROM ext_wms
-  UNION ALL 
-  SELECT identifier, print_or_ext, layer_json FROM ext_wmts
 )
 
 SELECT 

@@ -75,9 +75,8 @@ ext_wms_layer_base AS (
     url AS extlayer_url,
     jsonb_build_object('LAYERS', l.identifier_list) AS extlayer_params,
     CASE 
-      WHEN strpos(url, 'geodienste.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
-      WHEN strpos(url, 'geo.admin.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
-      ELSE jsonb_build_array('text/plain')
+      WHEN s.feature_info_format = 'fi_unavailable' THEN NULL
+      ELSE jsonb_build_array(s.feature_info_format)
     END AS extlayer_infoformats,
     
     url AS wmslayer_url,
@@ -85,9 +84,9 @@ ext_wms_layer_base AS (
     
     l.id AS layer_id
   FROM
-    simi.simiproduct_external_map_layers l
+    simi.simiproduct_external_wms_layers l
   JOIN
-    simi.simi.simiproduct_external_map_service s ON l.service_id = s.id
+    simi.simi.simiproduct_external_wms_service s ON l.service_id = s.id
 ),
 
 ext_wms_layer AS (

@@ -70,17 +70,17 @@ rasterview_ds_props AS (
 
 ext_wms_layer_base AS (
   SELECT
-    concat('wms:', s.url, '#/', l.identifier_list) AS extlayer_name,
+    concat('wms:', s.url, '#/', l.ext_identifier) AS extlayer_name,
     'wms' AS extlayer_type,
     url AS extlayer_url,
-    jsonb_build_object('LAYERS', l.identifier_list) AS extlayer_params,
+    jsonb_build_object('LAYERS', l.ext_identifier) AS extlayer_params,
     CASE 
       WHEN s.feature_info_format = 'fi_unavailable' THEN NULL
       ELSE jsonb_build_array(s.feature_info_format)
     END AS extlayer_infoformats,
     
     url AS wmslayer_url,
-    l.identifier_list AS wmslayer_name,
+    l.ext_identifier AS wmslayer_name,
     
     l.id AS layer_id
   FROM

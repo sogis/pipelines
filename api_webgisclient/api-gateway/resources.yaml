@@ -47,6 +47,7 @@ objects:
                             '"upstream_response_time": "$upstream_response_time","upstream_addr": "$upstream_addr" }';
 
           access_log  /var/log/nginx/access.log  json;
+          access_log  /var/log/nginx-soft/access.log json;
       
           sendfile        on;
           #tcp_nopush     on;
@@ -288,7 +289,14 @@ objects:
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://oereb-web-service.agi-oereb-${ENVIRONMENT}.svc/;
+            proxy_pass http://oereb-web-service.agi-oerebv2-${ENVIRONMENT}.svc/;
+        }
+
+        location /api/oerebv2 {
+            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
+            proxy_set_header 'X-FORWARDED-PROTO' 'https';
+            proxy_pass http://oereb-web-service.agi-oerebv2-${ENVIRONMENT}.svc/;
         }
 
         location /api/v1/plotinfo {
@@ -331,13 +339,13 @@ objects:
         }
 
         location /wms/oereb {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc; 
+        }
+
+        location /wms/oerebv2 {
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc;
         }
       
-        location /wms/oereb-symbols {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
-        }
-        
         location /gb2av {
             proxy_pass http://gb2av.agi-apps-${ENVIRONMENT}.svc/;
         }
@@ -431,6 +439,24 @@ objects:
       service: api-gateway
       app: gdi
 - apiVersion: v1
+  data:
+    my_logs.conf: |
+      /var/log/nginx/*.log {
+        daily
+        missingok
+        rotate 1
+        dateformat -%Y%m%d-%s
+        notifempty
+        copytruncate
+        create 0644 nginx nginx
+      }
+  kind: ConfigMap
+  metadata:
+    name: logrotate-config
+    labels:
+      service: api-gateway
+      app: gdi
+- apiVersion: v1
   kind: ImageStream
   metadata:
     name: api-gateway
@@ -443,6 +469,19 @@ objects:
         from:
           kind: DockerImage
           name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/api-gateway:latest'
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: filebeat
+    labels:
+      app: gdi
+      service: filebeat
+  spec:
+    tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:latest'
 - apiVersion: v1
   kind: Service
   metadata:

@@ -28,7 +28,7 @@ objects:
     source:
       contextDir: api-gateway
       git:
-        ref: amplify
+        ref: master
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:
@@ -65,7 +65,7 @@ objects:
     source:
       contextDir: filebeat
       git:
-        ref: amplify
+        ref: master
         uri: https://github.com/sogis/qwc_services.git
       type: Git
     strategy:

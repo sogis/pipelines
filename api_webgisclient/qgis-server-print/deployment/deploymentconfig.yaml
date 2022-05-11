@@ -65,6 +65,8 @@ objects:
             value: "2"
           - name: QGIS_FCGI_MAX_PROCESSES
             value: "2"
+          - name: QGIS_FCGI_IOTIMEOUT
+            value: "40"
           image: sogis/qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

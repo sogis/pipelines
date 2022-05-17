@@ -203,6 +203,15 @@ objects:
             if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
                 return 410;
             }
+            if ( $arg_WIDTH = 1 ) {
+                return 503;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 503;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 503;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
         location /api/wms {
@@ -211,6 +220,15 @@ objects:
             }
             if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
                 return 410;
+            }
+            if ( $arg_WIDTH = 1 ) {
+                return 503;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 503;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 503;
             }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_cache my_cache;
@@ -223,6 +241,15 @@ objects:
             }
             if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
                 return 410;
+            }
+            if ( $arg_WIDTH = 1 ) {
+                return 503;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 503;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 503;
             }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_set_header Authorization "Basic ${BASICAUTH}";

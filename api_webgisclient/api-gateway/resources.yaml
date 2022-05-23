@@ -204,13 +204,13 @@ objects:
                 return 410;
             }
             if ( $arg_WIDTH = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_HEIGHT = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_BBOX ~ (-) ) {
-                return 503;
+                return 422;
             }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
@@ -222,13 +222,13 @@ objects:
                 return 410;
             }
             if ( $arg_WIDTH = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_HEIGHT = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_BBOX ~ (-) ) {
-                return 503;
+                return 422;
             }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_cache my_cache;
@@ -243,13 +243,13 @@ objects:
                 return 410;
             }
             if ( $arg_WIDTH = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_HEIGHT = 1 ) {
-                return 503;
+                return 422;
             }
             if ( $arg_BBOX ~ (-) ) {
-                return 503;
+                return 422;
             }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
             proxy_set_header Authorization "Basic ${BASICAUTH}";
@@ -431,7 +431,7 @@ objects:
             proxy_pass https://${MATOMO_URL}/;
         }
 
-        error_page  404   /404.html;
+        #error_page  404   /404.html;
         #location = /404.html {
         #    root   /usr/share/nginx/html;
         #}
@@ -442,7 +442,6 @@ objects:
         # redirect server error pages to the static page /50x.html
         #
         #error_page   500 502 503 504  /maintenance.html;
-        error_page   500 502 503 504  /50x.html;
         #location = /maintenance.html {
         location = /50x.html {
             root   /usr/share/nginx/html;

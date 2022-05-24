@@ -39,8 +39,9 @@ objects:
       http {
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
+          map "$time_local:$msec" $time_local_w_ms { ~(^\S+)(\s+\S+):\d+.(\d+)$ $1.$3$2; }
       
-          log_format  json  '{"time": "$time_local", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
+          log_format  json  '{"time": "$time_local_w_ms", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
                             '"request_method": "$request_method", "server_protocol": "$server_protocol", "address": "$uri", "args": "$args", "request": "$request", '
                             '"body_bytes_sent": "$body_bytes_sent", "http_user_agent": "$http_user_agent", "remote_user": "$remote_user", '
                             '"request_time": "$request_time", "upstream_connect_time": "$upstream_connect_time", "upstream_header_time": "$upstream_header_time", '

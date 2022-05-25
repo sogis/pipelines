@@ -1,0 +1,220 @@
+def serviceName = 'qgis-server'
+def configFileName = 'somap.json'
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+
+pipeline {
+    agent { label 'master' }
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 35, unit: 'MINUTES')
+        }
+    parameters {
+        string(defaultValue: '2.0.17',
+               description: 'Image Version',
+               name: 'vBaseImage'
+               )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
+        string(description: 'Anzahl der Replicas GetMap QGIS Server',
+               defaultValue: '1',
+               name: 'replicas'
+               )
+        string(defaultValue: "gdi-production",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        }
+
+    stages {
+        stage ('Ask for Version') {
+            steps {
+                script {
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
+                    vBaseImage = params.vBaseImage
+                    namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) { 
+                      db_server = env.DB_SERVER_TEST
+                      geo_db_server = env.GEO_DB_SERVER_TEST
+                      environment = 'test'
+                      sogisPicMirEnv = '-test'
+                      replicas = '2'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    else if ( namespace == 'gdi-integration' ) { 
+                      db_server = env.DB_SERVER_INT
+                      geo_db_server = env.GEO_DB_SERVER_TEST
+                      environment = 'integration'
+                      sogisPicMirEnv = '-int'
+                      replicas = '2'
+                      resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
+                      }
+                    else if ( namespace == 'gdi-production' ) { 
+                      db_server = env.DB_SERVER_PROD
+                      geo_db_server = env.GEO_DB_SERVER_PROD
+                      environment = 'production'
+                      sogisPicMirEnv = '-prod'
+                      replicas = '14'
+                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
+                      }
+                    else {
+                      environment = 'test'
+                      sogisPicMirEnv = '-test'
+                      replicas = '2'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    buildNumber = BUILD_NUMBER
+                    jobName = JOB_NAME
+                    credentials = [ 
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
+                        usernamePassword(credentialsId: 'jenkinsApi'                                 , usernameVariable: 'apiUser'           , passwordVariable: 'PwdApiUser')
+                        ]
+                    }
+                }
+            }
+        stage ('Configure Ressources') {
+            steps {
+                withCredentials ( credentials ) {
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p NAMESPACE=${namespace}"
+                    }
+                }
+            }
+        stage ('Create configs') {
+            steps {
+                withCredentials ( credentials ) {
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'wms-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', serviceName, 'wfs-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', serviceName, 'print-qgs-content', 'sogis', 'json2qgs'
+                    }
+                }
+            }
+        stage ('Create qgs files') {
+            agent { 
+              kubernetes {
+                label 'json2qgs-agent'
+                defaultContainer 'jnlp'
+                idleMinutes '600'
+                yaml """
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    labels:
+                      jenkins: slave
+                      jenkins/label: json2qgs-agent
+                    name: json2qgs-agent
+                  spec:
+                    containers:
+                    - args:
+                      - "********"
+                      image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "jnlp"
+                      env:
+                      - name: "LC_ALL"
+                        value: "C.UTF-8"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "250m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    - args:
+                      - "24h"
+                      command:
+                      - "sleep"
+                      image: "sogis/json2qgs:v1.0.6"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "json2qgs"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "200m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    restartPolicy: "Never"
+                    serviceAccountName: "jenkins"
+                    volumes:
+                    - name: "volume-0"
+                      persistentVolumeClaim:
+                        claimName: "qgs-resources-claim"
+                        readOnly: false
+                    - emptyDir:
+                        medium: ""
+                      name: "workspace-volume"
+                  """
+                  }
+             }
+            steps {
+                withCredentials ( credentials ) {
+                    container('json2qgs') {
+                        sh """
+                            if [ ! -d "config/default" ]; then
+                              mkdir -p config/default
+                            fi
+                            wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        """
+                        }
+                    script {
+                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
+                        sh """
+                           oc rsync -n ${namespace} config/default/ $PODNAME:/data
+                        """
+                        }
+                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    }
+                }
+            post {
+                always {
+                    sh """
+                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
+                    """
+                    }
+                }
+            }
+        stage ('Deploy qgis-server') {
+            steps {
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                }
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs
+                rm -rf $WORKSPACE/*
+            """
+            }
+        }
+    }

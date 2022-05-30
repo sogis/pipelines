@@ -22,10 +22,6 @@ pipeline {
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )
-        string(description: 'Anzahl der Replicas GetMap QGIS Server',
-               defaultValue: '1',
-               name: 'replicas'
-               )
         string(defaultValue: "gdi-production",
                description: 'Bitte namespace auswählen',
                name: 'namespace'

@@ -418,6 +418,9 @@ objects:
         #} 
 
         location /api/embed/v1 {
+            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/api/embed/v1';
+            proxy_set_header 'X-FORWARDED-PROTO' 'https';
             proxy_pass http://wgc-embedded.agi-apps-${ENVIRONMENT}.svc/; 
         }
 

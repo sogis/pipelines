@@ -44,6 +44,8 @@ pipeline {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '2'
+                      replicas_print = '1'
+                      replicas_featureinfo = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -52,6 +54,8 @@ pipeline {
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
+                      replicas_print = '2'
+                      replicas_featureinfo = '1'
                       resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
@@ -60,12 +64,16 @@ pipeline {
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '14'
+                      replicas_print = '3'
+                      replicas_featureinfo = '2'
                       resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
                       }
                     else {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '2'
+                      replicas_print = '1'
+                      replicas_featureinfo = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     buildNumber = BUILD_NUMBER
@@ -76,8 +84,8 @@ pipeline {
         stage ('Deploy qgis-server') {
             steps {
                 deployImage 'qgis-server', namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
-                deployImage 'qgis-server-print', namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}" 
-                deployImage 'qgis-server-featureinfo', namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
+                deployImage 'qgis-server-print', namespace, vBaseImage, repo, replicas_print, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}" 
+                deployImage 'qgis-server-featureinfo', namespace, vBaseImage, repo, replicas_featureinfo, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

@@ -75,8 +75,8 @@ ext_wms_layer_base AS (
     url AS extlayer_url,
     jsonb_build_object('LAYERS', l.ext_identifier) AS extlayer_params,
     CASE 
-      WHEN s.feature_info_format = 'fi_unavailable' THEN NULL
-      ELSE jsonb_build_array(s.feature_info_format)
+      WHEN l.feature_info_format = 'fi_unavailable' THEN NULL
+      ELSE jsonb_build_array(l.feature_info_format)
     END AS extlayer_infoformats,
     
     url AS wmslayer_url,

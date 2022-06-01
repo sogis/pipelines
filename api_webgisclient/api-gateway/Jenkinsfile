@@ -50,6 +50,8 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
+                      loadbalance = 'false'
+                      ssl = 'false'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.apps.ocp.so.ch'
@@ -61,6 +63,8 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
+                      loadbalance = 'false'
+                      ssl = 'false'
                       baseUrl = 'geo-i.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics-i.apps.ocp.so.ch'
@@ -72,6 +76,8 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
+                      loadbalance = 'true'
+                      ssl = 'true'
                       baseUrl = 'geo.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-production.svc'
                       matomoUrl = 'analytics.apps.ocp.so.ch'
@@ -81,6 +87,8 @@ pipeline {
                     else {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
+                      loadbalance = 'false'
+                      ssl = 'false'
                       baseUrl = 'geo-t.so.ch'
                       wmtsUrl = 'mapcache.agi-mapcache-test.svc'
                       matomoUrl = 'analytics-i.apps.opc.so.ch'
@@ -92,7 +100,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url} -p BASICAUTH=${basicAuth}"
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url} -p BASICAUTH=${basicAuth} -p LOADBALANCE=${loadbalance} -p SSL=${ssl}"
                 }
             }
         stage ('Build new Image for api-gateway if necessary') {

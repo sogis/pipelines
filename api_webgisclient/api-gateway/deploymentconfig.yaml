@@ -23,6 +23,10 @@ parameters:
     name: MEMORY_REQUEST
   - description: Memory Limit
     name: MEMORY_LIMIT
+  - description: loadbalance true/false for filebeat
+    name: LOADBALANCE
+  - description: ssl enabled true/false for filebeat
+    name: SSL
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -115,6 +119,10 @@ objects:
               secretKeyRef:
                 name: api-gateway-logitio
                 key: logstash_host
+          - name: LOADBALANCE
+            value: ${LOADBALANCE}
+          - name: SSL
+            value: ${SSL}
           ports:
           - containerPort: 8082
             protocol: TCP

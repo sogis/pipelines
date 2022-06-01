@@ -100,7 +100,7 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url} -p BASICAUTH=${basicAuth} -p LOADBALANCE=${loadbalance} -p SSL=${ssl}"
+                configureRessources '${namespace}', "-f ${repo}/resources.yaml -p ENVIRONMENT=${environment} -p BASEURL=${baseUrl} -p WMTS_URL=${wmtsUrl} -p NAMESPACE=${namespace} -p MATOMO_URL=${matomoUrl} -p NO_SES_URL=${no_ses_url} -p BASICAUTH=${basicAuth}"
                 }
             }
         stage ('Build new Image for api-gateway if necessary') {
@@ -123,7 +123,7 @@ pipeline {
             }
         stage ('Deploy api-gateway in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${sogisPicMirEnv}"  
+                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p ENVIRONMENT=${sogisPicMirEnv} -p LOADBALANCE=${loadbalance} -p SSL=${ssl}"  
                 }
             }
         }

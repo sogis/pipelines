@@ -81,8 +81,6 @@ pipeline {
         stage ('Deploy qgis-server') {
             steps {
                 deployImage 'qgis-server', namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
-                deployImage 'qgis-server-print', namespace, vBaseImage, repo, replicas_print, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}" 
-                deployImage 'qgis-server-featureinfo', namespace, vBaseImage, repo, replicas_featureinfo, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${sogisPicMirEnv}"
                 }
             }
         }

@@ -25,7 +25,7 @@ pipeline {
                defaultValue: '1',
                name: 'replicas'
                )
-        string(defaultValue: "gdi-test",
+        string(defaultValue: "gdi-production",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )

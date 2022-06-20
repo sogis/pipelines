@@ -15,7 +15,6 @@ pipeline {
         }
     parameters {
         string(description: 'Image Version',
-               defaultValue: '2.0.17',
                name: 'vBaseImage'
                )
         string(defaultValue: "master",
@@ -26,7 +25,7 @@ pipeline {
                defaultValue: '1',
                name: 'replicas'
                )
-        string(defaultValue: "gdi-production",
+        string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )

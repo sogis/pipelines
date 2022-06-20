@@ -14,6 +14,14 @@ WITH
 tableview_nongeo_attr AS ( 
   SELECT
     table_view_id as tv_id,
+    CASE WHEN
+      tf.alias is NULL
+    THEN 
+      tf.name 
+    ELSE 
+      tf.alias 
+    END AS 
+      attr_name,
     tf."name" as attr_name,
     jsonb_strip_nulls(
       jsonb_build_object(

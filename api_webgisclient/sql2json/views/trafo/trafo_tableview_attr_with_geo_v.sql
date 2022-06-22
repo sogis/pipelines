@@ -11,7 +11,7 @@ CREATE VIEW simi.trafo_tableview_attr_with_geo_v AS
  * */
 WITH 
 
-tableview_nongeo_attr AS ( 
+tableview_attr_names AS (
   SELECT
     table_view_id as tv_id,
     CASE WHEN
@@ -22,19 +22,31 @@ tableview_nongeo_attr AS (
       tf.alias 
     END AS 
       attr_name,
+    alias,
+    wms_fi_format,
+    display_props4_json,
+    vf.sort
+  FROM 
+    simi.simidata_view_field vf 
+  JOIN
+    simi.simidata_table_field tf on vf.table_field_id = tf.id 
+),
+    
+tableview_nongeo_attr AS ( 
+  SELECT
+    tv_id,
+    attr_name,
     jsonb_strip_nulls(
       jsonb_build_object(
-        'name', name,
+        'name', attr_name,
         'alias', alias,
         'format_base64', encode(convert_to(wms_fi_format, 'UTF8'), 'base64'),
         'json_attribute_aliases', display_props4_json::jsonb
       )
     ) AS attr_props_obj,
-    vf.sort 
+    sort 
   FROM 
-    simi.simidata_view_field vf 
-  JOIN
-    simi.simidata_table_field tf on vf.table_field_id = tf.id 
+    tableview_attr_names
 ),
 
 tableview_geo_attr as ( 

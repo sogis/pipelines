@@ -22,7 +22,6 @@ tableview_nongeo_attr AS (
       tf.alias 
     END AS 
       attr_name,
-    tf."name" as attr_name,
     jsonb_strip_nulls(
       jsonb_build_object(
         'name', name,

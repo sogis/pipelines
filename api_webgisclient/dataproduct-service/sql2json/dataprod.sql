@@ -80,7 +80,8 @@ ext_wms_layer_base AS (
     END AS extlayer_infoformats,
     CASE 
       WHEN l.feature_info_format = 'fi_unavailable' THEN '[]'     
-	ELSE jsonb_build_array(dp.identifier),
+	ELSE jsonb_build_array(dp.identifier)
+    END AS query_layers,
     
     url AS wmslayer_url,
     l.ext_identifier AS wmslayer_name,

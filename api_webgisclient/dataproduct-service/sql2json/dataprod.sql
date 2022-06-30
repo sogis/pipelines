@@ -78,6 +78,9 @@ ext_wms_layer_base AS (
       WHEN l.feature_info_format = 'fi_unavailable' THEN NULL
       ELSE jsonb_build_array(l.feature_info_format)
     END AS extlayer_infoformats,
+    CASE 
+      WHEN l.feature_info_format = 'fi_unavailable' THEN '[]'     
+	ELSE jsonb_build_array(dp.identifier),
     
     url AS wmslayer_url,
     l.ext_identifier AS wmslayer_name,
@@ -87,6 +90,8 @@ ext_wms_layer_base AS (
     simi.simiproduct_external_wms_layers l
   JOIN
     simi.simi.simiproduct_external_wms_service s ON l.service_id = s.id
+  JOIN
+    dprod dp ON l.id = dp.dp_id
 ),
 
 ext_wms_layer AS (
@@ -111,6 +116,7 @@ ext_wms_layer AS (
           'name', wmslayer_name
         ),      
         'type', 'extwms',
+	'queryLayers', query_layers,
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,

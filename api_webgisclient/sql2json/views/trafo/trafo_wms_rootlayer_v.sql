@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.trafo_wms_rootlayer_v;
+DROP VIEW IF EXISTS simi.trafo_wms_rootlayer_v CASCADE;
 
 CREATE VIEW simi.trafo_wms_rootlayer_v AS 
 
@@ -31,7 +31,7 @@ single_actor AS (
   JOIN
   	simi.trafo_published_dp_v dp ON sa.id = dp.dp_id 
   LEFT JOIN 
-  	simi.simiproduct_external_map_layers eml ON sa.id = eml.id 
+  	simi.simiproduct_external_wms_layers eml ON sa.id = eml.id 
   WHERE
     dp.root_published IS TRUE 
 ),

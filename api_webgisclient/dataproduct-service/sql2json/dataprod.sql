@@ -70,24 +70,29 @@ rasterview_ds_props AS (
 
 ext_wms_layer_base AS (
   SELECT
-    concat('wms:', s.url, '#/', l.identifier_list) AS extlayer_name,
+    concat('wms:', s.url, '#/', l.ext_identifier) AS extlayer_name,
     'wms' AS extlayer_type,
     url AS extlayer_url,
-    jsonb_build_object('LAYERS', l.identifier_list) AS extlayer_params,
+    jsonb_build_object('LAYERS', l.ext_identifier) AS extlayer_params,
     CASE 
-      WHEN strpos(url, 'geodienste.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
-      WHEN strpos(url, 'geo.admin.ch') > 0 THEN jsonb_build_array('application/vnd.ogc.gml')
-      ELSE jsonb_build_array('text/plain')
+      WHEN l.feature_info_format = 'fi_unavailable' THEN NULL
+      ELSE jsonb_build_array(l.feature_info_format)
     END AS extlayer_infoformats,
+    CASE 
+      WHEN l.feature_info_format = 'fi_unavailable' THEN '[]'     
+	ELSE jsonb_build_array(dp.identifier)
+    END AS query_layers,
     
     url AS wmslayer_url,
-    l.identifier_list AS wmslayer_name,
+    l.ext_identifier AS wmslayer_name,
     
     l.id AS layer_id
   FROM
-    simi.simiproduct_external_map_layers l
+    simi.simiproduct_external_wms_layers l
   JOIN
-    simi.simi.simiproduct_external_map_service s ON l.service_id = s.id
+    simi.simi.simiproduct_external_wms_service s ON l.service_id = s.id
+  JOIN
+    dprod dp ON l.id = dp.dp_id
 ),
 
 ext_wms_layer AS (
@@ -111,7 +116,8 @@ ext_wms_layer AS (
           'service_url', wmslayer_url, 
           'name', wmslayer_name
         ),      
-        'type', 'datasetview',
+        'type', 'extwms',
+	'queryLayers', query_layers,
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,

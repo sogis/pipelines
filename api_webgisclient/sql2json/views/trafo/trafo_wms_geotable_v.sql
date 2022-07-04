@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.trafo_wms_geotable_v;
+DROP VIEW IF EXISTS simi.trafo_wms_geotable_v CASCADE;
 
 /* 
  * Gibt die "identifizierenden" Eigenschaften einer postgis Geo-Tabelle zurück

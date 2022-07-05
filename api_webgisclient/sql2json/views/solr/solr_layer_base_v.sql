@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.solr_layer_base_v;
+DROP VIEW IF EXISTS simi.solr_layer_base_v CASCADE;
 
 CREATE VIEW simi.solr_layer_base_v AS
 

@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.trafo_published_dp_v;
+DROP VIEW IF EXISTS simi.trafo_published_dp_v CASCADE;
 
 CREATE VIEW simi.trafo_published_dp_v AS
 

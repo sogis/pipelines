@@ -1,0 +1,153 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: plotinfo-service
+  annotations:
+    description: "Creates deploymentConfig for plotinfo-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Basis Url für benutzte Dienste
+    name: BASEURL
+  - description: Url für Terravis App
+    name: TERRAVISURL
+  - description: Image Stream Tag
+    name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f ../docker-compose-k8s.yml
+      kompose.version: 1.16.0 (0c01309)
+    labels:
+      service: plotinfo-service
+      app: gdi
+    name: plotinfo-service
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: plotinfo-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          service: plotinfo-service
+          app: gdi
+      spec:
+        containers:
+        - env:
+          - name: OEREB_JSON_URL
+            value: https://${BASEURL}/api/oereb/extract/json?EGRID={egrid}
+          - name: OEREB_XML_URL
+            value: https://${BASEURL}/api/oereb/extract/xml?EGRID={egrid}
+          - name: OEREB_PDF_URL
+            value: https://${BASEURL}/api/oereb/extract/pdf?EGRID={egrid}
+          - name: BASIC_INFO_SQL
+            value: "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE ST_Intersects( g.geometrie, ST_Buffer( ST_SetSRID(ST_Point(:x, :y), :srid),  :buffer ) )"
+          - name: BASIC_INFO_BY_EGRID_SQL
+            value: "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE g.egrid = :egrid"
+          - name: DETAILED_INFO_SQL
+            value: "SELECT g.flaechenmass, CASE WHEN g.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, gb.aname as grundbuch,gb.amtschreiberei || E'\r\n' || gb.amt || E'\r\n'  || gb.strasse || ' ' || gb.hausnummer || E'\r\n' || gb.plz || ' ' || gb.ortschaft AS grundbuchamt, nf.firma || E'\r\n' || nf.firma_zusatz || E'\r\n'  || nf.strasse || ' ' || nf.hausnummer || E'\r\n' || nf.plz || ' ' || nf.ortschaft AS nfgeometer   FROM agi_mopublic_pub.mopublic_grundstueck g   JOIN (SELECT nbident,aname,amtschreiberei,amt,strasse,CASE WHEN hausnummer is NULL THEN '' ELSE hausnummer END AS hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis) gb ON g.nbident = gb.nbident   JOIN (SELECT bfsnr,firma,CASE WHEN firma_zusatz is NULL THEN '' ELSE firma_zusatz END AS firma_zusatz,strasse,hausnummer,plz,ortschaft    FROM agi_av_gb_admin_einteilung_pub.nachfuehrngskrise_gemeinde) nf ON g.bfs_nr = nf.bfsnr WHERE g.egrid = :egrid LIMIT 1;"
+          - name: GBDBS_SERVICE_URL
+            value: https://${TERRAVISURL}/gbdbs/gbdbs
+          - name: LAND_COVER_FRACTIONS_SQL
+            value: "WITH bodenbedeckung AS (SELECT ST_Area(ST_Intersection(b.geometrie, g.geometrie)) AS b_area,ST_Area(g.geometrie) AS g_area,CASE WHEN b.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, b.art_txt FROM         agi_mopublic_pub.mopublic_bodenbedeckung b JOIN agi_mopublic_pub.mopublic_grundstueck g ON ST_Intersects(b.geometrie, g.geometrie) AND NOT ST_Touches(b.geometrie, g.geometrie) WHERE g.egrid = :egrid ) SELECT SUM(b_area) AS area, SUM(b_area/g_area) * 100 AS area_percent, art, art_txt FROM bodenbedeckung b GROUP BY art, art_txt ORDER BY area DESC;"
+          - name: SDR_INFOS_LIEGENSCHAFT_SQL
+            value: "SELECT     sdr.nummer, CASE WHEN sdr.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, sdr.art_txt,     ST_Area(ST_Intersection(sdr.geometrie, g.geometrie)) AS area FROM     agi_mopublic_pub.mopublic_grundstueck sdr     JOIN agi_mopublic_pub.mopublic_grundstueck g         ON ST_Intersects(sdr.geometrie, g.geometrie)         AND NOT ST_Touches(sdr.geometrie, g.geometrie) WHERE     g.egrid = :egrid AND sdr.art_txt != 'Liegenschaft' AND g.art_txt = 'Liegenschaft' ORDER BY     ST_Area(ST_Intersection(sdr.geometrie, g.geometrie)) DESC;"
+          - name: SDR_INFOS_SDR_SQL
+            value: "SELECT     g.nummer, CASE WHEN g.art_txt = 'Liegenschaft' THEN 0 ELSE 1 END AS art, g.art_txt,     ST_Area(ST_Intersection(sdr.geometrie, g.geometrie)) AS area FROM     agi_mopublic_pub.mopublic_grundstueck g     JOIN agi_mopublic_pub.mopublic_grundstueck sdr         ON ST_Intersects(g.geometrie, sdr.geometrie)         AND NOT ST_Touches(g.geometrie, sdr.geometrie) WHERE     sdr.egrid = :egrid AND sdr.art_txt != 'Liegenschaft' AND g.art_txt = 'Liegenschaft' ORDER BY     ST_Area(ST_Intersection(sdr.geometrie, g.geometrie)) DESC;"
+          - name: RECAPTCHA_SITE_KEY
+            valueFrom:
+              secretKeyRef:
+                key: SITE_KEY
+                name: recaptcha-plotinfo
+          - name: RECAPTCHA_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                key: SECRET_KEY
+                name: recaptcha-plotinfo
+          - name: HIDE_OWNER_ADDRESSES
+            value: "True"
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/plotinfo
+          image: sourcepole/sogis-plotinfo-service:${TAG}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: sogis-plotinfo-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          volumeMounts:
+            - mountPath: /usr/etc/postgresql
+              name: wsgi-service-config-claim
+            - mountPath: /srv/qwc_service/config
+              name: qgs-resources
+              subPath: config
+              readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationPeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+              - key: pg_service.conf
+                path: pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+              claimName: qgs-resources-claim
+              readOnly: true
+    triggers: []

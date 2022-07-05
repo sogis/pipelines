@@ -1,0 +1,116 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ccc-config
+  annotations:
+    description: "Creates deploymentConfig for ccc-config"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Image Stream Tag
+    name: TAG
+  - description: Base Url of AGI GDI
+    name: BASEURL
+  - description: Number of Replicas
+    name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    generation: 1
+    labels:
+      service: ccc-config
+      app: gdi
+    name: ccc-config
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: ccc-config
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        labels:
+          service: ccc-config
+          app: gdi
+      spec:
+        containers:
+          - env:
+            - name: CCC_BASE_URL
+              value: wss://${BASEURL}
+            - name: JWT_SECRET_KEY
+              value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+            - name: ZOOMTO_DATA_SERVICE_URL
+              value: 'http://data-service.${NAMESPACE}.svc'
+            - name: CONFIG_PATH
+              value: "/srv/qwc_service/config"
+            - name: SERVICE_MOUNTPOINT
+              value: "/api/v1/ccc"
+            image: sourcepole/sogis-ccc-config:${TAG}
+            imagePullPolicy: IfNotPresent
+            livenessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: healthz
+                port: 9090
+                scheme: HTTP
+              initialDelaySeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 1
+            name: sogis-ccc-config
+            readinessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: ready
+                port: 9090
+                scheme: HTTP
+              initialDelaySeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 1
+            resources:
+              limits:
+                cpu: ${CPU_LIMIT}
+                memory: ${MEMORY_LIMIT}
+              requests:
+                cpu: ${CPU_REQUEST}
+                memory: ${MEMORY_REQUEST}
+            volumeMounts:
+            - mountPath: /srv/qwc_service/config
+              name: qgs-resources
+              subPath: config
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
+    test: false
+    triggers: []

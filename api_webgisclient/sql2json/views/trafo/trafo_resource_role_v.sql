@@ -1,5 +1,5 @@
 
-DROP VIEW IF EXISTS simi.trafo_resource_role_v;
+DROP VIEW IF EXISTS simi.trafo_resource_role_v CASCADE;
 
 CREATE VIEW simi.trafo_resource_role_v AS
 
@@ -211,7 +211,7 @@ role_perm_ext AS (
     'public' AS role_name,
     '1_read' AS perm_level
   FROM
-    simi.simiproduct_external_map_layers
+    simi.simiproduct_external_wms_layers
 )
 
 SELECT resource_id, role_name, perm_level FROM role_perm_dsv_group

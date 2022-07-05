@@ -1,0 +1,130 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: qgis-server-print
+  annotations:
+    description: "Creates deploymentConfig for qgis-server-print"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Image Stream Tag
+    name: TAG
+  - description: Environment
+    name: ENVIRONMENT
+  - description: Number of Replicas
+    name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    generation: 1
+    labels:
+      service: qgis-server-print
+      app: gdi
+    name: qgis-server-print
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: qgis-server-print
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        labels:
+          service: qgis-server-print
+          app: gdi
+      spec:
+        containers:
+        - env:
+          - name: LOG_LEVEL
+            value: "2"
+          - name: QGIS_FCGI_MIN_PROCESSES
+            value: "2"
+          - name: QGIS_FCGI_MAX_PROCESSES
+            value: "2"
+          - name: QGIS_FCGI_IOTIMEOUT
+            value: "65"
+          image: sogis/qgis-server:${TAG}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ows/somap_print?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 8
+          name: sogis-qgis-server-print
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: ows/somap_print?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: '2'
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /data
+            name: qgs-resources
+          - mountPath: /geodata
+            name: datensogispicmir
+          - mountPath: /etc/postgresql-common
+            name: qgis-server-config-claim
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        serviceAccountName: qgis-server
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: pg_service.conf
+            secretName: qgis-server-pg-config
+          name: qgis-server-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
+        - name: datensogispicmir
+          persistentVolumeClaim:
+            claimName: datensogispicmir-claim${ENVIRONMENT}
+    test: false
+    triggers: []

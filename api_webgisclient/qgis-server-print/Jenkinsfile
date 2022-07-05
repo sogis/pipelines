@@ -15,6 +15,7 @@ pipeline {
         }
     parameters {
         string(description: 'Image Version',
+               defaultValue: '2.0.17',
                name: 'vBaseImage'
                )
         string(defaultValue: "master",
@@ -25,7 +26,7 @@ pipeline {
                defaultValue: '1',
                name: 'replicas'
                )
-        string(defaultValue: "gdi-test",
+        string(defaultValue: "gdi-production",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )
@@ -35,7 +36,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     vBaseImage = params.vBaseImage
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 

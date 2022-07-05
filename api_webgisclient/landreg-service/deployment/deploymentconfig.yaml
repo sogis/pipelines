@@ -1,0 +1,131 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: landreg-service
+  annotations:
+    description: "Creates deploymentConfig for landreg-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Image Stream Tag
+    name: TAG
+  - description: Number of replicas
+    name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 1
+    labels:
+      service: landreg-service
+      app: gdi
+    name: landreg-service
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: landreg-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        labels:
+          service: landreg-service
+          app: gdi
+      spec:
+        containers:
+        - env:
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: LANDREG_PRINT_LAYERS
+            value: mopublic_einzelobjekt_flaeche_unterirdisch,mopublic_bodenbedeckung,mopublic_ortsname.pos,grundbuchplan_bodenbedeckungsymbol,mopublic_bodenbedeckung_proj,mopublic_einzelobjekt_flaeche,mopublic_einzelobjekt_linie,mopublic_einzelobjekt_punkt,mopublic_rohrleitung,mopublic_strassenname_pos,mopublic_gebaeudeadresse.pos,mopublic_flurname.pos,mopublic_ortsname.pos,mopublic_gelaendename,mopublic_grundstueck_proj.geometrie,mopublic_grundstueck.geometrie,mopublic_grundstueck_proj.geometrie_liegenschaft,grundbuchplan_liegenschaft,grundbuchplan_grundstueckpos.hilfslinie,mopublic_grundstueck_proj.pos,grundbuchplan_grundstueckpos.pos,mopublic_gemeindegrenze,mopublic_gemeindegrenze_proj,grundbuchplan_grenzpunkt,mopublic_hoheitsgrenzpunkt.geometrie,mopublic_fixpunkt.geometrie,baulinie,mopublic_objektname_pos
+          - name: LANDREG_PROJECT
+            value: grundbuchplanauszug
+          - name: LANDREG_PRINTINFO_TABLE
+            value: agi_grundbuchplan_pub.grundbuchplan_grundbuchplanauszug
+          - name: DEFAULT_LANDREG_LAYOUT
+            value: A4-Hoch
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /api/v1/landreg
+          image: sourcepole/sogis-landreg-service:${TAG}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: sogis-landreg-service
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+            - mountPath: /usr/etc/postgresql
+              name: wsgi-service-config-claim
+            - mountPath: /srv/qwc_service/config
+              name: qgs-resources
+              subPath: config
+              readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            defaultMode: 420
+            items:
+              - key: pg_service.conf
+                path: pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+              claimName: qgs-resources-claim
+              readOnly: true
+    test: false
+    triggers: []

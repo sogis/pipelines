@@ -35,7 +35,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     vBaseImage = params.vBaseImage
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
@@ -43,7 +43,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '2'
+                      replicas = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -51,16 +51,16 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
-                      replicas = '2'
-                      resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
+                      replicas = '1'
+                      resources = ['cpu_request': '1000m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
-                      replicas = '14'
-                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
+                      replicas = '5'
+                      resources = ['cpu_request': '2000m', 'cpu_limit': '4000m', 'memory_request': '8192Mi', 'memory_limit': '16384Mi']
                       }
                     else {
                       environment = 'test'
@@ -88,27 +88,101 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, 'wms-qgs-content', 'sogis', 'json2qgs'
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', 'wfs-qgs-content', 'sogis', 'json2qgs'
-                    createConfigs namespace, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', 'print-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'wms-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', serviceName, 'wfs-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', serviceName, 'print-qgs-content', 'sogis', 'json2qgs'
                     }
                 }
             }
         stage ('Create qgs files') {
-            agent { label 'json2qgs-agent' }
+            agent { 
+              kubernetes {
+                label 'json2qgs-agent'
+                defaultContainer 'jnlp'
+                idleMinutes '600'
+                yaml """
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    labels:
+                      jenkins: slave
+                      jenkins/label: json2qgs-agent
+                    name: json2qgs-agent
+                  spec:
+                    containers:
+                    - args:
+                      - "********"
+                      image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "jnlp"
+                      env:
+                      - name: "LC_ALL"
+                        value: "C.UTF-8"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "250m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    - args:
+                      - "24h"
+                      command:
+                      - "sleep"
+                      image: "sogis/json2qgs:v1.0.6"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "json2qgs"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "200m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    restartPolicy: "Never"
+                    serviceAccountName: "jenkins"
+                    volumes:
+                    - name: "volume-0"
+                      persistentVolumeClaim:
+                        claimName: "qgs-resources-claim"
+                        readOnly: false
+                    - emptyDir:
+                        medium: ""
+                      name: "workspace-volume"
+                  """
+                  }
+             }
             steps {
                 withCredentials ( credentials ) {
-                    sh """
-                        if [ ! -d "config/default" ]; then
-                          mkdir -p config/default
-                        fi
-                        git clone --depth 1 --branch v1.0.1 https://github.com/simi-so/json2qgs
-                        wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
-                        chmod -R ug+x json2qgs
-                        python3 json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir json2qgs/qgs
-                        python3 json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir json2qgs/qgs
-                        python3 json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir json2qgs/qgs
-                    """
+                    container('json2qgs') {
+                        sh """
+                            if [ ! -d "config/default" ]; then
+                              mkdir -p config/default
+                            fi
+                            wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JENKINS_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                            python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        """
+                        }
                     script {
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                         sh """
@@ -121,7 +195,7 @@ pipeline {
             post {
                 always {
                     sh """
-                        rm -rf $env.WORKSPACE/json2qgs $env.WORKSPACE/config $env.WORKSPACE/qgs
+                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
                     """
                     }
                 }

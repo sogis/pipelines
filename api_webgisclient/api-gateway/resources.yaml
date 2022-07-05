@@ -18,6 +18,8 @@ parameters:
     name: MATOMO_URL
   - description: Url with no SES
     name: NO_SES_URL
+  - description: Basic Auth User Password in base64 encoding
+    name: BASICAUTH
 objects:
 - apiVersion: v1
   data:
@@ -37,17 +39,24 @@ objects:
       http {
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
+          map "$time_local:$msec" $time_local_w_ms { ~(^\S+)(\s+\S+):\d+.(\d+)$ $1.$3$2; }
       
-          log_format  main  '[$time_local] $http_hsp_client_addr "$http_x_forwarded_for" - $status "$request" - '
-                            '$body_bytes_sent "$http_user_agent $remote_user'
-                            'rt=$request_time uct="$upstream_connect_time" uht="$upstream_header_time" urt="$upstream_response_time" $upstream_cache_status $upstream_addr';
-      
-          access_log  /var/log/nginx/access.log  main;
+          log_format  json  '{"time": "$time_local_w_ms", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
+                            '"request_method": "$request_method", "server_protocol": "$server_protocol", "address": "$uri", "args": "$args", "request": "$request", '
+                            '"body_bytes_sent": "$body_bytes_sent", "http_user_agent": "$http_user_agent", "remote_user": "$remote_user", '
+                            '"request_time": "$request_time", "upstream_connect_time": "$upstream_connect_time", "upstream_header_time": "$upstream_header_time", '
+                            '"upstream_response_time": "$upstream_response_time","upstream_addr": "$upstream_addr" }';
+
+          access_log  /var/log/nginx/access.log  json;
+          access_log  /var/log/nginx-soft/access.log json;
       
           sendfile        on;
           #tcp_nopush     on;
       
           keepalive_timeout  65;
+
+          proxy_cache_path /cache levels=1:2 keys_zone=my_cache:30m max_size=5g
+                 inactive=30m use_temp_path=off;
 
           #gzip on;
 
@@ -75,10 +84,6 @@ objects:
         proxy_set_header   X-Real-IP         $remote_addr;
         proxy_set_header   X-Forwarded-For   $http_hsp_client_addr;
         proxy_set_header   X-Forwarded-Proto $scheme;
-        proxy_connect_timeout       1200;
-        proxy_send_timeout          1200;
-        proxy_read_timeout          1200;
-        send_timeout                1200;
 
         proxy_buffer_size 512k;
         proxy_buffers 8 512k;
@@ -119,12 +124,23 @@ objects:
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 
-        location /simi {
+        location /simi/ {
             if ($http_hsp_client_addr !~ ^10\.36\.([0-9]+)(.*)([0-9]+)$) {
                 return 403;
             }
+            proxy_set_header Host               $host;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_set_header X-Forwarded-Proto  $scheme;
+
+            # Required to send real client IP to application server
+            proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+            proxy_set_header X-Real-IP          $remote_addr;
             proxy_pass http://simi.${NAMESPACE}.svc/app/;
-            proxy_set_header Host       $proxy_host;
+
+            # Required for folder redirect
+            proxy_cookie_path       /app /;
+            proxy_set_header Cookie $http_cookie;
+            proxy_redirect http://simi.${NAMESPACE}.svc/app/ http://simi.${NAMESPACE}.svc/;
         }
 
         location ~ ^/docs/(ch\.so\.arp\.nutzungsvereinbarungen|ch\.so\.awjf\.biotopbaeume)/(.*)$ {
@@ -173,25 +189,100 @@ objects:
 
         location /ows {
             proxy_pass http://ogc-service.${NAMESPACE}.svc;
+            proxy_cache my_cache;
+            proxy_cache_valid 200 30m;
         }
 
         location /wms {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_WIDTH = 1 ) {
+                return 422;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 422;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 422;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
         location /api/wms {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_WIDTH = 1 ) {
+                return 422;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 422;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 422;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
+            proxy_cache my_cache;
+            proxy_cache_valid 200 30m;
         }
 
         location /api/wmsauth {
+            if ( $arg_SRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_CRS ~ (EPSG:21781|EPSG%3A21781) ) {
+                return 410;
+            }
+            if ( $arg_WIDTH = 1 ) {
+                return 422;
+            }
+            if ( $arg_HEIGHT = 1 ) {
+                return 422;
+            }
+            if ( $arg_BBOX ~ (-) ) {
+                return 422;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
-            proxy_set_header Authorization "Basic d21zYXV0aDpwYXNzd29yZAo=";
+            proxy_set_header Authorization "Basic ${BASICAUTH}";
+            proxy_cache my_cache;
+            proxy_cache_valid 200 30m;
         }
 
         location /wfs {
+            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
+            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
+            set $temp_cache 0;
+            if ($args ~* getfeature ) {
+              set $temp_cache 1;
+            }
+            if ($args !~* MAXFEATURES) {
+              set $temp_cache 1$temp_cache;
+            }
+            if ($temp_cache = 11) {
+              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 
         location /api/wfs {
+            # Pretty dirty hack to add MaxFeatures in a rewrite rule. 
+            #See https://stackoverflow.com/questions/57882123/how-can-i-use-and-operator-in-if-statement-in-nginx
+            set $temp_cache 0;
+            if ($args ~* getfeature ) {
+              set $temp_cache 1;
+            }
+            if ($args !~* MAXFEATURES) {
+              set $temp_cache 1$temp_cache;
+            }
+            if ($temp_cache = 11) {
+              rewrite ^ https://${BASEURL}$uri?MAXFEATURES=20000 last;
+            }
             proxy_pass http://ogc-service.${NAMESPACE}.svc/ows/somap;
         }
 
@@ -222,7 +313,7 @@ objects:
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://oereb-web-service.agi-oereb-${ENVIRONMENT}.svc/;
+            proxy_pass http://oereb-web-service.agi-oerebv2-${ENVIRONMENT}.svc/;
         }
 
         location /api/v1/plotinfo {
@@ -246,6 +337,10 @@ objects:
         }
 
         location /api/v1/document {
+            proxy_connect_timeout       1800;
+            proxy_send_timeout          1800;
+            proxy_read_timeout          1800;
+            send_timeout                1800;
             proxy_pass http://document-service.${NAMESPACE}.svc;
         }
 
@@ -260,21 +355,23 @@ objects:
         location /api/wmts/ {
             proxy_pass http://${WMTS_URL}/mapcache/wmts/;
             proxy_set_header Host       $proxy_host;
+            proxy_cache my_cache;
+            proxy_cache_valid 200 30m;
         }
 
         location /wms/oereb {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
+            proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc;
         }
-      
-        location /wms/oereb-symbols {
-            proxy_pass http://oereb-wms.agi-oereb-${ENVIRONMENT}.svc; 
-        }
-        
+
         location /gb2av {
             proxy_pass http://gb2av.agi-apps-${ENVIRONMENT}.svc/;
         }
 
         location /ilivalidator {
+            proxy_connect_timeout       1200;
+            proxy_send_timeout          1200;
+            proxy_read_timeout          1200;
+            send_timeout                1200;
             proxy_set_header   X-Forwarded-For $remote_addr;
             proxy_set_header   Host $http_host;
             proxy_pass http://ilivalidator-service.agi-apps-${ENVIRONMENT}.svc/ilivalidator/; 
@@ -321,6 +418,9 @@ objects:
         #} 
 
         location /api/embed/v1 {
+            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/api/embed/v1';
+            proxy_set_header 'X-FORWARDED-PROTO' 'https';
             proxy_pass http://wgc-embedded.agi-apps-${ENVIRONMENT}.svc/; 
         }
 
@@ -343,11 +443,13 @@ objects:
         #location = /404.html {
         #    root   /usr/share/nginx/html;
         #}
-
+        error_page 410    /epsg.html;
+        location = /epsg.html {
+            root   /usr/share/nginx/html; 
+        }
         # redirect server error pages to the static page /50x.html
         #
         #error_page   500 502 503 504  /maintenance.html;
-        error_page   500 502 503 504  /50x.html;
         #location = /maintenance.html {
         location = /50x.html {
             root   /usr/share/nginx/html;
@@ -356,6 +458,24 @@ objects:
   kind: ConfigMap
   metadata:
     name: nginx-config
+    labels:
+      service: api-gateway
+      app: gdi
+- apiVersion: v1
+  data:
+    my_logs.conf: |
+      /var/log/nginx/*.log {
+        daily
+        missingok
+        rotate 1
+        dateformat -%Y%m%d-%s
+        notifempty
+        copytruncate
+        create 0644 nginx nginx
+      }
+  kind: ConfigMap
+  metadata:
+    name: logrotate-config
     labels:
       service: api-gateway
       app: gdi
@@ -372,6 +492,19 @@ objects:
         from:
           kind: DockerImage
           name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/api-gateway:latest'
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: filebeat
+    labels:
+      app: gdi
+      service: filebeat
+  spec:
+    tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:latest'
 - apiVersion: v1
   kind: Service
   metadata:

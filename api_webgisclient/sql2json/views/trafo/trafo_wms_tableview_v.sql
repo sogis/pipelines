@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS simi.trafo_wms_tableview_v;
+DROP VIEW IF EXISTS simi.trafo_wms_tableview_v CASCADE;
 
 CREATE VIEW simi.trafo_wms_tableview_v AS 
 

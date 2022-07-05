@@ -1,0 +1,137 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ogc-service
+  annotations:
+    description: "Creates deploymentConfig for ogc-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Base Url of consumed services
+    name: BASEURL
+  - description: Image Stream Tag
+    name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      kompose.cmd: kompose --file docker-compose-4openshift.yml --provider openshift
+        convert
+      kompose.version: 1.10.0 (8bb0907)
+    generation: 1
+    labels:
+      service: ogc-service
+      app: gdi
+    name: ogc-service
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: ogc-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          service: ogc-service
+          app: gdi
+      spec:
+        containers:
+        - env:
+          - name: DEFAULT_QGIS_SERVER_URL
+            value: http://qgis-server.${NAMESPACE}.svc/ows/
+          - name: QGIS_SERVER_PRINT_URL
+            value: http://qgis-server-print.${NAMESPACE}.svc/ows/
+          - name: MAP_BASE_URL
+            value: https://${BASEURL} 
+          - name: WFS_URL
+            value: http://qgis-server.${NAMESPACE}.svc
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
+          - name: ALLOW_BASIC_AUTH_USER
+            value: "True"
+          - name: CONFIG_PATH
+            value: /srv/qwc_service/config
+          - name: SERVICE_MOUNTPOINT
+            value: /ows
+          - name: UWSGI_EXTRA
+            value: --thunder-lock --stats 127.0.0.1:1717  --disable-logging --reload-on-rss 128
+          image: sourcepole/qwc-ogc-service:${TAG}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: sogis-ogc-service
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /usr/etc/postgresql
+            name: wsgi-service-config-claim
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: pg_service.conf
+            secretName: wsgi-service-pg-config
+          name: wsgi-service-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+              claimName: qgs-resources-claim
+              readOnly: true
+    test: false
+    triggers: []

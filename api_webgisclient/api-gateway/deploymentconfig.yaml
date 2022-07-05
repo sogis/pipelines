@@ -23,6 +23,10 @@ parameters:
     name: MEMORY_REQUEST
   - description: Memory Limit
     name: MEMORY_LIMIT
+  - description: loadbalance true/false for filebeat
+    name: LOADBALANCE
+  - description: ssl enabled true/false for filebeat
+    name: SSL
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -38,6 +42,7 @@ objects:
     name: api-gateway
   spec:
     replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
     selector:
       service: api-gateway
     strategy:
@@ -101,9 +106,66 @@ objects:
             name: datensogispicmir
           - mountPath: /etc/nginx/certs
             name: nginx-cert-volume
+          - mountPath: /var/log/nginx
+            name: log-volume
+          - mountPath: /cache
+            name: cache-volume
+        - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/filebeat:${TAG}
+          imagePullPolicy: Always
+          name: sogis-filebeat
+          env:
+          - name: LOGSTASH_HOST
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-logitio
+                key: logstash_host
+          - name: LOADBALANCE
+            value: ${LOADBALANCE}
+          - name: SSL
+            value: ${SSL}
+          ports:
+          - containerPort: 8082
+            protocol: TCP
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/log/nginx
+            name: log-volume
+        - image: blacklabelops/logrotate:1.3
+          imagePullPolicy: IfNotPresent
+          name: logrotate
+          env:
+          - name: LOGROTATE_INTERVAL
+            value: "hourly"
+          - name: LOGS_DIRECTORIES
+            value: "/var/log/nginx"
+          - name: LOGROTATE_COPIES
+            value: "1"
+          volumeMounts:
+          - name: logrotate-config
+            mountPath: /etc/logrotate.d
+          - name: log-volume
+            mountPath: /var/log/nginx
+        initContainers:
+        - name: change-log-permissions
+          image: busybox:1.35
+          command:
+          - 'sh'
+          - '-c'
+          - 'chmod -R 775 /var/log/nginx && chown -R 101 /var/log/nginx'
+          volumeMounts:
+          - name: log-volume
+            mountPath: /var/log/nginx       
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
+        serviceAccountName: qgis-server
         terminationGracePeriodSeconds: 30
         volumes:
         - configMap:
@@ -119,6 +181,12 @@ objects:
               path: nginx.conf
             name: nginx-base-config
           name: nginx-config-base-claim
+        - configMap:
+            items:
+            - key: my_logs.conf
+              path: my_logs.conf
+            name: logrotate-config
+          name: logrotate-config
         - name: nginx-cert-volume
           secret:
             defaultMode: 420
@@ -127,5 +195,9 @@ objects:
           persistentVolumeClaim:
             claimName: datensogispicmir-claim${ENVIRONMENT}
             readOnly: true
+        - name: cache-volume
+          emptyDir: {}
+        - name: log-volume
+          emptyDir: {}
     test: false
     triggers: []

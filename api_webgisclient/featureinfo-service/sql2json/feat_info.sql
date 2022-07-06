@@ -2,7 +2,7 @@ WITH
 
 tv_with_geom AS (
   SELECT 
-    attr_alias_props_json,
+    attr_alias_json,
     tv_id
   FROM
     simi.simidata_table_view tv 
@@ -123,7 +123,7 @@ dsv AS (
       jsonb_build_object(
         'name', identifier,
         'title', title_ident,
-        'attributes', attr_alias_props_json,
+        'attributes', attr_props_json,
         'info_template', info_json,
         'feature_report', rep_name
       )

@@ -1,7 +1,7 @@
 SELECT 
   jsonb_build_object(
     'name', identifier,
-    'attributes', attr_alias_names_json
+    'attributes', attr_names_json
   ) AS obj
 FROM
   simi.simidata_table_view tv

@@ -11,7 +11,7 @@
         "print_url": "$$QGIS_SERVER_PRINT_URL$$somap_print",
         "online_resources": {
           "service": "$$MAP_BASE_URL$$/api/wms",
-          "feature_info": "$$MAP_BASE_URL$$/api/wms",
+          "feature_info": "$$MAP_BASE_URL$$/v1featureinfo/somap",
           "legend": "$$MAP_BASE_URL$$/api/v1/legend/somap"
         },
         "root_layer": {

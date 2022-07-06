@@ -10,7 +10,7 @@ datasetview AS (
         'name', identifier,
         'type', 'layer',
         'title', title_ident,
-        'attributes', a.attr_alias_names_json, 
+        'attributes', a.attr_names_json, 
         'queryable', TRUE 
       ) 
     ) AS layer_json,
@@ -19,7 +19,7 @@ datasetview AS (
         'name', identifier,
         'type', 'layer',
         'title', title_ident,
-        'attributes', a.attr_alias_names_json, 
+        'attributes', a.attr_names_json, 
         'queryable', TRUE, 
         'opacity', (100 - transparency)
       ) 

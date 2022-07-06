@@ -2,7 +2,7 @@ WITH
 
 tv_with_geom AS (
   SELECT 
-    attr_alias_json,
+    attr_props_json,
     tv_id
   FROM
     simi.simidata_table_view tv 

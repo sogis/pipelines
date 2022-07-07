@@ -383,12 +383,12 @@ objects:
         location /ili2gpkg {
             proxy_set_header   X-Forwarded-For $remote_addr;
             proxy_set_header   Host $http_host;
-            proxy_pass http://ili2gpkg-web-service.agi-apps-${ENVIRONMENT}.svc/;  
+            proxy_pass http://ili2gpkg-web-service.agi-apps-${ENVIRONMENT}.svc/;
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
             proxy_set_header   Connection "upgrade";
         }
-        
+
         location /av_datenabgabe/ {
             proxy_pass http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
         }
@@ -415,13 +415,13 @@ objects:
 
         #location /api/cadastre/v1 {
         #    proxy_pass http://cadastre-web-service.agi-apps-test.svc/;
-        #} 
+        #}
 
         location /api/embed/v1 {
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/embed/v1';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';
-            proxy_pass http://wgc-embedded.agi-apps-${ENVIRONMENT}.svc/; 
+            proxy_pass http://wgc-embedded.agi-apps-${ENVIRONMENT}.svc/;
         }
 
         # For Statuscake Tests
@@ -445,7 +445,7 @@ objects:
         #}
         error_page 410    /epsg.html;
         location = /epsg.html {
-            root   /usr/share/nginx/html; 
+            root   /usr/share/nginx/html;
         }
         # redirect server error pages to the static page /50x.html
         #

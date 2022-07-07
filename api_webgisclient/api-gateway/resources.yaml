@@ -409,6 +409,10 @@ objects:
             proxy_pass http://standortkarte.agi-apps-${ENVIRONMENT}.svc/;
         }
 
+        location /modelfinder/ {
+            proxy_pass http://modelfinder.agi-apps-${ENVIRONMENT}.svc/;
+        }
+
         location /models {
             proxy_pass http://interlis-repository.agi-apps-${ENVIRONMENT}.svc/;
         }

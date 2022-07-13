@@ -397,7 +397,10 @@ objects:
         }
 
         location /avgbs2mtab {
-            proxy_pass http://avgbs2mtab-service.agi-apps-${ENVIRONMENT}.svc/avgbs2mtab/;
+            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/avgbs2mtab';
+            proxy_set_header 'X-FORWARDED-PROTO' 'https';
+            proxy_pass http://avgbs2mtab-web-service.agi-apps-${ENVIRONMENT}.svc/;
         }
 
         location /ews {

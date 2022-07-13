@@ -389,8 +389,11 @@ objects:
             proxy_set_header   Connection "upgrade";
         }
 
-        location /av_datenabgabe/ {
-            proxy_pass http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc;
+        location /av_datenabgabe {
+            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/av_datenabgabe';
+            proxy_set_header 'X-FORWARDED-PROTO' 'https';
+            proxy_pass http://cadastral-data-disposal.agi-apps-${ENVIRONMENT}.svc/;
         }
 
         location /avgbs2mtab {

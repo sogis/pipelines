@@ -105,7 +105,7 @@ vector_layer AS (
       'postgis_datasource', tbl_json,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
-      'attributes', attr_name_alias_js      
+      'attributes', attr_name_js      
       )
     ) AS layer_json
   FROM

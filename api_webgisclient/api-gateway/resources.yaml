@@ -416,9 +416,7 @@ objects:
         }
 
         location /modelfinder/ {
-            proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
-            proxy_set_header 'X-FORWARDED-PREFIX' '/modelfinder/';
-            proxy_set_header 'X-FORWARDED-PROTO' 'https';
+            proxy_set_header 'X-FORWARDED-PREFIX' '/modelfinder';
             proxy_pass http://modelfinder.agi-apps-${ENVIRONMENT}.svc/;
         }
 

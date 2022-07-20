@@ -483,6 +483,7 @@ objects:
         notifempty
         copytruncate
         create 0644 nginx nginx
+        olddir /tmp
       }
   kind: ConfigMap
   metadata:

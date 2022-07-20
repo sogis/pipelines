@@ -478,7 +478,7 @@ objects:
       /var/log/nginx/*.log {
         daily
         missingok
-        rotate 1
+        rotate 0
         dateformat -%Y%m%d-%s
         notifempty
         copytruncate

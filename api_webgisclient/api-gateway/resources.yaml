@@ -23,6 +23,16 @@ parameters:
 objects:
 - apiVersion: v1
   data:
+    rewritemap.conf: |
+      /map/agglo /map/?l=ch.so.arp.agglomerationsprogramme.uebersicht[30],ch.so.arp.agglomerationsprogramme.umsetzungsstand_4g!,ch.so.arp.agglomerationsprogramme.massnahmen_4g,ch.so.arp.agglomerationsprogramme.umsetzungsstand_3g!,ch.so.arp.agglomerationsprogramme.massnahmen_3g,ch.so.arp.agglomerationsprogramme.umsetzungsstand_2g!,ch.so.arp.agglomerationsprogramme.massnahmen_2g,ch.so.arp.agglomerationsprogramme.umsetzungsstand_1g!,ch.so.arp.agglomerationsprogramme.massnahmen_1g
+  kind: ConfigMap
+  metadata:
+    name: rewritemap-config
+    labels:
+      service: api-gateway
+      app: gdi
+- apiVersion: v1
+  data:
     nginx_base_os.conf: |
       #user  nginx;
       worker_processes  auto;

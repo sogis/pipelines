@@ -97,6 +97,8 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
+          - mountPath: /etc/nginx/snippets
+            name: nginx-rewritemap-config-claim
           - mountPath: /etc/nginx/conf.d
             name: nginx-config-claim
           - mountPath: /etc/nginx/nginx.conf
@@ -170,6 +172,12 @@ objects:
         serviceAccountName: qgis-server
         terminationGracePeriodSeconds: 30
         volumes:
+        - configMap:
+            items:
+            - key: rewritemap.conf
+              path: rewritemap.conf
+            name: rewritemap-config
+          name: rewritemap-config-claim
         - configMap:
             defaultMode: 420
             items:

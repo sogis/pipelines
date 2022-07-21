@@ -177,7 +177,7 @@ objects:
             - key: rewritemap.conf
               path: rewritemap.conf
             name: rewritemap-config
-          name: rewritemap-config-claim
+          name: nginx-rewritemap-config-claim
         - configMap:
             defaultMode: 420
             items:

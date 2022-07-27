@@ -196,4 +196,4 @@ FROM
 ;
 
 GRANT SELECT ON TABLE simi.trafo_wms_layer_v TO simi_write;
-
+GRANT SELECT ON TABLE simi.trafo_wms_layer_v TO simi_read;

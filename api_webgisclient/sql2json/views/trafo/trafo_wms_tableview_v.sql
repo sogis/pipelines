@@ -57,5 +57,5 @@ LEFT JOIN
 ;
 
 GRANT SELECT ON TABLE simi.trafo_wms_tableview_v TO simi_write;
-
+GRANT SELECT ON TABLE simi.trafo_wms_tableview_v TO simi_read;
       

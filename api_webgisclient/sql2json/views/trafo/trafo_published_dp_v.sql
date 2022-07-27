@@ -159,3 +159,4 @@ WHERE
 ;
 
 GRANT SELECT ON TABLE simi.trafo_published_dp_v TO simi_write;
+GRANT SELECT ON TABLE simi.trafo_published_dp_v TO simi_read;

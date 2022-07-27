@@ -220,3 +220,4 @@ SELECT resource_id, role_name, perm_level FROM role_perm_ext
 ;
 
 GRANT SELECT ON TABLE simi.trafo_resource_role_v TO simi_write;
+GRANT SELECT ON TABLE simi.trafo_resource_role_v TO simi_read;

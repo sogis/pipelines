@@ -135,6 +135,9 @@ objects:
             if ($args ~ ^(.+&|)st(=[0-9%C,]+)(.*)$) {
               return 301 "$uri?$1hc=1$3&c$2&s=250";
             }
+            if ($args ~ ^(.*)t=(?!default)([a-z]+)(.*)$) {
+              return 301 "$uri?$1t=default$3";
+            }
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }
 

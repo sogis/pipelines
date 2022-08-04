@@ -35,7 +35,9 @@ objects:
       /map/nhk /map/?l=ch.so.awjf.naturgefahrenhinweis.wassergefahren%2Cch.so.awjf.naturgefahrenhinweis.rutschung%2Cch.so.awjf.naturgefahrenhinweis.steinschlag%2Cch.so.afu.geologie.karst%2Cch.so.afu.fliessgewaesser.netz!%2Cch.so.arp.wanderwege!%2Cch.so.agi.gemeindegrenzen!%2Cch.so.awjf.naturgefahrenhinweis.einzelereignisse;
       /map/ngk /map/?l=ch.so.afu.gefahrenkartierung.ueberflutungskarte_100_bis_300%2Cch.so.afu.gefahrenkartierung.ueberflutungskarte_30_bis_100%2Cch.so.afu.gefahrenkartierung.ueberflutungskarte_0_bis_30%2Cch.so.afu.gefahrenkartierung.ik_synoptisch_ohne_jaehrlichkeit!%2Cch.so.afu.gefahrenkartierung.ik_synoptisch_groesser_300!%2Cch.so.afu.gefahrenkartierung.ik_synoptisch_100_bis_300!%2Cch.so.afu.gefahrenkartierung.ik_synoptisch_30_bis_100%2Cch.so.afu.gefahrenkartierung.ik_synoptisch_0_bis_30!%2Cch.so.afu.gefahrenkartierung.gk_rutsch_kont_sackung!%2Cch.so.afu.gefahrenkartierung.gk_rutsch_spontan!%2Cch.so.afu.gefahrenkartierung.gk_wasser!%2Cch.so.afu.gefahrenkartierung.gk_sturz!%2Cch.so.afu.gefahrenkartierung.gk_hangmure!%2Cch.so.afu.gefahrenkartierung.gk_absenkung_einsturz!%2Cch.so.afu.gefahrenkartierung.synoptische_gefahrenkarte%2Cch.so.agi.gemeindegrenzen!%2Cch.so.afu.fliessgewaesser.netz!%2Cch.so.arp.wanderwege!%2Cch.so.awjf.naturgefahrenhinweis.einzelereignisse!%2Cch.so.afu.gefahrenkartierung.perimeter_gefahrenkartierung;
       /map/nutzungsplanung /map/?l=ch.so.arp.nutzungsplanung.grundnutzung%2Cch.so.arp.nutzungsplanung.wald!%2Cch.so.arp.nutzungsplanung.grundwasserschutz[60]%2Cch.so.arp.nutzungsplanung.gewaesser!%2Cch.so.arp.nutzungsplanung.weitere%2Cch.so.arp.nutzungsplanung.natur_landschaft_gruppe%2Cch.so.arp.nutzungsplanung.ortsbildschutz%2Cch.so.arp.nutzungsplanung.sondernutzungsplaene[60]%2Cch.so.arp.nutzungsplanung.erschliessungsplanung[60]!%2Cch.so.arp.nutzungsplanung.erschliessungsplanung.baulinien!;
+      ~(?!l\=ch.so.agi.gemeindegrenzen)(.*)t=historische_karten(.*) $1l=ch.so.agi.uebersichtsplan!%2Cch.so.agi.siegfriedkarte!%2Cch.so.agi.dufourkarte%2Cch.so.agi.walkerkarte!$2;
       /map/richtplan /map/?l=ch.so.arp.richtplan.vorhaben%2Cch.so.arp.richtplan.bestehend;
+      ~/map/(?!l=[a-z._]+)(.*)t=boden(.*) /map/$2l=ch.so.afu.bodeninformationen.wald.steingehalt_unterboden[30]!%2Cch.so.afu.bodeninformationen.wald.steingehalt_oberboden[30]!%2Cch.so.afu.bodeninformationen.wald.ph_unterboden[30]!%2Cch.so.afu.bodeninformationen.wald.ph_oberboden[30]!%2Cch.so.afu.bodeninformationen.wald.humusform[30]!%2Cch.so.afu.bodeninformationen.wald.humusgehalt[30]!%2Cch.so.afu.bodeninformationen.wald.bodenart_im_oberboden[30]!%2Cch.so.afu.bodeninformationen.wald.charakter_wasserhaushalt[30]!%2Cch.so.afu.bodeninformationen.wald.hinweiskarte_bodenverdichtung[30]!%2Cch.so.afu.bodeninformationen.wald.verdichtungsempfindlichkeit[30]!%2Cch.so.afu.bodeninformationen.lw.hangneigung[30]!%2Cch.so.afu.bodeninformationen.lw.nutzungsmoeglichkeiten[30]!%2Cch.so.afu.bodeninformationen.lw.steingehalt_oberboden[30]!%2Cch.so.afu.bodeninformationen.lw.ph_oberboden[30]!%2Cch.so.afu.bodeninformationen.lw.humusgehalt[30]!%2Cch.so.afu.bodeninformationen.lw.bodenart_und_bearbeitbarkeit[30]!%2Cch.so.afu.bodeninformationen.lw.pflanzennutzbarer_wasservorrat[30]!%2Cch.so.afu.bodeninformationen.lw.durchwurzelungstiefe[30]!%2Cch.so.afu.bodeninformationen.lw.charakter_wasserhaushalt[30]!%2Cch.so.afu.bodeninformationen.lw.verdichtungsempfindlichkeit[30]!%2Cch.so.afu.bodeninformationen.bodentypen[30]%2Cch.so.agi.av.grundstuecke!%2Cch.so.afu.fliessgewaesser.netz!%2Cch.so.agi.gemeindegrenzen!%2Cch.so.afu.bodeninformationen.bodenprofilstandorte$3;
   kind: ConfigMap
   metadata:
     name: rewritemap-config
@@ -61,8 +63,13 @@ objects:
           include       /etc/nginx/mime.types;
           default_type  application/octet-stream;
           map "$time_local:$msec" $time_local_w_ms { ~(^\S+)(\s+\S+):\d+.(\d+)$ $1.$3$2; }
-          map $request_uri $new_uri {
+          # test if their are layers defined in args. If yes use them if not add layers from mapping
+          map $args $args_mapped {
             include /etc/nginx/snippets/rewritemap.conf;
+          }
+          # if theme not default set it to default
+          map $args_mapped $new_uri {
+            ~(.*)t=(?!default)([a-z_]+)(.*) $1t=default$3;
           }
       
           log_format  json  '{"time": "$time_local_w_ms", "client_addr": "$http_hsp_client_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "status": "$status", '
@@ -123,7 +130,7 @@ objects:
         }
         
         if ($new_uri) {
-          return 301  $new_uri;
+          return 301  $uri$is_args$new_uri;
         }
 
         location / {
@@ -135,8 +142,8 @@ objects:
             if ($args ~ ^(.+&|)st(=[0-9%C,]+)(.*)$) {
               return 301 "$uri?$1hc=1$3&c$2&s=250";
             }
-            if ($args ~ ^(.*)t=(?!default)([a-z]+)(.*)$) {
-              return 301 "$uri?$1t=default$3";
+            if ($args ~ ^(.*)(l=[a-z._]+)(.*)t=(?!default)([a-z_]+)(.*)(l=[a-z._]+)(.*)$) {
+              return 301 "$uri?$1$2$3t=default$5$6$7";
             }
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }

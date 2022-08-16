@@ -19,8 +19,8 @@ bglayer_overrides AS ( -- Uebersteuerung der Eigenschaften der Background-Layer
 
 dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProducts
   SELECT 
-    identifier,    
-    COALESCE(title, identifier) as title,
+    derived_identifier AS identifier,    
+    COALESCE(title, derived_identifier) as title,
     CASE dp.dtype
       WHEN 'simiData_TableView' THEN 'datasetview'
       WHEN 'simiProduct_FacadeLayer' THEN 'facadelayer'
@@ -33,7 +33,6 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
     description,
     keywords,
     synonyms,
-    split_part(identifier, '.', 3) AS amt_ident,
     dp.id AS dp_id,
     dp.pub_scope_id 
   FROM 
@@ -41,7 +40,7 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
   LEFT JOIN
     simi.simiproduct_map m ON dp.id = m.id
   LEFT JOIN 
-    bglayer_overrides bg ON dp.identifier = bg.bg_ident
+    bglayer_overrides bg ON dp.derived_identifier = bg.bg_ident
   WHERE
     m.id IS NULL -- EXCLUDE maps
 ),
@@ -103,29 +102,56 @@ prodlist_children_bgkorr AS (
   JOIN
     simi.simi.simiproduct_data_product dp ON c.pl_id = dp.id
   LEFT JOIN
-    bglayer_overrides bg ON dp.identifier = bg.bg_ident
+    bglayer_overrides bg ON dp.derived_identifier  = bg.bg_ident
   WHERE 
     bg.bg_ident IS NULL -- Kinder der Hintergrundkarten ausschliessen, da facadelayer
 ),
 
-amt_lookup AS (
+-- Organisations-Einheit ***************************************
+
+amt_amt AS (
   SELECT 
-    * 
-  FROM (
-    VALUES 
-      ('agi', 'Amt für Geoinformation AGI'), 
-      ('afu', 'Amt für Umwelt AfU'), 
-      ('ada', 'Amt für Denkmalschutz und Archäologie ADA'), 
-      ('avt', 'Amt für Verkehr und Tiefbau AVT'), 
-      ('arp', 'Amt für Raumplanung ARP'),
-      ('awjf', 'Amt für Wald, Jagd und Fischerei AWJF'),
-      ('alw', 'Amt für Landwirtschaft ALW'),
-      ('amb', 'Amt für Militär und Bevölkerungsschutz AMB'),
-      ('ksta', 'Steueramt KSTA'),
-      ('awa', 'Amt für Wirtschaft und Arbeit AWA'),
-      ('sgv', 'Solothurnische Gebäudeversicherung SGV')
-  ) 
-  AS t (amt_ident, amt_name)
+    o.id AS org_id,
+    o."name" AS amt_name,
+    a.abbreviation AS amt_kurz
+  FROM
+    simitheme_org_unit o
+  JOIN
+    simitheme_agency a ON o.id = a.id 
+),
+
+sub_amt AS (
+  SELECT 
+    o.id AS org_id,
+    amt_name,
+    amt_kurz
+  FROM 
+    simitheme_org_unit o
+  JOIN
+    simitheme_sub_org s ON o.id = s.id 
+  JOIN 
+    amt_amt a ON s.agency_id = a.org_id
+),
+
+org_amt AS (
+  SELECT org_id, amt_name, amt_kurz FROM amt_amt
+  UNION ALL 
+  SELECT org_id, amt_name, amt_kurz FROM sub_amt
+),
+
+dp_amt AS (
+  SELECT 
+    amt_name, 
+    amt_kurz,
+    dp.id AS dp_id
+  FROM
+    org_amt a
+  JOIN
+    simitheme_theme t ON a.org_id = t.data_owner_id 
+  JOIN
+    simitheme_theme_publication tp ON t.id = tp.theme_id 
+  JOIN 
+    simiproduct_data_product dp ON tp.id = dp.theme_publication_id 
 ),
 
 solr_record AS (
@@ -135,8 +161,8 @@ solr_record AS (
     json_arr::text AS dset_children,
     dprod_has_info AS dset_info,
     concat_ws(', ', title, synonyms) AS search_1_stem,
-    concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
-    concat_ws(', ', title, synonyms, description, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
+    concat_ws(', ', title, synonyms, description, amt_kurz, amt_name, keywords, titles_c, synonyms_c) AS search_2_stem,
+    concat_ws(', ', title, synonyms, description, amt_kurz, amt_name, keywords, titles_c, synonyms_c, keywords_c, description_c) AS search_3_stem,
     CASE
       WHEN identifier IN ('ch.so.agi.hintergrundkarte_sw','ch.so.agi.hintergrundkarte_farbig','ch.so.agi.hintergrundkarte_ortho') THEN 'background'
       ELSE 'foreground'
@@ -145,8 +171,8 @@ solr_record AS (
     dp_published dp
   LEFT JOIN
     prodlist_children_bgkorr c ON dp.dp_id = c.pl_id
-  LEFT JOIN
-    amt_lookup a ON dp.amt_ident = a.amt_ident
+  JOIN
+    dp_amt a ON dp.dp_id = a.dp_id
 )
 
 SELECT 

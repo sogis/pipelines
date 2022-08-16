@@ -40,7 +40,7 @@ constant_fields AS (
 
 published_dp AS (
   SELECT
-    identifier,
+    derived_identifier AS identifier,
     title,
     description,
     dp.id AS dp_id
@@ -166,7 +166,7 @@ edit_layers AS (
       identifier, 
       jsonb_build_object(
         'editDataset', identifier,
-        'layerName', title,
+        'layerName', dp.title,
         'fields', attr_arr,
         'geomType', initcap(t.geo_type) 
       )

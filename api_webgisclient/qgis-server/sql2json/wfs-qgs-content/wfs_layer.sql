@@ -18,9 +18,9 @@ pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
 	FROM 
 		simi.simidata_postgres_table tbl 
 	JOIN 
-		simi.simidata_data_theme dt ON tbl.data_theme_id = dt.id 
+		simi.simidata_db_schema s ON tbl.db_schema_id  = s.id 
 	JOIN 
-		simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
+		simi.simidata_postgres_db db ON s.postgres_db_id = db.id 
   WHERE
       geo_field_name IS NOT NULL
     AND
@@ -32,8 +32,8 @@ pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
 tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
 	SELECT 
 		dsv.id AS dsv_id,
-		identifier,
-		coalesce(title, identifier) AS title,
+		derived_identifier AS identifier,
+		coalesce(title, derived_identifier) AS title,
 		postgres_table_id
 	FROM 
 		simi.simiproduct_data_product p
@@ -42,7 +42,7 @@ tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
 	JOIN
 		simi.simidata_table_view tv ON dsv.id = tv.id 
 	WHERE 
-		dsv.raw_download is true 
+		dsv.service_download is true 
 	--AND identifier not like 'test.%'
 ),
 

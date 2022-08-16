@@ -2,7 +2,7 @@ WITH
 
 tab_layer AS ( 
 	SELECT 
-		jsonb_build_object('name', identifier, 'attributes', attr_names_json) AS js
+		jsonb_build_object('name', derived_identifier , 'attributes', attr_names_json) AS js
 	FROM 
 		simi.simiproduct_data_product dp
 	inner JOIN
@@ -12,7 +12,7 @@ tab_layer AS (
 facade_sublayers AS ( 
 	SELECT 
 		facade_layer_id,
-		jsonb_agg(dsv.identifier) AS sublayer_names
+		jsonb_agg(dsv.derived_identifier) AS sublayer_names
 	FROM 
 		simi.simiproduct_properties_in_facade pif 
 	JOIN 
@@ -23,7 +23,7 @@ facade_sublayers AS (
 
 facade_layer AS ( 
 	SELECT 
-		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) AS js
+		jsonb_build_object('name', derived_identifier, 'sublayers', sublayer_names) AS js
 	FROM 
 		simi.simiproduct_data_product dp
 	JOIN
@@ -33,7 +33,7 @@ facade_layer AS (
 productlist_sublayers AS ( 
 	SELECT 
 		product_list_id,
-		jsonb_agg(sa.identifier) AS sublayer_names
+		jsonb_agg(sa.derived_identifier) AS sublayer_names
 	FROM 
 		simi.simiproduct_properties_in_list pil 
 	JOIN 
@@ -44,7 +44,7 @@ productlist_sublayers AS (
 
 layergroup AS ( 
 	SELECT 
-		jsonb_build_object('name', identifier, 'sublayers', sublayer_names) AS js
+		jsonb_build_object('name', derived_identifier, 'sublayers', sublayer_names) AS js
 	FROM 
 		simi.simiproduct_data_product dp
 	JOIN

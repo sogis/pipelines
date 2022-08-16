@@ -113,7 +113,7 @@ vector_layer AS (
   JOIN
     simi.simidata_data_set_view dsv ON tv.tv_id = dsv.id
   JOIN 
-    simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id 
+    simi.trafo_wms_geotable_v tbl ON tv.tv_id = tbl.tv_id 
   LEFT JOIN 
     dsv_qml_assetfiles files ON tv.tv_id = files.dsv_id
 ),

@@ -14,8 +14,8 @@ WITH
 
 dp_published AS ( -- Alle Dataproducts, welche nicht zum löschen markiert sind
   SELECT 
-    identifier,
-    COALESCE(title, identifier) as title_ident,
+    derived_identifier AS identifier,
+    COALESCE(title, derived_identifier) as title_ident,
     ps.display_text AS state_text,
     pub_to_wms,
     dp.id AS dp_id

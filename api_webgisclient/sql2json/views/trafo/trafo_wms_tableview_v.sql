@@ -51,7 +51,7 @@ JOIN
 JOIN 
   simi.simidata_table_view tv ON dsv.id = tv.id
 JOIN 
-  simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id
+  simi.trafo_wms_geotable_v tbl ON tv.id = tbl.tv_id
 LEFT JOIN
   tv_attributes a ON tv.id = a.tv_id
 ;

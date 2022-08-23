@@ -310,7 +310,7 @@ objects:
         }
 
         location /api/oereb {
-            if ($http_hsp_client_addr = 3.72.210.3) {
+            if ($http_hsp_client_addr ~ ^18\.156\.190\.100$|^3\.72\.210\.3$) {
                 return 404;
             }
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';

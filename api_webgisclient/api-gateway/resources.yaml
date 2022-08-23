@@ -310,7 +310,9 @@ objects:
         }
 
         location /api/oereb {
-            deny 3.72.210.3;
+            if ($http_hsp_client_addr = 3.72.210.3) {
+                return 404;
+            }
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';

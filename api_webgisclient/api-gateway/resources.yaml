@@ -310,6 +310,7 @@ objects:
         }
 
         location /api/oereb {
+            deny 3.72.210.3;
             proxy_set_header 'X-FORWARDED-HOST' '${BASEURL}';
             proxy_set_header 'X-FORWARDED-PREFIX' '/api/oereb';
             proxy_set_header 'X-FORWARDED-PROTO' 'https';

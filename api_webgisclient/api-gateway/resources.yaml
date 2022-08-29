@@ -427,10 +427,10 @@ objects:
             proxy_pass http://interlis-repository.agi-apps-${ENVIRONMENT}.svc/;
         }
 
-        location /repochecker {
-            proxy_set_header 'X-FORWARDED-PREFIX' '/repochecker';
-            proxy_pass http://interlis-repo-checker.agi-apps-${ENVIRONMENT}.svc/;
-        }
+        # location /repochecker {
+        #     proxy_set_header 'X-FORWARDED-PREFIX' '/repochecker';
+        #     proxy_pass http://interlis-repo-checker.agi-apps-${ENVIRONMENT}.svc/;
+        # }
 
         #location /api/cadastre/v1 {
         #    proxy_pass http://cadastre-web-service.agi-apps-test.svc/;

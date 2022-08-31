@@ -9,9 +9,8 @@ The automatic migration scripts from SIMI drop the views if source tables (entit
 Use the following command to drop and recreate all views from source (After git repo pull):
 
 ```bash
-psql -d simi -h host -U user \
+psql -d simi -h host -U user -W \
   --single-transaction \
-  -c 'set role adminrole;' \
 \
   -f trafo/drop_trafo_views.sql \
   -f solr/drop_solr_views.sql \

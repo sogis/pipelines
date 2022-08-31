@@ -1,6 +1,3 @@
-
-DROP VIEW IF EXISTS simi.trafo_tableview_attr_with_geo_v CASCADE;
-
 CREATE VIEW simi.trafo_tableview_attr_with_geo_v AS 
 
 /* Gibt die Attribute (Spalten) einer Tableview inkl. Geometrie-Platzhalterspalte zurück.
@@ -80,10 +77,6 @@ FROM
 GROUP BY 
   tv_id
 ;
-
-GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO simi_write;
-GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO simi_read;
-GRANT SELECT ON TABLE simi.trafo_tableview_attr_with_geo_v TO sogis_service;
 
 
 

@@ -1,7 +1,4 @@
-DROP VIEW IF EXISTS simi.solr_layer_base_v;
-
 CREATE VIEW simi.solr_layer_base_v AS
-
 
 WITH
 
@@ -100,7 +97,7 @@ prodlist_children_bgkorr AS (
   FROM
     prodlist_children_agg_ c
   JOIN
-    simi.simi.simiproduct_data_product dp ON c.pl_id = dp.id
+    simi.simiproduct_data_product dp ON c.pl_id = dp.id
   LEFT JOIN
     bglayer_overrides bg ON dp.derived_identifier  = bg.bg_ident
   WHERE 
@@ -115,9 +112,9 @@ amt_amt AS (
     o."name" AS amt_name,
     a.abbreviation AS amt_kurz
   FROM
-    simitheme_org_unit o
+    simi.simitheme_org_unit o
   JOIN
-    simitheme_agency a ON o.id = a.id 
+    simi.simitheme_agency a ON o.id = a.id 
 ),
 
 sub_amt AS (
@@ -126,9 +123,9 @@ sub_amt AS (
     amt_name,
     amt_kurz
   FROM 
-    simitheme_org_unit o
+    simi.simitheme_org_unit o
   JOIN
-    simitheme_sub_org s ON o.id = s.id 
+    simi.simitheme_sub_org s ON o.id = s.id 
   JOIN 
     amt_amt a ON s.agency_id = a.org_id
 ),
@@ -147,11 +144,11 @@ dp_amt AS (
   FROM
     org_amt a
   JOIN
-    simitheme_theme t ON a.org_id = t.data_owner_id 
+    simi.simitheme_theme t ON a.org_id = t.data_owner_id 
   JOIN
-    simitheme_theme_publication tp ON t.id = tp.theme_id 
+    simi.simitheme_theme_publication tp ON t.id = tp.theme_id 
   JOIN 
-    simiproduct_data_product dp ON tp.id = dp.theme_publication_id 
+    simi.simiproduct_data_product dp ON tp.id = dp.theme_publication_id 
 ),
 
 solr_record AS (
@@ -179,9 +176,4 @@ SELECT
   * 
 FROM
   solr_record 
-;
-
-GRANT ALL ON TABLE simi.solr_layer_base_v TO admin
-;
-GRANT SELECT ON TABLE simi.solr_layer_base_v TO simi_write, sogis_service
 ;

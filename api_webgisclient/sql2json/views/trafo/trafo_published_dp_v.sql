@@ -1,5 +1,3 @@
-DROP VIEW IF EXISTS simi.trafo_published_dp_v CASCADE;
-
 CREATE VIEW simi.trafo_published_dp_v AS
 
 /*
@@ -157,6 +155,3 @@ FROM
 WHERE 
   published IS TRUE 
 ;
-
-GRANT SELECT ON TABLE simi.trafo_published_dp_v TO simi_write;
-GRANT SELECT ON TABLE simi.trafo_published_dp_v TO simi_read;

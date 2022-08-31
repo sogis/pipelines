@@ -1,8 +1,5 @@
 
-DROP VIEW IF EXISTS simi.trafo_resource_role_v CASCADE;
-
 CREATE VIEW simi.trafo_resource_role_v AS
-
 
 /* Gibt die Permissions pro Rolle für DSV und DSV-Gruppen aus.
  * 
@@ -218,6 +215,3 @@ SELECT resource_id, role_name, perm_level FROM role_perm_dsv_group
 UNION ALL 
 SELECT resource_id, role_name, perm_level FROM role_perm_ext
 ;
-
-GRANT SELECT ON TABLE simi.trafo_resource_role_v TO simi_write;
-GRANT SELECT ON TABLE simi.trafo_resource_role_v TO simi_read;

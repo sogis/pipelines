@@ -1,5 +1,3 @@
-DROP VIEW IF EXISTS simi.trafo_wms_rootlayer_v CASCADE;
-
 CREATE VIEW simi.trafo_wms_rootlayer_v AS 
 
 /*
@@ -50,7 +48,4 @@ FROM
 ORDER BY
 	identifier
 ;
-
-GRANT SELECT ON TABLE simi.trafo_wms_rootlayer_v TO simi_write;
-GRANT SELECT ON TABLE simi.trafo_wms_rootlayer_v TO simi_read;
 

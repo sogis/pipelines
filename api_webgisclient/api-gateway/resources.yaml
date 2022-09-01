@@ -64,6 +64,9 @@ objects:
           default_type  application/octet-stream;
           map "$time_local:$msec" $time_local_w_ms { ~(^\S+)(\s+\S+):\d+.(\d+)$ $1.$3$2; }
           # test if their are layers defined in args. If yes use them if not add layers from mapping
+          map $args $args_with_l {
+            ~^(.*)(l=)(?!default)([a-z_.-]+)(.*)$ $1$2$3$4$5;
+          }
           map $args $args_mapped {
             include /etc/nginx/snippets/rewritemap.conf;
           }
@@ -142,8 +145,8 @@ objects:
             if ($args ~ ^(.+&|)st(=[0-9%C,]+)(.*)$) {
               return 301 "$uri?$1hc=1$3&c$2&s=250";
             }
-            if ($args ~ ^(.*)(l=[a-z._]+)(.*)t=(?!default)([a-z_]+)(.*)(l=[a-z._]+)(.*)$) {
-              return 301 "$uri?$1$2$3t=default$5$6$7";
+            if ($args_with_l ~ ^(.*)(t=)([a-z.-_]+)(.*)) {
+              return 301 "$uri?$1$4&t=default";
             }
             proxy_pass http://qwc-service.${NAMESPACE}.svc;
         }

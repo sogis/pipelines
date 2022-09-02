@@ -406,6 +406,10 @@ objects:
             proxy_pass http://avgbs2mtab-web-service.agi-apps-${ENVIRONMENT}.svc/;
         }
 
+        location /datenabgabe/ {
+            proxy_pass http://sodata-preview.agi-apps-${ENVIRONMENT}.svc/;
+        }
+
         location /ews {
             proxy_pass http://heatdrill-service.agi-apps-${ENVIRONMENT}.svc/service/;
         }

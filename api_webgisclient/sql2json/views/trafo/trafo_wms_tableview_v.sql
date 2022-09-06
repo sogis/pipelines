@@ -17,7 +17,9 @@ tv_attribute AS (
       'name', "name",
       'alias', coalesce(alias, name)
     ) AS attr_name_alias_js,
-    name AS attr_name,
+    jsonb_build_object(
+      'name', "name"
+    ) AS attr_name,
     vf.sort AS attr_sort
   FROM  
     simi.simidata_view_field vf
@@ -58,4 +60,3 @@ LEFT JOIN
 
 GRANT SELECT ON TABLE simi.trafo_wms_tableview_v TO simi_write;
 GRANT SELECT ON TABLE simi.trafo_wms_tableview_v TO simi_read;
-      

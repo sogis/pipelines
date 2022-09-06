@@ -147,6 +147,8 @@ objects:
             value: "/var/log/nginx"
           - name: LOGROTATE_COPIES
             value: "1"
+          - name: LOGROTATE_OLDDIR
+            value: "/tmp"
           volumeMounts:
           - name: logrotate-config
             mountPath: /etc/logrotate.d

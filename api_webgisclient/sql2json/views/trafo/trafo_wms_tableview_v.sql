@@ -15,7 +15,9 @@ tv_attribute AS (
       'name', "name",
       'alias', coalesce(alias, name)
     ) AS attr_name_alias_js,
-    name AS attr_name,
+    jsonb_build_object(
+      'name', "name"
+    ) AS attr_name,
     vf.sort AS attr_sort
   FROM  
     simi.simidata_view_field vf

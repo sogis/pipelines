@@ -19,11 +19,8 @@ dp_base AS ( -- Umfasst alle für solr notwendigen Informationen eines DataProdu
     derived_identifier AS identifier,    
     COALESCE(title, derived_identifier) as title,
     CASE dp.dtype
-      WHEN 'simiData_TableView' THEN 'datasetview'
-      WHEN 'simiProduct_FacadeLayer' THEN 'facadelayer'
       WHEN 'simiProduct_LayerGroup' THEN 'layergroup'
-      WHEN 'simiData_RasterView' THEN 'datasetview'
-      ELSE 'ERR:UnknownType'
+      ELSE 'singleactor'
     END AS dp_typ,    
     COALESCE(bg.bg_facet, 'foreground') AS facet,
     (description IS NOT NULL) AS dprod_has_info, -- Metainformationen vorhanden?

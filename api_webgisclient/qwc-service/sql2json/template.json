@@ -177,7 +177,8 @@
                 "exportFormat": null,
                 "enableExport": false,
                 "longAttributesDisplay": "wrap",
-                "displayResultTree": false
+                "displayResultTree": false,
+                "displayInlineImages": true
               }
             },
             {
@@ -485,6 +486,7 @@
                 "enableExport": false,
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
+                "displayInlineImages": true,
                 "initialWidth": 480,
                 "initialHeight": 550
               }

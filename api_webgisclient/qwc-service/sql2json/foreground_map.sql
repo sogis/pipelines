@@ -80,7 +80,7 @@ prodlist_sa_properties AS (
         'queryable', TRUE,
         'opacity', round(255 - (transparency::real/100*255)),
         'bbox', const_bbox,
-		'searchterm', searchterm
+		'searchterms', searchterm
       ) ORDER BY sort
     ) AS sa_props_json
   FROM

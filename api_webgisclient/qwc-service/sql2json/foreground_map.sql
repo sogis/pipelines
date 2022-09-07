@@ -82,8 +82,8 @@ prodlist_sa_properties AS (
           'opacity', round(255 - (transparency::real/100*255)),
           'bbox', const_bbox,
 		  'searchterm', searchterm
-        )
-      ) ORDER BY sort
+        ) ORDER BY sort
+      )
     ) AS sa_props_json
   FROM
     simi.simiproduct_single_actor sa

@@ -44,10 +44,13 @@ published_dp AS (
     title,
     description,
     dp.id AS dp_id,
-    json_build_array(search_facet) AS searchterm
+    CASE
+      WHEN search_type = '2_if_loaded' THEN json_build_array(search_facet) 
+      ELSE json_build_array('')
+    END AS searchterm
   FROM
     simi.simiproduct_data_product dp
-  JOIN 
+  LEFT JOIN 
 	simi.simidata_table_view tv ON dp.id = tv.id
   WHERE
     pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' 

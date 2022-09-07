@@ -44,10 +44,7 @@ published_dp AS (
     title,
     description,
     dp.id AS dp_id,
-	CASE 
-      WHEN search_type = '2_if_loaded' THEN json_build_array(search_facet)
-      ELSE NULL 
-    END AS searchterm
+    json_build_array(search_facet) AS searchterm
   FROM
     simi.simiproduct_data_product dp
   JOIN 
@@ -71,19 +68,17 @@ published_dp_in_prodlist AS (
 prodlist_sa_properties AS (
   SELECT
     pl_id,
-    jsonb_strip_nulls (
-      jsonb_agg(
-        jsonb_build_object(
-          'name', identifier,
-          'title', title,
-          'abstract', dp.description,
-          'visibility', visible,
-          'queryable', TRUE,
-          'opacity', round(255 - (transparency::real/100*255)),
-          'bbox', const_bbox,
-		  'searchterm', searchterm
-        ) ORDER BY sort
-      )
+    jsonb_agg(
+      jsonb_build_object(
+        'name', identifier,
+        'title', title,
+        'abstract', dp.description,
+        'visibility', visible,
+        'queryable', TRUE,
+        'opacity', round(255 - (transparency::real/100*255)),
+        'bbox', const_bbox,
+		'searchterm', searchterm
+      ) ORDER BY sort
     ) AS sa_props_json
   FROM
     simi.simiproduct_single_actor sa

@@ -45,8 +45,7 @@ published_dp AS (
     description,
     dp.id AS dp_id,
     CASE
-      WHEN search_type = '2_if_loaded' THEN json_build_array(search_facet) 
-      ELSE json_build_array('')
+      WHEN search_type = '2_if_loaded' THEN json_build_array(COALESCE(search_facet, derived_identifier))::jsonb 
     END AS searchterm
   FROM
     simi.simiproduct_data_product dp
@@ -80,7 +79,7 @@ prodlist_sa_properties AS (
         'queryable', TRUE,
         'opacity', round(255 - (transparency::real/100*255)),
         'bbox', const_bbox,
-		'searchterms', searchterm
+		'searchterms', COALESCE(searchterm, '[]'::jsonb)
       ) ORDER BY sort
     ) AS sa_props_json
   FROM

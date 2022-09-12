@@ -132,7 +132,7 @@ objects:
           volumeMounts:
           - mountPath: /usr/etc/postgresql
             name: qwc-service-config-claim
-          - mountPath: /qwc2/assets/img/custommapthumbs
+          - mountPath: /qwc2/assets/img
             name: qwc-assets
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
@@ -152,7 +152,6 @@ objects:
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim
-            readOnly: true
         - name: qgs-resources
           persistentVolumeClaim:
             claimName: qgs-resources-claim

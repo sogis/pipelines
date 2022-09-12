@@ -152,7 +152,6 @@ objects:
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim
-            readOnly: true
         - name: qgs-resources
           persistentVolumeClaim:
             claimName: qgs-resources-claim

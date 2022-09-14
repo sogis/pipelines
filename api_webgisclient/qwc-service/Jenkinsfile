@@ -97,6 +97,13 @@ pipeline {
                     }
                 }
             }
+        stage ('Create search-icons') {
+            steps {
+                sh """
+                   echo "hallo"
+                """ 
+                }
+            }
         stage ('Deploy qwc-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}"

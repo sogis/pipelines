@@ -78,6 +78,7 @@ pipeline {
                     credentials = [ 
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-simi-ddl'            , usernameVariable: 'DbUserSimiDdl'           , passwordVariable: 'PwdSimiDdl'),
                         usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
                         ]
                     }
@@ -99,9 +100,15 @@ pipeline {
             }
         stage ('Create search-icons') {
             steps {
-                sh """
-                   echo "hallo"
-                """ 
+                withCredentials ( credentials ) {
+                    sh """
+                       export PGPASSWORD=${PwdSimiDdl}
+                       psql ${SIMI_DB} -h ${db_server} -U ${DbUserSimiDdl} -t -c "select COALESCE(search_facet, derived_identifier) FROM simi.simiproduct_data_product dp LEFT JOIN simi.simidata_table_view tv ON dp.id = tv.id WHERE search_type = '2_if_loaded';" | while read -r data
+                       do
+                         cp qwc2/search/feature.svg qwc2/search/$data.svg
+                       done
+                    """
+                    } 
                 }
             }
         stage ('Deploy qwc-service in Test env') {

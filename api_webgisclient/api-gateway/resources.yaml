@@ -168,7 +168,7 @@ objects:
             autoindex on;
         }
 
-        location ~ /geodata/ch.swisstopo.lk(.*) {
+        location ~ /geodata/ch.swisstopo(.*) {
             allow 193.135.87.0/24;
             deny all;
         }

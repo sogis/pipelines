@@ -57,6 +57,8 @@ tbl_dsv_attr AS ( -- Informationen zu den Attributen einer Tableview
 		simi.simidata_view_field vf
 	JOIN
 		simi.simidata_table_field tf ON vf.table_field_id = tf.id 
+  WHERE 
+    vf.wgc_exposed IS TRUE 
 ),
 
 tbl_dsv_attr_grouped AS ( -- Attribut-Array einer Tableview

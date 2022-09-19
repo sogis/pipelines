@@ -134,6 +134,8 @@ tv_attribute AS (
     simi.simidata_table_field tf ON vf.table_field_id = tf.id 
   LEFT JOIN
     fieldtype_with_special_formtype ft ON tf.type_name = ft.fieldtype
+  WHERE 
+    vf.wgc_exposed IS TRUE 
 ),
 
 tv_attribute_arr AS (

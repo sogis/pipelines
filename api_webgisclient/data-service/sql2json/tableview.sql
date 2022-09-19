@@ -102,6 +102,8 @@ tableview_fields AS (
     simi.simidata_view_field vf
   JOIN
     tbl_fields tf ON vf.table_field_id = tf.tf_id
+  WHERE 
+    vf.wgc_exposed IS TRUE 
   GROUP BY
     table_view_id
 ),

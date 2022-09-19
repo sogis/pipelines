@@ -41,8 +41,8 @@ constant_fields AS (
 published_dp AS (
   SELECT
     derived_identifier AS identifier,
-    title,
-    description,
+    COALESCE(dp.title, t.title, dp.derived_identifier) as title,
+    COALESCE(dp.description, t.description_override, t.description_model) AS description,
     dp.id AS dp_id,
     CASE
       WHEN search_type = '2_if_loaded' THEN json_build_array(COALESCE(search_facet, derived_identifier))::jsonb 
@@ -50,7 +50,9 @@ published_dp AS (
   FROM
     simi.simiproduct_data_product dp
   LEFT JOIN 
-	simi.simidata_table_view tv ON dp.id = tv.id
+    simi.simidata_table_view tv ON dp.id = tv.id
+	LEFT JOIN
+	  simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
   WHERE
     pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' 
 ),

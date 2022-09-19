@@ -33,7 +33,7 @@ tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
 	SELECT 
 		dsv.id AS dsv_id,
 		derived_identifier AS identifier,
-		coalesce(title, derived_identifier) AS title,
+		coalesce(p.title, t.title, p.derived_identifier) AS title,
 		postgres_table_id
 	FROM 
 		simi.simiproduct_data_product p
@@ -41,6 +41,8 @@ tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
 		simi.simidata_data_set_view dsv ON p.id = dsv.id 
 	JOIN
 		simi.simidata_table_view tv ON dsv.id = tv.id 
+	JOIN 
+	 simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
 	WHERE 
 		dsv.service_download is true 
 	--AND identifier not like 'test.%'

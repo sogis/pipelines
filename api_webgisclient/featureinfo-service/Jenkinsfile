@@ -76,7 +76,7 @@ pipeline {
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
                         jobName = params.jobName
-                        build = 'nein'
+                        build = 'ja'
                         }
                     else {
                         buildNumber = BUILD_NUMBER

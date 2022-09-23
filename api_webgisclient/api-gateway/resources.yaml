@@ -366,7 +366,7 @@ objects:
             proxy_pass http://oereb-wms.agi-oerebv2-${ENVIRONMENT}.svc;
         }
 
-        location /gb2av {
+        location /gb2av/ {
             proxy_pass http://gb2av.agi-apps-${ENVIRONMENT}.svc/;
         }
 

@@ -25,7 +25,7 @@ background AS (
 
 dsv_raw AS (
   SELECT
-    COALESCE(search_facet, identifier) AS facet_ident,
+    COALESCE(search_facet, derived_identifier) AS facet_ident,
     CASE 
       WHEN search_type = '2_if_loaded' THEN FALSE
       ELSE TRUE 

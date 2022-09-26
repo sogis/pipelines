@@ -3,11 +3,11 @@ WITH
 tv_with_geom AS (
   SELECT 
     attr_props_json,
-    tv_id
+    tv.id AS tv_id
   FROM
     simi.simidata_table_view tv 
   JOIN
-    simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id
+    simi.trafo_wms_geotable_v tbl ON tv.id = tbl.tv_id
   JOIN
     simi.trafo_tableview_attr_with_geo_v a ON tv.id = a.tv_id
 ),
@@ -41,9 +41,9 @@ report_datasources AS (
   JOIN
     simi.simi.simidata_postgres_table t ON tv.postgres_table_id = t.id 
   JOIN 
-    simi.simi.simidata_data_theme dt ON t.data_theme_id = dt.id
+    simi.simi.simidata_db_schema s ON t.db_schema_id = s.id
   JOIN 
-    simi.simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
+    simi.simi.simidata_postgres_db db ON s.postgres_db_id = db.id 
   WHERE 
       r.relation_type = '2_data'
     AND

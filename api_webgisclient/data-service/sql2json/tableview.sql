@@ -31,9 +31,9 @@ tbl AS (
   FROM
     simi.simidata_postgres_table t
   JOIN
-    simi.simidata_data_theme dt ON t.data_theme_id = dt.id
+    simi.simidata_db_schema s ON t.db_schema_id = s.id
   JOIN
-    simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
+    simi.simidata_postgres_db db ON s.postgres_db_id = db.id 
   LEFT JOIN
     geo_tbl geo ON t.id = geo.tbl_id 
 ),
@@ -102,16 +102,18 @@ tableview_fields AS (
     simi.simidata_view_field vf
   JOIN
     tbl_fields tf ON vf.table_field_id = tf.tf_id
+  WHERE 
+    vf.wgc_exposed IS TRUE 
   GROUP BY
     table_view_id
 ),
 
 tableview AS (
   SELECT 
-    dp.identifier,
+    dp.derived_identifier as identifier,
     jsonb_strip_nulls(
       jsonb_build_object(
-        'name', dp.identifier,
+        'name', dp.derived_identifier,
         'db_url', pg_service_url_read,
         'db_write_url', pg_service_url_write,
         'schema', schema_name,
@@ -121,7 +123,7 @@ tableview AS (
         'fields', COALESCE(fields_arr, '[]'::jsonb) -- COALESCE(...) weil das Schema fälschlicherweise immer fields verlangt
       )
     ) AS tv_obj,
-    dsv.raw_download,
+    dsv.service_download AS raw_download,
     (dp_pub.dp_id IS NOT NULL) AS wms_published,
     COALESCE(type_missing_count, 0) AS type_missing_count,
     COALESCE(type_defaulted_count, 0) AS type_defaulted_count

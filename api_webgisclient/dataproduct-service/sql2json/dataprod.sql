@@ -44,9 +44,9 @@ tv_pgtable_props AS (
   JOIN 
     simi.simidata_postgres_table tbl ON tv.postgres_table_id = tbl.id
   JOIN 
-    simi.simidata_data_theme dt ON tbl.data_theme_id = dt.id 
+    simi.simidata_db_schema s ON tbl.db_schema_id  = s.id 
   JOIN 
-    simi.simidata_postgres_db db ON dt.postgres_db_id = db.id 
+    simi.simidata_postgres_db db ON s.postgres_db_id = db.id 
   WHERE
       geo_field_name IS NOT NULL
     AND
@@ -136,7 +136,7 @@ ext_wms_layer AS (
 
 tv_objsearch AS ( -- Solr facet ident von tableviews mit aktivierter Objektsuche (--> falls layer geladen ist)
   SELECT    
-    COALESCE(tv.search_facet, dp.identifier) AS solr_facet_ident,
+    COALESCE(tv.search_facet, dp.derived_identifier) AS solr_facet_ident,
     tv.id AS sa_id
   FROM
     simi.simidata_table_view tv

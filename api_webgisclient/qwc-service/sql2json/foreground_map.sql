@@ -40,12 +40,19 @@ constant_fields AS (
 
 published_dp AS (
   SELECT
-    identifier,
-    title,
-    description,
-    dp.id AS dp_id
+    derived_identifier AS identifier,
+    COALESCE(dp.title, t.title, dp.derived_identifier) as title,
+    COALESCE(dp.description, t.description_override, t.description_model) AS description,
+    dp.id AS dp_id,
+    CASE
+      WHEN search_type = '2_if_loaded' THEN json_build_array(COALESCE(search_facet, derived_identifier))::jsonb 
+    END AS searchterm
   FROM
     simi.simiproduct_data_product dp
+  LEFT JOIN 
+    simi.simidata_table_view tv ON dp.id = tv.id
+	LEFT JOIN
+	  simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
   WHERE
     pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' 
 ),
@@ -73,7 +80,8 @@ prodlist_sa_properties AS (
         'visibility', visible,
         'queryable', TRUE,
         'opacity', round(255 - (transparency::real/100*255)),
-        'bbox', const_bbox      
+        'bbox', const_bbox,
+		'searchterms', COALESCE(searchterm, '[]'::jsonb)
       ) ORDER BY sort
     ) AS sa_props_json
   FROM
@@ -128,6 +136,8 @@ tv_attribute AS (
     simi.simidata_table_field tf ON vf.table_field_id = tf.id 
   LEFT JOIN
     fieldtype_with_special_formtype ft ON tf.type_name = ft.fieldtype
+  WHERE 
+    vf.wgc_exposed IS TRUE 
 ),
 
 tv_attribute_arr AS (
@@ -166,7 +176,7 @@ edit_layers AS (
       identifier, 
       jsonb_build_object(
         'editDataset', identifier,
-        'layerName', title,
+        'layerName', dp.title,
         'fields', attr_arr,
         'geomType', initcap(t.geo_type) 
       )

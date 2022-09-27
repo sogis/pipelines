@@ -177,7 +177,7 @@ pipeline {
                             if [ ! -d "config/default" ]; then
                               mkdir -p config/default
                             fi
-                            wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JOB_URL/job/$jobName/$buildNumber/artifact/config/default/' -P qgs
+                            wget -r -np -nd -erobots=off -A '*.json' --reject-regex '/\\*.+\\*/|auto_refresh' --no-check-certificate --auth-no-challenge --user='$apiUser' --password='$PwdApiUser'  '$JOB_URL$buildNumber/artifact/config/default/' -P qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
                             python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs

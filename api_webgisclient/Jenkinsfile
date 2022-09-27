@@ -71,7 +71,7 @@ pipeline {
             steps {
                 script {    
                     serviceMap = [:]
-                    workDir = "$JENKINS_HOME/jobs/$JOB_BASE_NAME/workspace/api_webgisclient"
+                    workDir = "$WORKSPACE/api_webgisclient"
                     dir (workDir) {
                         def req = readFile(file: 'requirements.txt')
                         def services = req.split('\n')

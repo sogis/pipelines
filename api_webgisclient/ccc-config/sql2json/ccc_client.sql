@@ -10,7 +10,7 @@ SELECT
   CAST(notify_layers AS jsonb) || jsonb_build_object(
     'id', "name",
     'title', "name",
-    'map', dp.identifier,
+    'map', dp.derived_identifier,
     'cccServer', '$$CCC_BASE_URL$$/ccc-service'
   ) AS client_json
 FROM

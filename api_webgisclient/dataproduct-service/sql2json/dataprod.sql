@@ -76,6 +76,7 @@ ext_wms_layer_base AS (
     jsonb_build_object('LAYERS', l.ext_identifier) AS extlayer_params,
     CASE 
       WHEN l.feature_info_format = 'fi_unavailable' THEN NULL
+      WHEN l.feature_info_format = 'text/plain' THEN jsonb_build_array('application/json')
       ELSE jsonb_build_array(l.feature_info_format)
     END AS extlayer_infoformats,
     CASE 

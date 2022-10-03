@@ -60,11 +60,11 @@ objects:
         containers:
         - env:
           - name: OEREB_JSON_URL
-            value: https://${BASEURL}/api/oereb/extract/json?EGRID={egrid}
+            value: http://${BASEURL}/extract/json?EGRID={egrid}
           - name: OEREB_XML_URL
-            value: https://${BASEURL}/api/oereb/extract/xml?EGRID={egrid}
+            value: http://${BASEURL}/extract/xml?EGRID={egrid}
           - name: OEREB_PDF_URL
-            value: https://${BASEURL}/api/oereb/extract/pdf?EGRID={egrid}
+            value: http://${BASEURL}/extract/pdf?EGRID={egrid}
           - name: BASIC_INFO_SQL
             value: "SELECT g.egrid, g.nummer, g.art_txt, g.flaechenmass, ST_AsText(ST_Simplify(g.geometrie, 0.01)) AS geom, gem.gemeindename || ' (' || gem.bfs_nr || ')' AS gemeinde, gb.aname as grundbuch,ST_XMin(g.geometrie) as xmin, ST_YMin(g.geometrie) as ymin, ST_XMax(g.geometrie) as xmax, ST_YMax(g.geometrie) as ymax FROM agi_mopublic_pub.mopublic_grundstueck g  JOIN agi_mopublic_pub.mopublic_gemeindegrenze gem ON gem.bfs_nr = g.bfs_nr JOIN agi_av_gb_admin_einteilung_pub.grundbuchkreise_grundbuchkreis gb ON g.nbident = gb.nbident WHERE ST_Intersects( g.geometrie, ST_Buffer( ST_SetSRID(ST_Point(:x, :y), :srid),  :buffer ) )"
           - name: BASIC_INFO_BY_EGRID_SQL

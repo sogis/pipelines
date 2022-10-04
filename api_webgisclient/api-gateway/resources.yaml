@@ -59,7 +59,7 @@ objects:
                  inactive=30m use_temp_path=off;
 
           #Rate Limit for Oereb Massenabfrage
-          limit_req_zone $binary_remote_addr zone=ip:10m rate=6r/m;
+          limit_req_zone $http_hsp_client_addr zone=ip:10m rate=6r/m;
 
           #gzip on;
 

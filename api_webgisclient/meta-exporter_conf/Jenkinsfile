@@ -52,32 +52,34 @@ pipeline {
         stage ('Create Datensuche XML File') {
             steps {
                 withCredentials ( credentials ) {
-                    sh """
-                        if [ -d "meta_exporter" ]; then
-                          rm -rf meta_exporter/* rm -rf meta_exporter/.git
-                        fi
+                    script {
+                        sh """
+                            if [ -d "meta_exporter" ]; then
+                              rm -rf meta_exporter/* rm -rf meta_exporter/.git
+                            fi
         
-                        if [ ! -d  "config/default" ]; then
-                          mkdir -p config/default
-                        fi
+                            if [ ! -d  "config/default" ]; then
+                              mkdir -p config/default
+                            fi
 
-                        # if not exists get the meta2file-cli-all.jar and set the necessary permissions
-                        if [ ! -f "meta2file-cli-1.0.63-all.jar" ]; then
-                          wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
-                          chmod u+x meta2file-cli-1.0.63-all.jar
-                        fi
-                        
-                        # meta2file command to create the conf files
-                        java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/config/config.xml
-                    """ 
-                    PODNAME= 'sodata-1-b67v5'
-                    sh """ 
-                        oc rsync -n ${namespace} config/ $PODNAME:/app
-                    """
-                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
-                    sh """ 
-                        rm -rf $env.WORKSPACE/config
-                    """
+                            # if not exists get the meta2file-cli-all.jar and set the necessary permissions
+                            if [ ! -f "meta2file-cli-1.0.63-all.jar" ]; then
+                              wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
+                              chmod u+x meta2file-cli-1.0.63-all.jar
+                            fi
+                            
+                            # meta2file command to create the conf files
+                            java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/config/config.xml
+                        """ 
+                        PODNAME= 'sodata-1-b67v5'
+                        sh """ 
+                            oc rsync -n ${namespace} config/ $PODNAME:/app
+                        """
+                        archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                        sh """ 
+                            rm -rf $env.WORKSPACE/config
+                        """
+                        }
                     }
                 }
             }

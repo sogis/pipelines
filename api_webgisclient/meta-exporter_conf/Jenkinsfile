@@ -44,7 +44,7 @@ pipeline {
                         dbserver = env.DB_SERVER_TEST
                         }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-simi-ddl'   , usernameVariable: 'DbUserSimiDDL'   , passwordVariable: 'PwdSimiDDL')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-simi'   , usernameVariable: 'DbUserSimi'   , passwordVariable: 'PwdSimi')
                         ]
                     }
                 }
@@ -68,7 +68,7 @@ pipeline {
                         fi
                         
                         # meta2file command to create the conf files
-                        java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimiDDL} -p ${PwdSimiDDL} -d $env.WORKSPACE/config/default/meta2file.xml
+                        java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/config/default/meta2file.xml
                     """ 
                     }
                 }

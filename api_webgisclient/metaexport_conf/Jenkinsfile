@@ -31,6 +31,18 @@ pipeline {
                     namespace = params.namespace
                     buildNumber = BUILD_NUMBER
                     jobName = JOB_NAME
+                    if ( namespace == 'agi-apps-test' ) {
+                        dbserver = env.DB_SERVER_TEST
+                        }
+                    else if ( namespace == 'agi-apps-integration' ) {
+                        dbserver = env.DB_SERVER_INT
+                        }
+                    else if ( namespace == 'agi-apps-production' ) {
+                        dbserver = env.DB_SERVER_PROD
+                        }
+                    else {
+                        dbserver = env.DB_SERVER_TEST
+                        }
                     credentials = [ 
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-simi-ddl'   , usernameVariable: 'DbUserSimiDDL'   , passwordVariable: 'PwdSimiDDL')
                         ]
@@ -53,7 +65,9 @@ pipeline {
                       wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
                       chmod u+x meta2file-cli-1.0.63-all.jar
                     fi
-  
+                    
+                    # meta2file command to create the conf files
+                    java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimiDDL} -p ${DbPasswordSimiDDL} -d $env.WORKSPACE/config/default/meta2file.xml
                 """ 
                 }
             }

@@ -1,0 +1,76 @@
+def serviceName = 'metaexport_conf'
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+
+pipeline {
+    agent { label 'master' }
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 35, unit: 'MINUTES')
+        }
+    parameters {
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        }
+
+    stages {
+        stage ('Ask for Version') {
+            steps {
+                script {
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
+                    namespace = params.namespace
+                    buildNumber = BUILD_NUMBER
+                    jobName = JOB_NAME
+                    credentials = [ 
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-simi-ddl'   , usernameVariable: 'DbUserSimiDDL'   , passwordVariable: 'PwdSimiDDL')
+                        ]
+                    }
+                }
+            }
+        stage ('Create Datensuche Conf Files') {
+            sh """
+                if [ -d "meta_exporter" ]; then
+                  rm -rf meta_exporter/* rm -rf meta_exporter/.git
+                fi
+        
+                if [ ! -d  "config/default" ]; then
+                  mkdir -p config/default
+                fi
+
+                # if not exists get the meta2file-cli-all.jar and set the necessary permissions
+                if [ ! -f "meta2file-cli-1.0.63-all.jar" ]; then
+                  wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
+                  chmod u+x meta2file-cli-1.0.63-all.jar
+                fi
+  
+            """ 
+            post {
+                always {
+                    sh """
+                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
+                    """
+                    }
+                }
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs
+                rm -rf $WORKSPACE/*
+            """
+            }
+        }
+    }

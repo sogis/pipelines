@@ -38,28 +38,23 @@ pipeline {
                 }
             }
         stage ('Create Datensuche Conf Files') {
-            sh """
-                if [ -d "meta_exporter" ]; then
-                  rm -rf meta_exporter/* rm -rf meta_exporter/.git
-                fi
+            steps {
+                sh """
+                    if [ -d "meta_exporter" ]; then
+                      rm -rf meta_exporter/* rm -rf meta_exporter/.git
+                    fi
         
-                if [ ! -d  "config/default" ]; then
-                  mkdir -p config/default
-                fi
+                    if [ ! -d  "config/default" ]; then
+                      mkdir -p config/default
+                    fi
 
-                # if not exists get the meta2file-cli-all.jar and set the necessary permissions
-                if [ ! -f "meta2file-cli-1.0.63-all.jar" ]; then
-                  wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
-                  chmod u+x meta2file-cli-1.0.63-all.jar
-                fi
+                    # if not exists get the meta2file-cli-all.jar and set the necessary permissions
+                    if [ ! -f "meta2file-cli-1.0.63-all.jar" ]; then
+                      wget https://github.com/sogis/meta2file/releases/download/v1.0.63/meta2file-cli-1.0.63-all.jar
+                      chmod u+x meta2file-cli-1.0.63-all.jar
+                    fi
   
-            """ 
-            post {
-                always {
-                    sh """
-                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
-                    """
-                    }
+                """ 
                 }
             }
         }

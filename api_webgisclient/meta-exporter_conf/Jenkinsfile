@@ -17,7 +17,7 @@ pipeline {
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )
-        string(defaultValue: "gdi-test",
+        string(defaultValue: "agi-apps-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
                )

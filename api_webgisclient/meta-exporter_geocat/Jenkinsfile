@@ -49,7 +49,7 @@ pipeline {
                     }
                 }
             }
-        stage ('Create Datensuche XML File') {
+        stage ('Create XML Files') {
             steps {
                 withCredentials ( credentials ) {
                     script {

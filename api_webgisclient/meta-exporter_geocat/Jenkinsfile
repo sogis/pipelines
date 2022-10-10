@@ -70,8 +70,7 @@ pipeline {
                             
                             # meta2file command to create the conf files
                             java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -g $env.WORKSPACE/config
-                            sftp -i   /etc/ssh-keys/id_rsa $GEOCAT_SFTP_USER@$GEOCAT_SFTP_SERVER
-                            quit
+                            scp -i   /etc/ssh-keys/id_rsa config $GEOCAT_SFTP_SERVER:/int
                         """ 
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                         sh """ 

@@ -69,12 +69,12 @@ pipeline {
                             fi
                             
                             # meta2file command to create the conf files
-                            java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/config/config.xml
+                            java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/config/datasearch.xml
                         """ 
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep sodata | grep -v -E -m 1 "preview|build|deploy"', returnStdout: true]).trim()
                         sh """ 
                             #To do: rsync file to sodata Pod
-                            #oc rsync -n ${namespace} config/ $PODNAME:/app
+                            oc rsync -n ${namespace} config/ $PODNAME:/config
                         """
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                         sh """ 

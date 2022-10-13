@@ -112,7 +112,7 @@ pipeline {
                     containers:
                     - args:
                       - "********"
-                      image: "quay.io/openshift/origin-jenkins-agent-base:4.7"
+                      image: "quay.io/openshift/origin-jenkins-agent-base:4.10"
                       imagePullPolicy: "IfNotPresent"
                       name: "jnlp"
                       env:

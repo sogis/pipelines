@@ -20,6 +20,15 @@ pipeline {
                description: 'Anzahl der Replicas',
                name: 'replicas'
                )
+        activeChoiceParam(
+              name: 'choice1',
+              choiceType: 'SINGLE_SELECT'
+              description: 'select a choice'
+              groovyScript: {
+                  script 
+                      ('["Sao Paulo", "Rio de Janeiro", "Parana:selected", "Acre"]')
+                  }
+              ),
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'

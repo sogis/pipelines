@@ -22,8 +22,8 @@ pipeline {
                )
         activeChoiceParam(
               name: 'choice1',
-              choiceType: 'SINGLE_SELECT'
-              description: 'select a choice'
+              choiceType: 'SINGLE_SELECT',
+              description: 'select a choice',
               groovyScript: {
                   script 
                       ('["Sao Paulo", "Rio de Janeiro", "Parana:selected", "Acre"]')

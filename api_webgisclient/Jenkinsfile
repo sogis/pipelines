@@ -25,8 +25,9 @@ pipeline {
               choiceType: 'SINGLE_SELECT',
               description: 'select a choice',
               groovyScript: {
-                  script 
+                  script { 
                       ('["Sao Paulo", "Rio de Janeiro", "Parana:selected", "Acre"]')
+                      }
                   }
               ),
         string(defaultValue: "master",

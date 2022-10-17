@@ -23,25 +23,24 @@ pipeline {
                 script {
                     [$class: 'choiceParameter',
                         choiceType: 'PT_SINGLE_SELECT',
-                        description: 'select a choice',
-                        name: 'choice1',
+                        description: 'Bitte namespace auswählen',
+                        name: 'namespace',
                         script: [
                             $class: 'GroovyScript',
                             script: [
                                classpath: [],
                                sandbox: false,
-                               script: '''def user = jenkins.model.Jenkins.getAuthentication().getName();
+                               script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
 def returnValue = [];
-switch (user) {
-   case [\'bjsvwpfe\']:
-     returnValue << \'xyz\'
-     break;
-   case [\'mtlelj\']:
-    returnValue << \'abc\'
-    break;
-   default:
-     returnValue << \'00\'
-   break;  
+groups.each { groupname ->
+   switch (groupname) {
+      case [\'sogis-adm\']:
+        returnValue << \'gdi-production\'
+        break;
+      default:
+        returnValue << \'gdi-integration\'
+      break;  
+   }
 }
 return returnValue'''
                              ]

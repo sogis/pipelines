@@ -19,14 +19,14 @@ pipeline {
         string(defaultValue: '1',
                description: 'Anzahl der Replicas',
                name: 'replicas'
-               ),
+               )
         activeChoiceParam(
               name: 'choice1',
               choiceType: 'SINGLE_SELECT',
               description: 'select a choice',
               groovyScript: [
                   ]
-              ),
+              )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'

@@ -59,6 +59,7 @@ return returnValue'''
                        choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
                        name: 'AuswahlRollout',
                        description: 'Was soll ausgerollt werden?'
+                       )
                     }
                     ]
                 }

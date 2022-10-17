@@ -11,36 +11,43 @@ pipeline {
         timeout(time: 35, unit: 'MINUTES')
         // disableConcurrentBuilds()
     }
-    parameters {
-        string(defaultValue: "gdi-integration",
-               description: 'Bitte namespace auswählen',
-               name: 'namespace'
-              )
-        string(defaultValue: '1',
-               description: 'Anzahl der Replicas',
-               name: 'replicas'
-               )
-        activeChoiceParam(
-              name: 'choice1',
-              choiceType: 'SINGLE_SELECT',
-              description: 'select a choice',
-              groovyScript: [
-                  ]
-              )
-        string(defaultValue: "master",
-               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
-               name: 'branch'
-               )
-        choice(choices: ['Datasets/Dataproducts','Permissions','Nur Darstellung', 'Templates','Alles'],
-               description: 'Was soll ausgerollt werden?',
-               name: 'AuswahlRollout'
-               )
-        }
     stages {
         stage('Stop Old Build') {
             steps {
                 milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID) - 1
                 milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID)
+                }
+            }
+        stage('Parameters') {
+            steps {
+                script {
+                    [$class: 'choiceParameter',
+                        choiceType: 'PT_SINGLE_SELECT',
+                        description: 'select a choice',
+                        name: 'choice1',
+                        script: [
+                            $class: 'GroovyScript',
+                            script: [
+                               classpath: [],
+                               sandbox: false,
+                               script: '''def user = jenkins.model.Jenkins.getAuthentication().getName();
+def returnValue = [];
+switch (user) {
+   case [\'bjsvwpfe\']:
+     returnValue << \'xyz\'
+     break;
+   case [\'mtlelj\']:
+    returnValue << \'abc\'
+    break;
+   default:
+     returnValue << \'00\'
+   break;  
+}
+return returnValue'''
+                             ]
+                        ]
+                    ]       
+                    }
                 }
             }
         stage ('Ask for Version') {

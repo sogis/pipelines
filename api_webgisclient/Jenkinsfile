@@ -24,8 +24,8 @@ pipeline {
               name: 'choice1',
               choiceType: 'SINGLE_SELECT',
               description: 'select a choice',
-              groovyScript: {
-                  }
+              groovyScript: [
+                  ]
               ),
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',

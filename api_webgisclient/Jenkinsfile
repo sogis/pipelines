@@ -19,7 +19,7 @@ pipeline {
         string(defaultValue: '1',
                description: 'Anzahl der Replicas',
                name: 'replicas'
-               )
+               ),
         activeChoiceParam(
               name: 'choice1',
               choiceType: 'SINGLE_SELECT',

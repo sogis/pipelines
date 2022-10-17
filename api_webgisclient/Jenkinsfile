@@ -44,8 +44,7 @@ groups.each { groupname ->
 }
 return returnValue'''
                              ]
-                        ]
-                    ],
+                        ],
                     string(
                        defaultValue: '1',
                        name: 'replicas',
@@ -61,6 +60,7 @@ return returnValue'''
                        name: 'AuswahlRollout',
                        description: Was soll ausgerollt werden?'
                     }
+                    ]
                 }
             }
         stage ('Ask for Version') {

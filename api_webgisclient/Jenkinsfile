@@ -44,8 +44,13 @@ groups.each { groupname ->
 return returnValue'''
                              ]
                         ]
-                    ]]
-                    )
+                    ],
+                    string(
+                       defaultValue: '1',
+                       name: 'replicas',
+                       decription: 'Anzahl der Replicas'
+                       )
+                    ])
                     }
                 }
             }

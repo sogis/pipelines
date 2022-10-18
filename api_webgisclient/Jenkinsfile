@@ -21,6 +21,7 @@ pipeline {
         stage('Parameters') {
             steps {
                 script {
+                   parameters([
                     [$class: 'choiceParameter',
                      choiceType: 'PT_SINGLE_SELECT',
                      description: 'Bitte namespace auswählen',
@@ -43,7 +44,8 @@ groups.each { groupname ->
 return returnValue'''
                              ]
                         ]
-                    ]
+                    ]]
+                    )
                     }
                 }
             }

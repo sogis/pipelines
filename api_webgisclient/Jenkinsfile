@@ -22,15 +22,13 @@ pipeline {
             steps {
                 script {
                     [$class: 'choiceParameter',
-                        choiceType: 'PT_SINGLE_SELECT',
-                        description: 'Bitte namespace auswählen',
-                        name: 'namespace',
-                        script: [
-                            $class: 'GroovyScript',
-                            script: [
-                               classpath: [],
-                               sandbox: false,
-                               script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
+                     choiceType: 'PT_SINGLE_SELECT',
+                     description: 'Bitte namespace auswählen',
+                     name: 'namespace',
+                     script: [$class: 'GroovyScript',
+                              script: [classpath: [],
+                                       sandbox: false,
+                                       script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
 def returnValue = [];
 groups.each { groupname ->
    switch (groupname) {
@@ -45,22 +43,7 @@ groups.each { groupname ->
 return returnValue'''
                              ]
                         ]
-                    ],
-                    string(
-                       defaultValue: '1',
-                       name: 'replicas',
-                       decription: 'Anzahl der Replicas'
-                       ),
-                    string(
-                       defaultValue: 'master',
-                       name: 'branch',
-                       description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
-                       ),
-                    choice(
-                       choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
-                       name: 'AuswahlRollout',
-                       description: 'Was soll ausgerollt werden?'
-                       )
+                    ]
                     }
                 }
             }

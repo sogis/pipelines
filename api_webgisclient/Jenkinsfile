@@ -49,6 +49,16 @@ return returnValue'''
                        defaultValue: '1',
                        name: 'replicas',
                        decription: 'Anzahl der Replicas'
+                       ),
+                    string(
+                       defaultValue: 'master',
+                       name: 'branch',
+                       description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
+                       ),
+                    choice(
+                       choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
+                       name: 'AuswahlRollout',
+                       description: 'Was soll ausgerollt werden?'
                        )
                     ])
                     }

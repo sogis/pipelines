@@ -20,7 +20,7 @@ def userid = User.current().id
 def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
 if("sogis-adm" in auths) {
-        returnValue << ["gdi-production","gdi-integration","gdi-test"]
+        returnValue << "gdi-production,gdi-integration,gdi-test"
    }
 else {
     returnValue << "gdi-integration"

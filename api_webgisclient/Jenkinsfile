@@ -17,6 +17,7 @@ properties([
 def returnValue = [];
 groups.each { groupname ->
    switch (groupname) {
+      echo groupname
       case [\'sogis-adm\']:
         returnValue << [\'gdi-production\',\'gdi-integration\',\'gdi-test\']
         break;

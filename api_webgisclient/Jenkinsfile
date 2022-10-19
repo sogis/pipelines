@@ -20,10 +20,10 @@ def userid = User.current().id
 def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
 if("sogis-adm" in auths) {
-        returnValue = ["gdi-production", "gdi-integration", "gdi-test"]
+        returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
    }
 else {
-    returnValue = ["gdi-integration"]
+    returnValue = ["gdi-integration:selected", "gdi-test"]
    }
 return returnValue'''
                             ]
@@ -33,10 +33,39 @@ return returnValue'''
                 name: 'replicas',
                 description: 'Anzahl der Replicas'
                ),
-         string(defaultValue: 'master',
-                name: 'branch',
-                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
-               ),
+         [$class: 'ChoiceParameter',
+          choiceType: 'PT_SINGLE_SELECT',
+          description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
+          name: 'branch'
+          script: [$class: 'GroovyScript',
+                   script: [classpath: [],
+                            sandbox: false,
+                            script: '''
+import hudson.model.*
+import jenkins.model.*
+def userid = User.current().id
+def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+def returnValue = [];
+if("sogis-adm" in auths) {
+        def gitURL = "https://github.com/sogis/pipelins.git"
+        def command = "git ls-remote -h $gitURL"
+
+        def proc = command.execute()
+        proc.waitFor()
+
+        def branches = proc.in.text.readLines().collect {
+            it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
+        }
+        returnValue branches
+   }
+else {
+    returnValue = ["master:selected"]
+   }   
+return returnValue'''
+                            ]
+                   ]
+         ],
+
          choice(choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
                 name: 'AuswahlRollout',
                 description: 'Was soll ausgerollt werden?'

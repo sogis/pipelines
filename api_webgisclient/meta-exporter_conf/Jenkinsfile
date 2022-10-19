@@ -69,19 +69,27 @@ pipeline {
                             fi
                             
                             # meta2file command to create the conf files
-                            java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/api_webgisclient/meta-exporter_conf/datasearch.xml
+                            java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/conf/datasearch.xml
                         """ 
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep sodata | grep -v -E -m 1 "preview|build|deploy"', returnStdout: true]).trim()
                         input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
                         sh """ 
-                            #To do: rsync file to sodata Pod
-                            git config user.email agi.info@bd.so.ch
-                            git config user.name agiuser
-                            git status
-                            git add api_webgisclient/meta-exporter_conf/datasearch.xml
-                            git commit -m '[meta-exporter_conf] update datasearch.xml'
-                            git push 
+                            if [ -d "openshift-templates" ]; then
+                              rm -rf openshift-templates/* rm -rf openshift-templates/.git
+                            fi
+                            git clone -b master https://github.com/sogis/openshift-templates.git
                         """
+                        dir("openshift-templates/sodata") {
+                            sh """
+                               git config user.email agi.info@bd.so.ch
+                               git config user.name agiuser
+                               git status
+                               cp $env.WORKSPACE/conf/datasearch.xml .
+                               git add datasearch.xml
+                               git commit -m '[sodata] update datasearch.xml'
+                               git push 
+                            """
+                        }
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                         sh """ 
                             rm -rf $env.WORKSPACE/config

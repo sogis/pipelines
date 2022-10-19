@@ -4,6 +4,90 @@ library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriev
 credentials = [
     usernamePassword(credentialsId: 'jenkinsApi'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
     ]
+properties([
+     parameters([
+         [$class: 'ChoiceParameter',
+          choiceType: 'PT_SINGLE_SELECT',
+          description: 'Bitte namespace auswählen',
+          name: 'namespace',
+          script: [$class: 'GroovyScript',
+                   script: [classpath: [],
+                            sandbox: false,
+                            script: '''
+import hudson.model.*
+import jenkins.model.*
+def returnValue = [];
+if (User.current()) {
+  def userid = User.current().id
+  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  
+  if("sogis-adm" in auths) {
+          returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
+     }
+  else {
+      returnValue = ["gdi-integration:selected", "gdi-test"]
+     }
+}
+else {
+  returnValue = ["gdi-integration:selected", "gdi-test"]
+}
+return returnValue'''
+                            ]
+                   ]
+         ],
+         string(defaultValue: '1',
+                name: 'replicas',
+                description: 'Anzahl der Replicas'
+               ),
+         [$class: 'ChoiceParameter',
+          choiceType: 'PT_SINGLE_SELECT',
+          description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+          name: 'branch',
+          script: [$class: 'GroovyScript',
+                   script: [classpath: [],
+                            sandbox: false,
+                            script: '''
+import hudson.model.*
+import jenkins.model.*
+def returnValue = [];
+if (User.current()) {
+  def userid = User.current().id
+  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  if("sogis-adm" in auths) {
+          def gitURL = "https://github.com/sogis/pipelines.git"
+          def command = "git ls-remote -h $gitURL"
+  
+          def proc = command.execute()
+          proc.waitFor()
+  
+          def branches = proc.in.text.readLines().collect {
+              branch = it.replaceAll(/[a-z0-9]*\\trefs\\/heads\\//, '')
+              if (branch == "master") {
+                  selectBranches = branch + ":selected"
+              }
+              else {
+                  selectBranches = branch
+              }
+          }
+          returnValue=branches
+     }
+  else {
+      returnValue = ["master:selected"]
+     }   
+}
+else {
+  returnValue = ["master:selected"]
+}
+return returnValue'''
+                            ]
+                   ]
+         ],
+         choice(choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
+                name: 'AuswahlRollout',
+                description: 'Was soll ausgerollt werden?'
+               )
+         ])
+    ])
 pipeline {
     agent { label 'master' } 
     options {
@@ -11,24 +95,6 @@ pipeline {
         timeout(time: 35, unit: 'MINUTES')
         // disableConcurrentBuilds()
     }
-    parameters {
-        string(defaultValue: "gdi-integration",
-               description: 'Bitte namespace auswählen',
-               name: 'namespace'
-              )
-        string(defaultValue: '1',
-               description: 'Anzahl der Replicas',
-               name: 'replicas'
-               )
-        string(defaultValue: "master",
-               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
-               name: 'branch'
-               )
-        choice(choices: ['Datasets/Dataproducts','Permissions','Nur Darstellung', 'Templates','Alles'],
-               description: 'Was soll ausgerollt werden?',
-               name: 'AuswahlRollout'
-               )
-        }
     stages {
         stage('Stop Old Build') {
             steps {

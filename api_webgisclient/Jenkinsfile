@@ -13,8 +13,9 @@ properties([
           script: [$class: 'GroovyScript',
                    script: [classpath: [],
                             sandbox: false,
-                            script: '''def userid = User.current().id
-def auths = Jenkins.instance.securityReal.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+                            script: '''
+def userid = User.current().id
+def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
 if("sogis-adm" in auths) {
         returnValue << ["gdi-production","gdi-integration","gdi-test"]

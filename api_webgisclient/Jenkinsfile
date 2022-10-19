@@ -35,8 +35,8 @@ return returnValue'''
                ),
          [$class: 'ChoiceParameter',
           choiceType: 'PT_SINGLE_SELECT',
-          description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
-          name: 'branch'
+          description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+          name: 'branch',
           script: [$class: 'GroovyScript',
                    script: [classpath: [],
                             sandbox: false,
@@ -71,7 +71,6 @@ return returnValue'''
                             ]
                    ]
          ],
-
          choice(choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
                 name: 'AuswahlRollout',
                 description: 'Was soll ausgerollt werden?'

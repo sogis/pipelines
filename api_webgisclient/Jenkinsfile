@@ -47,16 +47,22 @@ def userid = User.current().id
 def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
 if("sogis-adm" in auths) {
-        def gitURL = "https://github.com/sogis/pipelins.git"
+        def gitURL = "https://github.com/sogis/pipelines.git"
         def command = "git ls-remote -h $gitURL"
 
         def proc = command.execute()
         proc.waitFor()
 
         def branches = proc.in.text.readLines().collect {
-            it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
+            branch = it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
+            if (branch == "master") {
+                selectBranches = branch + ":selected"
+            }
+            else {
+                selectBranches = branch
+            }
         }
-        returnValue branches
+        returnValue=branches
    }
 else {
     returnValue = ["master:selected"]

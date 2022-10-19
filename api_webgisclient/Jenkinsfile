@@ -16,15 +16,21 @@ properties([
                             script: '''
 import hudson.model.*
 import jenkins.model.*
-def userid = User.current().id
-def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
-if("sogis-adm" in auths) {
-        returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
-   }
+if (User.current()) {
+  def userid = User.current().id
+  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  
+  if("sogis-adm" in auths) {
+          returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
+     }
+  else {
+      returnValue = ["gdi-integration:selected", "gdi-test"]
+     }
+}
 else {
-    returnValue = ["gdi-integration:selected", "gdi-test"]
-   }
+  returnValue = ["gdi-integration:selected", "gdi-test"]
+}
 return returnValue'''
                             ]
                    ]
@@ -43,30 +49,35 @@ return returnValue'''
                             script: '''
 import hudson.model.*
 import jenkins.model.*
-def userid = User.current().id
-def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
-if("sogis-adm" in auths) {
-        def gitURL = "https://github.com/sogis/pipelines.git"
-        def command = "git ls-remote -h $gitURL"
-
-        def proc = command.execute()
-        proc.waitFor()
-
-        def branches = proc.in.text.readLines().collect {
-            branch = it.replaceAll(/[a-z0-9]*\\trefs\\/heads\\//, '')
-            if (branch == "master") {
-                selectBranches = branch + ":selected"
-            }
-            else {
-                selectBranches = branch
-            }
-        }
-        returnValue=branches
-   }
+if (User.current()) {
+  def userid = User.current().id
+  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  if("sogis-adm" in auths) {
+          def gitURL = "https://github.com/sogis/pipelines.git"
+          def command = "git ls-remote -h $gitURL"
+  
+          def proc = command.execute()
+          proc.waitFor()
+  
+          def branches = proc.in.text.readLines().collect {
+              branch = it.replaceAll(/[a-z0-9]*\\trefs\\/heads\\//, '')
+              if (branch == "master") {
+                  selectBranches = branch + ":selected"
+              }
+              else {
+                  selectBranches = branch
+              }
+          }
+          returnValue=branches
+     }
+  else {
+      returnValue = ["master:selected"]
+     }   
+}
 else {
-    returnValue = ["master:selected"]
-   }   
+  returnValue = ["master:selected"]
+}
 return returnValue'''
                             ]
                    ]

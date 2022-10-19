@@ -4,32 +4,16 @@ library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriev
 credentials = [
     usernamePassword(credentialsId: 'jenkinsApi'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
     ]
-pipeline {
-    agent { label 'master' } 
-    options {
-        // set a timeout of 15 minutes for this pipeline
-        timeout(time: 35, unit: 'MINUTES')
-        // disableConcurrentBuilds()
-    }
-    stages {
-        stage('Stop Old Build') {
-            steps {
-                milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID) - 1
-                milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID)
-                }
-            }
-        stage('Parameters') {
-            steps {
-                script {
-                   parameters([
-                    [$class: 'choiceParameter',
-                     choiceType: 'PT_SINGLE_SELECT',
-                     description: 'Bitte namespace auswählen',
-                     name: 'namespace',
-                     script: [$class: 'GroovyScript',
-                              script: [classpath: [],
-                                       sandbox: false,
-                                       script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
+properties([
+     parameters([
+         [$class: 'choiceParameter',
+          choiceType: 'PT_SINGLE_SELECT',
+          description: 'Bitte namespace auswählen',
+          name: 'namespace',
+          script: [$class: 'GroovyScript',
+                   script: [classpath: [],
+                            sandbox: false,
+                            script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
 def returnValue = [];
 groups.each { groupname ->
    switch (groupname) {
@@ -42,26 +26,35 @@ groups.each { groupname ->
    }
 }
 return returnValue'''
-                             ]
-                        ]
-                    ],
-                    string(
-                       defaultValue: '1',
-                       name: 'replicas',
-                       decription: 'Anzahl der Replicas'
-                       ),
-                    string(
-                       defaultValue: 'master',
-                       name: 'branch',
-                       description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
-                       ),
-                    choice(
-                       choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
-                       name: 'AuswahlRollout',
-                       description: 'Was soll ausgerollt werden?'
-                       )
-                    ])
-                    }
+                            ]
+                   ]
+         ],
+         string(defaultValue: '1',
+                name: 'replicas',
+                decription: 'Anzahl der Replicas'
+               ),
+         string(defaultValue: 'master',
+                name: 'branch',
+                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll'
+               ),
+         choice(choices: ['Datasets/Dataproducts', 'Permissions', 'Nur Darstellung', 'Templates', 'Alles'],
+                name: 'AuswahlRollout',
+                description: 'Was soll ausgerollt werden?'
+               )
+         ])
+    ])
+pipeline {
+    agent { label 'master' } 
+    options {
+        // set a timeout of 15 minutes for this pipeline
+        timeout(time: 35, unit: 'MINUTES')
+        // disableConcurrentBuilds()
+    }
+    stages {
+        stage('Stop Old Build') {
+            steps {
+                milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID) - 1
+                milestone label: '', ordinal:  Integer.parseInt(env.BUILD_ID)
                 }
             }
         stage ('Ask for Version') {

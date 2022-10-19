@@ -13,14 +13,14 @@ properties([
           script: [$class: 'GroovyScript',
                    script: [classpath: [],
                             sandbox: false,
-                            script: '''def userid = user.current().id
+                            script: '''def userid = User.current().id
 def auths = Jenkins.instance.securityReal.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
 if("sogis-adm" in auths) {
-        returnValue << [\'gdi-production\',\'gdi-integration\',\'gdi-test\']
+        returnValue << ["gdi-production","gdi-integration","gdi-test"]
    }
 else {
-    returnValue << \'gdi-integration\'
+    returnValue << "gdi-integration"
    }
 return returnValue'''
                             ]

@@ -53,6 +53,7 @@ pipeline {
             steps {
                 withCredentials ( credentials ) {
                     script {
+                        input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
                         sh """
                             if [ -d "meta_exporter" ]; then
                               rm -rf meta_exporter/* rm -rf meta_exporter/.git
@@ -71,7 +72,6 @@ pipeline {
                             # meta2file command to create the conf files
                             java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/conf/datasearch.xml
                         """ 
-                        input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep sodata | grep -v -E -m 1 "preview|build|deploy"', returnStdout: true]).trim()
 
                         sh """ 

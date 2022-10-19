@@ -32,7 +32,7 @@ return returnValue'''
          ],
          string(defaultValue: '1',
                 name: 'replicas',
-                decription: 'Anzahl der Replicas'
+                description: 'Anzahl der Replicas'
                ),
          string(defaultValue: 'master',
                 name: 'branch',

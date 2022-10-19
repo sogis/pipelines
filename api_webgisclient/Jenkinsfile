@@ -16,17 +16,12 @@ properties([
                             script: '''def userid = user.current().id
 def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
-auths.each { groupname ->
-   switch (groupname) {
-      echo groupname
-      case [\'sogis-adm\']:
+if("sogis-adm" in auths) {
         returnValue << [\'gdi-production\',\'gdi-integration\',\'gdi-test\']
-        break;
-      default:
-        returnValue << \'gdi-integration\'
-      break;  
    }
-}
+else {
+    returnValue << \'gdi-integration\'
+   }
 return returnValue'''
                             ]
                    ]

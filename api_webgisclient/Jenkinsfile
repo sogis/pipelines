@@ -54,7 +54,7 @@ if("sogis-adm" in auths) {
         proc.waitFor()
 
         def branches = proc.in.text.readLines().collect {
-            branch = it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
+            branch = it.replaceAll(/[a-z0-9]*\\trefs\\/heads\\//, '')
             if (branch == "master") {
                 selectBranches = branch + ":selected"
             }

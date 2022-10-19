@@ -13,9 +13,10 @@ properties([
           script: [$class: 'GroovyScript',
                    script: [classpath: [],
                             sandbox: false,
-                            script: '''def groups = jenkins.model.Jenkins.getAuthentication().getAuthorities();
+                            script: '''def userid = user.current().id
+def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];
-groups.each { groupname ->
+auths.each { groupname ->
    switch (groupname) {
       echo groupname
       case [\'sogis-adm\']:

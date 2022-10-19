@@ -6,7 +6,7 @@ credentials = [
     ]
 properties([
      parameters([
-         [$class: 'choiceParameter',
+         [$class: 'ChoiceParameter',
           choiceType: 'PT_SINGLE_SELECT',
           description: 'Bitte namespace auswählen',
           name: 'namespace',

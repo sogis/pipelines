@@ -14,6 +14,8 @@ properties([
                    script: [classpath: [],
                             sandbox: false,
                             script: '''
+import hudson.model.*
+import jenkins.model.*
 def userid = User.current().id
 def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
 def returnValue = [];

@@ -79,7 +79,7 @@ pipeline {
                             git config user.name agiuser
                             git status
                             git add api_webgisclient/meta-exporter_conf/datasearch.xml
-                            git commit -m '[meta-exporter_conf] update datasearch.xml
+                            git commit -m '[meta-exporter_conf] update datasearch.xml'
                             git push 
                         """
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true

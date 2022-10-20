@@ -72,9 +72,16 @@ pipeline {
                             # meta2file command to create the conf files
                             java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/api_webgisclient/meta-exporter_conf/datasearch.xml
                         """ 
-                        metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
-
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                        }
+                    }
+                }
+            }
+          stage ('Build extended Image' ) {
+            steps {
+                withCredentials ( credentials ) {
+                    metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
+                    script {
                         sh """ 
                             rm -rf $env.WORKSPACE/config
                         """

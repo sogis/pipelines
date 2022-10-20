@@ -75,7 +75,6 @@ pipeline {
                         PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep sodata | grep -v -E -m 1 "preview|build|deploy"', returnStdout: true]).trim()
                         metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
 
-                        }
                         archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                         sh """ 
                             rm -rf $env.WORKSPACE/config

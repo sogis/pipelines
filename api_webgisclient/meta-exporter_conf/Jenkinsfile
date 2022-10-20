@@ -80,7 +80,7 @@ pipeline {
           stage ('Build extended Image' ) {
             steps {
                 withCredentials ( credentials ) {
-                    metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
+                    def metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
                     script {
                         sh """ 
                             rm -rf $env.WORKSPACE/config

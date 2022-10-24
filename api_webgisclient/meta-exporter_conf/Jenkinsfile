@@ -81,14 +81,13 @@ pipeline {
             }
           stage ('Build extended Image' ) {
               steps {
-                  script {
-                        metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
-                        sh """ 
-                            rm -rf $env.WORKSPACE/config
-                        """
-                        }
-                   }
-               }
+                  sh """ 
+                      oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/buildconfig.yaml | oc apply -n ${namespace} -f-
+                      oc start-build sodata-extended-image -n ${namespace} --wait
+                      rm -rf $env.WORKSPACE/config
+                  """
+                  }
+              }
         }
     post {
         // Clean after build

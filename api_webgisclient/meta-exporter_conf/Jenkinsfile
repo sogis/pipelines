@@ -7,9 +7,7 @@ library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriev
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent { 
-        docker { image 'jenkins/agent:latest' } 
-        }
+    agent { label 'master' }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 35, unit: 'MINUTES')

@@ -84,10 +84,9 @@ pipeline {
                         sh """ 
                             rm -rf $env.WORKSPACE/config
                         """
-                            }
                         }
-                    }
-                }
+                   }
+               }
         }
     post {
         // Clean after build

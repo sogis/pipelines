@@ -81,11 +81,13 @@ pipeline {
             }
           stage ('Build extended Image' ) {
               steps {
-                  sh """ 
-                      oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/buildconfig.yaml | oc apply -n ${namespace} -f-
-                      oc start-build sodata-extended-image -n ${namespace} --wait
-                      rm -rf $env.WORKSPACE/config
-                  """
+                  script {
+                      sh """ 
+                          oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/buildconfig.yaml | oc apply -n ${namespace} -f-
+                          oc start-build sodata-extended-image -n ${namespace} --wait
+                          rm -rf $env.WORKSPACE/config
+                      """
+                      }
                   }
               }
         }

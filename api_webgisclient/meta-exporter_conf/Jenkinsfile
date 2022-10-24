@@ -7,7 +7,7 @@ library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriev
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
 
 pipeline {
-    agent { label 'docker' }
+    agent { label 'master' }
     options {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 35, unit: 'MINUTES')
@@ -79,12 +79,11 @@ pipeline {
             }
           stage ('Build extended Image' ) {
               steps {
-                    dir("api_webgisclient/meta_exporter_conf") {
-                        sh "docker build -t meta-exporter_conf:${env.BUILD_ID} ."
-                        script {
-                            sh """ 
-                                rm -rf $env.WORKSPACE/config
-                            """
+                  script {
+                        metaexporterImage = docker.build("meta-exporter_conf:${env.BUILD_ID}", "${env.WORKSPACE}/api_webgisclient/meta-exporter_conf")
+                        sh """ 
+                            rm -rf $env.WORKSPACE/config
+                        """
                             }
                         }
                     }

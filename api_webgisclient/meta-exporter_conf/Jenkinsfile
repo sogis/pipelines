@@ -81,7 +81,7 @@ pipeline {
               steps {
                   script {
                       sh """ 
-                          oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/resources.yaml | oc apply -n ${namespace} -f-
+                          oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/resources.yaml -p NAMESPACE=${namespace} | oc apply -n ${namespace} -f-
                           oc process -f $env.WORKSPACE/api_webgisclient/meta-exporter_conf/buildconfig.yaml -p BASETAG=0.0.114 -p DEPLOYTAG=latest | oc apply -n ${namespace} -f-
                           oc start-build sodata-extended-image -n ${namespace} --from-file $env.WORKSPACE/api_webgisclient/meta-exporter_conf/Dockerfile --wait
                           rm -rf $env.WORKSPACE/config

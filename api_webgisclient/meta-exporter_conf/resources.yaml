@@ -18,3 +18,7 @@ objects:
         kind: DockerImage
         name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/sodata-extended:latest
       name: latest
+parameters:
+- name: NAMESPACE
+  description: Name of the openshift namespace
+  required: true

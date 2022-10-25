@@ -1,0 +1,20 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ressources-meta-exporter_conf
+  annotations:
+    description: >-
+      "Creates necessary ressources for Meta Exporter"
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: sodata-extended
+    labels:
+      app: sodata
+  spec:
+    tags:
+    - from:
+        kind: DockerImage
+        name: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/sodata-extended:latest
+      name: latest

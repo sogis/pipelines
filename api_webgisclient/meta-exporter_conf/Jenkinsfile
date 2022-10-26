@@ -1,16 +1,11 @@
-def serviceName = 'meta-exporter_conf'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
-library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
-    [$class: 'GitSCMSource',
-     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
-
 pipeline {
     agent { label 'master' }
     options {
         // set a timeout of 10 minutes for this pipeline
-        timeout(time: 35, unit: 'MINUTES')
+        timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
         string(defaultValue: "master",
@@ -24,13 +19,10 @@ pipeline {
         }
 
     stages {
-        stage ('Ask for Version') {
+        stage ('Prerequesits') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     namespace = params.namespace
-                    buildNumber = BUILD_NUMBER
-                    jobName = JOB_NAME
                     if ( namespace == 'agi-apps-test' ) {
                         dbserver = env.DB_SERVER_TEST
                         }
@@ -89,6 +81,12 @@ pipeline {
                       }
                   }
               }
+          stage ( 'Deploy Image' ) {
+              steps {
+                  sh """
+                      oc rollout latest -n $namespace sodata
+                      oc rollout status -n $namespace dc sodata
+                  }
         }
     post {
         // Clean after build

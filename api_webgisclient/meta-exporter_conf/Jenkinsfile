@@ -63,7 +63,7 @@ pipeline {
                             # meta2file command to create the conf files
                             java -jar meta2file-cli-1.0.63-all.jar -c jdbc:postgresql://${dbserver}/${env.SIMI_DB} -u ${DbUserSimi} -p ${PwdSimi} -d $env.WORKSPACE/api_webgisclient/meta-exporter_conf/datasearch.xml
                         """ 
-                        archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                        archiveArtifacts artifacts: 'meta-exporter_conf/datasearch.xml', onlyIfSuccessful: true, allowEmptyArchive: true
                         input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
                         }
                     }

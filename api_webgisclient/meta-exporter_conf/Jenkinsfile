@@ -86,6 +86,7 @@ pipeline {
                   sh """
                       oc rollout latest -n $namespace sodata
                       oc rollout status -n $namespace dc sodata
+                  """
                   }
               }
         }

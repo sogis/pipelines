@@ -14,17 +14,42 @@ constant_fields AS (
     generate_series(1,1)
 ),
 
-dprod AS (
+dprod_base AS (
   SELECT 
     pub.identifier,
     title_ident,
     root_published,
-    encode(convert_to(COALESCE(description, '-'), 'UTF8'), 'base64') AS desc_b64, -- COALESCE(...), weil das Schema fälschlicherweise immer Beschreibung verlangt
+    COALESCE(dp.description, tbl.description_override, tbl.description_model, '-') AS desc_product,
+    COALESCE(tp.description_override, t.description) AS theme_desc,
+    COALESCE(tp.title_override, t.title) AS theme_title,
+    POSITION('orgtheme.' IN t.identifier) = 0 AS theme_ready,
     dp_id
   FROM
     simi.trafo_published_dp_v pub
   JOIN
     simi.simiproduct_data_product dp ON pub.dp_id = dp.id
+  JOIN  
+    simi.simitheme_theme_publication tp ON dp.theme_publication_id = tp.id 
+  JOIN 
+    simi.simitheme_theme t ON tp.theme_id = t.id
+  LEFT JOIN -- Falls produkt = tableview: Tabellentitel / Beschreibung berücksichtigen
+  	simi.simidata_table_view tv ON dp.id = tv.id 
+  LEFT JOIN 
+  	simi.simidata_postgres_table tbl ON tv.postgres_table_id = tbl.id 
+),
+
+dprod AS (
+  SELECT 
+    identifier,
+    title_ident,
+    root_published,
+    CASE
+      WHEN theme_ready THEN encode(convert_to(concat_ws('<br/><br/>', desc_product, 'Teil des Themas <b>' || theme_title || ':</b>', theme_desc), 'UTF8'), 'base64')
+      ELSE encode(convert_to(desc_product, 'UTF8'), 'base64')
+    END AS desc_b64,
+    dp_id
+  FROM
+    dprod_base
 ),
 
 tv_pgtable_props AS ( 
@@ -118,7 +143,7 @@ ext_wms_layer AS (
           'name', wmslayer_name
         ),      
         'type', 'extwms',
-	'queryLayers', query_layers,
+	      'queryLayers', query_layers,
         'queryable', const_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,

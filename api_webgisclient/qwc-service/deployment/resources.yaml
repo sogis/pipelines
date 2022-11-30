@@ -79,7 +79,7 @@ objects:
       sslmode=require
   kind: Secret
   metadata:
-    name: qwc-service-pg-config
+    name: qwc-service-pg-service-secret
     labels:
       service: qwc-service
       app: gdi

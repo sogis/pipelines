@@ -147,7 +147,7 @@ objects:
             items:
             - key: pg_service.conf
               path: pg_service.conf
-            secretName: qwc-service-pg-config
+            secretName: qwc-service-pg-service-secret
           name: qwc-service-config-claim
         - name: qwc-assets
           persistentVolumeClaim:

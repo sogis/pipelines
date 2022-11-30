@@ -42,19 +42,19 @@ You can find all the secrets in H:\BJSVW\Agi\GDI\Betrieb\Openshift\Pipelines. Co
 ```
 oc apply -f secret-jenkins-pw-imdas-db-user.yaml
 oc apply -f secret-jenkins-pw-mswrite.yaml
-oc apply -f secret-jenkins-pw-ogc-server.yaml
+oc apply -f secret-jenkins-jenkins-dbuser-ogc-server-secret.yaml
 oc apply -f secret-jenkins-pw-report-server.yaml
-oc apply -f secret-jenkins-pw-sogis-service.yaml
-oc apply -f secret-jenkins-pw-sogis-service-write.yaml
+oc apply -f secret-jenkins-jenkins-dbuser-sogis-service-secret.yaml
+oc apply -f secret-jenkins-jenkins-dbuser-sogis-service-write-secret.yaml
 ```
 Therefor the *secrets* can be used in Jenkins as *global credentials* they have to be labeled with *credential.sync.jenkins.openshift.io=true*
 ```
 oc label secret pw-imdas-db-user credential.sync.jenkins.openshift.io=true
 oc label secret pw-mswrite credential.sync.jenkins.openshift.io=true
-oc label secret pw-ogc-server credential.sync.jenkins.openshift.io=true
+oc label secret jenkins-dbuser-ogc-server-secret credential.sync.jenkins.openshift.io=true
 oc label secret pw-report-server credential.sync.jenkins.openshift.io=true
-oc label secret pw-sogis-service credential.sync.jenkins.openshift.io=true
-oc label secret pw-sogis-service-write credential.sync.jenkins.openshift.io=true
+oc label secret jenkins-dbuser-sogis-service-secret credential.sync.jenkins.openshift.io=true
+oc label secret jenkins-dbuser-sogis-service-write-secret credential.sync.jenkins.openshift.io=true
 ```
 
 **Every of these steps needs a restart of the jenkins pod**

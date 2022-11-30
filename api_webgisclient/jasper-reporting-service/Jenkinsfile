@@ -60,10 +60,10 @@ pipeline {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     credentials = [
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-sogis-db-mswrite-secret'     , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-report-server-secret' , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-imdas-db-secret'             , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
                         ]
                     }
                 }

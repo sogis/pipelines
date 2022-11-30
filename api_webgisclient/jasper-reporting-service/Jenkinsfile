@@ -63,7 +63,7 @@ pipeline {
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-mswrite'             , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-report-server'       , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),        
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-imdas-db-user'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-imdas-db-secret'       , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser'),
                         ]
                     }
                 }

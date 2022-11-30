@@ -118,7 +118,7 @@ objects:
             items:
             - key: pg_service.conf
               path: pg_service.conf
-            secretName: qgis-server-pg-config
+            secretName: qgis-server-pg-service-secret
           name: qgis-server-config-claim
         - name: qgs-resources
           persistentVolumeClaim:

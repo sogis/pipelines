@@ -72,7 +72,7 @@ objects:
     labels:
       app: gdi
       service: qgis-server
-    name: qgis-server-pg-config
+    name: qgis-server-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

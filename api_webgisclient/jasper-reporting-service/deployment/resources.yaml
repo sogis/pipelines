@@ -71,7 +71,7 @@ objects:
     labels:
       app: gdi
       service: jasper-reporting-service
-    name: jasper-reporting-service-pg-config
+    name: jasper-reporting-service-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   stringData:
@@ -135,8 +135,8 @@ objects:
   metadata:
     labels:
       app: gdi
-      service: jasper-reporting-service
-    name: jasper-config
+      service: jasper-reporting-service-application-properties-secret
+    name: jasper-reporting-service
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

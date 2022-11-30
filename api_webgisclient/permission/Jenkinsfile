@@ -65,7 +65,7 @@ pipeline {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-ogc-server'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-pw-sogis-service', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
                         usernamePassword(credentialsId: 'jenkinsApi'                                 , usernameVariable: 'apiUser'           , passwordVariable: 'PwdApiUser')
                         ]

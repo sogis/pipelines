@@ -98,7 +98,7 @@ objects:
   kind: Secret
   metadata:
     labels:
-      app: gdi
+      app: data-service
     name: data-service-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1

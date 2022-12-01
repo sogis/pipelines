@@ -98,8 +98,8 @@ objects:
   kind: Secret
   metadata:
     labels:
-      app: gdi
-    name: wsgi-service-pg-config
+      app: plotinfo-service
+    name: plotinfo-service-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

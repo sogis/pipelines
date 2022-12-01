@@ -99,7 +99,7 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /usr/etc/postgresql
-            name: wsgi-service-config-claim
+            name: permalink-service-config-claim
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
             subPath: config
@@ -113,8 +113,8 @@ objects:
             items:
             - key: pg_service.conf
               path: pg_service.conf
-            secretName: wsgi-service-pg-config
-          name: wsgi-service-config-claim
+            secretName: permalink-service-pg-service-secret
+          name: permalink-service-config-claim
         - name: qgs-resources
           persistentVolumeClaim:
               claimName: qgs-resources-claim

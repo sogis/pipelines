@@ -130,8 +130,6 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /usr/etc/postgresql
-            name: qwc-service-config-claim
           - mountPath: /qwc2/assets/img
             name: qwc-assets
           - mountPath: /srv/qwc_service/config
@@ -143,12 +141,6 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - secret:
-            items:
-            - key: pg_service.conf
-              path: pg_service.conf
-            secretName: qwc-service-pg-service-secret
-          name: qwc-service-config-claim
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim

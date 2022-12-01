@@ -135,8 +135,8 @@ objects:
   metadata:
     labels:
       app: gdi
-      service: jasper-reporting-service-application-properties-secret
-    name: jasper-reporting-service
+      service: jasper-reporting-service
+    name: jasper-reporting-service-application-properties-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

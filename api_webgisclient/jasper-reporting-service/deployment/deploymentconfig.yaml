@@ -116,7 +116,7 @@ objects:
             items:
             - key: pg_service.conf
               path: pg_service.conf
-            secretName: jasper-reporting-service-pg-config
+            secretName: jasper-reporting-service-pg-service-secret
           name: jasper-reporting-service-config-claim
         - name: reports
           persistentVolumeClaim:
@@ -125,7 +125,7 @@ objects:
             items:
             - key: application.properties
               path: application.properties
-            secretName: jasper-config
+            secretName: jasper-reporting-service-application-properties-secret
           name: jasper-config-claim
     test: false
     triggers: []

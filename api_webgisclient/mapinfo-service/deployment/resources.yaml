@@ -56,50 +56,11 @@ objects:
       user=${USER_SOGIS_SERVICE}
       password=${PW_SOGIS_SERVICE}
       sslmode=require
-
-      [sogis_pub_write]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_PUB}
-      user=${USER_SOGIS_SERVICE_WRITE}
-      password=${PW_SOGIS_SERVICE_WRITE}
-      sslmode=require
-
-      [sogis_geodb]
-      host=${GEO_DB_SERVER}
-      port=5432
-      dbname=${DB_SOGIS}
-      user=mspublic
-      sslmode=disable
-
-      [sogis_edit]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_EDIT}
-      user=${USER_SOGIS_SERVICE}
-      password=${PW_SOGIS_SERVICE}
-      sslmode=require
-
-      [sogis_edit_write]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_EDIT}
-      user=${USER_SOGIS_SERVICE_WRITE}
-      password=${PW_SOGIS_SERVICE_WRITE}
-      sslmode=require
-
-      [sogis_oereb]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_OEREB}
-      user=${USER_OGC_SERVER}
-      password=${PW_OGC_SERVER}
-      sslmode=require
   kind: Secret
   metadata:
     labels:
-      application: gdi
-    name: wsgi-service-pg-config
+      app: mapinfo-service
+    name: mapinfo-service-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

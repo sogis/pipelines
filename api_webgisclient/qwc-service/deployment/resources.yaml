@@ -45,45 +45,6 @@ parameters:
 
 objects:
 - apiVersion: v1
-  stringData:
-    pg_service.conf: |
-      [sogis_pub]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_PUB}
-      user=${USER_SOGIS_SERVICE}
-      password=${PW_SOGIS_SERVICE}
-      sslmode=require
-
-      [sogis_geodb]
-      host=${GEO_DB_SERVER}
-      port=5432
-      dbname=${DB_SOGIS}
-      user=mspublic
-      sslmode=disable
-
-      [sogis_edit]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_EDIT}
-      user=${USER_SOGIS_SERVICE}
-      password=${PW_SOGIS_SERVICE}
-      sslmode=require
-      
-      [sogis_oereb]
-      host=${DB_SERVER}
-      port=5432
-      dbname=${DB_OEREB}
-      user=${USER_OGC_SERVER}
-      password=${PW_OGC_SERVER}
-      sslmode=require
-  kind: Secret
-  metadata:
-    name: qwc-service-pg-config
-    labels:
-      service: qwc-service
-      app: gdi
-- apiVersion: v1
   kind: Service
   metadata:
     annotations:

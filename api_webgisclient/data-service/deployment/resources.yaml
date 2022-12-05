@@ -98,8 +98,8 @@ objects:
   kind: Secret
   metadata:
     labels:
-      app: gdi
-    name: wsgi-service-pg-config
+      app: data-service
+    name: data-service-pg-service-secret
     namespace: ${NAMESPACE}
 - apiVersion: v1
   kind: Service

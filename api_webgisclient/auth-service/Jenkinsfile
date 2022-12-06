@@ -44,21 +44,18 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       baseUrl = 'geo-t.so.ch'
                       idpUrl = 'idp-t.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       baseUrl = 'geo-i.so.ch'
                       idpUrl = 'idp.so.ch'
                       resources = ['cpu_request': '100m', 'cpu_limit': '250m', 'memory_request': '64Mi', 'memory_limit': '128Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
                       baseUrl = 'geo.so.ch'
                       idpUrl = 'idp.so.ch'
                       resources = ['cpu_request': '150m', 'cpu_limit': '250m', 'memory_request': '128Mi', 'memory_limit': '128Mi']
@@ -77,10 +74,7 @@ pipeline {
                         jobName = JOB_NAME
                         }
                     credentials = [
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-write-secret' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
                         ]
                     }
                 }
@@ -88,7 +82,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace} -p BASEURL=${baseUrl} -p IDP_URL=${idpUrl}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p BASEURL=${baseUrl} -p IDP_URL=${idpUrl}"
                     }
                 }
             }

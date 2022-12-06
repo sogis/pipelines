@@ -73,7 +73,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p DB_PUB=${env.PUB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p DB_PUB=${env.PUB_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService}"
                     }
                 }
             }

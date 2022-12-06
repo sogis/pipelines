@@ -711,7 +711,7 @@
             "name": "hintergrundkarte_ortho",
             "title": "Luftbild",
             "type": "wmts",
-            "url": "$$WMTS_URL$$/1.0.0/ch.so.agi.hintergrundkarte_ortho/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png",
+            "url": "$$WMTS_URL$$/1.0.0/ch.so.agi.hintergrundkarte_ortho/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg",
             "tileMatrixSet": "2056",
             "tileMatrixPrefix": "",
             "thumbnail": "img/custommapthumbs/f6042185-4102-4f33-a223-47ad0c6c72e8.png",

@@ -76,10 +76,7 @@ pipeline {
                         jobName = JOB_NAME
                         }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-write-secret' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
                         ]
                     }
                 }
@@ -87,7 +84,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p DB_PUB=${env.PUB_DB} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService}"
                     }
                 }
             }

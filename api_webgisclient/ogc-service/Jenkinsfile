@@ -72,7 +72,7 @@ pipeline {
                         jobName = JOB_NAME
                         }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService')
                         ]
                     }
                 }

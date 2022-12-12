@@ -82,6 +82,13 @@ pipeline {
             }
         }
     post {
+        unsuccessful {
+            emailext (
+                to: '${DEFAULT_RECIPIENTS}',
+                subject: "QGIS Server Daily Pipeline ist fehlgeschlagen",
+                body: "Die Ausführung der QGIS Server Daily Pipeline war nicht erfolgreich. Details dazu finden Sie in den Log-Meldungen unter ${RUN_DISPLAY_URL}."
+            )
+        }
         // Clean after build
         cleanup {
             sh """

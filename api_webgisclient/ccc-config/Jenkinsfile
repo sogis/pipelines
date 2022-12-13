@@ -43,19 +43,16 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       baseUrl = 'geo-t.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       baseUrl = 'geo-i.so.ch'
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '64Mi', 'memory_limit': '128Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
                       baseUrl = 'geo.so.ch'
                       resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '64Mi', 'memory_limit': '128Mi']
                       }
@@ -72,10 +69,7 @@ pipeline {
                         jobName = JOB_NAME
                         }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'          , usernameVariable: 'DbUserOgcServer'         , passwordVariable: 'PwdOgcServer'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-write-secret' , usernameVariable: 'DbUserSogisServiceWrite' , passwordVariable: 'PwdSogisServiceWrite'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                                        , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService')
                         ]
                     }
                 }

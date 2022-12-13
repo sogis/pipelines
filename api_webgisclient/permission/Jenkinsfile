@@ -36,7 +36,6 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '2'
@@ -44,7 +43,6 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
@@ -52,7 +50,6 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '12'
@@ -65,9 +62,7 @@ pipeline {
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                                 , usernameVariable: 'apiUser'           , passwordVariable: 'PwdApiUser')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService')
                         ]
                     }
                 }

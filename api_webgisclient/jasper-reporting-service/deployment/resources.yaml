@@ -19,9 +19,6 @@ parameters:
   - description: Edit DB
     name: DB_EDIT
     value:
-  - description: Config DB
-    name: DB_CONFIG
-    value:
   - description: Imdas DB
     name: DB_IMDAS
     value:
@@ -45,12 +42,6 @@ parameters:
     value:
   - description: Password Imdas DB User
     name: PW_IMDAS_DB_USER
-    value:
-  - description: DB User sogis_service
-    name: USER_SOGIS_SERVICE
-    value:
-  - description: Password DB User sogis_service
-    name: PW_SOGIS_SERVICE
     value:
   - description: Namespace
     name: NAMESPACE

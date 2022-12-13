@@ -37,7 +37,6 @@ pipeline {
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '1'
@@ -47,7 +46,6 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '1'
@@ -57,7 +55,6 @@ pipeline {
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '6'
@@ -85,6 +82,13 @@ pipeline {
             }
         }
     post {
+        unsuccessful {
+            emailext (
+                to: 'michael.pfeiffer@bd.so.ch;sandra.curiger@bd.so.ch;andreas.schmid@bd.so.ch',
+                subject: "QGIS Server Daily Pipeline ist fehlgeschlagen",
+                body: "Die Ausführung der QGIS Server Daily Pipeline war nicht erfolgreich. Details dazu finden Sie in den Log-Meldungen unter ${RUN_DISPLAY_URL}."
+            )
+        }
         // Clean after build
         cleanup {
             sh """

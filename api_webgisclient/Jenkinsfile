@@ -19,9 +19,10 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
+  //def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
   
-  if("sogis-adm" in auths) {
+  if(userid in auths) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
      }
   else {

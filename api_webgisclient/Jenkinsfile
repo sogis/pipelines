@@ -53,7 +53,7 @@ def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
   def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
-  if("sogis-adm" in auths || userid == "bjsvwjek") {
+  if(userid in auths || userid == "bjsvwjek") {
           def gitURL = "https://github.com/sogis/pipelines.git"
           def command = "git ls-remote -h $gitURL"
   

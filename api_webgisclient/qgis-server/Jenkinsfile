@@ -72,8 +72,7 @@ pipeline {
                     jobName = JOB_NAME
                     credentials = [ 
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-ogc-server-secret'   , usernameVariable: 'DbUserOgcServer'   , passwordVariable: 'PwdOgcServer'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService'),
-                        usernamePassword(credentialsId: 'jenkinsApi'                                 , usernameVariable: 'apiUser'           , passwordVariable: 'PwdApiUser')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService')
                         ]
                     }
                 }
@@ -171,30 +170,28 @@ pipeline {
                   }
              }
             steps {
-                withCredentials ( credentials ) {
-                    container('json2qgs') {
-                        dir('qgs') {
-                          unstash name: configFileName
-                          unstash name: 'somap_wfs.json'
-                          unstash name: 'somap_print.json'
-                        }
-                        sh """
-                            if [ ! -d "config/default" ]; then
-                              mkdir -p config/default
-                            fi
-                            python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                            python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                            python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
-                        """
-                        }
-                    script {
-                        PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
-                        sh """
-                           oc rsync -n ${namespace} config/default/ $PODNAME:/data
-                        """
-                        }
-                    archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                container('json2qgs') {
+                    dir('qgs') {
+                      unstash name: configFileName
+                      unstash name: 'somap_wfs.json'
+                      unstash name: 'somap_print.json'
                     }
+                    sh """
+                        if [ ! -d "config/default" ]; then
+                          mkdir -p config/default
+                        fi
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                    """
+                    }
+                script {
+                    PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
+                    sh """
+                        oc rsync -n ${namespace} config/default/ $PODNAME:/data
+                    """
+                    }
+                archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                 }
             post {
                 always {

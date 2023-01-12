@@ -1,9 +1,6 @@
 library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
     [$class: 'GitSCMSource',
      remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
-credentials = [
-    usernamePassword(credentialsId: 'jenkinsApi'                          , usernameVariable: 'apiUser'                 , passwordVariable: 'PwdApiUser'),
-    ]
 properties([
      parameters([
          [$class: 'ChoiceParameter',

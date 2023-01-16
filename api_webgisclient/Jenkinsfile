@@ -16,9 +16,9 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
+  def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
   
-  if("sogis-adm" in auths) {
+  if(userid in auths) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
      }
   else {
@@ -49,8 +49,8 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = Jenkins.instance.securityRealm.loadUserByUsername(userid).authorities.collect{a -> a.authority}
-  if("sogis-adm" in auths || userid == "bjsvwjek") {
+  def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
+  if(userid in auths || userid == "bjsvwjek") {
           def gitURL = "https://github.com/sogis/pipelines.git"
           def command = "git ls-remote -h $gitURL"
   

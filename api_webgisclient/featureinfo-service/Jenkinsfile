@@ -154,7 +154,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      image: "quay.io/buildah/stable:latest"
+                      image: "registry.redhat.io/rhel8/buildah"
                       imagePullPolicy: "IfNotPresent"
                       name: "buildah"
                       resources:
@@ -188,7 +188,7 @@ pipeline {
             }
             steps {
                 sh """
-                    echo hallo
+                    buildah -h
                 """
                 }
             }

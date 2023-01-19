@@ -111,10 +111,85 @@ pipeline {
                     (build == 'ja')
                     }
                 }
+            agent {
+              kubernetes {
+                label 'json2qgs-agent'
+                defaultContainer 'jnlp'
+                idleMinutes '600'
+                yaml """
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    labels:
+                      jenkins: slave
+                      jenkins/label: json2qgs-agent
+                    name: json2qgs-agent
+                  spec:
+                    containers:
+                    - args:
+                      - "********"
+                      image: "quay.io/openshift/origin-jenkins-agent-base:4.10"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "jnlp"
+                      env:
+                      - name: "LC_ALL"
+                        value: "C.UTF-8"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "250m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    - args:
+                      - "24h"
+                      command:
+                      - "sleep"
+                      image: "quay.io/buildah/stable:latest"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "buildah"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "200m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/qgs-resources"
+                        name: "volume-0"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
+                    restartPolicy: "Never"
+                    serviceAccountName: "jenkins"
+                    volumes:
+                    - name: "volume-0"
+                      persistentVolumeClaim:
+                        claimName: "qgs-resources-claim"
+                        readOnly: false
+                    - emptyDir:
+                        medium: ""
+                      name: "workspace-volume"
+                  """
+                  }
+            }
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, branch, ""
-                    }
+                sh """
+                    echo hallo
+                """
                 }
             }
         stage ('Deploy featureinfo-service in Test env') {

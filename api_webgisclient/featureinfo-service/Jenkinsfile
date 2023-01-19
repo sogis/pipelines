@@ -187,11 +187,13 @@ pipeline {
                   }
             }
             steps {
-                sh """
-                    buildah -h
-                """
+                container('buildah') {
+                    sh """
+                        buildah -h
+                    """
                 }
             }
+        }
         stage ('Deploy featureinfo-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${environment}"

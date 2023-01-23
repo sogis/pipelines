@@ -18,6 +18,9 @@ if (User.current()) {
   def userid = User.current().id
   def auths = System.getenv('ADMIN_USERS')
   println auths
+  print auths
+  print userid
+  print auths[0]
   
   if(userid in auths) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]

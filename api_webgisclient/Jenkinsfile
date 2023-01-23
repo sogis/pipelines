@@ -19,7 +19,7 @@ if (User.current()) {
   def auths = System.getenv('ADMIN_USERS')
   println auths
   
-  if(userid in ADMIN_USERS) {
+  if(userid in auths) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
      }
   else {

@@ -16,7 +16,7 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = System.getenv('ADMIN_USERS').split(',')*.trim() as List
+  def auths = System.getenv('ADMIN_USERS')
   println auths
   
   if(userid in auths) {

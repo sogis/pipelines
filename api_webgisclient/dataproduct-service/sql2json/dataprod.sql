@@ -21,6 +21,7 @@ dprod_base AS (
     root_published,
     COALESCE(dp.description, tbl.description_override, tbl.description_model, '-') AS desc_product,
     COALESCE(tp.description_override, t.description) AS theme_desc,
+    '<a href="' || t.further_info_url || '">Weitere Informationen zum Thema</a>' as theme_link,
     COALESCE(tp.title_override, t.title) AS theme_title,
     POSITION('orgtheme.' IN t.identifier) = 0 AS theme_ready,
     dp_id
@@ -44,7 +45,7 @@ dprod AS (
     title_ident,
     root_published,
     CASE
-      WHEN theme_ready THEN encode(convert_to(concat_ws('<br/><br/>', desc_product, 'Teil des Themas <b>' || theme_title || ':</b>', theme_desc), 'UTF8'), 'base64')
+      WHEN theme_ready THEN encode(convert_to(concat_ws('<br/><br/>', desc_product, 'Teil des Themas <b>' || theme_title || ':</b>', theme_desc, theme_link), 'UTF8'), 'base64')
       ELSE encode(convert_to(desc_product, 'UTF8'), 'base64')
     END AS desc_b64,
     dp_id

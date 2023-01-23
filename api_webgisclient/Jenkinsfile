@@ -16,7 +16,7 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
+  def auths = System.getenv('ADMIN_USERS')
   
   if(userid in auths) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]

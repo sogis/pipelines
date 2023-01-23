@@ -49,8 +49,9 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  def auths = ["bjsvwpfe", "barpasan", "barpasen", "bjsvwcur"]
-  if(userid in $env.ADMIN_USERS || userid in $env.PRIVILEGED_USERS) {
+  def auths = System.getenv('ADMIN_USERS')
+  def add_auths = System.getenv('PRIVILEGED_USERS')
+  if(userid in auths || userid in add_auths) {
           def gitURL = "https://github.com/sogis/pipelines.git"
           def command = "git ls-remote -h $gitURL"
   

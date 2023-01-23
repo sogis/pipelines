@@ -19,7 +19,7 @@ if (User.current()) {
   def auths = System.getenv('ADMIN_USERS')
   println auths
   
-  if(userid in auths) {
+  if(userid in ADMIN_USERS) {
           returnValue = ["gdi-production", "gdi-integration:selected", "gdi-test"]
      }
   else {
@@ -126,7 +126,6 @@ pipeline {
         stage('update Solr Metadaten') {
             steps {
                 script {
-                    println "${env['ADMIN_USERS']}"
                     url = "http://indexupdater-${solrEnv}.apps.ocp.so.ch/queue?ds=foreground,background"
                     response = sh(script: "curl -X POST \"$url\" -d \"dih=solr/gdi/dih_metadata\"", returnStdout: true).trim()
                     echo response

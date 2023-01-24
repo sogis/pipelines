@@ -16,8 +16,8 @@ import jenkins.model.*
 def returnValue = [];
 if (User.current()) {
   def userid = User.current().id
-  //def auths = System.getenv('ADMIN_USERS')
-  def auths = ["bjsvwpfe", "barpasan"]
+  def auths = Eval.me(System.getenv('ADMIN_USERS'))
+  //def auths = ["bjsvwpfe", "barpasan"]
   println auths
   print auths
   print userid

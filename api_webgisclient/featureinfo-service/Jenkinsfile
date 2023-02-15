@@ -189,7 +189,8 @@ pipeline {
             steps {
                 container('buildah') {
                     sh """
-                        git clone -b ${branch} https://github.com/sogis/qwc_services.git
+                        pwd
+                        ls -la
                     """
                     dir("qwc_services/featureinfo-service") {
                         sh """

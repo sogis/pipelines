@@ -192,7 +192,7 @@ pipeline {
                         pwd
                         ls -la
                     """
-                    dir("qwc_services/featureinfo-service") {
+                    dir("api_webgisclient/featureinfo-service/docker") {
                         sh """
                             pwd
                             ls -la

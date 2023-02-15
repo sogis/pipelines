@@ -196,6 +196,7 @@ pipeline {
                         sh """
                             pwd
                             ls -la
+                            whoami
                             buildah bud -f Dockerfile .
                         """
                     }

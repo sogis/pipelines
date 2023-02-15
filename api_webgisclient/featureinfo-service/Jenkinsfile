@@ -197,7 +197,7 @@ pipeline {
                             pwd
                             ls -la
                             whoami
-                            buildah bud -f Dockerfile .
+                            buildah --storage-driver vfs bud --isolation chroot -f Dockerfile .
                         """
                     }
                 }

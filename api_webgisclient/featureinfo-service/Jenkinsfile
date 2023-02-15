@@ -194,6 +194,8 @@ pipeline {
                     """
                     dir("qwc_services/featureinfo-service") {
                         sh """
+                            pwd
+                            ls -la
                             buildah bud -f Dockerfile .
                         """
                     }

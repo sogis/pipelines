@@ -69,6 +69,10 @@ objects:
             value: https://${BASEURL}/api/wms
           - name: QGS_RESOURCES_DIR
             value: /qgs-resources
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
           image: sourcepole/sogis-dataproduct-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

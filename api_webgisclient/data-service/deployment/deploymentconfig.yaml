@@ -66,6 +66,10 @@ objects:
             value: "/api/data/v1"
           - name: CONFIG_PATH
             value: "/srv/qwc_service/config"
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
           image: sourcepole/qwc-data-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

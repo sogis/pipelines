@@ -95,6 +95,10 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/plotinfo
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
           image: sourcepole/sogis-plotinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -38,6 +38,8 @@
         "wmsDpi": 96,
         "minResultsExanded": 100,
         "globallyDisableDockableDialogs": true,
+	"globallyDisableMaximizeableDialogs": true,
+	"defaultColorScheme": "somap",
         "externalLayerFeatureInfoFormats": {
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },

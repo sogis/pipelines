@@ -3,20 +3,23 @@ Query zum Json-Export der als WFS zu publizierenden Klassen der GDI.
 */
 WITH
 
-pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
+tableview_tblinfo AS ( -- Informationen aus simidata_postgres_table, ...
 	SELECT 
-		tbl.id AS table_id,
+		tv.id AS tv_id,
+        tbl.title AS tbl_title,
 		jsonb_build_object(
 			'dbconnection', concat('service=', db.db_service_url),
 			'schema', schema_name,
-			'table', table_name,
+			'table', COALESCE(tv.row_filter_view_name, tbl.table_name),
 			'unique_key', id_field_name,
 			'geometry_field', geo_field_name,
 			'geometry_type', geo_type,
 			'srid', geo_epsg_code
 		) AS tbl_json
 	FROM 
-		simi.simidata_postgres_table tbl 
+	   simi.simidata_table_view tv
+	JOIN  
+		simi.simidata_postgres_table tbl ON tv.postgres_table_id = tbl.id
 	JOIN 
 		simi.simidata_db_schema s ON tbl.db_schema_id  = s.id 
 	JOIN 
@@ -26,31 +29,28 @@ pgtable_json AS ( -- Informationen aus simidata_postgres_table, ...
     AND
       geo_type IS NOT NULL
     AND
-      geo_epsg_code IS NOT NULL		
+      geo_epsg_code IS NOT NULL	
 ),
 
-tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
+tableview AS ( -- Tableview-Informationen
 	SELECT 
-		dsv.id AS dsv_id,
+		dsv.id AS tv_id,
 		derived_identifier AS identifier,
-		coalesce(p.title, t.title, p.derived_identifier) AS title,
-		postgres_table_id
-	FROM 
-		simi.simiproduct_data_product p
+		coalesce(p.title, tv_tbl.tbl_title, p.derived_identifier) AS title,
+		tbl_json
+	FROM
+	   tableview_tblinfo tv_tbl
+	JOIN  
+		simi.simiproduct_data_product p ON tv_tbl.tv_id = p.id 
 	JOIN
 		simi.simidata_data_set_view dsv ON p.id = dsv.id 
-	JOIN
-		simi.simidata_table_view tv ON dsv.id = tv.id 
-	JOIN 
-	 simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
 	WHERE 
 		dsv.service_download is true 
-	--AND identifier not like 'test.%'
 ),
 
-tbl_dsv_attr AS ( -- Informationen zu den Attributen einer Tableview
+tableview_attr AS ( -- Informationen zu den Attributen einer Tableview
 	SELECT 
-		vf.table_view_id,
+		vf.table_view_id AS tv_id,
 		jsonb_build_object(
 			'name', "name",
 			'alias', coalesce(alias, name)
@@ -63,14 +63,14 @@ tbl_dsv_attr AS ( -- Informationen zu den Attributen einer Tableview
     vf.wgc_exposed IS TRUE 
 ),
 
-tbl_dsv_attr_grouped AS ( -- Attribut-Array einer Tableview
+tableview_attr_grouped AS ( -- Attribut-Array einer Tableview
 	SELECT 	
-		table_view_id,
+		tv_id,
 		jsonb_agg(attr_json) AS attr_json
 	FROM 
-		tbl_dsv_attr
+		tableview_attr
 	GROUP BY
-		table_view_id
+		tv_id
 )
 
 SELECT
@@ -81,9 +81,8 @@ SELECT
 		'attributes', attr_json
 	) AS json_obj
 FROM 
-	tbl_dsv dsv
-JOIN
-	pgtable_json tbl ON dsv.postgres_table_id = tbl.table_id
+	tableview tv
 JOIN 
-	tbl_dsv_attr_grouped attr ON dsv.dsv_id = attr.table_view_id
+	tableview_attr_grouped attr ON tv.tv_id = attr.tv_id
+;
 

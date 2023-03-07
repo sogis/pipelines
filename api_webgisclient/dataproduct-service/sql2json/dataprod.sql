@@ -59,7 +59,7 @@ tv_pgtable_props AS (
     'vector' AS vectype,
     jsonb_build_object(
       'dbconnection', db_service_url,
-      'data_set_name', concat_ws('.', schema_name, table_name),
+      'data_set_name', concat_ws('.', schema_name, COALESCE(tv.row_filter_view_name, tbl.table_name)),
       'primary_key', id_field_name,
       'geometry_field', geo_field_name,
       'geometry_type', geo_type,
@@ -411,3 +411,4 @@ SELECT
   layer_json
 FROM
   union_all
+;

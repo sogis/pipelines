@@ -71,7 +71,7 @@ objects:
           - name: SERVICE_GID
             value: www-data
           - name: PGSERVICEFILE
-            value: /usr/etc/postgresql
+            value: /usr/etc/postgresql/pg_service.conf
           image: sourcepole/qwc-data-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

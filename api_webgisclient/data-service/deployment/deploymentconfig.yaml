@@ -70,6 +70,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql
           image: sourcepole/qwc-data-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

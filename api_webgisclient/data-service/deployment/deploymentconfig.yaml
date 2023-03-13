@@ -105,7 +105,7 @@ objects:
               memory: ${MEMORY_REQUEST}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /srv/qwc_service
+          - mountPath: /usr/etc/postgresql
             name: data-service-config-claim
           - mountPath: /srv/qwc_service/config
             name: qgs-resources

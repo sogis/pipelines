@@ -175,6 +175,8 @@ pipeline {
                       - mountPath: "/etc/postgresql"
                         name: "config-generator-config-claim"
                         readOnly: false
+                      - mountPath: "/srv/qwc_service/tenant"
+                        name: "tenant-config-claim"
                       - mountPath: "/tmp"
                         name: "workspace-volume"
                         readOnly: false
@@ -192,6 +194,9 @@ pipeline {
                         items:
                           - key: pg_service.conf
                             path: pg_service.conf
+                    - name: "tenant-config-claim"
+                      configMap:
+                        name: config-generator-tenant-configmap
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"
@@ -218,6 +223,7 @@ pipeline {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
                         oc rsync -n ${namespace} config/default/ $PODNAME:/data
+                        python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenantConfig.json service_configs
                     """
                     }
                 archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true

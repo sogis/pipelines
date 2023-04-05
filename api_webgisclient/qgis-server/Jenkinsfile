@@ -156,6 +156,29 @@ pipeline {
                         name: "workspace-volume"
                         readOnly: false
                       workingDir: "/tmp"
+                    - args:
+                      - "24h"
+                      command:
+                      - "sleep"
+                      image: "pfeimich/config-generator:latest"
+                      imagePullPolicy: "IfNotPresent"
+                      name: "config-generator"
+                      resources:
+                        limits:
+                          memory: "2Gi"
+                          cpu: "1"
+                        requests:
+                          memory: "1Gi"
+                          cpu: "200m"
+                      tty: false
+                      volumeMounts:
+                      - mountPath: "/etc/postgresql"
+                        name: "config-generator-config-claim"
+                        readOnly: false
+                      - mountPath: "/tmp"
+                        name: "workspace-volume"
+                        readOnly: false
+                      workingDir: "/tmp"
                     restartPolicy: "Never"
                     serviceAccountName: "jenkins"
                     volumes:
@@ -163,6 +186,12 @@ pipeline {
                       persistentVolumeClaim:
                         claimName: "qgs-resources-claim"
                         readOnly: false
+                    - name: "config-generator-config-claim"
+                      secret:
+                        secretName: config-generator-pg-service-secret
+                        items:
+                          - key: pg_service.conf
+                            path: pg_service.conf
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"

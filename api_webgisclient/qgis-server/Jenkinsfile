@@ -163,6 +163,9 @@ pipeline {
                       image: "pfeimich/config-generator:latest"
                       imagePullPolicy: "IfNotPresent"
                       name: "config-generator"
+                      env:
+                      - name: "PGSERVICEFILE"
+                        value: "/etc/postgresql/pg_service.conf"
                       resources:
                         limits:
                           memory: "2Gi"

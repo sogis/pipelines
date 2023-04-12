@@ -232,7 +232,7 @@ pipeline {
                     sh """
                         pwd
                         ls -la
-                        python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenantConfig.json service_configs
+                        python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json service_configs
                     """
                     }
                 archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true

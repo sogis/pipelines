@@ -238,7 +238,7 @@ pipeline {
                         python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json service_configs
                     """
                     }
-                archiveArtifacts artifacts: '$env.WORKSPACE/config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                archiveArtifacts artifacts: '/tmp/config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                 }
             post {
                 always {

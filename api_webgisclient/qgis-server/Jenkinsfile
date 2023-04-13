@@ -214,18 +214,18 @@ pipeline {
                       unstash name: 'somap_print.json'
                     }
                     sh """
-                        if [ ! -d "config/default" ]; then
-                          mkdir -p config/default
+                        if [ ! -d "$env.WORKSPACE/config/default" ]; then
+                          mkdir -p $env.WORKSPACE/config/default
                         fi
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms $env.WORKSPACE/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms $env.WORKSPACE/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs $env.WORKSPACE/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 script {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
-                        oc rsync -n ${namespace} /tmp/ $PODNAME:/data
+                        oc rsync -n ${namespace} $env.WORKSPACE/config/default/ $PODNAME:/data
                     """
                     }
                 container ('config-generator') { 
@@ -238,12 +238,12 @@ pipeline {
                         python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json service_configs
                     """
                     }
-                archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                archiveArtifacts artifacts: '$env.WORKSPACE/config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                 }
             post {
                 always {
                     sh """
-                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
+                        rm -rf $env.WORKSPACE/config/* $env.WORKSPACE/qgs
                     """
                     }
                 }

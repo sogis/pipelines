@@ -224,7 +224,9 @@ pipeline {
                     }
                 script {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
-                    stash name: 'config/default/somap.qgs', includes: 'config/default/somap.qgs'
+                    dir("$env.WORKSPACE/config/default") {
+                        stash name: 'somap.qgs', includes: 'somap.qgs'
+                    }
                     sh """
                         oc rsync -n ${namespace} config/default/ $PODNAME:/data
                     """

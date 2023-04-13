@@ -214,18 +214,18 @@ pipeline {
                       unstash name: 'somap_print.json'
                     }
                     sh """
-                        if [ ! -d "$env.WORKSPACE/config/default" ]; then
-                          mkdir -p $env.WORKSPACE/config/default
+                        if [ ! -d "/tmp/config/default" ]; then
+                          mkdir -p /tmp/config/default
                         fi
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms $env.WORKSPACE/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms $env.WORKSPACE/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs $env.WORKSPACE/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 script {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
-                        oc rsync -n ${namespace} $env.WORKSPACE/config/default/ $PODNAME:/data
+                        oc rsync -n ${namespace} /tmp/config/default/ $PODNAME:/data
                     """
                     }
                 container ('config-generator') { 
@@ -243,7 +243,7 @@ pipeline {
             post {
                 always {
                     sh """
-                        rm -rf $env.WORKSPACE/config/* $env.WORKSPACE/qgs
+                        rm -rf /tmp/config/* $env.WORKSPACE/qgs
                     """
                     }
                 }

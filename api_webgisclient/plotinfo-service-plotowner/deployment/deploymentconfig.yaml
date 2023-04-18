@@ -47,7 +47,7 @@ objects:
       rollingParams:
         intervalSeconds: 1
         maxSurge: 10%
-        maxUnavailable: 10%
+        maxUnavailable: 40%
         timeoutSeconds: 120
         updatePeriodSeconds: 1
       type: Rolling
@@ -94,7 +94,7 @@ objects:
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
-            value: /api/v1/plotinfo/plot_owner
+            value: /api/v1/plotinfo
           - name: SERVICE_UID
             value: www-data
           - name: SERVICE_GID

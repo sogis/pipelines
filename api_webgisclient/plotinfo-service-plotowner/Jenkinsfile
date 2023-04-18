@@ -36,7 +36,7 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/plotinfo-service-plotowner/deployment'
                     vBaseImage = params.vBaseImage
                     replicas = params.replicas
                     branch = params.branch
@@ -94,7 +94,7 @@ pipeline {
             }
         stage ('Deploy plotinfo-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl} -p TERRAVISURL=${terravisUrl}"
+                deployImage 'plotinfo-service-plotowner', namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p BASEURL=${baseUrl} -p TERRAVISURL=${terravisUrl}"
                 }
             }
         }

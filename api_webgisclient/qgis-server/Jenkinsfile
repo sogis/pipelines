@@ -236,9 +236,12 @@ pipeline {
                           mkdir -p /tmp/gen
                         fi
                         python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json service_configs
+                        ls -la /tmp/config
                     """
                     }
-                archiveArtifacts artifacts: '/tmp/config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                dir('/tmp/config/default') {
+                    airchiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    }
                 }
             post {
                 always {

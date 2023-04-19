@@ -240,7 +240,7 @@ pipeline {
                     """
                     }
                 dir('/tmp/config/default') {
-                    airchiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }
                 }
             post {

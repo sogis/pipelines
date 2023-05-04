@@ -242,7 +242,7 @@ pipeline {
                 dir('/tmp/config/default') {
                     archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }
-                dir('/tmp/gen') {
+                dir('/srv/qwc_service/volumes/assets/forms/autogen') {
                     archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }
                 }

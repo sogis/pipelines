@@ -45,7 +45,7 @@ pipeline {
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
                       baseUrl = 'geo-t.so.ch'
-                      idpUrl = 'idp.so.ch'
+                      idpUrl = 'idp-t.so.ch'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {

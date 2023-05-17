@@ -176,7 +176,7 @@ edit_layers AS (
       identifier, 
       jsonb_build_object(
         'editDataset', identifier,
-	'form', ':/forms/autogen/somap_ch.so.agi.sgv.meldungen.ui?v=1678288732',
+	'form', ':/forms/autogen/somap_ch.so.awjf.waldpflege_erfassung.ui?v=1678288732',
         'layerName', dp.title,
         'fields', attr_arr,
         'geomType', initcap(t.geo_type) 

@@ -42,17 +42,19 @@ published_dp AS (
   SELECT
     derived_identifier AS identifier,
     COALESCE(dp.title, t.title, dp.derived_identifier) as title,
-    COALESCE(dp.description, t.description_override, t.description_model) AS description,
+    d.descr AS description,
     dp.id AS dp_id,
     CASE
       WHEN search_type = '2_if_loaded' THEN json_build_array(COALESCE(search_facet, derived_identifier))::jsonb 
     END AS searchterm
   FROM
     simi.simiproduct_data_product dp
+  JOIN 
+    simi.trafo_dprod_description_v d ON dp.id = d.dp_id
   LEFT JOIN 
     simi.simidata_table_view tv ON dp.id = tv.id
-	LEFT JOIN
-	  simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
+  LEFT JOIN
+    simi.simidata_postgres_table t ON tv.postgres_table_id = t.id
   WHERE
     pub_scope_id != '55bdf0dd-d997-c537-f95b-7e641dc515df' 
 ),
@@ -263,8 +265,4 @@ foreground_map AS (
 SELECT map_obj FROM default_map
 UNION ALL
 SELECT map_obj FROM foreground_map
-
-
-
-
- 
+;

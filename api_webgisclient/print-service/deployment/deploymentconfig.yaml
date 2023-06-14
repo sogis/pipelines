@@ -69,6 +69,10 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/print
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
           image: sourcepole/qwc-print-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

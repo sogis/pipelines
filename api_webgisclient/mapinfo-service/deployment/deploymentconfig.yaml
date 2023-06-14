@@ -63,6 +63,12 @@ objects:
             value: /srv/qwc_service/config
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/mapinfo
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql/pg_service.conf
           image: sourcepole/qwc-mapinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

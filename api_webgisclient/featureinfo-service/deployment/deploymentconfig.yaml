@@ -72,6 +72,12 @@ objects:
             value: /srv/qwc_service/config
           - name: USE_PERMISSION_ATTRIBUTE_ORDER
             value: "True"
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql/pg_service.conf
           image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/featureinfo-service:${TAG}
           imagePullPolicy: Always
           livenessProbe:

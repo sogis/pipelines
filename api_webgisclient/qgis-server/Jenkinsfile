@@ -51,8 +51,8 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
-                      replicas = '1'
-                      resources = ['cpu_request': '1000m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
+                      replicas = '2'
+                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
@@ -156,34 +156,6 @@ pipeline {
                         name: "workspace-volume"
                         readOnly: false
                       workingDir: "/tmp"
-                    - args:
-                      - "24h"
-                      command:
-                      - "sleep"
-                      image: "pfeimich/config-generator:0.1"
-                      imagePullPolicy: "Always"
-                      name: "config-generator"
-                      env:
-                      - name: "PGSERVICEFILE"
-                        value: "/etc/postgresql/pg_service.conf"
-                      resources:
-                        limits:
-                          memory: "2Gi"
-                          cpu: "1"
-                        requests:
-                          memory: "1Gi"
-                          cpu: "200m"
-                      tty: false
-                      volumeMounts:
-                      - mountPath: "/etc/postgresql"
-                        name: "config-generator-config-claim"
-                        readOnly: false
-                      - mountPath: "/srv/qwc_service/tenant"
-                        name: "tenant-config-claim"
-                      - mountPath: "/tmp"
-                        name: "workspace-volume"
-                        readOnly: false
-                      workingDir: "/tmp"
                     restartPolicy: "Never"
                     serviceAccountName: "jenkins"
                     volumes:
@@ -191,15 +163,6 @@ pipeline {
                       persistentVolumeClaim:
                         claimName: "qgs-resources-claim"
                         readOnly: false
-                    - name: "config-generator-config-claim"
-                      secret:
-                        secretName: config-generator-pg-service-secret
-                        items:
-                          - key: pg_service.conf
-                            path: pg_service.conf
-                    - name: "tenant-config-claim"
-                      configMap:
-                        name: config-generator-tenant-configmap
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"
@@ -214,44 +177,26 @@ pipeline {
                       unstash name: 'somap_print.json'
                     }
                     sh """
-                        if [ ! -d "/tmp/config/default" ]; then
-                          mkdir -p /tmp/config/default
+                        if [ ! -d "config/default" ]; then
+                          mkdir -p config/default
                         fi
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
-                    """
-                    }
-                container ('config-generator') { 
-                    sh """
-                        pwd
-                        ls -la
-                        if [ ! -d "/tmp/qwc2" ]; then
-                          mkdir -p /tmp/qwc2
-                          mkdir -p /tmp/qwc2/assets/forms/autogen
-                        fi
-                        python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json service_configs
-                        ls -la /tmp/qwc2
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 script {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
-                        oc rsync -n ${namespace} /tmp/config/default/ $PODNAME:/data
-                        oc rsync -n ${namespace} /tmp/qwc2/assets/forms/autogen/ $PODNAME:/qwc-assets/forms/autogen
+                        oc rsync -n ${namespace} config/default/ $PODNAME:/data
                     """
                     }
-                dir('/tmp/config/default') {
-                    archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
-                    }
-                dir('/tmp/qwc2/assets/forms/autogen') {
-                    archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
-                    }
+                archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
                 }
             post {
                 always {
                     sh """
-                        rm -rf /tmp/config/* $env.WORKSPACE/qgs
+                        rm -rf $env.WORKSPACE/config $env.WORKSPACE/qgs
                     """
                     }
                 }

@@ -184,7 +184,7 @@ prodlist_sa AS (
     pil.product_list_id AS pl_id
   FROM
     singleactor s
-  JOIN
+  LEFT JOIN
     simi.simiproduct_properties_in_list pil ON s.sa_id = pil.single_actor_id 
   GROUP BY 
     pil.product_list_id

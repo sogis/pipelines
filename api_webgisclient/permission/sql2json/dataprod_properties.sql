@@ -5,7 +5,7 @@ tab_layer AS (
 		jsonb_build_object('name', derived_identifier , 'attributes', attr_names_json) AS js
 	FROM 
 		simi.simiproduct_data_product dp
-	inner JOIN
+	LEFT JOIN
 	  simi.trafo_tableview_attr_with_geo_v a ON dp.id = a.tv_id
 ),
 

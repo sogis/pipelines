@@ -2,7 +2,7 @@ WITH
 
 tab_layer AS ( 
 	SELECT 
-		jsonb_build_object('name', derived_identifier , 'attributes', attr_names_json) AS js
+		jsonb_build_object('name', derived_identifier , 'attributes', COALESCE(attr_names_json,'[]')) AS js
 	FROM 
 		simi.simiproduct_data_product dp
 	LEFT JOIN

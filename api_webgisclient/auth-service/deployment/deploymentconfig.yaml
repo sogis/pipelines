@@ -67,10 +67,6 @@ objects:
             value: /srv/qwc_service/config
           - name: spnq
             value: https://${BASEDOMAIN}/auth/metadata/
-          - name: SERVICE_UID
-            value: www-data
-          - name: SERVICE_GID
-            value: www-data
           image: sourcepole/sogis-auth-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

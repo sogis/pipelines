@@ -38,8 +38,6 @@
         "wmsDpi": 96,
         "minResultsExanded": 100,
         "globallyDisableDockableDialogs": true,
-	"globallyDisableMaximizeableDialogs": true,
-	"defaultColorScheme": "somap",
         "externalLayerFeatureInfoFormats": {
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },
@@ -63,13 +61,6 @@
           "textFill": "black",
           "textStroke": "white"
         },
-	"projections": [
-          {
-            "code": "EPSG:2056",
-            "label": "CH1903+ / LV95",
-            "proj": "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs"
-          }
-	],
         "plugins": {
           "mobile": [
             {

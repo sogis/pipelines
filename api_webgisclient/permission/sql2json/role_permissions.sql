@@ -42,6 +42,8 @@ role_perm AS (
     simi.trafo_resource_role_v rp
   JOIN
     res_ident res ON rp.resource_id = res.id
+  LEFT JOIN 
+    dsv_dependency_unique ON rp.resource_id = data_set_view_id
 ),
 
 role__res_obj AS (

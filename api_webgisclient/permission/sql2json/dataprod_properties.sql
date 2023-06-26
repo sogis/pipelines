@@ -5,7 +5,7 @@ dsv_dependency_unique AS (
 	        data_set_view_id,
 		d.dtype AS dependency_type,
 		display_template,
-		(max(dependency_id:varchar))::uuid AS dependency_id
+		(max(dependency_id::varchar))::uuid AS dependency_id
 	      FROM
 	        simi.simiextended_relation r
 	      JOIN

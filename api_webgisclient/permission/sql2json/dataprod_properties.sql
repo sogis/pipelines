@@ -22,7 +22,7 @@ dsv_dependency_unique AS (
 
 raster_layer AS (
 	SELECT
-	      json_build_object('name', derived_identifier, 'attributes', '[]'::JSON) AS js
+	      jsonb_build_object('name', derived_identifier, 'attributes', '[]'::JSON) AS js
 	FROM
 	      simi.simiproduct_data_product dp
 	JOIN

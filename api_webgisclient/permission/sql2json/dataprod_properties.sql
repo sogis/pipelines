@@ -20,7 +20,7 @@ dsv_dependency_unique AS (
 		display_template
 ),
 
-raster_layer AS (
+raster_layer_with_display_template AS (
 	SELECT
 	      jsonb_build_object('name', derived_identifier, 'attributes', '[]'::JSON) AS js
 	FROM
@@ -87,7 +87,7 @@ layergroup AS (
 		simi.simiproduct_layer_group l ON dp.id = l.id -- only layergroups - no maps
 )
 
-SELECT js FROM raster_layer
+SELECT js FROM raster_layer_with_display_template
 UNION ALL
 SELECT js FROM tab_layer
 UNION ALL

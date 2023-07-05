@@ -544,6 +544,9 @@
                 "touchFriendly": false
               }
             },
+	    {
+	      "name": "Bookmark"
+	    },
             {
               "name": "MapCompare"
             },

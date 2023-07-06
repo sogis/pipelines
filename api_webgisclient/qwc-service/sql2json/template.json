@@ -387,7 +387,8 @@
                   {
                     "key": "LayerTree",
                     "icon": "layers",
-                    "identifyEnabled": true
+                    "identifyEnabled": true,
+		    "shortcut": "alt+shift+l"
                   },
                   {
                     "key": "PlotInfoTool",
@@ -399,6 +400,10 @@
                     "icon": "share",
                     "identifyEnabled": true
                   },
+		  {
+		    "key": "Bookmark",
+		    "icon": "bookmark",
+		    "shortcut": "alt+shift+b"
                   {
                     "key": "Tools",
                     "icon": "tools",
@@ -423,7 +428,8 @@
                   },
                   {
                     "key": "Print",
-                    "icon": "print"
+                    "icon": "print",
+		    "shortcut": "alt+shift+p"
                   },
                   {
                     "key": "LandRegisterExtract",

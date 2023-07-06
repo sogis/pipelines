@@ -404,6 +404,7 @@
 		    "key": "Bookmark",
 		    "icon": "bookmark",
 		    "shortcut": "alt+shift+b"
+		  },
                   {
                     "key": "Tools",
                     "icon": "tools",

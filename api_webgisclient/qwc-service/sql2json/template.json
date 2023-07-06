@@ -400,11 +400,6 @@
                     "icon": "share",
                     "identifyEnabled": true
                   },
-		  {
-		    "key": "Bookmark",
-		    "icon": "bookmark",
-		    "shortcut": "alt+shift+b"
-		  },
                   {
                     "key": "Tools",
                     "icon": "tools",

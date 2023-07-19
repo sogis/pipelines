@@ -160,7 +160,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      image: "pfeimich/config-generator:0.1"
+                      image: "pfeimich/edit-generator:latest"
                       imagePullPolicy: "Always"
                       name: "config-generator"
                       env:

@@ -96,9 +96,9 @@ objects:
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
           - name: SERVICE_UID
-            value: root
+            value: www-data
           - name: SERVICE_GID
-            value: root
+            value: www-data
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

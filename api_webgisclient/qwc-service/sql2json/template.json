@@ -187,14 +187,14 @@
                   "FI_POINT_TOLERANCE": 32,
                   "FI_LINE_TOLERANCE": 16,
                   "FI_POLYGON_TOLERANCE": 8,
-                  "feature_count": 20,
-		  "featureInfoReturnsLayerName": false
+                  "feature_count": 20
                 },
                 "exportFormat": null,
                 "enableExport": false,
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
-                "displayInlineImages": true
+                "displayInlineImages": true,
+		"featureInfoReturnsLayerName": false
               }
             },
             {
@@ -503,8 +503,7 @@
                   "FI_POINT_TOLERANCE": 16,
                   "FI_LINE_TOLERANCE": 8,
                   "FI_POLYGON_TOLERANCE": 4,
-                  "feature_count": 20,
-		  "featureInfoReturnsLayerName": false
+                  "feature_count": 20
                 },
                 "exportFormat": null,
                 "enableExport": false,
@@ -512,7 +511,8 @@
                 "displayResultTree": false,
                 "displayInlineImages": true,
                 "initialWidth": 480,
-                "initialHeight": 550
+                "initialHeight": 550,
+		"featureInfoReturnsLayerName": false
               }
             },
             {

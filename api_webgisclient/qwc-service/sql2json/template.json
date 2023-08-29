@@ -215,7 +215,10 @@
               }
             },
             {
-              "name": "Help"
+              "name": "Help",
+	      "cfg": {
+	        "bodyContentsFragmentUrl": "assets/help.html"
+	      }
             },
 	    {
               "name": "StartupMarker",
@@ -541,7 +544,10 @@
               }
             },
             {
-              "name": "Help"
+              "name": "Help",
+	      "cfg": {
+	        "bodyContentsFragmentUrl": "assets/help.html"
+	      }
             },
 	    {
               "name": "StartupMarker",

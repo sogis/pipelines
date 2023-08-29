@@ -217,6 +217,12 @@
             {
               "name": "Help"
             },
+	    {
+              "name": "StartupMarker",
+	      "cfg": {
+	        "removeMode": "onclickonmarker"
+	      }
+	    },
             {
               "name": "MapCopyright"
             },
@@ -537,6 +543,12 @@
             {
               "name": "Help"
             },
+	    {
+              "name": "StartupMarker",
+	      "cfg": {
+	        "removeMode": "onclickonmarker"
+	      }
+	    },
             {
               "name": "RasterExport",
               "cfg": {

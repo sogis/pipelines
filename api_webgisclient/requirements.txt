@@ -15,4 +15,4 @@ qwc-print-service:v2023.0-lts:2.0.21
 sogis-landreg-service:v2023.0-lts:2.0.18
 sogis-ccc-config:v2023.0-lts:2.0.21
 sogis-auth-service:v2023.08.14:2.0.26
-sogis-map-viewer:v2023.14-lts:2.0.56
+sogis-map-viewer:v2023.15-lts:2.0.56

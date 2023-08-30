@@ -191,6 +191,15 @@ pipeline {
                       persistentVolumeClaim:
                         claimName: "qgs-resources-claim"
                         readOnly: false
+                    - name: "config-generator-config-claim"
+                      secret:
+                        secretName: config-generator-pg-service-secret
+                        items:
+                          - key: pg_service.conf
+                            path: pg_service.conf
+                    - name: "tenant-config-claim"
+                      configMap:
+                        name: config-generator-tenant-configmap
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"

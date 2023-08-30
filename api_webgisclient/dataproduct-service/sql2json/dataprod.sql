@@ -14,43 +14,17 @@ constant_fields AS (
     generate_series(1,1)
 ),
 
-dprod_base AS (
-  SELECT 
-    pub.identifier,
-    title_ident,
-    root_published,
-    COALESCE(dp.description, tbl.description_override, tbl.description_model, '-') AS desc_product,
-    COALESCE(tp.description_override, t.description) AS theme_desc,
-    '<a href="' || t.further_info_url || '">Weitere Informationen zum Thema</a>' as theme_link,
-    COALESCE(tp.title_override, t.title) AS theme_title,
-    POSITION('orgtheme.' IN t.identifier) = 0 AS theme_ready,
-    dp_id
-  FROM
-    simi.trafo_published_dp_v pub
-  JOIN
-    simi.simiproduct_data_product dp ON pub.dp_id = dp.id
-  JOIN  
-    simi.simitheme_theme_publication tp ON dp.theme_publication_id = tp.id 
-  JOIN 
-    simi.simitheme_theme t ON tp.theme_id = t.id
-  LEFT JOIN -- Falls produkt = tableview: Tabellentitel / Beschreibung berücksichtigen
-  	simi.simidata_table_view tv ON dp.id = tv.id 
-  LEFT JOIN 
-  	simi.simidata_postgres_table tbl ON tv.postgres_table_id = tbl.id 
-),
-
 dprod AS (
   SELECT 
     identifier,
     title_ident,
     root_published,
-    CASE
-      WHEN theme_ready THEN encode(convert_to(concat_ws('<br/><br/>', desc_product, 'Teil des Themas <b>' || theme_title || ':</b>', theme_desc, theme_link), 'UTF8'), 'base64')
-      ELSE encode(convert_to(desc_product, 'UTF8'), 'base64')
-    END AS desc_b64,
-    dp_id
+    encode(convert_to(descr, 'UTF8'), 'base64') AS desc_b64,
+    pub.dp_id
   FROM
-    dprod_base
+    simi.trafo_published_dp_v pub
+  JOIN
+    simi.trafo_dprod_description_v l ON pub.dp_id = l.dp_id  
 ),
 
 tv_pgtable_props AS ( 
@@ -59,7 +33,7 @@ tv_pgtable_props AS (
     'vector' AS vectype,
     jsonb_build_object(
       'dbconnection', db_service_url,
-      'data_set_name', concat_ws('.', schema_name, table_name),
+      'data_set_name', concat_ws('.', schema_name, COALESCE(tv.row_filter_view_name, tbl.table_name)),
       'primary_key', id_field_name,
       'geometry_field', geo_field_name,
       'geometry_type', geo_type,
@@ -411,3 +385,4 @@ SELECT
   layer_json
 FROM
   union_all
+;

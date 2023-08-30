@@ -101,7 +101,8 @@
                   {
                     "key": "LayerTree",
                     "icon": "layers",
-                    "identifyEnabled": true
+                    "identifyEnabled": true,
+		    "shortcut": "alt+shift+l"
                   },
                   {
                     "key": "PlotInfoTool",
@@ -113,6 +114,11 @@
                     "icon": "share",
                     "identifyEnabled": true
                   },
+		  {
+	            "key": "Bookmark",
+		    "icon": "bookmark",
+		    "shortcut": "alt+shift+b"
+		  },
                   {
                     "key": "Tools",
                     "icon": "tools",
@@ -187,7 +193,8 @@
                 "enableExport": false,
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
-                "displayInlineImages": true
+                "displayInlineImages": true,
+		"featureInfoReturnsLayerName": false
               }
             },
             {
@@ -208,8 +215,17 @@
               }
             },
             {
-              "name": "Help"
+              "name": "Help",
+	      "cfg": {
+	        "bodyContentsFragmentUrl": "assets/help.html"
+	      }
             },
+	    {
+              "name": "StartupMarker",
+	      "cfg": {
+	        "removeMode": "onclickonmarker"
+	      }
+	    },
             {
               "name": "MapCopyright"
             },
@@ -381,7 +397,8 @@
                   {
                     "key": "LayerTree",
                     "icon": "layers",
-                    "identifyEnabled": true
+                    "identifyEnabled": true,
+		    "shortcut": "alt+shift+l"
                   },
                   {
                     "key": "PlotInfoTool",
@@ -393,6 +410,11 @@
                     "icon": "share",
                     "identifyEnabled": true
                   },
+		  {
+		    "key": "Bookmark",
+		    "icon": "bookmark",
+		    "shortcut": "alt+shift+b"
+		  },
                   {
                     "key": "Tools",
                     "icon": "tools",
@@ -417,7 +439,8 @@
                   },
                   {
                     "key": "Print",
-                    "icon": "print"
+                    "icon": "print",
+		    "shortcut": "alt+shift+p"
                   },
                   {
                     "key": "LandRegisterExtract",
@@ -497,7 +520,8 @@
                 "displayResultTree": false,
                 "displayInlineImages": true,
                 "initialWidth": 480,
-                "initialHeight": 550
+                "initialHeight": 550,
+		"featureInfoReturnsLayerName": false
               }
             },
             {
@@ -520,8 +544,17 @@
               }
             },
             {
-              "name": "Help"
+              "name": "Help",
+	      "cfg": {
+	        "bodyContentsFragmentUrl": "assets/help.html"
+	      }
             },
+	    {
+              "name": "StartupMarker",
+	      "cfg": {
+	        "removeMode": "onclickonmarker"
+	      }
+	    },
             {
               "name": "RasterExport",
               "cfg": {
@@ -544,6 +577,9 @@
                 "touchFriendly": false
               }
             },
+	    {
+	      "name": "Bookmark"
+	    },
             {
               "name": "MapCompare"
             },

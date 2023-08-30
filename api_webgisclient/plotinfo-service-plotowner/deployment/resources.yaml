@@ -1,0 +1,47 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ressources-plotinfo-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for plotinfo-service"
+parameters:
+  - description: DB Server Url 
+    name: DB_SERVER
+  - description: Pub DB
+    name: DB_PUB
+  - description: DB User sogis_service
+    name: USER_SOGIS_SERVICE
+  - description: Password DB User sogis_service
+    name: PW_SOGIS_SERVICE
+objects:
+- apiVersion: v1
+  stringData:
+    pg_service.conf: |
+      [sogis_pub]
+      host=${DB_SERVER}
+      port=5432
+      dbname=${DB_PUB}
+      user=${USER_SOGIS_SERVICE}
+      password=${PW_SOGIS_SERVICE}
+      sslmode=require
+  kind: Secret
+  metadata:
+    labels:
+      app: plotinfo-service
+    name: plotinfo-service-pg-service-secret
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: plotinfo-service
+      app: gdi
+    name: plotinfo-service-plotowner
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      service: plotinfo-service-plotowner

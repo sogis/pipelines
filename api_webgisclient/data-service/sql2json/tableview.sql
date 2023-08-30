@@ -117,7 +117,7 @@ tableview AS (
         'db_url', pg_service_url_read,
         'db_write_url', pg_service_url_write,
         'schema', schema_name,
-        'table_name', table_name,
+        'table_name', COALESCE(tv.row_filter_view_name, tbl.table_name),
         'primary_key', id_field_name,
         'geometry', geo_props_obj,
         'fields', COALESCE(fields_arr, '[]'::jsonb) -- COALESCE(...) weil das Schema fälschlicherweise immer fields verlangt
@@ -149,3 +149,4 @@ WHERE
     (wms_published OR raw_download) -- Neben raw_download=TRUE auch für Ebenen aktivieren, welche wms-publiziert sind, um die Abhängigkeit der WGC-URL-Schnittstelle auf den Dataservice zu "befriedigen"
   AND
     type_missing_count = 0 -- Ebenen mit fehlenden Attributtyp-Informationen bewusst ausschliessen, damit Fehler schneller gefunden wird
+;

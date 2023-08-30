@@ -214,8 +214,8 @@ pipeline {
                       unstash name: 'somap_print.json'
                     }
                     sh """
-                        if [ ! -d "config/default" ]; then
-                          mkdir -p config/default
+                        if [ ! -d "/tmp/config/default" ]; then
+                          mkdir -p /tmp/config/default
                         fi
                         python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs

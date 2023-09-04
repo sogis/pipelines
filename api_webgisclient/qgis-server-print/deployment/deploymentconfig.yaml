@@ -40,34 +40,41 @@ objects:
     selector:
       service: qgis-server-print
     strategy:
-      activeDeadlineSeconds: 21600
       resources: {}
       rollingParams:
-        intervalSeconds: 1
-        maxSurge: 10%
         maxUnavailable: 10%
-        timeoutSeconds: 600
+        timeoutSeconds: 150
         updatePeriodSeconds: 1
       type: Rolling
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
         labels:
           service: qgis-server-print
           app: gdi
       spec:
         containers:
         - env:
-          - name: LOG_LEVEL
+           name: APACHE_LOG_LEVEL
+            value: "info"
+          - name: QGIS_SERVER_LOG_LEVEL
+            value: "1"
+          - name: FCGI_MIN_PROCESSES
             value: "2"
-          - name: QGIS_FCGI_MIN_PROCESSES
+          - name: FCGI_MAX_PROCESSES
             value: "2"
-          - name: QGIS_FCGI_MAX_PROCESSES
-            value: "2"
+          - name: FCGI_MAX_REQUESTLEN
+            value: "26214400"
+          - name: FCGI_PROCESS_LIFE_TIME
+            value: "3600"
+          - name: FCGI_IDLE_TIMEOUT
+            value: "300"
           - name: QGIS_FCGI_IOTIMEOUT
             value: "65"
-          image: sogis/qgis-server:${TAG}
+          - name: QGIS_SERVER_IGNORE_BAD_LAYERS
+            value: "1"
+          - name: QGIS_SERVER_LOG_STDERR
+            value: "1"
+          image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -95,7 +102,7 @@ objects:
             timeoutSeconds: 5
           resources:
             limits:
-              cpu: '2'
+              cpu: ${CPU_LIMIT}
               memory: ${MEMORY_LIMIT}
             requests:
               cpu: ${CPU_REQUEST}

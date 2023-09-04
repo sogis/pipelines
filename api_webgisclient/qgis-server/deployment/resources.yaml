@@ -76,4 +76,4 @@ objects:
       protocol: TCP
       targetPort: 80
     selector:
-      app: qgis-server
+      service: qgis-server

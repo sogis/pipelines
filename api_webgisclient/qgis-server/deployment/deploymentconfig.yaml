@@ -38,7 +38,7 @@ objects:
     replicas: ${{REPLICAS}}
     revisionHistoryLimit: 1
     selector:
-      app: qgis-server
+      service: qgis-server
     strategy:
       resources: {}
       rollingParams:

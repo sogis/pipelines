@@ -54,7 +54,7 @@ objects:
       spec:
         containers:
         - env:
-           name: APACHE_LOG_LEVEL
+          - name: APACHE_LOG_LEVEL
             value: "info"
           - name: QGIS_SERVER_LOG_LEVEL
             value: "1"

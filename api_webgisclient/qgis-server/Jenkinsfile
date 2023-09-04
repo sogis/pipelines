@@ -44,7 +44,7 @@ pipeline {
                       environment = 'test'
                       sogisPicMirEnv = '-test'
                       replicas = '1'
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      resources = ['cpu_request': '0', 'cpu_limit': '4000m', 'memory_request': '0', 'memory_limit': '16384Mi']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT

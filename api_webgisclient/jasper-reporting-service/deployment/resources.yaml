@@ -19,9 +19,6 @@ parameters:
   - description: Edit DB
     name: DB_EDIT
     value:
-  - description: Imdas DB
-    name: DB_IMDAS
-    value:
   - description: Sogis DB
     name: DB_SOGIS
     value:
@@ -36,12 +33,6 @@ parameters:
     value:
   - description: Password DB User mswrite
     name: PW_MSWRITE
-    value:
-  - description: Imdas DB User
-    name: USER_IMDAS_DB
-    value:
-  - description: Password Imdas DB User
-    name: PW_IMDAS_DB_USER
     value:
   - description: Namespace
     name: NAMESPACE
@@ -86,29 +77,15 @@ objects:
 
       spring.datasource1.driver-class-name=org.postgresql.Driver
 
-      spring.datasource2.jdbc-url=jdbc:sqlserver://${IMDAS_DB_SERVER}:1433;DatabaseName=${DB_IMDAS}
-
-      spring.datasource2.username=${USER_IMDAS_DB}
-
-      spring.datasource2.password=${PW_IMDAS_DB_USER}
-
-      spring.datasource2.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
-      
-      spring.datasource2.connection-test-query=SELECT 1
-
-      spring.datasource2.connection-timeout=5000
-
-      spring.datasource2.validation-timeout=2000
-
       # Datasource Edit DB
 
-      spring.datasource3.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource2.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource3.username=${USER_REPORT_SERVER}
+      spring.datasource2.username=${USER_REPORT_SERVER}
 
-      spring.datasource3.password=${PW_REPORT_SERVER}
+      spring.datasource2.password=${PW_REPORT_SERVER}
 
-      spring.datasource3.driver-class-name=org.postgresql.Driver
+      spring.datasource2.driver-class-name=org.postgresql.Driver
 
       # Custom Parameters
  

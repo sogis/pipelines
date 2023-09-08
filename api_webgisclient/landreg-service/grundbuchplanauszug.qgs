@@ -40738,7 +40738,7 @@ def my_form_open(dialog, layer, feature):
           </customproperties>
         </LayoutObject>
       </LayoutItem>
-      <LayoutItem groupUuid="" file="print/north_arrow7.svg" zValue="21" itemRotation="0" opacity="1" svgFillColor="255,255,255,255" northOffset="0" pictureWidth="nan" visibility="1" resizeMode="0" uuid="{f36d2f3e-62f7-4350-85fb-09241c5c3717}" id="" frameJoinStyle="miter" pictureHeight="nan" excludeFromExports="0" anchorPoint="4" type="65640" positionLock="false" svgBorderColor="0,0,0,255" position="16.8,272,mm" mode="2" background="false" svgBorderWidth="0.2" mapUuid="{4f2198a9-b1d0-4a4d-8d50-012e78f1faf8}" referencePoint="0" templateUuid="{f36d2f3e-62f7-4350-85fb-09241c5c3717}" outlineWidthM="0.3,mm" pictureRotation="1" northMode="0" size="10,15,mm" blendMode="0" positionOnPage="16.8,272,mm" frame="false">
+      <LayoutItem groupUuid="" file="print/north_arrow7.svg" zValue="21" itemRotation="0" opacity="1" svgFillColor="255,255,255,255" northOffset="0" pictureWidth="nan" visibility="1" resizeMode="0" uuid="{f36d2f3e-62f7-4350-85fb-09241c5c3717}" id="" frameJoinStyle="miter" pictureHeight="nan" excludeFromExports="0" anchorPoint="4" type="65640" positionLock="false" svgBorderColor="0,0,0,255" position="16.8,272,mm" mode="2" background="false" svgBorderWidth="0.2" mapUuid="{4f2198a9-b1d0-4a4d-8d50-012e78f1faf8}" referencePoint="0" templateUuid="{f36d2f3e-62f7-4350-85fb-09241c5c3717}" outlineWidthM="0.3,mm" pictureRotation="0" northMode="0" size="10,15,mm" blendMode="0" positionOnPage="16.8,272,mm" frame="false">
         <FrameColor red="0" green="0" alpha="255" blue="0"/>
         <BackgroundColor red="255" green="255" alpha="255" blue="255"/>
         <LayoutObject>

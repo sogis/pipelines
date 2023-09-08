@@ -69,6 +69,8 @@ objects:
 
       spring.datasource0.driver-class-name=org.postgresql.Driver
 
+      spring.datasource0.maximum-pool-size=5
+
       spring.datasource1.jdbc-url=jdbc:postgresql://${GEO_DB_SERVER}/${DB_SOGIS}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource1.username=${USER_MSWRITE}
@@ -86,6 +88,8 @@ objects:
       spring.datasource2.password=${PW_REPORT_SERVER}
 
       spring.datasource2.driver-class-name=org.postgresql.Driver
+
+      spring.datasource2.maximum-pool-size=5
 
       # Custom Parameters
  

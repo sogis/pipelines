@@ -40,34 +40,41 @@ objects:
     selector:
       service: qgis-server
     strategy:
-      activeDeadlineSeconds: 21600
       resources: {}
       rollingParams:
-        intervalSeconds: 1
-        maxSurge: 0
         maxUnavailable: 10%
-        timeoutSeconds: 600
+        timeoutSeconds: 150
         updatePeriodSeconds: 1
       type: Rolling
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
         labels:
           service: qgis-server
           app: gdi
       spec:
         containers:
         - env:
-          - name: LOG_LEVEL
+          - name: APACHE_LOG_LEVEL
+            value: "info"
+          - name: QGIS_SERVER_LOG_LEVEL
+            value: "1"
+          - name: FCGI_MIN_PROCESSES
             value: "2"
-          - name: QGIS_FCGI_MIN_PROCESSES
-            value: "2"
-          - name: QGIS_FCGI_MAX_PROCESSES
+          - name: FCGI_MAX_PROCESSES
             value: "4"
+          - name: FCGI_MAX_REQUESTLEN
+            value: "26214400"
+          - name: FCGI_PROCESS_LIFE_TIME
+            value: "3600"
+          - name: FCGI_IDLE_TIMEOUT
+            value: "300"
           - name: QGIS_FCGI_IOTIMEOUT
             value: "65"
-          image: sogis/qgis-server:${TAG}
+          - name: QGIS_SERVER_IGNORE_BAD_LAYERS
+            value: "1"
+          - name: QGIS_SERVER_LOG_STDERR
+            value: "1"
+          image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -108,9 +115,6 @@ objects:
             name: datensogispicmir
           - mountPath: /etc/postgresql-common
             name: qgis-server-config-claim
-          - mountPath: /usr/local/share/fonts
-            name: qgs-resources
-            subPath: truetype
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         serviceAccountName: qgis-server

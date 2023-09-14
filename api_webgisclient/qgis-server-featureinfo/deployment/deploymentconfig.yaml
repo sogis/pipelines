@@ -111,6 +111,9 @@ objects:
           volumeMounts:
           - mountPath: /data
             name: qgs-resources
+          - mountPath: /usr/local/share/fonts
+            name: qgs-resources
+            subPath: truetype
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/postgresql-common

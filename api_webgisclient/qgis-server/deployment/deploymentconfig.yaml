@@ -65,7 +65,7 @@ objects:
           - name: FCGI_MAX_REQUESTLEN
             value: "26214400"
           - name: FCGI_PROCESS_LIFE_TIME
-            value: "3600"
+            value: "0"
           - name: FCGI_IDLE_TIMEOUT
             value: "300"
           - name: QGIS_FCGI_IOTIMEOUT

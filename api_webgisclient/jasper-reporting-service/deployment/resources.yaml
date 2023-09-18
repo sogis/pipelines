@@ -81,15 +81,15 @@ objects:
 
       # Datasource Edit DB
 
-      spring.datasource2.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+      spring.datasource3.jdbc-url=jdbc:postgresql://${DB_SERVER}/${DB_EDIT}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
-      spring.datasource2.username=${USER_REPORT_SERVER}
+      spring.datasource3.username=${USER_REPORT_SERVER}
 
-      spring.datasource2.password=${PW_REPORT_SERVER}
+      spring.datasource3.password=${PW_REPORT_SERVER}
 
-      spring.datasource2.driver-class-name=org.postgresql.Driver
+      spring.datasource3.driver-class-name=org.postgresql.Driver
 
-      spring.datasource2.maximum-pool-size=5
+      spring.datasource3.maximum-pool-size=5
 
       # Custom Parameters
  

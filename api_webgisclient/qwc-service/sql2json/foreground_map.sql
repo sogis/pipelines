@@ -163,12 +163,7 @@ tv_attribute_arr AS (
 
 write_dsv AS (
   SELECT
-    data_set_view_id AS dsv_id,
-    jsonb_build_object(
-        'creatable', true,
-        'deletable', true,
-        'updatable', true
-      ) as permissions
+    data_set_view_id AS dsv_id
   FROM
     simi.simiiam_permission 
   GROUP BY
@@ -185,8 +180,7 @@ edit_layers AS (
         'editDataset', identifier,
         'layerName', dp.title,
         'fields', attr_arr,
-        'geomType', initcap(t.geo_type),
-	'permissions', w.permissions
+        'geomType', initcap(t.geo_type) 
       )
     ) AS edit_keyval
   FROM

@@ -34,7 +34,7 @@ constant_fields AS (
     jsonb_build_array('text/plain','text/html','text/xml','application/vnd.ogc.gml','application/vnd.ogc.gml/3.1.1') AS const_info_formats,
     'img/mapthumbs/default.jpg' AS const_thumbnail,
     jsonb_build_array() AS const_external_layers,
-    'LAYERFONTSIZE=30&ITEMFONTSIZE=30' AS const_extra_legend_params
+    'LAYERFONTSIZE=8.25&ITEMFONTSIZE=8.25' AS const_extra_legend_params
   FROM
     pg_catalog.generate_series(1,1)
 ),

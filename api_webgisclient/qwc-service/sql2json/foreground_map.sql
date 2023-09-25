@@ -163,7 +163,12 @@ tv_attribute_arr AS (
 
 write_dsv AS (
   SELECT
-    data_set_view_id AS dsv_id
+    data_set_view_id AS dsv_id,
+    jsonb_build_object(
+        'creatable', true,
+        'deletable', true,
+        'updatable', true
+      ) as permissions
   FROM
     simi.simiiam_permission 
   GROUP BY
@@ -181,7 +186,8 @@ edit_layers AS (
         'layerName', dp.title,
         'fields', attr_arr,
         'geomType', initcap(t.geo_type),
-        'form', '/map/assets/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying	
+        'form', '/map/assets/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,
+	'permissions', w.permissions
       )
     ) AS edit_keyval
   FROM

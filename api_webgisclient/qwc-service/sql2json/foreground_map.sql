@@ -187,7 +187,7 @@ edit_layers AS (
         'layerName', dp.title,
         'fields', attr_arr,
         'geomType', initcap(t.geo_type),
-	'form', '/map/assets/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,
+	'form', '/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,
 	'permissions', w.permissions
       )
     ) AS edit_keyval

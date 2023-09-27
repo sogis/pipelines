@@ -12,7 +12,7 @@ role_perm AS (
     role_name,
     perm_level,
     CASE
-      WHEN perm_level = '2_read_write' THEN jsonb_build_object('writable', TRUE, 'creatable', TRUE, 'readable', TRUE, 'updatable', TRUE, 'deletable', TRUE)
+      WHEN perm_level = '2_read_write' THEN jsonb_build_object('writable', TRUE)
       ELSE jsonb_build_object()
     END AS writable_json
   FROM

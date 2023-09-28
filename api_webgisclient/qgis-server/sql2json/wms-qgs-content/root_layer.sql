@@ -1,6 +1,6 @@
 SELECT 
   identifier
 FROM 
-  simi.trafo_wms_rootlayer_unique_v
+  simi.trafo_wms_layer_unique_v
 WHERE 
   print_or_ext IS FALSE 

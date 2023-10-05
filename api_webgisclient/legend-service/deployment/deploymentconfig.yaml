@@ -58,7 +58,7 @@ objects:
         containers:
         - env:
           - name: DEFAULT_QGIS_SERVER_URL
-            value: http://qgis-server.${NAMESPACE}.svc/ows/
+            value: http://ogc-service.${NAMESPACE}.svc/ows/
           - name: LEGEND_IMAGES_PATH
             value: /srv/qwc_service/config/legends
           - name: JWT_SECRET_KEY

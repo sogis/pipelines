@@ -231,7 +231,7 @@ pipeline {
                           mkdir -p /tmp/qwc2
                           mkdir -p /tmp/qwc2/assets/forms/autogen
                         fi
-                        #python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json ch.so.awjf.waldpflege_kontrolle generate_ui
+                        python3 /srv/qwc_service/config_generator_cli.py /srv/qwc_service/tenant/tenantConfig.json ch.so.awjf.waldpflege_kontrolle generate_ui
                         ls -la /tmp/qwc2
                     """
                     }

@@ -8411,7 +8411,7 @@ def my_form_open(dialog, layer, feature):
       </edittypes>
       <renderer-v2 forceraster="0" symbollevels="0" type="RuleRenderer" enableorderby="0">
         <rules key="{279c4386-d1cb-4902-a9a3-2c19cb92cc5e}">
-          <rule filter="&quot;art_txt&quot; IN ('Aussichtsturm', 'Bahnsteig', 'Bruecke_Passerelle', 'Brunnen', 'einzelner Fels', 'Hochkamin', 'Landungssteg', 'massiver_Sockel', 'Mast_Antenne', 'Mauer', 'Pfeiler', 'Ruine_archaeologisches_Objekt', 'Schwelle', 'Silo_Turm_Gasometer', 'Uferverbauung', 'wichtige_Treppe', 'weitere')" key="{faf27445-5c8e-441b-975e-93cfc341343a}" label="ausgezogen">
+          <rule filter="&quot;art_txt&quot; IN ('Aussichtsturm', 'Bahnsteig', 'Bruecke_Passerelle', 'Brunnen', 'einzelner Fels', 'Hochkamin', 'Landungssteg', 'massiver_Sockel', 'Mast_Antenne', 'Mauer', 'Laermschutzwand', 'Pfeiler', 'Ruine_archaeologisches_Objekt', 'Schwelle', 'Silo_Turm_Gasometer', 'Uferverbauung', 'wichtige_Treppe', 'weitere')" key="{faf27445-5c8e-441b-975e-93cfc341343a}" label="ausgezogen">
             <rule scalemaxdenom="300" key="{cfaf3cb6-f518-4f00-8850-8de7bb3490e6}" symbol="0" label="1:250"/>
             <rule scalemaxdenom="750" key="{ff107eb6-99e9-44bd-9a11-945eceed22d5}" symbol="1" scalemindenom="300" label="1:500"/>
             <rule scalemaxdenom="1250" key="{a88c92fc-fefa-4797-aa76-047815284b28}" symbol="2" scalemindenom="750" label="1:1000"/>

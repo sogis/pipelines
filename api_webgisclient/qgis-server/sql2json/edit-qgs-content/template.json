@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json",
 
-  "wms_top_layers": {"$trafo:list": "layer.sql"},
+  "wms_top_layers": {"$trafo:list": "root_layer.sql"},
 
   "layers": {"$trafo:list": "layer.sql"},
 

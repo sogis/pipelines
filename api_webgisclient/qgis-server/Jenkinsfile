@@ -217,12 +217,12 @@ pipeline {
                     }
                     sh """
                         if [ ! -d "/tmp/config/default" ]; then
-                          mkdir -p /tmp/config/default
+                          mkdir -p /tmp/config/default/edit/
                         fi
                         python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_edit.json wms /tmp/config/default 3 --qgsName somap_edit --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_edit.json wms /tmp/config/default/edit 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 container ('config-generator') { 

@@ -81,6 +81,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: LEGEND_DEFAULT_FONT_SIZE
+            value: 9
           image: sourcepole/qwc-ogc-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

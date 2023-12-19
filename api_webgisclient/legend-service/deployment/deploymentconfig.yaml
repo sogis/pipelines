@@ -67,8 +67,6 @@ objects:
             value: "True"
           - name: CONFIG_PATH
             value: /srv/qwc_service/config
-          - name: LEGEND_DEFAULT_FONT_SIZE
-            value: "9"
           - name: SERVICE_MOUNTPOINT
             value: /api/v1/legend
           - name: SERVICE_UID

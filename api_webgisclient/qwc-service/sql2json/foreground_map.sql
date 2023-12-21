@@ -179,7 +179,7 @@ edit_layers AS (
       jsonb_build_object(
         'editDataset', identifier,
         'layerName', dp.title,
-        'fields', attr_arr,
+        'fields', coalesce(CAST(CAST(tv.form_json AS jsonb) ->> 'fields' AS jsonb), attr_arr),
         'geomType', initcap(t.geo_type) 
       )
     ) AS edit_keyval

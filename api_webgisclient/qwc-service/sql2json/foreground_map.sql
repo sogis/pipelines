@@ -180,7 +180,8 @@ edit_layers AS (
         'editDataset', identifier,
         'layerName', dp.title,
         'fields', coalesce(CAST(CAST(tv.form_json AS jsonb) ->> 'fields' AS jsonb), attr_arr),
-        'geomType', initcap(t.geo_type) 
+        'geomType', initcap(t.geo_type),
+        'form', ':/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying	
       )
     ) AS edit_keyval
   FROM

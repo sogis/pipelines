@@ -52,6 +52,7 @@ if (User.current()) {
   def auths = Eval.me(System.getenv('ADMIN_USERS'))
   def add_auths = Eval.me(System.getenv('PRIVILEGED_USERS'))
   println add_auths
+  println "hallo"
   if(userid in auths || userid in add_auths) {
           def gitURL = "https://github.com/sogis/pipelines.git"
           def command = "git ls-remote -h $gitURL"

@@ -200,7 +200,7 @@ pipeline {
                             path: pg_service.conf
                     - name: "tenant-config-claim"
                       configMap:
-                        name: config-generator-tenant-configmap
+                        name: jenkins-edit-generator-tenantconfig
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"

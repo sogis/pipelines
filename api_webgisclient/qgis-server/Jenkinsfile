@@ -194,7 +194,7 @@ pipeline {
                         readOnly: false
                     - name: "config-generator-config-claim"
                       secret:
-                        secretName: config-generator-pg-service-secret
+                        secretName: jenkins-edit-generator-pg-service-secret
                         items:
                           - key: pg_service.conf
                             path: pg_service.conf

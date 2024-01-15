@@ -74,6 +74,8 @@ objects:
             value: "1"
           - name: QGIS_SERVER_LOG_STDERR
             value: "1"
+          - name: QGIS_SERVER_OVERRIDE_SYSTEM_LOCALE
+            value: "de_CH"
           image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

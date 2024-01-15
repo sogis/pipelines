@@ -43,7 +43,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '1'
+                      replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -52,7 +52,7 @@ pipeline {
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
-                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
+                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '16384Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
@@ -177,7 +177,7 @@ pipeline {
                       tty: false
                       volumeMounts:
                       - mountPath: "/etc/postgresql"
-                        name: "config-generator-config-claim"
+                        name: "edit-generator-config-claim"
                         readOnly: false
                       - mountPath: "/srv/qwc_service/tenant"
                         name: "tenant-config-claim"
@@ -192,7 +192,7 @@ pipeline {
                       persistentVolumeClaim:
                         claimName: "qgs-resources-claim"
                         readOnly: false
-                    - name: "config-generator-config-claim"
+                    - name: "edit-generator-config-claim"
                       secret:
                         secretName: jenkins-edit-generator-pg-service-secret
                         items:
@@ -219,9 +219,9 @@ pipeline {
                         if [ ! -d "/tmp/config/default" ]; then
                           mkdir -p /tmp/config/default/edit/
                         fi
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 3 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 3 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_edit.json wms /tmp/config/default/edit 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
@@ -241,13 +241,9 @@ pipeline {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
                         oc rsync -n ${namespace} /tmp/config/default/ $PODNAME:/data
-                        oc rsync -n ${namespace} /tmp/qwc2/assets/forms/autogen/ $PODNAME:/qwc-assets/forms/autogen
                     """
                     }
                 dir('/tmp/config/default') {
-                    archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
-                    }
-                dir('/tmp/qwc2/assets/forms/autogen') {
                     archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
                     }
                 }

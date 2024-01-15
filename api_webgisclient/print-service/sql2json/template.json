@@ -3,7 +3,7 @@
   "service": "print",
   "config": {
     "ogc_service_url": "http://qgis-server.gdi-test.svc/ows/",
-    "qgis_server_version": "2.18.19"
+    "qgis_server_version": "3.28.7"
   },
   "resources": {
     "print_templates": [

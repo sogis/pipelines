@@ -33,7 +33,8 @@ constant_fields AS (
     jsonb_build_array('image/jpeg','image/png') AS const_avail_formats,
     jsonb_build_array('text/plain','text/html','text/xml','application/vnd.ogc.gml','application/vnd.ogc.gml/3.1.1') AS const_info_formats,
     'img/mapthumbs/default.jpg' AS const_thumbnail,
-    jsonb_build_array() AS const_external_layers
+    jsonb_build_array() AS const_external_layers,
+    'LAYERFONTSIZE=9&ITEMFONTSIZE=9&LAYERTITLESPACE=0.5&LAYERSPACE=1' AS const_extra_legend_params
   FROM
     pg_catalog.generate_series(1,1)
 ),
@@ -163,7 +164,12 @@ tv_attribute_arr AS (
 
 write_dsv AS (
   SELECT
-    data_set_view_id AS dsv_id
+    data_set_view_id AS dsv_id,
+    jsonb_build_object(
+        'creatable', true,
+        'deletable', true,
+        'updatable', true
+      ) as permissions
   FROM
     simi.simiiam_permission 
   GROUP BY
@@ -181,7 +187,8 @@ edit_layers AS (
         'layerName', dp.title,
         'fields', coalesce(CAST(CAST(tv.form_json AS jsonb) ->> 'fields' AS jsonb), attr_arr),
         'geomType', initcap(t.geo_type),
-        'form', ':/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying	
+        'form', ':/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,	
+	'permissions', w.permissions
       )
     ) AS edit_keyval
   FROM
@@ -219,7 +226,8 @@ allmaps_keyvals AS (
       'skipEmptyFeatureAttributes', TRUE,
       'infoFormats', const_info_formats,
       'thumbnail', const_thumbnail,
-      'externalLayers', const_external_layers
+      'externalLayers', const_external_layers,
+      'extraLegendParameters', const_extra_legend_params
     ) AS keyvals
   FROM 
     constant_fields cf   

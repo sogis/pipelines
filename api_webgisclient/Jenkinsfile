@@ -103,7 +103,6 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    println Eval.me(System.getenv('PRIVILEGED_USERS'))
                     namespace = params.namespace
                     AuswahlRollout = params.AuswahlRollout
                     replicas = params.replicas

@@ -161,7 +161,7 @@ pipeline {
                       - "24h"
                       command:
                       - "sleep"
-                      image: "sogis/edit-generator:0.9"
+                      image: "sogis/edit-generator:1.0"
                       imagePullPolicy: "Always"
                       name: "config-generator"
                       env:

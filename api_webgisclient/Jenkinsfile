@@ -299,7 +299,7 @@ pipeline {
                     }
                 } 
             }
-        stage ('Deploy qgis-featureinfo-service and qwc-service') {
+        stage ('Deploy qgis-server-featureinfo qgis-server-print and qwc-service') {
             parallel {
                 stage ('Deploy qwc-service') {
                     when {
@@ -317,14 +317,14 @@ pipeline {
                         build job: 'gdi/qgis-server-featureinfo', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-qgis-server-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-qgis-server-baseImage']}"), string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
                         }
                     }
-                }
-            }
-        stage ('Deploy qgis-server-print') {
-            when {
-                expression { AuswahlRollout == 'Permissions' || AuswahlRollout == 'Alles' || AuswahlRollout == 'Datasets/Dataproducts' }
-            }
-            steps {
-                build job: 'gdi/qgis-server-print', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-qgis-server-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-qgis-server-baseImage']}"), string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
+                stage ('Deploy qgis-server-print') {
+                    when {
+                        expression { AuswahlRollout == 'Permissions' || AuswahlRollout == 'Alles' || AuswahlRollout == 'Datasets/Dataproducts' }
+                    }
+                    steps {
+                        build job: 'gdi/qgis-server-print', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['qwc-qgis-server-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['qwc-qgis-server-baseImage']}"), string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 
+                        }
+                    }
                 }
             }
         }

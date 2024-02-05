@@ -93,9 +93,11 @@ pipeline {
                 }
             }
         stage ('Create PyQt Ui Files') {
-            sh """
-                curl -X GET "https:///edit-generator-gdi-test.apps.ocp.so.ch/generate_ui?tenant=default"
-            """
+            steps {
+                sh """
+                    curl -X GET "https:///edit-generator-gdi-test.apps.ocp.so.ch/generate_ui?tenant=default"
+                """
+                }
             }
         stage ('Deploy qwc-service in Test env') {
             steps {

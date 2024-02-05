@@ -92,6 +92,11 @@ pipeline {
                     }
                 }
             }
+        stage ('Create PyQt Ui Files {
+            sh """
+                curl -X GET "https:///edit-generator-gdi-test.apps.ocp.so.ch/generate_ui?tenant=default"
+            """
+            }
         stage ('Deploy qwc-service in Test env') {
             steps {
                 deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}"

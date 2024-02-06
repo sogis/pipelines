@@ -78,20 +78,13 @@ objects:
             value: "de_CH"
           image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
-          startupProbe:
-            tcpSocket:
-              port: 8080
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
           livenessProbe:
             failureThreshold: 3
             httpGet:
               path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
               port: 80
               scheme: HTTP
-            initialDelaySeconds: 1
+            initialDelaySeconds: 20
             periodSeconds: 60
             successThreshold: 1
             timeoutSeconds: 3

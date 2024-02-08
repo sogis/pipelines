@@ -38184,7 +38184,7 @@ def my_form_open(dialog, layer, feature):
             <Option/>
           </customproperties>
         </LayoutObject>
-        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="Cadastra" textColor="0,0,0,255" blendMode="0">
+        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Regular Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="CadastraCondensed" textColor="0,0,0,255" blendMode="0">
           <families/>
           <text-buffer bufferJoinStyle="128" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferSize="1" bufferOpacity="1" bufferBlendMode="0" bufferDraw="0"/>
           <text-mask maskSizeUnits="MM" maskJoinStyle="128" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskOpacity="1" maskType="0" maskEnabled="0"/>
@@ -39938,7 +39938,7 @@ def my_form_open(dialog, layer, feature):
             <Option/>
           </customproperties>
         </LayoutObject>
-        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="Cadastra" textColor="0,0,0,255" blendMode="0">
+        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Regular Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="CadastraCondensed" textColor="0,0,0,255" blendMode="0">
           <families/>
           <text-buffer bufferJoinStyle="128" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferSize="1" bufferOpacity="1" bufferBlendMode="0" bufferDraw="0"/>
           <text-mask maskSizeUnits="MM" maskJoinStyle="128" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskOpacity="1" maskType="0" maskEnabled="0"/>
@@ -41250,7 +41250,7 @@ def my_form_open(dialog, layer, feature):
             <Option/>
           </customproperties>
         </LayoutObject>
-        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="Cadastra" textColor="0,0,0,255" blendMode="0">
+        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Regular Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="CadastraCondensed" textColor="0,0,0,255" blendMode="0">
           <families/>
           <text-buffer bufferJoinStyle="128" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferSize="1" bufferOpacity="1" bufferBlendMode="0" bufferDraw="0"/>
           <text-mask maskSizeUnits="MM" maskJoinStyle="128" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskOpacity="1" maskType="0" maskEnabled="0"/>
@@ -43134,7 +43134,7 @@ def my_form_open(dialog, layer, feature):
             <Option/>
           </customproperties>
         </LayoutObject>
-        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="Cadastra" textColor="0,0,0,255" blendMode="0">
+        <text-style fontSizeUnit="Point" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeightUnit="Percentage" previewBkgrdColor="255,255,255,255" forcedItalic="0" textOpacity="1" fontKerning="1" textOrientation="horizontal" multilineHeight="1" fontLetterSpacing="0" fontItalic="0" fontSize="7" fontUnderline="0" allowHtml="0" capitalization="0" fontStrikeout="0" namedStyle="Regular Condensed" fontWeight="50" forcedBold="0" fontWordSpacing="0" fontFamily="CadastraCondensed" textColor="0,0,0,255" blendMode="0">
           <families/>
           <text-buffer bufferJoinStyle="128" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferSize="1" bufferOpacity="1" bufferBlendMode="0" bufferDraw="0"/>
           <text-mask maskSizeUnits="MM" maskJoinStyle="128" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskOpacity="1" maskType="0" maskEnabled="0"/>

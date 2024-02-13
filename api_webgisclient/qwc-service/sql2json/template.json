@@ -246,7 +246,7 @@
                   "width": 480,
                   "height": 400
                 },
-                "bboxDependentLegend": "theme",
+                "bboxDependentLegend": false,
                 "scaleDependentLegend": "theme"
               }
             },
@@ -500,7 +500,7 @@
                   "width": 480,
                   "height": 400
                 },
-                "bboxDependentLegend": "theme",
+                "bboxDependentLegend": false,
                 "scaleDependentLegend": "theme"
               },
               "mapClickAction": "identify"

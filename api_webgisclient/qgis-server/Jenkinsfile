@@ -43,7 +43,7 @@ pipeline {
                       geo_db_server = env.GEO_DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '1'
+                      replicas = '2'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
@@ -52,7 +52,7 @@ pipeline {
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
-                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
+                      resources = ['cpu_request': '500m', 'cpu_limit': '3000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
@@ -60,7 +60,7 @@ pipeline {
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '6'
-                      resources = ['cpu_request': '1500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '16384Mi']
+                      resources = ['cpu_request': '1500m', 'cpu_limit': '3000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else {
                       environment = 'test'
@@ -177,21 +177,23 @@ pipeline {
                       unstash name: 'somap_print.json'
                     }
                     sh """
-                        if [ ! -d "config/default" ]; then
-                          mkdir -p config/default
+                        if [ ! -d "/tmp/config/default" ]; then
+                          mkdir -p /tmp/config/default
                         fi
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms ./config/default 2 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms ./config/default 2 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
-                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs ./config/default 2 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 3 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 3 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 script {
                     PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
-                        oc rsync -n ${namespace} config/default/ $PODNAME:/data
+                        oc rsync -n ${namespace} /tmp/config/default/ $PODNAME:/data
                     """
                     }
-                archiveArtifacts artifacts: 'config/**', onlyIfSuccessful: true, allowEmptyArchive: true
+                dir('/tmp/config/default') {
+                    archiveArtifacts artifacts: '**', onlyIfSuccessful: true, allowEmptyArchive: true
+                    }
                 }
             post {
                 always {

@@ -19,9 +19,6 @@ parameters:
   - description: Edit DB
     name: DB_EDIT
     value:
-  - description: Imdas DB
-    name: DB_IMDAS
-    value:
   - description: Sogis DB
     name: DB_SOGIS
     value:
@@ -36,12 +33,6 @@ parameters:
     value:
   - description: Password DB User mswrite
     name: PW_MSWRITE
-    value:
-  - description: Imdas DB User
-    name: USER_IMDAS_DB
-    value:
-  - description: Password Imdas DB User
-    name: PW_IMDAS_DB_USER
     value:
   - description: Namespace
     name: NAMESPACE
@@ -78,6 +69,8 @@ objects:
 
       spring.datasource0.driver-class-name=org.postgresql.Driver
 
+      spring.datasource0.maximum-pool-size=5
+
       spring.datasource1.jdbc-url=jdbc:postgresql://${GEO_DB_SERVER}/${DB_SOGIS}?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
 
       spring.datasource1.username=${USER_MSWRITE}
@@ -95,6 +88,8 @@ objects:
       spring.datasource3.password=${PW_REPORT_SERVER}
 
       spring.datasource3.driver-class-name=org.postgresql.Driver
+
+      spring.datasource3.maximum-pool-size=5
 
       # Custom Parameters
  

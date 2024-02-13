@@ -61,8 +61,7 @@ pipeline {
                       }
                     credentials = [
                         usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-sogis-db-mswrite-secret'     , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-report-server-secret' , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer'),
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-imdas-db-secret'             , usernameVariable: 'DbUserImdasDb'           , passwordVariable: 'PwdImdasUser')
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-report-server-secret' , usernameVariable: 'DbUserReportServer'      , passwordVariable: 'PwdReportServer')
                         ]
                     }
                 }
@@ -70,7 +69,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p IMDAS_DB_SERVER=srsofaioi18943.verw.rootso.org -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_SOGIS=${env.SOGIS_DB} -p DB_IMDAS=${env.IMDAS_DB} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p USER_IMDAS_DB=${DbUserImdasDb} -p PW_IMDAS_DB_USER=${PwdImdasUser} -p NAMESPACE=${namespace}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p NAMESPACE=${namespace}"
                     }
                 }
              }

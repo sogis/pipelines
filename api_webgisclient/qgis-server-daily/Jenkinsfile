@@ -60,7 +60,7 @@ pipeline {
                       replicas = '6'
                       replicas_print = '3'
                       replicas_featureinfo = '2'
-                      resources = ['cpu_request': '1500m', 'cpu_limit': '3000m', 'memory_request': '4096Mi', 'memory_limit': '8192']
+                      resources = ['cpu_request': '1500m', 'cpu_limit': '3000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else {
                       environment = 'test'

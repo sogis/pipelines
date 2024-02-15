@@ -64,7 +64,7 @@ objects:
           - name: FCGI_MIN_PROCESSES
             value: "2"
           - name: FCGI_MAX_PROCESSES
-            value: "3"
+            value: "4"
           - name: FCGI_MAX_REQUESTLEN
             value: "26214400"
           - name: FCGI_PROCESS_LIFE_TIME

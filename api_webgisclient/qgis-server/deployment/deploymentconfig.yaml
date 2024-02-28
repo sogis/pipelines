@@ -76,6 +76,12 @@ objects:
             value: "1"
           - name: QGIS_SERVER_OVERRIDE_SYSTEM_LOCALE
             value: "de_CH"
+          - name: QGIS_SERVER_LOG_PROFILE
+            value: "1"
+          - name: QGIS_SERVER_PROJECT_CACHE_STRATEGY
+            value: "periodic"
+          - name: QGIS_SERVER_TRUST_LAYER_METADATA
+            value: "1"
           image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

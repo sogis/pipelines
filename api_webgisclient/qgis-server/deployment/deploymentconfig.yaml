@@ -57,7 +57,7 @@ objects:
           - name: APACHE_LOG_LEVEL
             value: "info"
           - name: QGIS_SERVER_LOG_LEVEL
-            value: "1"
+            value: "0"
           - name: FCGI_MIN_PROCESSES
             value: "2"
           - name: FCGI_MAX_PROCESSES

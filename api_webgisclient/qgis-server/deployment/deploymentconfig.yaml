@@ -81,7 +81,7 @@ objects:
           - name: QGIS_SERVER_PROJECT_CACHE_STRATEGY
             value: "periodic"
           - name: QGIS_SERVER_TRUST_LAYER_METADATA
-            value: "0"
+            value: "1"
           image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -111,7 +111,7 @@ objects:
               path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
               port: 80
             failureThreshold: 3
-            periodSeconds: 30
+            periodSeconds: 20
             timeoutSeconds: 8
           resources:
             limits:

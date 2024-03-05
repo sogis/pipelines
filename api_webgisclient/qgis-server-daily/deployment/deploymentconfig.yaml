@@ -43,10 +43,8 @@ objects:
       activeDeadlineSeconds: 21600
       resources: {}
       rollingParams:
-        intervalSeconds: 1
-        maxSurge: 0
         maxUnavailable: 10%
-        timeoutSeconds: 600
+        timeoutSeconds: 150
         updatePeriodSeconds: 1
       type: Rolling
     template:
@@ -59,26 +57,45 @@ objects:
       spec:
         containers:
         - env:
-          - name: LOG_LEVEL
+          - name: APACHE_LOG_LEVEL
+            value: "info"
+          - name: QGIS_SERVER_LOG_LEVEL
+            value: "1"
+          - name: FCGI_MIN_PROCESSES
             value: "2"
-          - name: QGIS_FCGI_MIN_PROCESSES
-            value: "2"
-          - name: QGIS_FCGI_MAX_PROCESSES
+          - name: FCGI_MAX_PROCESSES
             value: "4"
+          - name: FCGI_MAX_REQUESTLEN
+            value: "26214400"
+          - name: FCGI_PROCESS_LIFE_TIME
+            value: "0"
+          - name: FCGI_IDLE_TIMEOUT
+            value: "300"
           - name: QGIS_FCGI_IOTIMEOUT
             value: "65"
-          image: sogis/qgis-server:${TAG}
+          - name: QGIS_SERVER_IGNORE_BAD_LAYERS
+            value: "1"
+          - name: QGIS_SERVER_LOG_STDERR
+            value: "1"
+          - name: QGIS_SERVER_OVERRIDE_SYSTEM_LOCALE
+            value: "de_CH"
+          - name: QGIS_SERVER_LOG_PROFILE
+            value: "1"
+          - name: QGIS_SERVER_PROJECT_CACHE_STRATEGY
+            value: "periodic"
+          - name: QGIS_SERVER_TRUST_LAYER_METADATA
+            value: "1"
+          image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
-            failureThreshold: 3
             httpGet:
-              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              path: ows/wfs3
               port: 80
               scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 60
+            periodSeconds: 30
+            failureThreshold: 3
             successThreshold: 1
-            timeoutSeconds: 8
+            timeoutSeconds: 2
           name: sogis-qgis-server
           ports:
           - containerPort: 80
@@ -86,13 +103,20 @@ objects:
           readinessProbe:
             failureThreshold: 1
             httpGet:
-              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              path: ows/wfs3
               port: 80
               scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 15
+            periodSeconds: 5
             successThreshold: 1
-            timeoutSeconds: 5
+            failureThreshold: 1
+            timeoutSeconds: 2
+          startupProbe:
+            httpGet:
+              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              port: 80
+            failureThreshold: 3
+            periodSeconds: 25
+            timeoutSeconds: 8
           resources:
             limits:
               cpu: ${CPU_LIMIT}
@@ -104,6 +128,9 @@ objects:
           volumeMounts:
           - mountPath: /data
             name: qgs-resources
+          - mountPath: /usr/local/share/fonts
+            name: qgs-resources
+            subPath: truetype
           - mountPath: /geodata
             name: datensogispicmir
           - mountPath: /etc/postgresql-common

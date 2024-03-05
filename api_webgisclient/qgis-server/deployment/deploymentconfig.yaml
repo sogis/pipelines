@@ -57,7 +57,7 @@ objects:
           - name: APACHE_LOG_LEVEL
             value: "info"
           - name: QGIS_SERVER_LOG_LEVEL
-            value: "1"
+            value: "0"
           - name: FCGI_MIN_PROCESSES
             value: "2"
           - name: FCGI_MAX_PROCESSES
@@ -76,41 +76,43 @@ objects:
             value: "1"
           - name: QGIS_SERVER_OVERRIDE_SYSTEM_LOCALE
             value: "de_CH"
+          - name: QGIS_SERVER_LOG_PROFILE
+            value: "1"
+          - name: QGIS_SERVER_PROJECT_CACHE_STRATEGY
+            value: "periodic"
+          - name: QGIS_SERVER_TRUST_LAYER_METADATA
+            value: "1"
           image: sourcepole/qwc-qgis-server:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
-            failureThreshold: 3
             httpGet:
-              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+              path: ows/wfs3
               port: 80
               scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 60
+            periodSeconds: 30
+            failureThreshold: 3
             successThreshold: 1
-            timeoutSeconds: 3
+            timeoutSeconds: 2
           name: sogis-qgis-server
           ports:
           - containerPort: 80
             protocol: TCP
           readinessProbe:
+            httpGet:
+              path: ows/wfs3
+              port: 80
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
             failureThreshold: 1
+            timeoutSeconds: 2
+          startupProbe:
             httpGet:
               path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
               port: 80
-              scheme: HTTP
-            initialDelaySeconds: 1
-            periodSeconds: 60
-            successThreshold: 1
-            timeoutSeconds: 5
-          startupProbe:
-            httpGet: 
-              path: ows/somap?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX=2598995.693892659619,1227339.217308256077,2603256.314620688558,1230464.738330131164&CRS=EPSG:2056&WIDTH=533&HEIGHT=391&LAYERS=ch.so.agi.gemeindegrenzen&STYLES=&FORMAT=image/png&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96
-              port: 80
-              scheme: HTTP
-            failureThreshold: 5
-            periodSeconds: 21
-            timeoutSeconds: 20
-
+            failureThreshold: 3
+            periodSeconds: 25
+            timeoutSeconds: 8
           resources:
             limits:
               cpu: ${CPU_LIMIT}

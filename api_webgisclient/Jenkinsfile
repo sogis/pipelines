@@ -26,7 +26,7 @@ if (User.current()) {
      }
 }
 else {
-  returnValue = ["gdi-integration:selected"]
+  returnValue = ["gdi-integration:selected", "gdi-test"]
 }
 return returnValue'''
                             ]

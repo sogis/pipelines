@@ -14,7 +14,7 @@ pipeline {
         timeout(time: 35, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: '2.0.17',
+        string(defaultValue: '3.28.7',
                description: 'Image Version',
                name: 'vBaseImage'
                )
@@ -39,7 +39,7 @@ pipeline {
                       db_server = env.DB_SERVER_TEST
                       environment = 'test'
                       sogisPicMirEnv = '-test'
-                      replicas = '1'
+                      replicas = '2'
                       replicas_print = '1'
                       replicas_featureinfo = '1'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
@@ -48,10 +48,10 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
-                      replicas = '1'
+                      replicas = '2'
                       replicas_print = '2'
                       replicas_featureinfo = '1'
-                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
+                      resources = ['cpu_request': '500m', 'cpu_limit': '3000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
@@ -60,7 +60,7 @@ pipeline {
                       replicas = '6'
                       replicas_print = '3'
                       replicas_featureinfo = '2'
-                      resources = ['cpu_request': '1500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '16384Mi']
+                      resources = ['cpu_request': '1500m', 'cpu_limit': '3000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else {
                       environment = 'test'

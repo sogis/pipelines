@@ -15,7 +15,7 @@ pipeline {
         }
     parameters {
         string(description: 'Image Version',
-               defaultValue: "2.0.17",
+               defaultValue: "3.28.7",
                name: 'vBaseImage'
                )
         string(defaultValue: "master",

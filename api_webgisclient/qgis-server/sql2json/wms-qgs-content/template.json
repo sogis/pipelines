@@ -8,8 +8,8 @@
   "selection_color_rgba": [
     255, 255, 0, 255
   ],
-  "wms_max_width": 5120,
-  "wms_max_height": 5120,
+  "wms_max_width": 8192,
+  "wms_max_height": 8192,
   "wms_metadata": {
     "service_name": "",
     "service_title": "",
@@ -31,7 +31,8 @@
 
     "crs_list": [
       "EPSG:2056", 
-      "EPSG:4326"
+      "EPSG:4326", 
+      "EPSG:3857"
     ],
   
     "bbox": {

@@ -52,7 +52,7 @@ pipeline {
                       environment = 'integration'
                       sogisPicMirEnv = '-int'
                       replicas = '2'
-                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '16384Mi']
+                      resources = ['cpu_request': '500m', 'cpu_limit': '4000m', 'memory_request': '2048Mi', 'memory_limit': '8192Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
@@ -60,7 +60,7 @@ pipeline {
                       environment = 'production'
                       sogisPicMirEnv = '-prod'
                       replicas = '6'
-                      resources = ['cpu_request': '1500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '16384Mi']
+                      resources = ['cpu_request': '1500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }
                     else {
                       environment = 'test'

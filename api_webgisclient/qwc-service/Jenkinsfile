@@ -45,21 +45,21 @@ pipeline {
                       db_server = env.DB_SERVER_TEST
                       analyticsUrl = 'geo-i.so.ch'
                       wmtsUrl = 'https://geo-t.so.ch'
-                      editGenEnv = '-test'
+                      editGenEnv = 'test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
                       analyticsUrl = 'geo-i.so.ch'
                       wmtsUrl = 'https://geo.so.ch'
-                      editGenEnv = '-int'
+                      editGenEnv = 'integration'
                       resources = ['cpu_request': '80m', 'cpu_limit': '160m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       analyticsUrl = 'geo.so.ch'
                       wmtsUrl = 'https://geo.so.ch'
-                      editGenEnv = '-prod'
+                      editGenEnv = 'production'
                       resources = ['cpu_request': '160m', 'cpu_limit': '320m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {

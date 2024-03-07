@@ -99,7 +99,7 @@ pipeline {
         stage ('Create PyQt Ui Files') {
             steps {
                 sh """
-                    curl -X GET "https:///edit-generator-gdi-$editGenEnv.apps.ocp.so.ch/generate_ui?tenant=default"
+                    curl -X GET "https://edit-generator-gdi-${editGenEnv}.apps.ocp.so.ch/generate_ui?tenant=default"
                 """
                 }
             }

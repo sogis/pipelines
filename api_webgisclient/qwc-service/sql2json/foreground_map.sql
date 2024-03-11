@@ -185,10 +185,10 @@ edit_layers AS (
       jsonb_build_object(
         'editDataset', identifier,
         'layerName', dp.title,
-        'fields', attr_arr,
+        'fields', coalesce(CAST(CAST(tv.form_json AS jsonb) ->> 'fields' AS jsonb), attr_arr),
         'geomType', initcap(t.geo_type),
-        'form', ':/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,
-	'permissions', w.permissions
+        'form', ':/forms/autogen/somap_'::character varying || identifier || '.ui'::character varying,	
+	      'permissions', w.permissions
       )
     ) AS edit_keyval
   FROM

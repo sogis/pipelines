@@ -90,6 +90,7 @@ pipeline {
                     createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'wms-qgs-content', 'sogis', 'json2qgs'
                     createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_wfs.json', serviceName, 'wfs-qgs-content', 'sogis', 'json2qgs'
                     createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_print.json', serviceName, 'print-qgs-content', 'sogis', 'json2qgs'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'somap_edit.json', serviceName, 'edit-qgs-content', 'sogis', 'json2qgs'
                     }
                 }
             }
@@ -163,6 +164,15 @@ pipeline {
                       persistentVolumeClaim:
                         claimName: "qgs-resources-claim"
                         readOnly: false
+                    - name: "edit-generator-config-claim"
+                      secret:
+                        secretName: jenkins-edit-generator-pg-service-secret
+                        items:
+                          - key: pg_service.conf
+                            path: pg_service.conf
+                    - name: "tenant-config-claim"
+                      configMap:
+                        name: jenkins-edit-generator-tenantconfig
                     - emptyDir:
                         medium: ""
                       name: "workspace-volume"
@@ -175,14 +185,16 @@ pipeline {
                       unstash name: configFileName
                       unstash name: 'somap_wfs.json'
                       unstash name: 'somap_print.json'
+                      unstash name: 'somap_edit.json'
                     }
                     sh """
                         if [ ! -d "/tmp/config/default" ]; then
-                          mkdir -p /tmp/config/default
+                          mkdir -p /tmp/config/default/edit/
                         fi
                         python3 /srv/json2qgs/json2qgs.py qgs/somap.json wms /tmp/config/default 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_print.json wms /tmp/config/default 3 --qgsName somap_print --qgsTemplateDir /srv/json2qgs/qgs
                         python3 /srv/json2qgs/json2qgs.py qgs/somap_wfs.json wfs /tmp/config/default 3 --qgsName somap_wfs --qgsTemplateDir /srv/json2qgs/qgs
+                        python3 /srv/json2qgs/json2qgs.py qgs/somap_edit.json wms /tmp/config/default/edit 3 --qgsName somap --qgsTemplateDir /srv/json2qgs/qgs
                     """
                     }
                 script {

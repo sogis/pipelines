@@ -99,6 +99,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql/pg_service.conf
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -143,6 +145,8 @@ objects:
             name: qgs-resources
             subPath: config
             readOnly: true
+          - mountPath: /usr/etc/postgresql 
+            name: qwc-service-config-claim
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -155,4 +159,10 @@ objects:
           persistentVolumeClaim:
             claimName: qgs-resources-claim
             readOnly: true
+        - name: qwc-service-config-claim
+          secret:
+            secretName: qwc-service-pg-service-secret
+            items:
+              - key: pg_service.conf
+                path: pg_service.conf
     triggers: []

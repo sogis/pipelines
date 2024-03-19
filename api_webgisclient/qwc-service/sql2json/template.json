@@ -3,6 +3,7 @@
   "service": "map-viewer",
   "config": {
     "qwc2_path": "/qwc2/",
+    "db_url": "",
     "auth_service_url": "/auth/",
     "ccc_config_service_url": "/api/v1/ccc/",
     "data_service_url": "/api/data/v1/",

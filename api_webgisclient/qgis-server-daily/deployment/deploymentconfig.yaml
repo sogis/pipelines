@@ -58,7 +58,7 @@ objects:
         containers:
         - env:
           - name: APACHE_LOG_LEVEL
-            value: "info"
+            value: "warn"
           - name: QGIS_SERVER_LOG_LEVEL
             value: "1"
           - name: FCGI_MIN_PROCESSES

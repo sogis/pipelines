@@ -49,12 +49,12 @@ pipeline {
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
                       baseUrl = 'geo-i.so.ch'
-                      resources = ['cpu_request': '150m', 'cpu_limit': '350m', 'memory_request': '100Mi', 'memory_limit': '200Mi']
+                      resources = ['cpu_request': '150m', 'cpu_limit': '350m', 'memory_request': '512Mi', 'memory_limit': '1024Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       baseUrl = 'geo.so.ch'
-                      resources = ['cpu_request': '150m', 'cpu_limit': '350m', 'memory_request': '200Mi', 'memory_limit': '200Mi']
+                      resources = ['cpu_request': '150m', 'cpu_limit': '350m', 'memory_request': '512Mi', 'memory_limit': '1024Mi']
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'

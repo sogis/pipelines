@@ -101,7 +101,7 @@ objects:
             value: www-data
           - name: PGSERVICEFILE
             value: /usr/etc/postgresql/pg_service.conf
-          image: pfeimich/sogis-plotinfo-service:${TAG}
+          image: sourcepole/sogis-plotinfo-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3

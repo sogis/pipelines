@@ -227,7 +227,7 @@ pipeline {
                     } 
                 stage ('Deploy jasper-reporting-service') {
                     when {
-                        expression { AuswahlRollout == 'Alles' }
+                        expression { AuswahlRollout == 'Alles' || AuswahlRollout == 'Templates' }
                     }
                     steps {
                         build job: 'gdi/jasper-reporting-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['jasper-reporting-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['jasper-reporting-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}")  ], wait: true, propagate: true 

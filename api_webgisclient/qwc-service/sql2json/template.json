@@ -478,7 +478,9 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": true,
+		"snappingActive": true
               }
             },
             {
@@ -568,14 +570,18 @@
             {
               "name": "Redlining",
               "cfg": {
-                "allowGeometryLabels": false
+                "allowGeometryLabels": false,
+		"snapping": true,
+		"snappingActive": true
               }
             },
             {
               "name": "Editing",
               "cfg": {
                 "width": "30em",
-                "touchFriendly": false
+                "touchFriendly": false,
+		"snapping": true,
+		"snappingActive": true
               }
             },
 	    {

@@ -478,9 +478,7 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true,
-		"snapping": true,
-		"snappingActive": true
+                "showMeasureModeSwitcher": true
               }
             },
             {

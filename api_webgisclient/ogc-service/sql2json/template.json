@@ -39,6 +39,7 @@
         },
         "print_templates": [
           "A3 hoch",
+	  "A3 hoch_legend",
           "A3 quer",
           "A4 hoch",
           "A4 quer"

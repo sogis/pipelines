@@ -484,7 +484,7 @@
 	    {
 	      "name": "NewsPopup",
 	      "cfg": {
-	        "newsDocument": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/aktuell/",
+	        "newsDocument": "https://geo-t.so.ch",
 		"newsRev": "1"
 	      }
 	    },

@@ -481,6 +481,13 @@
                 "showMeasureModeSwitcher": true
               }
             },
+	    {
+	      "name": "NewsPopup",
+	      "cfg": {
+	        "newsDocument": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/aktuell/",
+		"newsRev": "1"
+	      }
+	    },
             {
               "name": "ThemeSwitcher"
             },
@@ -536,6 +543,7 @@
                 "showQRCode": true
               }
             },
+
             {
               "name": "Print",
               "cfg": {

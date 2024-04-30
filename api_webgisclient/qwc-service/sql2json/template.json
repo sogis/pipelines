@@ -432,10 +432,6 @@
                         "key": "Editing",
                         "icon": "editing"
                       },
-		      {
-			"key": "AttributeTable",
-			"icon": "editing"
-		      },
                       {
                         "key": "RasterExport",
                         "icon": "rasterexport"

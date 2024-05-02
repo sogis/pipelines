@@ -529,7 +529,9 @@
                 "displayInlineImages": true,
 		"geometry": {
                   "initialWidth": 480,
-                  "initialHeight": 550
+                  "initialHeight": 550,
+		  "initialX": 0,
+		  "initialY": 0
 		},
 		"featureInfoReturnsLayerName": false
               }

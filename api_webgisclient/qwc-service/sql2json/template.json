@@ -195,11 +195,7 @@
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
                 "displayInlineImages": true,
-		"featureInfoReturnsLayerName": false,
-		"geometry": {
-		  "initialWidth": 480,
-		  "initialHeight": 480
-		}
+		"featureInfoReturnsLayerName": false
               }
             },
             {
@@ -531,8 +527,10 @@
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
                 "displayInlineImages": true,
-                "initialWidth": 480,
-                "initialHeight": 550,
+		"geometry": {
+                  "initialWidth": 480,
+                  "initialHeight": 550
+		},
 		"featureInfoReturnsLayerName": false
               }
             },

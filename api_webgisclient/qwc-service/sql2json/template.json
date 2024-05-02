@@ -195,7 +195,11 @@
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
                 "displayInlineImages": true,
-		"featureInfoReturnsLayerName": false
+		"featureInfoReturnsLayerName": false,
+		"geometry": {
+		  "initialWidth": 480,
+		  "initialHeight": 480
+		}
               }
             },
             {

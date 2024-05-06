@@ -581,7 +581,7 @@
               "name": "Redlining",
               "cfg": {
                 "allowGeometryLabels": false,
-		"snapping": true,
+		"snapping": false,
 		"snappingActive": true
               }
             },
@@ -590,15 +590,12 @@
               "cfg": {
                 "width": "30em",
                 "touchFriendly": false,
-		"snapping": true,
+		"snapping": false,
 		"snappingActive": true
               }
             },
 	    {
 	      "name": "Bookmark"
-	    },
-	    {
-              "name": "AttributeTable"
 	    },
             {
               "name": "MapCompare"

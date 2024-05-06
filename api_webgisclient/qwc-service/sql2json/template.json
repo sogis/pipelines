@@ -178,7 +178,8 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
             {
@@ -478,7 +479,8 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
 	    {

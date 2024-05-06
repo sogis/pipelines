@@ -606,7 +606,7 @@
               "name": "HeightProfile",
               "cfg": {
                 "height": 200,
-		"heightProfilePrecision": 2
+		"heightProfilePrecision": 1
               }
             },
             {

@@ -22884,7 +22884,7 @@ def my_form_open(dialog, layer, feature):
       <renderer-v2 symbollevels="0" type="nullSymbol" enableorderby="0" forceraster="0" referencescale="-1"/>
       <labeling type="rule-based">
         <rules key="{af4c9850-9cd1-4a4a-9ab9-592384d9b851}">
-          <rule scalemaxdenom="750" key="{fed62f0b-998f-406d-ad05-6f5f29aea06a}" scalemindenom="1">
+          <rule scalemaxdenom="750" key="{fed62f0b-998f-406d-ad05-6f5f29aea06a}" filter="ist_offizielle_bezeichnung = 'true'" scalemindenom="1">
             <settings calloutType="simple">
               <text-style fontFamily="Cadastra" blendMode="0" forcedItalic="0" fontSize="9.8000000000000007" textColor="0,0,0,255" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontItalic="0" isExpression="0" textOpacity="1" capitalization="0" namedStyle="55 Roman" fieldName="hausnummer" fontWeight="50" fontKerning="1" allowHtml="0" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" multilineHeightUnit="Percentage" fontSizeUnit="Point" fontUnderline="0" multilineHeight="1" previewBkgrdColor="255,255,255,255" forcedBold="0" fontStrikeout="0" useSubstitutions="0">
                 <families/>
@@ -23034,7 +23034,7 @@ def my_form_open(dialog, layer, feature):
               </callout>
             </settings>
           </rule>
-          <rule scalemaxdenom="1250" key="{a9401b76-fefb-406f-bb9f-358fd390e4f2}" scalemindenom="750">
+          <rule scalemaxdenom="1250" key="{a9401b76-fefb-406f-bb9f-358fd390e4f2}" filter="ist_offizielle_bezeichnung = 'true'" scalemindenom="750">
             <settings calloutType="simple">
               <text-style fontFamily="Cadastra" blendMode="0" forcedItalic="0" fontSize="7" textColor="0,0,0,255" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontItalic="0" isExpression="0" textOpacity="1" capitalization="0" namedStyle="55 Roman" fieldName="hausnummer" fontWeight="50" fontKerning="1" allowHtml="0" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" multilineHeightUnit="Percentage" fontSizeUnit="Point" fontUnderline="0" multilineHeight="1" previewBkgrdColor="255,255,255,255" forcedBold="0" fontStrikeout="0" useSubstitutions="0">
                 <families/>
@@ -23184,7 +23184,7 @@ def my_form_open(dialog, layer, feature):
               </callout>
             </settings>
           </rule>
-          <rule scalemaxdenom="3000" key="{699af372-a1f1-4cd1-83cf-dc693388caa2}" scalemindenom="1250">
+          <rule scalemaxdenom="3000" key="{699af372-a1f1-4cd1-83cf-dc693388caa2}" filter="ist_offizielle_bezeichnung = 'true'" scalemindenom="1250">
             <settings calloutType="simple">
               <text-style fontFamily="Cadastra" blendMode="0" forcedItalic="0" fontSize="4.9000000000000004" textColor="0,0,0,255" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontItalic="0" isExpression="0" textOpacity="1" capitalization="0" namedStyle="55 Roman" fieldName="hausnummer" fontWeight="50" fontKerning="1" allowHtml="0" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" multilineHeightUnit="Percentage" fontSizeUnit="Point" fontUnderline="0" multilineHeight="1" previewBkgrdColor="255,255,255,255" forcedBold="0" fontStrikeout="0" useSubstitutions="0">
                 <families/>
@@ -23334,7 +23334,7 @@ def my_form_open(dialog, layer, feature):
               </callout>
             </settings>
           </rule>
-          <rule scalemaxdenom="6000" key="{3cb2809f-d862-4f0f-b8ec-b57e9bd4f041}" scalemindenom="3000">
+          <rule scalemaxdenom="6000" key="{3cb2809f-d862-4f0f-b8ec-b57e9bd4f041}" filter="ist_offizielle_bezeichnung = 'true'" scalemindenom="3000">
             <settings calloutType="simple">
               <text-style fontFamily="Cadastra" blendMode="0" forcedItalic="0" fontSize="3.5" textColor="0,0,0,255" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontItalic="1" isExpression="0" textOpacity="1" capitalization="0" namedStyle="55 Roman" fieldName="hausnummer" fontWeight="75" fontKerning="1" allowHtml="0" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" multilineHeightUnit="Percentage" fontSizeUnit="Point" fontUnderline="0" multilineHeight="1" previewBkgrdColor="255,255,255,255" forcedBold="0" fontStrikeout="0" useSubstitutions="0">
                 <families/>

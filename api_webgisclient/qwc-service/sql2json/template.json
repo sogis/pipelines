@@ -178,8 +178,7 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true,
-		"snapping": false
+                "showMeasureModeSwitcher": true
               }
             },
             {
@@ -479,8 +478,7 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true,
-		"snapping": false
+                "showMeasureModeSwitcher": true
               }
             },
 	    {
@@ -583,7 +581,7 @@
               "name": "Redlining",
               "cfg": {
                 "allowGeometryLabels": false,
-		"snapping": false,
+		"snapping": true,
 		"snappingActive": true
               }
             },
@@ -592,12 +590,15 @@
               "cfg": {
                 "width": "30em",
                 "touchFriendly": false,
-		"snapping": false,
+		"snapping": true,
 		"snappingActive": true
               }
             },
 	    {
 	      "name": "Bookmark"
+	    },
+	    {
+	      "name": "AttributeTable"
 	    },
             {
               "name": "MapCompare"

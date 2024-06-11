@@ -472,7 +472,8 @@
             {
               "name": "BottomBar",
               "cfg": {
-                "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/"
+                "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+		"displayScales": false
               }
             },
             {

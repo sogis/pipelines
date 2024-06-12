@@ -1,0 +1,112 @@
+def serviceName = 'mysoch-auth-service'
+def configFileName = 'samlAuthConfig.json'
+def schemaDirName = 'sogis-config-generator'
+// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
+// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
+// will not be fully engaged.
+library identifier: "jenkins-shared-libs@${JENKINS_SHARED_LIBS_BRANCH}", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/sogis/jenkins-shared-libs.git'])
+
+pipeline {
+    agent { label 'master' } 
+    options {
+        // set a timeout of 10 minutes for this pipeline
+        timeout(time: 10, unit: 'MINUTES')
+        }
+    parameters {
+        string(defaultValue: "latest",
+               description: 'Image Version',
+               name: 'vBaseImage'
+               )
+        string(defaultValue: "master",
+               description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
+               name: 'branch'
+               )
+        string(description: 'Anzahl der Replicas',
+                defaultValue: '1',
+                name: 'replicas'
+                )
+        string(defaultValue: "gdi-test",
+               description: 'Bitte namespace auswählen',
+               name: 'namespace'
+               )
+        }
+
+    stages {
+        stage ('Ask for Version') {
+            steps {
+                script {
+                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
+                    vBaseImage = params.vBaseImage
+                    replicas = params.replicas
+                    branch = params.branch
+                    namespace = params.namespace
+                    if ( namespace == 'gdi-test' ) {
+                      db_server = env.DB_SERVER_TEST
+                      baseUrl = 'geo-t.so.ch'
+                      idpUrl = 'idp-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    else if ( namespace == 'gdi-integration' ) {
+                      db_server = env.DB_SERVER_INT
+                      baseUrl = 'geo-i.so.ch'
+                      idpUrl = 'idp.so.ch'
+                      resources = ['cpu_request': '100m', 'cpu_limit': '250m', 'memory_request': '64Mi', 'memory_limit': '128Mi']
+                      }
+                    else if ( namespace == 'gdi-production' ) {
+                      db_server = env.DB_SERVER_PROD
+                      baseUrl = 'geo.so.ch'
+                      idpUrl = 'idp.so.ch'
+                      resources = ['cpu_request': '150m', 'cpu_limit': '250m', 'memory_request': '128Mi', 'memory_limit': '128Mi']
+                      }
+                    else {
+                      baseUrl = 'geo-t.so.ch'
+                      idpUrl = 'idp-t.so.ch'
+                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      }
+                    if (params.containsKey("configs")) {
+                        buildNumber = params.buildNumber
+                        jobName = params.jobName
+                        }
+                    else {
+                        buildNumber = BUILD_NUMBER
+                        jobName = JOB_NAME
+                        }
+                    credentials = [
+                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-sogis-service-secret'       , usernameVariable: 'DbUserSogisService'      , passwordVariable: 'PwdSogisService')
+                        ]
+                    }
+                }
+            }
+        stage ('Configure Ressources') {
+            steps {
+                withCredentials ( credentials ) {
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p BASEURL=${baseUrl} -p IDP_URL=${idpUrl}"
+                    }
+                }
+            }
+        stage ('Create configs') {
+            steps {
+                withCredentials ( credentials ) {
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'saml-auth', 'qwc', schemaDirName
+                    }
+                }
+            }
+        stage ('Deploy auth-service in Test env') {
+            steps {
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p BASEDOMAIN=${baseUrl}"
+                }
+            }
+        }
+    post {
+        // Clean after build
+        cleanup {
+            sh """
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@script
+                rm -rf $JENKINS_HOME/jobs/$JOB_NAME/workspace\\@libs
+                rm -rf $WORKSPACE/*
+            """
+            }
+        }
+    }

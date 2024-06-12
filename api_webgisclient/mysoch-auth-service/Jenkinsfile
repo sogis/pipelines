@@ -89,7 +89,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    reateConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'mysoch-auth', 'sogis', schemaDirName
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'mysoch-auth', 'sogis', schemaDirName
                     }
                 }
             }

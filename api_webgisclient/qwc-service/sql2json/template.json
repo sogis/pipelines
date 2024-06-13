@@ -148,7 +148,17 @@
                   },
                   {
                     "key": "Print",
-                    "icon": "print"
+                    "icon": "print",
+		    "subitems": [
+	              {
+		        "key": "Print",
+			"icon": "print"
+		      },
+		      {
+		        "key": "LandRegisterExtract",
+			"icon": "print"
+		      }
+		    ]
                   },
                   {
                     "key": "LandRegisterExtract",
@@ -449,7 +459,17 @@
                   {
                     "key": "Print",
                     "icon": "print",
-		    "shortcut": "alt+shift+p"
+		    "subitems": [
+	              {
+		        "key": "Print",
+			"icon": "print",
+		        "shortcut": "alt+shift+p"
+		      },
+		      {
+		        "key": "LandRegisterExtract",
+			"icon": "print"
+		      }
+		    ]
                   },
                   {
                     "key": "LandRegisterExtract",
@@ -599,8 +619,9 @@
               "cfg": {
                 "width": "30em",
                 "touchFriendly": false,
-		"snapping": true,
-		"snappingActive": true
+		"snapping": false,
+		"snappingActive": false,
+		"allowCloneGeometry": false
               }
             },
 	    {

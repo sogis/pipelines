@@ -56,6 +56,11 @@ objects:
         - envFrom:
           - secretRef:
               name: mysoch-auth-service-secret
+          env:
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVIC_GID
+            value: www-data
           image: sourcepole/sogis-mysoch-auth:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -59,7 +59,7 @@ objects:
           env:
           - name: SERVICE_UID
             value: www-data
-          - name: SERVIC_GID
+          - name: SERVICE_GID
             value: www-data
           image: sourcepole/sogis-mysoch-auth:${TAG}
           imagePullPolicy: IfNotPresent

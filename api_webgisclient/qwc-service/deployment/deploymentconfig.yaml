@@ -149,6 +149,7 @@ objects:
             name: qwc-service-config-claim
           - mountPath: /srv/qwc_service
             name: server-py-configmap
+            subPath: server.py
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}

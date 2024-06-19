@@ -161,10 +161,6 @@
 		    ]
                   },
                   {
-                    "key": "LandRegisterExtract",
-                    "icon": "print"
-                  },
-                  {
                     "key": "Help",
                     "icon": "info",
                     "identifyEnabled": true
@@ -184,7 +180,7 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
-		"leaveUrl": "https://my-a.so.ch/Pages/Account/Logout.aspx",
+		"leaveUrl": "https://my-a.so.ch",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },
@@ -474,10 +470,6 @@
 		    ]
                   },
                   {
-                    "key": "LandRegisterExtract",
-                    "icon": "print"
-                  },
-                  {
                     "key": "Help",
                     "icon": "info",
                     "identifyEnabled": true
@@ -497,7 +489,7 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
-		"leaveUrl": "https://my-a.so.ch/Pages/Account/Logout.aspx",
+		"leaveUrl": "https://my-a.so.ch",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },
@@ -505,6 +497,8 @@
               "name": "BottomBar",
               "cfg": {
                 "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+		"contactUrl": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+		"helpUrl": "https://geohelp.so.ch",
 		"displayScales": false
               }
             },

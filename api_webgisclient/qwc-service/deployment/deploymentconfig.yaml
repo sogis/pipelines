@@ -147,20 +147,11 @@ objects:
             readOnly: true
           - mountPath: /usr/etc/postgresql 
             name: qwc-service-config-claim
-          - mountPath: /srv/qwc_service
-            name: server-py-configmap
-            subPath: server.py
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - configMap:
-            items:
-            - key: server.py
-              path: server.py
-            name: server-py
-          name: server-py-configmap
         - name: qwc-assets
           persistentVolumeClaim:
             claimName: qwc-assets-claim

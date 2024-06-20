@@ -22,6 +22,10 @@ parameters:
     name: MEMORY_LIMIT
   - description: WMTS Base Url
     name: WMTS_URL
+  - description: Base Url for Environment
+    name: BASE_URL
+  - description: Url for my.so.ch Environment
+    name: MYSOCH_URL
 labels:
   application: gdi
 objects:

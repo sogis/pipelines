@@ -7,7 +7,7 @@ qwc-ogc-service:latest-2024-lts:2.0.27
 qwc-legend-service:latest-2024-lts:2.0.22
 qwc-feature-info-service:latest-2024-lts:2.0.30
 qwc-mapinfo-service:latest-2024-lts:2.0.18
-sogis-plotinfo-service:v2024.4-lts:2.0.20
+sogis-plotinfo-service:v2024.06.19:2.0.20
 qwc-permalink-service:latest-2024-lts:2.0.18
 qwc-elevation-service:latest-2024-lts:2.0.18
 qwc-document-service:latest-2024-lts:2.0.21

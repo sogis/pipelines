@@ -180,7 +180,7 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
-		"leaveUrl": "https://my-a.so.ch",
+		"leaveUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },
@@ -489,7 +489,7 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
-		"leaveUrl": "https://my-a.so.ch",
+		"leaveUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },

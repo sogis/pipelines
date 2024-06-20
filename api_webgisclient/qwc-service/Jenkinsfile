@@ -45,6 +45,8 @@ pipeline {
                       db_server = env.DB_SERVER_TEST
                       analyticsUrl = 'geo-i.so.ch'
                       wmtsUrl = 'https://geo-t.so.ch'
+                      baseUrl = 'https://geo-t.so.ch'
+                      mysochUrl = 'https://my-a.so.ch'
                       editGenEnv = 'test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
@@ -52,6 +54,8 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       analyticsUrl = 'geo-i.so.ch'
                       wmtsUrl = 'https://geo.so.ch'
+                      baseUrl = 'https://geo-i.so.ch'
+                      mysochUrl = 'https://my.so.ch'
                       editGenEnv = 'integration'
                       resources = ['cpu_request': '80m', 'cpu_limit': '160m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }
@@ -59,12 +63,16 @@ pipeline {
                       db_server = env.DB_SERVER_PROD
                       analyticsUrl = 'geo.so.ch'
                       wmtsUrl = 'https://geo.so.ch'
+                      baseUrl = 'https://geo.so.ch'
+                      mysochUrl = 'https://my.so.ch'
                       editGenEnv = 'production'
                       resources = ['cpu_request': '160m', 'cpu_limit': '320m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
                       analyticsUrl = 'geo-i.so.ch'
                       wmtsUrl = 'https://geo-t.so.ch'
+                      baseUrl = 'https://geo-t.so.ch'
+                      mysochUrl = 'https://my-a.so.ch'
                       editGenEnv = '-test'
                       resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
@@ -105,7 +113,7 @@ pipeline {
             }
         stage ('Deploy qwc-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl}"
+                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p WMTS_URL=${wmtsUrl} -p BASE_URL=${baseUrl} -p MYSOCH_URL=${mysochUrl}"
                 }
             }
         }

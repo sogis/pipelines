@@ -137,10 +137,6 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "AttributeTable",
-                        "icon": "editing"
-                      },
-                      {
                         "key": "RasterExport",
                         "icon": "rasterexport"
                       }
@@ -442,10 +438,6 @@
                       },
                       {
                         "key": "Editing",
-                        "icon": "editing"
-                      },
-                      {
-                        "key": "AttributeTable",
                         "icon": "editing"
                       },
                       {

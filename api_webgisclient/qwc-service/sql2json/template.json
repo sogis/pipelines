@@ -186,7 +186,8 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
             {
@@ -497,7 +498,8 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
 	    {
@@ -600,8 +602,7 @@
               "name": "Redlining",
               "cfg": {
                 "allowGeometryLabels": false,
-		"snapping": true,
-		"snappingActive": true
+		"snapping": false
               }
             },
             {

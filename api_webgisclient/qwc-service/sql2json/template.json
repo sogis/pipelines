@@ -502,13 +502,6 @@
 		"snapping": false
               }
             },
-	    {
-	      "name": "NewsPopup",
-	      "cfg": {
-	        "newsDocument": "https://geo-t.so.ch/news",
-		"newsRev": "1"
-	      }
-	    },
             {
               "name": "ThemeSwitcher"
             },

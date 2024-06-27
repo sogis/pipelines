@@ -171,7 +171,8 @@
                   "resultLimit": 10,
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
-                  "zoomToLayers": false
+                  "zoomToLayers": false,
+		  "showLayerResultsBeforePlaces": true
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
@@ -272,11 +273,14 @@
             {
               "name": "Redlining",
               "cfg": {
-                "allowGeometryLabels": false
+                "allowGeometryLabels": false,
+		"snapping": false,
+		"__reducedFunctionality": true
               }
             },
             {
-              "name": "Editing"
+              "name": "Editing",
+	      "allowCloneGeometry": false
             },
             {
               "name": "MapCompare"
@@ -477,7 +481,8 @@
                   "resultLimit": 25,
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
-                  "zoomToLayers": false
+                  "zoomToLayers": false,
+                  "showLayerResultsBeforePlaces": true
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
@@ -547,7 +552,8 @@
 		  "initialX": 0,
 		  "initialY": 0
 		},
-		"featureInfoReturnsLayerName": false
+		"featureInfoReturnsLayerName": false,
+		"clearResultsOnClose": false
               }
             },
             {
@@ -595,7 +601,8 @@
               "name": "Redlining",
               "cfg": {
                 "allowGeometryLabels": false,
-		"snapping": false
+		"snapping": false,
+		"__reducedFunctionality": true
               }
             },
             {

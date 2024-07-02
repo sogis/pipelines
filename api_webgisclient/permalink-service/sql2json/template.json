@@ -4,6 +4,7 @@
   "config": {
     "db_url": "postgresql:///?service=sogis_edit_write",
     "permalinks_table": "agi_webgisclient.permalinks",
-    "user_bookmark_table": "agi_webgisclient.user_bookmarks"
+    "user_bookmark_table": "agi_webgisclient.user_bookmarks",
+    "default_expiry_date": ""
   }
 }

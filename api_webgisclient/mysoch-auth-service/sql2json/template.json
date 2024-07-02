@@ -9,7 +9,7 @@
     "userid_claims": ["mysoch_id"],
     "displayname_claims": ["emailaddress"],
     "userid_verify_sql": "SELECT id FROM identity_table",
-    "tenant_header_name": "tenant",
+    "tenant_header_name": "Tenant",
     "tenant_header_value": "mysoch"
   }
 }

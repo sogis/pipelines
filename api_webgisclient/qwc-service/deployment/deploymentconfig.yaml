@@ -22,6 +22,10 @@ parameters:
     name: MEMORY_LIMIT
   - description: WMTS Base Url
     name: WMTS_URL
+  - description: Base Url for Environment
+    name: BASE_URL
+  - description: Url for my.so.ch Environment
+    name: MYSOCH_URL
 labels:
   application: gdi
 objects:
@@ -81,6 +85,10 @@ objects:
             value: /api/data/v1/
           - name: WMTS_URL
             value: ${WMTS_URL}
+          - name: BASE_URL
+            value: ${BASE_URL}
+          - name: MYSOCH_URL
+            value: ${MYSOCH_URL}
           - name: JWT_SECRET_KEY
             value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           - name: ALLOW_BASIC_AUTH_USER
@@ -99,6 +107,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql/pg_service.conf
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -143,6 +153,8 @@ objects:
             name: qgs-resources
             subPath: config
             readOnly: true
+          - mountPath: /usr/etc/postgresql 
+            name: qwc-service-config-claim
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -155,4 +167,10 @@ objects:
           persistentVolumeClaim:
             claimName: qgs-resources-claim
             readOnly: true
+        - name: qwc-service-config-claim
+          secret:
+            secretName: qwc-service-pg-service-secret
+            items:
+              - key: pg_service.conf
+                path: pg_service.conf
     triggers: []

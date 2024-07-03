@@ -1,0 +1,121 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: mysoch-auth-service
+  annotations:
+    description: "Creates deploymentConfig for mysoch-auth-service"
+parameters:
+  - description: Openshift Namespace
+    name: NAMESPACE
+  - description: Image Stream Tag
+    name: TAG
+  - description: Number of Replicas
+    name: REPLICAS
+  - description: First level domain
+    name: BASEDOMAIN
+  - description: cpu request
+    name: CPU_REQUEST
+  - description: cpu limit
+    name: CPU_LIMIT
+  - description: Memory Request
+    name: MEMORY_REQUEST
+  - description: Memory Limit
+    name: MEMORY_LIMIT
+labels:
+  application: gdi
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      service: mysoch-auth-service
+      app: gdi
+    name: mysoch-auth-service
+  spec:
+    replicas: ${{REPLICAS}}
+    revisionHistoryLimit: 1
+    selector:
+      service: mysoch-auth-service
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 10%
+        maxUnavailable: 10%
+        timeoutSeconds: 120
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          service: mysoch-auth-service
+          app: gdi
+      spec:
+        containers:
+        - envFrom:
+          - secretRef:
+              name: mysoch-auth-service-secret
+          env:
+          - name: SERVICE_UID
+            value: www-data
+          - name: SERVICE_GID
+            value: www-data
+          - name: PGSERVICEFILE
+            value: /usr/etc/postgresql/pg_service.conf
+          image: sourcepole/sogis-mysoch-auth:${TAG}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: healthz
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: mysoch-auth-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /usr/etc/postgresql
+            name: mysochauth-service-config-claim
+          - mountPath: /srv/qwc_service/config
+            name: qgs-resources
+            subPath: config
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - secret:
+            items:
+            - key: pg_service.conf
+              path: pg_service.conf
+            secretName: mysochauth-service-pg-service-secret
+          name: mysochauth-service-config-claim
+        - name: qgs-resources
+          persistentVolumeClaim:
+            claimName: qgs-resources-claim
+    test: false
+    triggers: []

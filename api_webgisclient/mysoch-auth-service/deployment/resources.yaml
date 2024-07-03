@@ -1,0 +1,30 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ressources-mysoch-auth-service
+  annotations:
+    description: >-
+      "Creates necessary ressources for mysoch-auth-service"
+parameters:
+  - description: Base Url of AGI GDI
+    name: BASEURL
+  - description: Url of the SES
+    name: IDP_URL
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: mysoch-auth-service
+      app: gdi
+    name: mysoch-auth-service
+  spec:
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      service: mysoch-auth-service
+    sessionAffinity: None
+    type: ClusterIP

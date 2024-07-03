@@ -3,6 +3,7 @@
   "service": "map-viewer",
   "config": {
     "qwc2_path": "/qwc2/",
+    "db_url": "",
     "auth_service_url": "/auth/",
     "ccc_config_service_url": "/api/v1/ccc/",
     "data_service_url": "/api/data/v1/",
@@ -136,18 +137,24 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
                   },
                   {
                     "key": "Print",
-                    "icon": "print"
-                  },
-                  {
-                    "key": "LandRegisterExtract",
-                    "icon": "print"
+                    "icon": "print",
+		    "subitems": [
+	              {
+		        "key": "Print",
+			"icon": "print"
+		      },
+		      {
+		        "key": "LandRegisterExtract",
+			"icon": "print"
+		      }
+		    ]
                   },
                   {
                     "key": "Help",
@@ -164,11 +171,14 @@
                   "resultLimit": 10,
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
-                  "zoomToLayers": false
+                  "zoomToLayers": false,
+		  "showLayerResultsBeforePlaces": true
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
-                "logoUrl": "/map"
+                "logoUrl": "/map",
+		"leaveUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
+                "helpUrl": "https://geohelp.so.ch"
               }
             },
             {
@@ -177,7 +187,8 @@
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
             {
@@ -251,7 +262,7 @@
               }
             },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,
@@ -262,11 +273,14 @@
             {
               "name": "Redlining",
               "cfg": {
-                "allowGeometryLabels": false
+                "allowGeometryLabels": false,
+		"snapping": false,
+		"__reducedFunctionality": true
               }
             },
             {
-              "name": "Editing"
+              "name": "Editing",
+	      "allowCloneGeometry": false
             },
             {
               "name": "MapCompare"
@@ -435,7 +449,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -443,11 +457,17 @@
                   {
                     "key": "Print",
                     "icon": "print",
-		    "shortcut": "alt+shift+p"
-                  },
-                  {
-                    "key": "LandRegisterExtract",
-                    "icon": "print"
+		    "subitems": [
+	              {
+		        "key": "Print",
+			"icon": "print",
+		        "shortcut": "alt+shift+p"
+		      },
+		      {
+		        "key": "LandRegisterExtract",
+			"icon": "print"
+		      }
+		    ]
                   },
                   {
                     "key": "Help",
@@ -464,23 +484,30 @@
                   "resultLimit": 25,
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
-                  "zoomToLayers": false
+                  "zoomToLayers": false,
+                  "showLayerResultsBeforePlaces": true
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
-                "logoUrl": "/map"
+                "logoUrl": "/map",
+		"leaveUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
+                "helpUrl": "https://geohelp.so.ch"
               }
             },
             {
               "name": "BottomBar",
               "cfg": {
-                "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/"
+                "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+		"contactUrl": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
+		"helpUrl": "https://geohelp.so.ch",
+		"displayScales": false
               }
             },
             {
               "name": "Measure",
               "cfg": {
-                "showMeasureModeSwitcher": true
+                "showMeasureModeSwitcher": true,
+		"snapping": false
               }
             },
             {
@@ -522,9 +549,14 @@
                 "longAttributesDisplay": "wrap",
                 "displayResultTree": false,
                 "displayInlineImages": true,
-                "initialWidth": 480,
-                "initialHeight": 550,
-		"featureInfoReturnsLayerName": false
+		"geometry": {
+                  "initialWidth": 480,
+                  "initialHeight": 550,
+		  "initialX": 0,
+		  "initialY": 0
+		},
+		"featureInfoReturnsLayerName": false,
+		"clearResultsOnClose": false
               }
             },
             {
@@ -538,6 +570,7 @@
                 "showQRCode": true
               }
             },
+
             {
               "name": "Print",
               "cfg": {
@@ -559,7 +592,7 @@
 	      }
 	    },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,
@@ -570,18 +603,26 @@
             {
               "name": "Redlining",
               "cfg": {
-                "allowGeometryLabels": false
+                "allowGeometryLabels": false,
+		"snapping": false,
+		"__reducedFunctionality": true
               }
             },
             {
               "name": "Editing",
               "cfg": {
                 "width": "30em",
-                "touchFriendly": false
+                "touchFriendly": false,
+		"snapping": false,
+		"snappingActive": false,
+		"allowCloneGeometry": false
               }
             },
 	    {
 	      "name": "Bookmark"
+	    },
+	    {
+	      "name": "AttributeTable"
 	    },
             {
               "name": "MapCompare"
@@ -791,23 +832,19 @@
           }
         ],
         "defaultScales": [
-          4000000,
-          2000000,
-          1000000,
-          400000,
-          200000,
-          80000,
-          40000,
-          20000,
-          10000,
-          8000,
-          6000,
-          4000,
-          2000,
-          1000,
-          500,
-          250,
-          100
+          3779528,
+          1889764,
+          944882,
+          377953,
+          188976,
+          75591,
+          37795,
+          18898,
+          9449,
+          3780,
+          1890,
+          945,
+          378
         ],
         "defaultWMSVersion": "1.3.0",
         "defaultPrintResolutions": [

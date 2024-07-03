@@ -110,7 +110,7 @@ objects:
           - name: PGSERVICEFILE
             value: /usr/etc/postgresql/pg_service.conf
           - name: TENANT_HEADER
-            value: Tenant
+            value: tenant
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

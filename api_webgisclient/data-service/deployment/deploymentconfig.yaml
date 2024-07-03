@@ -72,6 +72,8 @@ objects:
             value: www-data
           - name: PGSERVICEFILE
             value: /usr/etc/postgresql/pg_service.conf
+          - name: TENANT_HEADER
+            value: Tenant
           image: sourcepole/qwc-data-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -74,6 +74,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: TENANT_HEADER
+            value: Tenant
           image: sourcepole/qwc-document-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -274,7 +274,7 @@
             {
               "name": "HeightProfile",
               "cfg": {
-		"heighProfilePrecision": 1
+		"heightProfilePrecision": 1
               }
             },
             {
@@ -590,7 +590,7 @@
               "name": "HeightProfile",
               "cfg": {
                 "height": 200,
-		"heighProfilePrecision": 1
+		"heightProfilePrecision": 1
               }
             },
             {

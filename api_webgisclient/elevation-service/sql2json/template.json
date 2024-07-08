@@ -2,6 +2,6 @@
   "$schema": "https://github.com/qwc-services/qwc-elevation-service/raw/master/schemas/qwc-elevation-service.json",
   "service": "elevation",
   "config": {
-    "elevation_dataset": "/data/geodata/ch.so.agi.lidar_2014.dtm/lidar_2014_dtm_50cm.vrt"
+    "elevation_dataset": "/data/geodata/ch.so.agi.lidar_2014.dtm/ch.so.agi.lidar_2014.dtm.tif"
   }
 }

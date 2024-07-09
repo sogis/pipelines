@@ -112,7 +112,7 @@ objects:
           - name: TENANT_HEADER
             value: tenant
           - name: TENANT_PATH_PREFIX
-            value: @service_prefix@
+            value: "@service_prefix@"
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

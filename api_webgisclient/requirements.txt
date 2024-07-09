@@ -7,7 +7,7 @@ qwc-ogc-service:v2024.07.04:2.0.27
 qwc-legend-service:v2024.07.04:2.0.22
 qwc-feature-info-service:v2024.07.04:2.0.30
 qwc-mapinfo-service:v2024.07.04:2.0.18
-sogis-plotinfo-service:v2024.06.19:2.0.20
+sogis-plotinfo-service:v2024.06.26:2.0.20
 qwc-permalink-service:v2024.07.04:2.0.18
 qwc-elevation-service:v2024.07.04:2.0.18
 qwc-document-service:v2024.07.04:2.0.21
@@ -16,4 +16,4 @@ sogis-landreg-service:v2024.3-lts:2.0.18
 sogis-ccc-config:latest-2024-lts:2.0.21
 sogis-auth-service:v2024.1-lts:2.0.26
 sogis-mysochauth-service:v2024.07.01:2.0.0
-sogis-map-viewer:v2024.16-lts:2.0.56
+sogis-map-viewer:v2024.17-lts:2.0.56

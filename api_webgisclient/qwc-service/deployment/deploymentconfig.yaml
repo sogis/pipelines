@@ -111,6 +111,8 @@ objects:
             value: /usr/etc/postgresql/pg_service.conf
           - name: TENANT_HEADER
             value: tenant
+          - name: TENANT_PATH_PREFIX
+            value: @service_prefix@
           image: sourcepole/sogis-map-viewer:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

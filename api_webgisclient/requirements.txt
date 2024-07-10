@@ -16,4 +16,4 @@ sogis-landreg-service:v2024.3-lts:2.0.18
 sogis-ccc-config:latest-2024-lts:2.0.21
 sogis-auth-service:v2024.1-lts:2.0.26
 sogis-mysochauth-service:v2024.06.19:2.0.0
-sogis-map-viewer:v2024.16-lts:2.0.56
+sogis-map-viewer:v2024.17-lts:2.0.56

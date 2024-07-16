@@ -172,7 +172,8 @@
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
                   "zoomToLayers": false,
-		  "showLayerResultsBeforePlaces": true
+		  "showLayerResultsBeforePlaces": true,
+		  "showResultInSearchText": false
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
@@ -483,7 +484,8 @@
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
                   "zoomToLayers": false,
-                  "showLayerResultsBeforePlaces": true
+                  "showLayerResultsBeforePlaces": true,
+		  "showResultInSearchText": false
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,

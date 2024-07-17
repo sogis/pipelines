@@ -282,7 +282,8 @@
             },
             {
               "name": "Editing",
-	      "allowCloneGeometry": false
+	      "allowCloneGeometry": false,
+	      "editTextNullValue": "NULL"
             },
             {
               "name": "MapCompare"
@@ -616,7 +617,8 @@
                 "touchFriendly": false,
 		"snapping": false,
 		"snappingActive": false,
-		"allowCloneGeometry": false
+		"allowCloneGeometry": false,
+		"editTextNullValue": "NULL"
               }
             },
 	    {

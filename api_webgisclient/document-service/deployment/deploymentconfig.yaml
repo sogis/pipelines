@@ -75,7 +75,7 @@ objects:
           - name: SERVICE_GID
             value: www-data
           - name: TENANT_HEADER
-            value: Tenant
+            value: X-Tenant
           - name: TENANT_PATH_PREFIX
             value: "@service_prefix@"
           image: sourcepole/qwc-document-service:${TAG}

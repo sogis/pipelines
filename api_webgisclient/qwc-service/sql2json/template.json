@@ -44,6 +44,7 @@
         "externalLayerFeatureInfoFormats": {
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },
+        "editTextNullValue": "NULL",
         "defaultFeatureStyle": {
           "strokeColor": [
             255,
@@ -282,8 +283,7 @@
             },
             {
               "name": "Editing",
-	      "allowCloneGeometry": false,
-	      "editTextNullValue": "NULL"
+	      "allowCloneGeometry": false
             },
             {
               "name": "MapCompare"
@@ -617,8 +617,7 @@
                 "touchFriendly": false,
 		"snapping": false,
 		"snappingActive": false,
-		"allowCloneGeometry": false,
-		"editTextNullValue": "NULL"
+		"allowCloneGeometry": false
               }
             },
 	    {

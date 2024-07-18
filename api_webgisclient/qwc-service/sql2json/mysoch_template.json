@@ -44,6 +44,8 @@
         "externalLayerFeatureInfoFormats": {
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },
+	"editTextNullValue": "NULL",
+	"editingAddLinkAnchors": false,
         "defaultFeatureStyle": {
           "strokeColor": [
             255,
@@ -172,7 +174,8 @@
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
                   "zoomToLayers": false,
-		  "showLayerResultsBeforePlaces": true
+		  "showLayerResultsBeforePlaces": true,
+		  "showResultInSearchText": false
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
@@ -480,7 +483,8 @@
                   "showProviderSelection": true,
                   "providerSelectionAllowAll": true,
                   "zoomToLayers": false,
-                  "showLayerResultsBeforePlaces": true
+                  "showLayerResultsBeforePlaces": true,
+		  "showResultInSearchText": false
                 },
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
@@ -563,7 +567,8 @@
               "cfg": {
                 "showSocials": true,
                 "showLink": true,
-                "showQRCode": true
+                "showQRCode": true,
+		"side": "left"
               }
             },
 
@@ -572,13 +577,15 @@
               "cfg": {
                 "printExternalLayers": true,
                 "gridInitiallyEnabled": true,
-                "scaleFactor": 0.75
+                "scaleFactor": 0.75,
+		"side": "left"
               }
             },
             {
               "name": "Help",
 	      "cfg": {
-	        "bodyContentsFragmentUrl": "assets/help.html"
+	        "bodyContentsFragmentUrl": "assets/help.html",
+		"side": "left"
 	      }
             },
 	    {
@@ -611,11 +618,15 @@
                 "touchFriendly": false,
 		"snapping": false,
 		"snappingActive": false,
-		"allowCloneGeometry": false
+		"allowCloneGeometry": false,
+		"side": "left"
               }
             },
 	    {
-	      "name": "Bookmark"
+	      "name": "Bookmark",
+	      "cfg": {
+                "side": "left"
+	      }
 	    },
 	    {
 	      "name": "AttributeTable"
@@ -637,7 +648,10 @@
               "name": "Authentication"
             },
             {
-              "name": "LandRegisterExtract"
+              "name": "LandRegisterExtract",
+	      "cfg": {
+	        "side": "left"
+	      }
             },
             {
               "name": "CCCInterface"

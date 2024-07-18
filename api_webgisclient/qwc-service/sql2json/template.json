@@ -45,6 +45,7 @@
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },
         "editTextNullValue": "NULL",
+	"editingAddLinkAnchors": false,
         "defaultFeatureStyle": {
           "strokeColor": [
             255,

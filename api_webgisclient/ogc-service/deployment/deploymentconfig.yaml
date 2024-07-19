@@ -83,6 +83,10 @@ objects:
             value: www-data
           - name: LEGEND_DEFAULT_FONT_SIZE
             value: "9"
+          - name: TENANT_HEADER
+            value: X-Tenant
+          - name: TENANT_PATH_PREFIX
+            value: "@service_prefix@"
           image: sourcepole/qwc-ogc-service:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

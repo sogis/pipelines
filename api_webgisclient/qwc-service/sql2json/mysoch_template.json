@@ -44,7 +44,7 @@
         "externalLayerFeatureInfoFormats": {
           "wms.geo.admin.ch": "application/vnd.ogc.gml"
         },
-        "editTextNullValue": "NULL",
+	"editTextNullValue": "NULL",
 	"editingAddLinkAnchors": false,
         "defaultFeatureStyle": {
           "strokeColor": [
@@ -139,7 +139,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "MapExport",
+                        "key": "RasterExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -180,6 +180,8 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
+		"logoutUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
+		"leaveUrl": "https://my-a.so.ch",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },
@@ -260,11 +262,12 @@
                   "height": 400
                 },
                 "bboxDependentLegend": false,
-                "scaleDependentLegend": "theme"
+                "scaleDependentLegend": "theme",
+		"side": "left"
               }
             },
             {
-              "name": "MapExport",
+              "name": "RasterExport",
               "cfg": {
                 "dpis": [
                   96,
@@ -288,10 +291,7 @@
               "name": "MapCompare"
             },
             {
-              "name": "HeightProfile",
-              "cfg": {
-		"heightProfilePrecision": 1
-              }
+              "name": "HeightProfile"
             },
             {
               "name": "MapInfoTooltip"
@@ -369,9 +369,6 @@
                   }
                 ]
               }
-            },
-            {
-              "name": "LoginUser"
             }
           ],
           "desktop": [
@@ -451,7 +448,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "MapExport",
+                        "key": "RasterExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -493,6 +490,8 @@
                 "appMenuClearsTask": true,
                 "logoClickResetsTheme": true,
                 "logoUrl": "/map",
+		"logoutUrl": "$$BASE_URL$$/mysochauth/logout?url=$$MYSOCH_URL$$",
+		"leaveUrl": "https://my-a.so.ch",
                 "helpUrl": "https://geohelp.so.ch"
               }
             },
@@ -502,7 +501,8 @@
                 "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
 		"contactUrl": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
 		"helpUrl": "https://geohelp.so.ch",
-		"displayScales": false
+		"displayScales": false,
+		"leaveUrl": "https://my-a.so.ch"
               }
             },
             {
@@ -533,7 +533,8 @@
                   "height": 400
                 },
                 "bboxDependentLegend": false,
-                "scaleDependentLegend": "theme"
+                "scaleDependentLegend": "theme",
+		"side": "left"
               },
               "mapClickAction": "identify"
             },
@@ -569,7 +570,8 @@
               "cfg": {
                 "showSocials": true,
                 "showLink": true,
-                "showQRCode": true
+                "showQRCode": true,
+		"side": "left"
               }
             },
 
@@ -578,13 +580,15 @@
               "cfg": {
                 "printExternalLayers": true,
                 "gridInitiallyEnabled": true,
-                "scaleFactor": 0.75
+                "scaleFactor": 0.75,
+		"side": "left"
               }
             },
             {
               "name": "Help",
 	      "cfg": {
-	        "bodyContentsFragmentUrl": "assets/help.html"
+	        "bodyContentsFragmentUrl": "assets/help.html",
+		"side": "left"
 	      }
             },
 	    {
@@ -594,12 +598,13 @@
 	      }
 	    },
             {
-              "name": "MapExport",
+              "name": "RasterExport",
               "cfg": {
                 "dpis": [
                   96,
                   300
-                ]
+                ],
+		"side": "left"
               }
             },
             {
@@ -617,11 +622,15 @@
                 "touchFriendly": false,
 		"snapping": false,
 		"snappingActive": false,
-		"allowCloneGeometry": false
+		"allowCloneGeometry": false,
+		"side": "left"
               }
             },
 	    {
-	      "name": "Bookmark"
+	      "name": "Bookmark",
+	      "cfg": {
+                "side": "left"
+	      }
 	    },
 	    {
 	      "name": "AttributeTable"
@@ -643,7 +652,10 @@
               "name": "Authentication"
             },
             {
-              "name": "LandRegisterExtract"
+              "name": "LandRegisterExtract",
+	      "cfg": {
+	        "side": "left"
+	      }
             },
             {
               "name": "CCCInterface"
@@ -718,9 +730,6 @@
               "cfg": {
                 "autologinUrl": "https://geoprod.apps.ocp.so.ch/map/assets/img/logo.png"
               }
-            },
-            {
-              "name": "LoginUser"
             }
           ]
         }

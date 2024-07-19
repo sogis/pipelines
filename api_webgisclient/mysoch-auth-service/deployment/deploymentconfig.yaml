@@ -63,6 +63,8 @@ objects:
             value: www-data
           - name: PGSERVICEFILE
             value: /usr/etc/postgresql/pg_service.conf
+          - name: JWT_SECRET_KEY
+            value: fce9dd0cc67ae26c7b2fb912e31a4657e99014e50ccb90bd
           image: sourcepole/sogis-mysoch-auth:${TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:

@@ -43,7 +43,7 @@ objects:
       activeDeadlineSeconds: 21600
       resources: {}
       rollingParams:
-        maxUnavailable: 10%
+        maxUnavailable: 30%
         timeoutSeconds: 150
         updatePeriodSeconds: 1
       type: Rolling

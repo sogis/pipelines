@@ -139,7 +139,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -264,7 +264,7 @@
               }
             },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,
@@ -288,7 +288,10 @@
               "name": "MapCompare"
             },
             {
-              "name": "HeightProfile"
+              "name": "HeightProfile",
+              "cfg": {
+		"heightProfilePrecision": 1
+              }
             },
             {
               "name": "MapInfoTooltip"
@@ -448,7 +451,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -591,7 +594,7 @@
 	      }
 	    },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,

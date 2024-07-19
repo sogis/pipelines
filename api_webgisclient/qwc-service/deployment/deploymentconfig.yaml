@@ -153,6 +153,9 @@ objects:
           - mountPath: /qwc2/assets/forms
             name: qwc-assets
             subPath: forms
+          - mountPath: /qwc2/assets/templates
+            name: qwc-assets
+            subPath: templates
           - mountPath: /srv/qwc_service/config
             name: qgs-resources
             subPath: config

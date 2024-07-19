@@ -198,7 +198,7 @@ pipeline {
                     """
                     }
                 script {
-                    PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
+                    PODNAME= sh([script: 'oc get pods -o custom-columns=POD:.metadata.name --no-headers --field-selector=status.phase=Running -n ${namespace} | grep qgis-server | grep -v -E -m 1 "featureinfo|build|print|deploy"', returnStdout: true]).trim()
                     sh """
                         oc rsync -n ${namespace} /tmp/config/default/ $PODNAME:/data
                     """

@@ -501,7 +501,8 @@
                 "viewertitleUrl": "https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
 		"contactUrl": "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/",
 		"helpUrl": "https://geohelp.so.ch",
-		"displayScales": false
+		"displayScales": false,
+		"leaveUrl": "https://my-a.so.ch"
               }
             },
             {

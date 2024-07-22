@@ -76,6 +76,8 @@ objects:
             value: www-data
           - name: SERVICE_GID
             value: www-data
+          - name: LOCALE
+            value: de_CH
           - name: PGSERVICEFILE
             value: /usr/etc/postgresql/pg_service.conf
           - name: TENANT_HEADER

@@ -269,7 +269,8 @@
                 "dpis": [
                   96,
                   200
-                ]
+                ],
+		"exportExternalLayers": true
               }
             },
             {
@@ -599,7 +600,8 @@
                 "dpis": [
                   96,
                   200
-                ]
+                ],
+		"exportExternalLayers": true
               }
             },
             {

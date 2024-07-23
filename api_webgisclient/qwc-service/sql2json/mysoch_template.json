@@ -139,7 +139,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -267,11 +267,11 @@
               }
             },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,
-                  300
+                  200
                 ]
               }
             },
@@ -448,7 +448,7 @@
                         "icon": "editing"
                       },
                       {
-                        "key": "RasterExport",
+                        "key": "MapExport",
                         "icon": "rasterexport"
                       }
                     ]
@@ -598,11 +598,11 @@
 	      }
 	    },
             {
-              "name": "RasterExport",
+              "name": "MapExport",
               "cfg": {
                 "dpis": [
                   96,
-                  300
+                  200
                 ],
 		"side": "left"
               }

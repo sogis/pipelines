@@ -46,6 +46,7 @@
         },
         "editTextNullValue": "NULL",
 	"editingAddLinkAnchors": false,
+	"trustWmsCapabilityURLs": true,
         "defaultFeatureStyle": {
           "strokeColor": [
             255,

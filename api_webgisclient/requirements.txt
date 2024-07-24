@@ -5,7 +5,7 @@ qwc-data-service:latest-2024-lts:2.0.24
 sogis-dataproduct-service:v2024.2-lts:2.0.28
 qwc-ogc-service:v2024.3-lts:2.0.27
 qwc-legend-service:latest-2024-lts:2.0.22
-qwc-feature-info-service:v2024.7-lts:2.0.33
+qwc-feature-info-service:v2024.7-lts:2.0.30
 qwc-mapinfo-service:latest-2024-lts:2.0.18
 sogis-plotinfo-service:v2024.07.10:2.0.20
 qwc-permalink-service:latest-2024-lts:2.0.18

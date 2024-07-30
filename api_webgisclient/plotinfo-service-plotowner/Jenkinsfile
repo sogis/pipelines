@@ -58,6 +58,7 @@ pipeline {
                       baseUrl = 'geo.so.ch'
                       terravisUrl = 'terravis.so.ch'
                       resources = ['cpu_request': '100m', 'cpu_limit': '400m', 'memory_request': '100Mi', 'memory_limit': '100Mi']
+                      replicas = '8'
                       }
                     else {
                       baseUrl = 'geo-t.so.ch'

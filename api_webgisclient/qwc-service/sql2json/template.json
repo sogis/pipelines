@@ -10,7 +10,6 @@
     "dataproduct_service_url": "/api/dataproduct/v1/",
     "elevation_service_url": "/elevation/",
     "feature_report_service_url": "/api/v1/document/",
-    "info_service_url": "/api/v1/featureinfo/",
     "landreg_service_url": "/api/v1/landreg/",
     "legend_service_url": "/api/v1/legend/",
     "mapinfo_service_url": "/api/v1/mapinfo/",

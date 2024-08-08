@@ -8,7 +8,7 @@ qwc-legend-service:latest-2024-lts:2.0.22
 qwc-feature-info-service:v2024.7-lts:2.0.33
 qwc-mapinfo-service:latest-2024-lts:2.0.18
 sogis-plotinfo-service:v2024.07.10:2.0.20
-qwc-permalink-service:latest-2024-lts:2.0.18
+qwc-permalink-service:v2024.4-lts:2.0.18
 qwc-elevation-service:latest-2024-lts:2.0.18
 qwc-document-service:latest-2024-lts:2.0.21
 qwc-print-service:latest-2024-lts:2.0.21

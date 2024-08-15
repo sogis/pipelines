@@ -1,10 +1,11 @@
 {
-  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-fulltext-search-service/2024-lts/schemas/qwc-search-service.json",
+  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-fulltext-search-service/master/schemas/qwc-search-service.json",
   "service": "search",
   "config": {
     "solr_service_url": "http://solr-headless.solr-cloud-test:8983/solr/gdi/select",
     "search_result_limit": 25,
-    "geodb_url": "postgresql:///?service=soconfig_servic"
+    "geodb_url": "postgresql:///?service=soconfig_servic",
+    "db_url": "postgresql:///?service=not_yet_implemented"
   },
   "resources": {
     "facets": {"$trafo:list": "facets.sql"}

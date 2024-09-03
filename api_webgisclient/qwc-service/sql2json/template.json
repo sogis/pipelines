@@ -849,7 +849,8 @@
           3780,
           1890,
           945,
-          378
+          378,
+	  189
         ],
         "defaultWMSVersion": "1.3.0",
         "defaultPrintResolutions": [

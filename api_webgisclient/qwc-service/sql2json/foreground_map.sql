@@ -250,13 +250,25 @@ default_map AS (
 
 foreground_map AS (
   SELECT
-     jsonb_build_object(
-      'id', identifier,
-      'name', identifier,
-      'title', title,
-      'sublayers', sa_props_json,
-      'drawingOrder', sa_ident_json
-    ) || keyvals AS map_obj
+     CASE WHEN identifier = 'ebau' 
+	THEN
+           jsonb_build_object(
+             'id', identifier,
+             'name', identifier,
+             'title', title,
+             'sublayers', sa_props_json,
+             'drawingOrder', sa_ident_json,
+	     'startupTask', jsonb_build_object( 'key', 'LayerTree')
+           ) || keyvals 
+	ELSE 
+           jsonb_build_object(
+             'id', identifier,
+             'name', identifier,
+             'title', title,
+             'sublayers', sa_props_json,
+             'drawingOrder', sa_ident_json
+        ) || keyvals
+	END AS map_obj
   FROM
     simi.simi.simiproduct_map m
   JOIN 

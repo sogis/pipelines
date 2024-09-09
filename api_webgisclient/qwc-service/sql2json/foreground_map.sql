@@ -258,7 +258,7 @@ foreground_map AS (
              'title', title,
              'sublayers', sa_props_json,
              'drawingOrder', sa_ident_json,
-	     'startupTask', jsonb_build_object( 'config', jsonb_build_object( 'key', 'LayerTree'))
+	     'config', jsonb_build_object( 'startupTask', jsonb_build_object( 'key', 'LayerTree'))
            ) || keyvals 
 	ELSE 
            jsonb_build_object(

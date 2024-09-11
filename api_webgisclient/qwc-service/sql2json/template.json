@@ -191,6 +191,7 @@
               "name": "Measure",
               "cfg": {
                 "showMeasureModeSwitcher": true,
+		"mode": "LineString",
 		"snapping": false
               }
             },
@@ -511,7 +512,8 @@
               "name": "Measure",
               "cfg": {
                 "showMeasureModeSwitcher": true,
-		"snapping": false
+		"snapping": false,
+		"mode": "LineString"
               }
             },
             {

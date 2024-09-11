@@ -129,7 +129,8 @@
                     "subitems": [
                       {
                         "key": "Measure",
-                        "icon": "measure"
+                        "icon": "measure",
+			"mode": LineString"
                       },
                       {
                         "key": "Redlining",
@@ -191,7 +192,6 @@
               "name": "Measure",
               "cfg": {
                 "showMeasureModeSwitcher": true,
-		"mode": "LineString",
 		"snapping": false
               }
             },
@@ -443,7 +443,8 @@
                     "subitems": [
                       {
                         "key": "Measure",
-                        "icon": "measure"
+                        "icon": "measure",
+			"mode": "LineString"
                       },
                       {
                         "key": "Redlining",
@@ -512,8 +513,7 @@
               "name": "Measure",
               "cfg": {
                 "showMeasureModeSwitcher": true,
-		"snapping": false,
-		"mode": "LineString"
+		"snapping": false
               }
             },
             {

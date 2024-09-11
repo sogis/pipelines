@@ -130,7 +130,7 @@
                       {
                         "key": "Measure",
                         "icon": "measure",
-			"mode": LineString"
+			"mode": "LineString"
                       },
                       {
                         "key": "Redlining",

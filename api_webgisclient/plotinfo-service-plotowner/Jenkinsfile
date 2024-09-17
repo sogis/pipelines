@@ -51,13 +51,13 @@ pipeline {
                       db_server = env.DB_SERVER_INT
                       baseUrl = 'geo-i.so.ch'
                       terravisUrl = 'terravis.so.ch'
-                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '50Mi', 'memory_limit': '100Mi']
+                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '50Mi', 'memory_limit': '1024Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
                       baseUrl = 'geo.so.ch'
                       terravisUrl = 'terravis.so.ch'
-                      resources = ['cpu_request': '100m', 'cpu_limit': '400m', 'memory_request': '100Mi', 'memory_limit': '100Mi']
+                      resources = ['cpu_request': '100m', 'cpu_limit': '400m', 'memory_request': '100Mi', 'memory_limit': '1024Mi']
                       replicas = '8'
                       }
                     else {

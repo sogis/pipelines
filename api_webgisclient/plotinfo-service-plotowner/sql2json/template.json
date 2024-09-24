@@ -78,7 +78,7 @@
     "oereb_json_url": "http://oereb-web-service.agi-oereb-test.svc/extract/reduced/json/geometry/{egrid}",
     "oereb_xml_url": "https://geo-t.so.ch/api/oereb/extract/reduced/xml/geometry/{egrid}",
     "oereb_pdf_url": "https://geo-t.so.ch/api/oereb/extract/reduced/pdf/geometry/{egrid}",
-    "gbdbs_service_url": "https://terravis-t.so.ch/gbdbs/gbdbs",
+    "gbdbs_service_url": "https://terravis-t.so.ch/gbdbs/gbdbs-pub",
     "hide_owner_addresses": true,
     "recaptcha_site_key": "mySiteKey",
     "recaptcha_secret_key": "mySecretKey"

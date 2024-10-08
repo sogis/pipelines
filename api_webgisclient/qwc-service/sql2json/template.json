@@ -272,7 +272,8 @@
                   96,
                   200
                 ],
-		"exportExternalLayers": true
+		"exportExternalLayers": true,
+		"defaultScaleFactor": 1
               }
             },
             {
@@ -604,7 +605,8 @@
                   96,
                   200
                 ],
-		"exportExternalLayers": true
+		"exportExternalLayers": true,
+		"defaultScaleFactor": 1
               }
             },
             {

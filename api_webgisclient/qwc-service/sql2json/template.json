@@ -106,7 +106,8 @@
                     "key": "LayerTree",
                     "icon": "layers",
                     "identifyEnabled": true,
-		    "shortcut": "alt+shift+l"
+		    "shortcut": "alt+shift+l",
+		    "enableServiceInfo": false
                   },
                   {
                     "key": "PlotInfoTool",
@@ -262,7 +263,8 @@
                   "height": 400
                 },
                 "bboxDependentLegend": false,
-                "scaleDependentLegend": "theme"
+                "scaleDependentLegend": "theme",
+		"enableServiceInfo": false
               }
             },
             {

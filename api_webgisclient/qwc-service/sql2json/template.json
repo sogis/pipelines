@@ -106,8 +106,7 @@
                     "key": "LayerTree",
                     "icon": "layers",
                     "identifyEnabled": true,
-		    "shortcut": "alt+shift+l",
-		    "enableServiceInfo": false
+		    "shortcut": "alt+shift+l"
                   },
                   {
                     "key": "PlotInfoTool",
@@ -258,13 +257,13 @@
                 "grayUnchecked": false,
                 "flattenGroups": true,
                 "legendThumbnail": "legend_thumbnail.svg",
+		"enableServiceInfo": false
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400
                 },
                 "bboxDependentLegend": false,
-                "scaleDependentLegend": "theme",
-		"enableServiceInfo": false
+                "scaleDependentLegend": "theme"
               }
             },
             {

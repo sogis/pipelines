@@ -534,6 +534,7 @@
                 "grayUnchecked": false,
                 "flattenGroups": true,
                 "legendThumbnail": "legend_thumbnail.svg",
+		"enableServiceInfo": false,
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400

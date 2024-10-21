@@ -44,7 +44,7 @@ pipeline {
                         dbserver = env.DB_SERVER_TEST
                         }
                     credentials = [ 
-                        usernamePassword(credentialsId: (env.NAMESPACE_JENKINS) + '-jenkins-dbuser-simi-secret'   , usernameVariable: 'DbUserSimi'   , passwordVariable: 'PwdSimi')
+                        usernamePassword(credentialsId: (env.OPENSHIFT_ENVIRONMENT) + '-jenkins-dbuser-simi-secret'   , usernameVariable: 'DbUserSimi'   , passwordVariable: 'PwdSimi')
                         ]
                     }
                 }

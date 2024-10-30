@@ -31,7 +31,7 @@ constant_fields AS (
     'This string is from foreground_map.sql. Abstract should not be necessary as map description is not displayed anywhere. bjsvwjek' AS const_map_desc,
     jsonb_build_array('EPSG:21781', 'EPSG:2056') AS const_mouse_crs,
     jsonb_build_array('image/jpeg','image/png') AS const_avail_formats,
-    jsonb_build_array('text/plain','text/html','text/xml') AS const_info_formats,
+    jsonb_build_array('text/plain','text/html','text/xml','application/vnd.ogc.gml','application/vnd.ogc.gml/3.1.1') AS const_info_formats,
     'img/mapthumbs/default.jpg' AS const_thumbnail,
     jsonb_build_array() AS const_external_layers,
     'LAYERFONTSIZE=9&ITEMFONTSIZE=9&LAYERTITLESPACE=0.5&LAYERSPACE=1' AS const_extra_legend_params

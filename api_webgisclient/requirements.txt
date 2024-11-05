@@ -3,7 +3,7 @@ jasper-reporting-service:135:2.0.18
 qwc-fulltext-search-service:v2024.4-lts:2.0.21
 qwc-data-service:latest-2024-lts:2.0.24
 sogis-dataproduct-service:v2024.2-lts:2.0.28
-qwc-ogc-service:v2024.3-lts:2.0.27
+qwc-ogc-service:v2024.5-lts:2.0.27
 qwc-legend-service:latest-2024-lts:2.0.22
 qwc-feature-info-service:v2024.7-lts:2.0.33
 qwc-mapinfo-service:latest-2024-lts:2.0.18

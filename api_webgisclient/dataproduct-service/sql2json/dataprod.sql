@@ -83,6 +83,10 @@ ext_wms_layer_base AS (
       WHEN l.feature_info_format = 'fi_unavailable' THEN '[]'     
 	ELSE jsonb_build_array(dp.identifier)
     END AS query_layers,
+    CASE 
+      WHEN l.feature_info_format = 'fi_unavailable' THEN FALSE     
+	ELSE TRUE
+    END AS ext_queryable,
     
     url AS wmslayer_url,
     l.ext_identifier AS wmslayer_name,
@@ -119,7 +123,7 @@ ext_wms_layer AS (
         ),      
         'type', 'extwms',
 	      'queryLayers', query_layers,
-        'queryable', const_queryable, 
+        'queryable', ext_queryable, 
         'synonyms', const_synonyms_arr,
         'keywords', const_keywords_arr,
         'contacts', const_contacts_arr

@@ -24,7 +24,7 @@
   "resources": {
     "qwc2_config": {
       "config": {
-        "qgisServerVersion": 2,
+        "qgisServerVersion": 3,
         "translationsPath": "/map/translations",
         "assetsPath": "/map/assets",
         "urlPositionFormat": "centerAndZoom",
@@ -258,6 +258,7 @@
                 "grayUnchecked": false,
                 "flattenGroups": true,
                 "legendThumbnail": "legend_thumbnail.svg",
+		"enableServiceInfo": false,
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400
@@ -529,6 +530,7 @@
                 "grayUnchecked": false,
                 "flattenGroups": true,
                 "legendThumbnail": "legend_thumbnail.svg",
+		"enableServiceInfo": false,
                 "layerInfoWindowSize": {
                   "width": 480,
                   "height": 400

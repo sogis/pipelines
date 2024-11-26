@@ -19,14 +19,14 @@ if (User.current()) {
   def auths = Eval.me(System.getenv('ADMIN_USERS'))
   
   if(userid in auths) {
-          returnValue = ["gdi-integration","gdi-test:selected"]
+          returnValue = ["gdi-production","gdi-integration:selected","gdi-test"]
      }
   else {
-      returnValue = ["gdi-test:selected"]
+      returnValue = ["gdi-integration:selected","gdi-test"]
      }
 }
 else {
-  returnValue = ["gdi-test:selected"]
+  returnValue = ["gdi-integration:selected","gdi-test"]
 }
 return returnValue'''
                             ]

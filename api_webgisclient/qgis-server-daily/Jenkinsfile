@@ -56,7 +56,7 @@ pipeline {
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
                       environment = 'production'
-                      sogisPicMirEnv = '-prod'
+                      sogisPicMirEnv = '-v2-prod'
                       replicas = '6'
                       replicas_print = '3'
                       replicas_featureinfo = '2'

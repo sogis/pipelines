@@ -58,7 +58,7 @@ pipeline {
                       db_server = env.DB_SERVER_PROD
                       geo_db_server = env.GEO_DB_SERVER_PROD
                       environment = 'production'
-                      sogisPicMirEnv = '-prod'
+                      sogisPicMirEnv = '-v2-prod'
                       replicas = '6'
                       resources = ['cpu_request': '1500m', 'cpu_limit': '4000m', 'memory_request': '4096Mi', 'memory_limit': '8192Mi']
                       }

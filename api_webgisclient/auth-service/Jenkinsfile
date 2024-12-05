@@ -96,7 +96,7 @@ pipeline {
             }
         stage ('Deploy auth-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'],resources['cpu_limit'],resources['memory_request'],resources['memory_limit'],"-p BASEDOMAIN=${baseUrl}"
+                deployImage serviceName, namespace, repo, environment
                 }
             }
         }

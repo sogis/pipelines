@@ -83,7 +83,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources "${namespace}", "-f ${repo}/resources.yaml", "-p $$(curl -s ${repo}/${serviceName}_${environment}.params)"
+                    configureRessources "${namespace}", "-f ${repo}/resources.yaml", "-p \$(curl -s ${repo}/${serviceName}_${environment}.params)"
                     }
                 }
             }

@@ -1,4 +1,5 @@
-def serviceName = 'auth-service'
+def serviceName = env.JOB_BASE_NAME
+def environment = params.namespace.substring(params.namespace.lastIndexOf('-') + 1)
 def configFileName = 'samlAuthConfig.json'
 def schemaDirName = 'sogis-config-generator'
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
@@ -82,7 +83,7 @@ pipeline {
         stage ('Configure Ressources') {
             steps {
                 withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p BASEURL=${baseUrl} -p IDP_URL=${idpUrl}"
+                    configureRessources '${namespace}', "-f ${repo}/resources.yaml" "--param-file=${repo}/${serviceName}_${environment}.params"
                     }
                 }
             }

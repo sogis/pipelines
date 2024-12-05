@@ -1,2 +1,3 @@
 BASEURL=geo-t.so.ch
 IDP_URL=idp-t.so.ch
+NAMESPACE=gdi-test

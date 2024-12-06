@@ -1,9 +1,9 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: ccc-config
+  name: ccc-config-service
   annotations:
-    description: "Creates deploymentConfig for ccc-config"
+    description: "Creates deploymentConfig for ccc-config-service"
 parameters:
   - description: Openshift Namespace
     name: NAMESPACE
@@ -31,14 +31,14 @@ objects:
       openshift.io/generated-by: OpenShiftWebConsole
     generation: 1
     labels:
-      service: ccc-config
+      service: ccc-config-service
       app: gdi
-    name: ccc-config
+    name: ccc-config-service
   spec:
     replicas: ${{REPLICAS}}
     revisionHistoryLimit: 1
     selector:
-      service: ccc-config
+      service: ccc-config-service
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -54,7 +54,7 @@ objects:
         annotations:
           openshift.io/generated-by: OpenShiftWebConsole
         labels:
-          service: ccc-config
+          service: ccc-config-service
           app: gdi
       spec:
         containers:
@@ -73,7 +73,7 @@ objects:
               value: "www-data"
             - name: SERVICE_GID
               value: "www-data"
-            image: sourcepole/sogis-ccc-config:${TAG}
+            image: sourcepole/sogis-ccc-config-service:${TAG}
             imagePullPolicy: IfNotPresent
             livenessProbe:
               failureThreshold: 3
@@ -85,7 +85,7 @@ objects:
               periodSeconds: 30
               successThreshold: 1
               timeoutSeconds: 1
-            name: sogis-ccc-config
+            name: sogis-ccc-config-service
             readinessProbe:
               failureThreshold: 3
               httpGet:

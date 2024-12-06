@@ -41,7 +41,7 @@ pipeline {
                       db_server = env.DB_SERVER_PROD
                       }
                     else {
-                      db_server = env.DB_SERVER_PROD
+                      db_server = env.DB_SERVER_TEST
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber

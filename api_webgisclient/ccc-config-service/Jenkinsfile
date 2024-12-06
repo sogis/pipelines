@@ -65,7 +65,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'cccConfig.json', serviceName, serviceName, 'sogis', 'ccc-config'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'cccConfig.json', serviceName, 'ccc-config', 'sogis', 'sogis-ccc-config'
                     }
                 }
             }

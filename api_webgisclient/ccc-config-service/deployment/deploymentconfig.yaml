@@ -73,7 +73,7 @@ objects:
               value: "www-data"
             - name: SERVICE_GID
               value: "www-data"
-            image: sourcepole/sogis-ccc-config-service:${TAG}
+            image: sourcepole/sogis-ccc-config:${TAG}
             imagePullPolicy: IfNotPresent
             livenessProbe:
               failureThreshold: 3

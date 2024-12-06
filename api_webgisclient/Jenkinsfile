@@ -182,7 +182,7 @@ pipeline {
                         expression { AuswahlRollout == 'Permissions' || AuswahlRollout == 'Alles' }
                     }
                     steps {
-                        build job: 'gdi/mysoch-auth-service', parameters: [ string(name: 'vDeployImage', value: "${serviceMap['sogis-mysochauth-service-deployImage']}"), string(name: 'vBaseImage', value: "${serviceMap['sogis-mysochauth-service-baseImage']}"), string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'replicas', value: "${replicas}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true
+                        build job: 'gdi/mysoch-auth-service', parameters: [ string(name: 'namespace', value: "${namespace}"), booleanParam(name: 'configs', value: true), string(name: 'jobName', value: "${JOB_NAME}"), string(name: 'buildNumber', value: "${BUILD_NUMBER}"), string(name: 'branch', value: "${branch}") ], wait: true, propagate: true
                         }
                     }
                 stage ('Deploy qgis-server') {

@@ -13,6 +13,7 @@ pipeline {
         // set a timeout of 10 minutes for this pipeline
         timeout(time: 20, unit: 'MINUTES')
         }
+    parameters {
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'

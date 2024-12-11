@@ -85,7 +85,7 @@ pipeline {
                     }
                 }
             steps {
-                buildImage serviceName, namespace, repo, environment, ""
+                buildImage serviceName, namespace, repo, environment, 'master', ""
                 }
             }
         stage ('Deploy featureinfo-service in Test env') {

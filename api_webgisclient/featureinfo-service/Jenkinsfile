@@ -1,6 +1,5 @@
-def serviceName = 'featureinfo-service'
-def configFileName = 'featureInfoConfig.json'
-def baseImage = 'sourcepole/qwc-feature-info-service'
+def serviceName = env.JOB_BASE_NAME
+def environment = params.namespace.substring(params.namespace.lastIndexOf('-') + 1)
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -15,20 +14,9 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "latest",
-               description: 'Basis Image Version',
-               name: 'vBaseImage'
-               )
-        string(description: 'Tag des generierten bzw. deployten Images',
-               name: 'vDeployImage'
-              )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
-               )
-        string(description: 'Anzahl der Replicas',
-               defaultValue: '1',
-               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
@@ -45,32 +33,19 @@ pipeline {
             steps {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
-                    vBaseImage = params.vBaseImage
-                    vDeployImage = params.vDeployImage
-                    replicas = params.replicas
                     branch = params.branch
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) {
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
-                      environment = 'test'
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) {
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
-                      environment = 'integration'
-                      resources = ['cpu_request': '200m', 'cpu_limit': '400m', 'memory_request': '125Mi', 'memory_limit': '250Mi']
                       }
                     else if ( namespace == 'gdi-production' ) {
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
-                      environment = 'production'
-                      resources = ['cpu_request': '400m', 'cpu_limit': '400m', 'memory_request': '250Mi', 'memory_limit': '250Mi']
                       }
                     else {
-                      environment = 'test'
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      db_server = env.DB_SERVER_TEST
                       }
 
                     if (params.containsKey("configs")) {
@@ -93,15 +68,13 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_OEREB=${env.OEREB_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_OGC_SERVER=${DbUserOgcServer} -p PW_OGC_SERVER=${PwdOgcServer} -p USER_SOGIS_SERVICE=${DbUserSogisService} -p PW_SOGIS_SERVICE=${PwdSogisService} -p USER_SOGIS_SERVICE_WRITE=${DbUserSogisServiceWrite} -p PW_SOGIS_SERVICE_WRITE=${PwdSogisServiceWrite} -p NAMESPACE=${namespace}"
-                    }
+                configureRessources serviceName, namespace, repo, environment
                 }
             }
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'feature-info-service', 'qwc', 'qwc-feature-info-service'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'featureInfoConfig.json', serviceName, 'feature-info-service', 'qwc', 'qwc-feature-info-service'
                     }
                 }
             }
@@ -112,14 +85,12 @@ pipeline {
                     }
                 }
             steps {
-                withCredentials ( credentials ) {
-                    buildImage serviceName, repo, namespace, "-p BASETAG=${vBaseImage} -p DEPLOYTAG=${vDeployImage}", configFileName, jobName, buildNumber, branch, ""
-                    }
+                buildImage serviceName, namespace, repo, environment, ""
                 }
             }
         stage ('Deploy featureinfo-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vDeployImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit'], "-p ENVIRONMENT=${environment}"
+                deployImage serviceName, namespace, repo, environment
                 }
             }
         }

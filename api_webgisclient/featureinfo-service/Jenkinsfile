@@ -24,7 +24,8 @@ pipeline {
               )
         choice(choices: ['ja','nein'],
                description: 'Soll das Image gebaut werden?',
-               name: 'build'     
+               name: 'build',
+               defaultValue: "nein"     
                )
         }
 

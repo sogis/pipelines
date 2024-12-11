@@ -1,4 +1,5 @@
-def serviceName = 'jasper-reporting-service'
+def serviceName = env.JOB_BASE_NAME
+def environment = params.namespace.substring(params.namespace.lastIndexOf('-') + 1)
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -14,17 +15,9 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "v2.0.8",
-               description: 'Basis Image Version',
-               name: 'vBaseImage' 
-               )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
-               )
-        string(description: 'Anzahl der Replicas',
-               defaultValue: '1',
-               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
@@ -37,27 +30,18 @@ pipeline {
             steps {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
-                    vBaseImage = params.vBaseImage
-                    replicas = params.replicas
-                    branch = params.branch
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      geo_db_server = env.GEO_DB_SERVER_TEST
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      geo_db_server = env.GEO_DB_SERVER_TEST
-                      resources = ['cpu_request': '200m', 'cpu_limit': '1500m', 'memory_request': '1000Mi', 'memory_limit': '2000Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      geo_db_server = env.GEO_DB_SERVER_PROD
-                      resources = ['cpu_request': '200m', 'cpu_limit': '1500m', 'memory_request': '2000Mi', 'memory_limit': '2000Mi']
                       }
                     else {
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      db_server = env.DB_SERVER_TEST
                       }
                     credentials = [
                         usernamePassword(credentialsId: (env.OPENSHIFT_ENVIRONMENT) + '-jenkins-sogis-db-mswrite-secret'     , usernameVariable: 'DbUserMswrite'           , passwordVariable: 'PwdMswrite'),
@@ -68,14 +52,12 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml -p DB_SERVER=${db_server} -p GEO_DB_SERVER=${geo_db_server} -p DB_PUB=${env.PUB_DB} -p DB_EDIT=${env.EDIT_DB} -p DB_SOGIS=${env.SOGIS_DB} -p USER_REPORT_SERVER=${DbUserReportServer} -p PW_REPORT_SERVER=${PwdReportServer} -p USER_MSWRITE=${DbUserMswrite} -p PW_MSWRITE=${PwdMswrite} -p NAMESPACE=${namespace}"
-                    }
+                configureRessources serviceName, namespace, repo, environment
                 }
              }
         stage ( 'Deploy jasper-reporting-service' ) {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
+                deployImage serviceName, namespace, repo, environment
                 }
             }
         }

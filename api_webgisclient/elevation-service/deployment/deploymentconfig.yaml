@@ -9,8 +9,8 @@ parameters:
     name: NAMESPACE
   - description: "Image Stream Tag"
     name: TAG
-  - description: Environment
-    name: ENVIRONMENT
+  - description: PVC datensogispicmir
+    name: DATENSOGISPICMIR_PVC
   - description: Number of Replicas
     name: REPLICAS
   - description: cpu request
@@ -114,7 +114,7 @@ objects:
         volumes:
         - name: datensogispicmir
           persistentVolumeClaim:
-            claimName: datensogispicmir-claim${ENVIRONMENT}
+            claimName: ${DATENSOGISPICMIR_PVC}
             readOnly: true
         - name: qgs-resources
           persistentVolumeClaim:

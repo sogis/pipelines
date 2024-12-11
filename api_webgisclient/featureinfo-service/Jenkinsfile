@@ -22,10 +22,9 @@ pipeline {
                description: 'Bitte namespace auswählen',
                name: 'namespace'
               )
-        choice(choices: ['ja','nein'],
+        choice(choices: ['nein','ja'],
                description: 'Soll das Image gebaut werden?',
-               name: 'build',
-               defaultValue: "nein"     
+               name: 'build'
                )
         }
 

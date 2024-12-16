@@ -1,5 +1,5 @@
 NAMESPACE=gdi-test
-TAG=latest-2024-test
+TAG=latest-2024-lts
 REPLICAS=1
 CPU_REQUEST=0
 CPU_LIMIT=0

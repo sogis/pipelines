@@ -1,5 +1,4 @@
-def serviceName = 'permission'
-def configFileName = 'permissions.json'
+def serviceName = env.JOB_BASE_NAME
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -18,10 +17,6 @@ pipeline {
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
                )
-        string(description: 'Anzahl der Replicas GetMap QGIS Server',
-               defaultValue: '1',
-               name: 'replicas'
-               )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
                name: 'namespace'
@@ -32,34 +27,18 @@ pipeline {
         stage ('Ask for Version') {
             steps {
                 script {
-                    repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      environment = 'test'
-                      sogisPicMirEnv = '-test'
-                      replicas = '2'
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      environment = 'integration'
-                      sogisPicMirEnv = '-int'
-                      replicas = '2'
-                      resources = ['cpu_request': '250m', 'cpu_limit': '1000m', 'memory_request': '1024Mi', 'memory_limit': '2048Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      environment = 'production'
-                      sogisPicMirEnv = '-prod'
-                      replicas = '12'
-                      resources = ['cpu_request': '1000m', 'cpu_limit': '1000m', 'memory_request': '2500Mi', 'memory_limit': '3072Mi']
                       }
                     else {
-                      environment = 'test'
-                      sogisPicMirEnv = '-test'
-                      replicas = '2'
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      db_server = DB_SERVER_TEST
                       }
                     credentials = [ 
                         usernamePassword(credentialsId: (env.OPENSHIFT_ENVIRONMENT) + '-jenkins-dbuser-sogis-service-secret', usernameVariable: 'DbUserSogisService', passwordVariable: 'PwdSogisService')
@@ -70,7 +49,7 @@ pipeline {
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, 'services-unified-permissions', 'qwc', 'qwc-services-core'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'permissions.json', serviceName, 'services-unified-permissions', 'qwc', 'qwc-services-core'
                     }
                 }
             }

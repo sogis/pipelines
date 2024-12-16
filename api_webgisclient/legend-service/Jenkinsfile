@@ -1,5 +1,5 @@
-def serviceName = 'legend-service'
-def configFileName = 'legendConfig.json'
+def serviceName = env.JOB_BASE_NAME
+def environment = params.namespace.substring(params.namespace.lastIndexOf('-') + 1)
 // NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
 // and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
 // will not be fully engaged.
@@ -14,17 +14,9 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
         }
     parameters {
-        string(defaultValue: "latest",
-               description: 'Basis Image Version',
-               name: 'vBaseImage'
-               )
         string(defaultValue: "master",
                description: 'Bitte Branch auswählen, der für die Pipeline verwendet werden soll',
                name: 'branch'
-               )
-        string(description: 'Anzahl der Replicas',
-               defaultValue: '1',
-               name: 'replicas'
                )
         string(defaultValue: "gdi-test",
                description: 'Bitte namespace auswählen',
@@ -37,24 +29,19 @@ pipeline {
             steps {
                 script {
                     repo = 'https://raw.githubusercontent.com/sogis/pipelines/' + params.branch + '/api_webgisclient/' + serviceName + '/deployment'
-                    vBaseImage = params.vBaseImage
-                    replicas = params.replicas
                     branch = params.branch
                     namespace = params.namespace
                     if ( namespace == 'gdi-test' ) { 
                       db_server = env.DB_SERVER_TEST
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
                       }
                     else if ( namespace == 'gdi-integration' ) { 
                       db_server = env.DB_SERVER_INT
-                      resources = ['cpu_request': '50m', 'cpu_limit': '100m', 'memory_request': '75Mi', 'memory_limit': '150Mi']
                       }
                     else if ( namespace == 'gdi-production' ) { 
                       db_server = env.DB_SERVER_PROD
-                      resources = ['cpu_request': '100m', 'cpu_limit': '100m', 'memory_request': '150Mi', 'memory_limit': '150Mi']
                       }
                     else {
-                      resources = ['cpu_request': '0', 'cpu_limit': '0', 'memory_request': '0', 'memory_limit': '0']
+                      db_server = env.DB_SERVER_TEST
                       }
                     if (params.containsKey("configs")) {
                         buildNumber = params.buildNumber
@@ -72,21 +59,19 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                withCredentials ( credentials ) {
-                    configureRessources '${namespace}', "-f ${repo}/resources.yaml"
-                    }
+                configureRessources serviceName, namespace, repo, environment
                 }
             }
         stage ('Create configs') {
             steps {
                 withCredentials ( credentials ) {
-                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, configFileName, serviceName, serviceName, 'qwc'
+                    createConfigs namespace, branch, DbUserSogisService, PwdSogisService, db_server, env.SIMI_DB, 'legendConfig.json', serviceName, serviceName, 'qwc'
                     }
                 }
             }
         stage ('Deploy legend-service in Test env') {
             steps {
-                deployImage serviceName, namespace, vBaseImage, repo, replicas, resources['cpu_request'], resources['cpu_limit'], resources['memory_request'], resources['memory_limit']
+                deployImage serviceName, namespace, repo, environment
                 }
             }
         }

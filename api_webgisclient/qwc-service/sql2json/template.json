@@ -615,8 +615,7 @@
               "name": "Redlining",
               "cfg": {
                 "allowGeometryLabels": false,
-		"snapping": false,
-		"__reducedFunctionality": true
+		"snapping": false
               }
             },
             {

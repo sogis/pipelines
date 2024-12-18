@@ -61,7 +61,10 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources serviceName, namespace, repo, environment
+                script {
+                    parameter = sh(script: "curl -s $repo/$serviceName_resources_$environment.params", returnStdout: true)
+                    configureRessources serviceName, namespace, repo, environment, parameter
+                    }
                 }
             }
         stage ('Create configs') {

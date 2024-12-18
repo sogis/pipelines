@@ -64,7 +64,7 @@ pipeline {
                 script {
                     parameter = sh(script: "curl -s $repo/$serviceName_resources_$environment.params", returnStdout: true)
                     echo ${parameter}
-                    configureRessources ${serviceName}, ${namespace}, ${repo}, ${environment}, ${parameter}
+                    configureRessources '${serviceName}', '${namespace}', '${repo}', '${environment}', '${parameter}'
                     }
                 }
             }

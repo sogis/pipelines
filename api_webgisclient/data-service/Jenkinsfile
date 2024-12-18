@@ -63,8 +63,8 @@ pipeline {
             steps {
                 script {
                     parameter = sh(script: "curl -s ${repo}/${serviceName}_resources_${environment}.params", returnStdout: true)
-                    echo ${parameter}
-                    configureRessources 'data-service', 'gdi-test', 'https://raw.githubusercontent.com/sogis/pipelines/implement_deployment/api_webgisclient/data-service/deployment', 'test', 'parameter'
+                    echo parameter
+                    configureRessources 'data-service', 'gdi-test', 'https://raw.githubusercontent.com/sogis/pipelines/implement_deployment/api_webgisclient/data-service/deployment', 'test', parameter
                     }
                 }
             }

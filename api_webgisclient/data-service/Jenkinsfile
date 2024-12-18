@@ -64,7 +64,6 @@ pipeline {
                 withCredentials ( credentials ) {
                     script {
                         parameter = sh(script: "curl -s ${repo}/${serviceName}_resources_${environment}.params | tr '\\n' ' ' | sed 's/ \$//'", returnStdout: true)
-                        echo parameter
                         configureRessources serviceName, namespace, repo, environment, parameter
                         }
                     }

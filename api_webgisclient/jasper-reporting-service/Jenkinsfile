@@ -52,7 +52,13 @@ pipeline {
             }
         stage ('Configure Ressources') {
             steps {
-                configureRessources serviceName, namespace, repo, environment
+                // With credentials due to credentials in param file
+                withCredentials ( credentials ) {
+                    script {
+                        parameter = sh(script: "curl -s ${repo}/${serviceName}_resources_${environment}.params | tr '\\n' ' ' | sed 's/ \$//'", returnStdout: true)
+                        configureRessources serviceName, namespace, repo, environment
+                        }
+                    }
                 }
              }
         stage ( 'Deploy jasper-reporting-service' ) {
